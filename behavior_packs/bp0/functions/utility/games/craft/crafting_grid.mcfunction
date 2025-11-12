@@ -1,5 +1,46 @@
 ### Detection of Successful Crafting. Runs every tick during gameplay.
 
+## Inventory Restriction - Only hotbar slot 4 available
+# Lock hotbar slots (except slot 4)
+replaceitem entity @a[tag=craft_player] slot.hotbar 0 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.hotbar 1 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.hotbar 2 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.hotbar 3 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+# slot.hotbar 4 is left empty (usable)
+replaceitem entity @a[tag=craft_player] slot.hotbar 5 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.hotbar 6 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.hotbar 7 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.hotbar 8 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+
+# Lock all inventory slots
+replaceitem entity @a[tag=craft_player] slot.inventory 0 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 1 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 2 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 3 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 4 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 5 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 6 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 7 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 8 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 9 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 10 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 11 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 12 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 13 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 14 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 15 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 16 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 17 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 18 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 19 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 20 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 21 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 22 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 23 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 24 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 25 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+replaceitem entity @a[tag=craft_player] slot.inventory 26 barrier 1 0 {"item_lock": {"mode": "lock_in_slot"}}
+
 #Reset Grid scores the Score
 scoreboard players set craft_grid_1 craft_scores 0
 scoreboard players set craft_grid_2 craft_scores 0

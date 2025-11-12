@@ -124,8 +124,8 @@ execute if score .game_mode global matches 1 run execute if score .seq global ma
 execute if score .game_mode global matches 1 run execute if score .seq global matches 7270 run execute unless entity @a[scores={team=1}] run function utility/games/elytra/team1_score
 execute if score .game_mode global matches 1 run execute if score .seq global matches 7270 run execute unless entity @a[scores={team=2}] run function utility/games/elytra/team2_score
 
-execute if score .seq global matches 1160..7280 run execute if score "§4Team 1" score matches 10 run scoreboard players set .seq global 7280
-execute if score .seq global matches 1160..7280 run execute if score "§9Team 2" score matches 10 run scoreboard players set .seq global 7280
+execute if score .seq global matches 1160..7280 run execute if score "§4Team 1" score matches 50 run scoreboard players set .seq global 7280
+execute if score .seq global matches 1160..7280 run execute if score "§9Team 2" score matches 50 run scoreboard players set .seq global 7280
 
 ### Game Over
 execute if score .seq global matches 7280 run scoreboard players set .actionbar.objective global 0

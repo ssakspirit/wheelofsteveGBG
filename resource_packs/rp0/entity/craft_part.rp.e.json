@@ -1,0 +1,56 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:craft_part",
+      		"min_engine_version": "1.16.0",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"geometry": {
+                "craft_part_1": "geometry.craft_part_1",
+                "craft_part_2": "geometry.craft_part_2",
+                "craft_part_3": "geometry.craft_part_3",
+                "craft_part_4": "geometry.craft_part_4",
+                "craft_part_5": "geometry.craft_part_5",
+                "craft_part_6": "geometry.craft_part_6",
+                "craft_part_7": "geometry.craft_part_7",
+                "craft_part_8": "geometry.craft_part_8",
+                "craft_part_9": "geometry.craft_part_9",
+                "craft_part_10": "geometry.craft_part_10",
+                "craft_part_11": "geometry.craft_part_11",
+                "craft_part_12": "geometry.craft_part_12"
+                
+			},
+			"textures": {
+                "craft_part_1" : "textures/rwm/entity/craft_part_1",
+                "craft_part_2" : "textures/rwm/entity/craft_part_2",
+                "craft_part_3" : "textures/rwm/entity/craft_part_3",
+                "craft_part_4" : "textures/rwm/entity/craft_part_4",
+                "craft_part_5" : "textures/rwm/entity/craft_part_5",
+                "craft_part_6" : "textures/rwm/entity/craft_part_6",
+                "craft_part_7" : "textures/rwm/entity/craft_part_7",
+                "craft_part_8" : "textures/rwm/entity/craft_part_8",
+                "craft_part_9" : "textures/rwm/entity/craft_part_9",
+                "craft_part_10" : "textures/rwm/entity/craft_part_10",
+                "craft_part_11" : "textures/rwm/entity/craft_part_11",
+                "craft_part_12" : "textures/rwm/entity/craft_part_12"	
+			},
+			"render_controllers": [
+				"controller.render.craft_part"
+			],
+			"animations": {
+                "idle": "animation.craft_part.bob"
+			},
+			"scripts": {
+                "animate": [
+					"idle"
+				]
+			},
+			"spawn_egg": {
+				"base_color": "#0000CC",
+				"overlay_color": "#66B2FF"
+			}
+		}
+	}
+}

@@ -1,0 +1,8 @@
+{
+    "commands" : {
+        "hiddenFromPlayer" : []
+    },
+    "codebuilder":{
+		"defaulturi" : "https://minecraft.makecode.com/?ipc=1&inGame=1#tutorial:github:Mojang/EducationContent/no_coding"
+	}
+}

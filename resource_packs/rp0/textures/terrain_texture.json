@@ -1,0 +1,23 @@
+{
+  "num_mip_levels": 4,
+  "padding": 8,
+  "resource_pack_name": "Movie Minigames",
+  "texture_name": "atlas.terrain",
+  "texture_data": {
+    "ct_corner_side": {
+      "textures": "textures/blocks/ct_corner_side"
+    },
+    "ct_corner_otherside": {
+      "textures": "textures/blocks/ct_corner_otherside"
+    },
+    "ct_corner_top": {
+      "textures": "textures/blocks/ct_corner_top"
+    },
+    "ct_side_side": {
+      "textures": "textures/blocks/ct_side_side"
+    },
+    "ct_side_top": {
+      "textures": "textures/blocks/ct_side_top"
+    }
+  }
+}

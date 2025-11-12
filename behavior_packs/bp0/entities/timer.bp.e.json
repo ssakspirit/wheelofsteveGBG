@@ -1,0 +1,232 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:timer",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,2],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "timer" ]
+			},
+			"minecraft:health": {
+				"value": 1,
+				"max": 1
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+                        "cause": "magic",
+						"on_damage": {},
+						"deals_damage": true
+					}
+				]
+			},
+			"minecraft:collision_box": {
+				"width": 1.0,
+				"height": 1.0
+			},
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            }
+		},
+        "component_groups": {
+            "rwm:timer_orb": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:health": {
+				    "value": 1900,
+				    "max": 1900
+			     },
+                "minecraft:boss": {
+                    "name": "§6Timer",
+                    "hud_range": 100
+                }
+            },
+            "rwm:timer_grid": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+                "minecraft:health": {
+				    "value": 1900,
+				    "max": 1900
+			     },
+                "minecraft:boss": {
+                    "name": "§6Timer",
+                    "hud_range": 100
+                }
+            },
+            "rwm:timer_craft": {
+                "minecraft:mark_variant": {
+                    "value": 2
+                },
+                "minecraft:health": {
+				    "value": 1900,
+				    "max": 1900
+			     },
+                "minecraft:boss": {
+                    "name": "§6Timer",
+                    "hud_range": 100
+                }
+            },
+            "rwm:timer_nock": {
+                "minecraft:mark_variant": {
+                    "value": 3
+                },
+                "minecraft:health": {
+				    "value": 1110,
+				    "max": 1110
+			     },
+                "minecraft:boss": {
+                    "name": "§6Timer",
+                    "hud_range": 100
+                }
+            },
+            "rwm:timer_elytra": {
+                "minecraft:mark_variant": {
+                    "value": 4
+                },
+                "minecraft:health": {
+				    "value": 1900,
+				    "max": 1900
+			     },
+                "minecraft:boss": {
+                    "name": "§6Timer",
+                    "hud_range": 500
+                }
+            },
+            "rwm:timer_finale": {
+                "minecraft:mark_variant": {
+                    "value": 5
+                },
+                "minecraft:health": {
+				    "value": 1900,
+				    "max": 1900
+			     },
+                "minecraft:boss": {
+                    "name": "§6Timer",
+                    "hud_range": 100
+                }
+            }
+        },
+		"events": {
+			"rwm:timer_orb":{
+				"set_property": {"rwm:skin":0},
+                "add":{
+                    "component_groups":[
+                        "rwm:timer_orb"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:timer_grid",
+                        "rwm:timer_craft",
+                        "rwm:timer_nock",
+                        "rwm:timer_elytra",
+                        "rwm:timer_finale"
+                    ]
+                }
+			},
+            "rwm:timer_grid":{
+				"set_property": {"rwm:skin":1},
+                "add":{
+                    "component_groups":[
+                        "rwm:timer_grid"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:timer_orb",
+                        "rwm:timer_craft",
+                        "rwm:timer_nock",
+                        "rwm:timer_elytra",
+                        "rwm:timer_finale"
+                    ]
+                }
+			},
+            "rwm:timer_craft":{
+				"set_property": {"rwm:skin":2},
+                "add":{
+                    "component_groups":[
+                        "rwm:timer_craft"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:timer_orb",
+                        "rwm:timer_grid",
+                        "rwm:timer_nock",
+                        "rwm:timer_elytra",
+                        "rwm:timer_finale"
+                    ]
+                }
+			},
+            "rwm:timer_nock":{
+				"set_property": {"rwm:skin":3},
+                "add":{
+                    "component_groups":[
+                        "rwm:timer_nock"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:timer_orb",
+                        "rwm:timer_grid",
+                        "rwm:timer_craft",
+                        "rwm:timer_elytra",
+                        "rwm:timer_finale"
+                    ]
+                }
+			},
+            "rwm:timer_elytra":{
+				"set_property": {"rwm:skin":4},
+                "add":{
+                    "component_groups":[
+                        "rwm:timer_elytra"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:timer_orb",
+                        "rwm:timer_grid",
+                        "rwm:timer_craft",
+                        "rwm:timer_nock",
+                        "rwm:timer_finale"
+                    ]
+                }
+			},
+            "rwm:timer_finale":{
+				"set_property": {"rwm:skin":5},
+                "add":{
+                    "component_groups":[
+                        "rwm:timer_finale"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:timer_orb",
+                        "rwm:timer_grid",
+                        "rwm:timer_craft",
+                        "rwm:timer_nock",
+                        "rwm:timer_elytra"
+                    ]
+                }
+			}
+		}
+	}
+}

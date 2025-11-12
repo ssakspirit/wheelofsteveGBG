@@ -1,0 +1,62 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.craft_part_3",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "craft_part_3",
+					"parent": "root",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-5, 0, -1],
+							"size": [1, 6, 2],
+							"uv": {
+								"north": {"uv": [0, 0], "uv_size": [1, 6]},
+								"east": {"uv": [0, 0], "uv_size": [2, 6]},
+								"south": {"uv": [0, 0], "uv_size": [1, 6]},
+								"west": {"uv": [0, 0], "uv_size": [2, 6]},
+								"up": {"uv": [1, 2], "uv_size": [-1, -2]},
+								"down": {"uv": [1, 2], "uv_size": [-1, -2]}
+							}
+						},
+						{
+							"origin": [4, 0, -1],
+							"size": [1, 6, 2],
+							"uv": {
+								"north": {"uv": [0, 0], "uv_size": [1, 6]},
+								"east": {"uv": [0, 0], "uv_size": [2, 6]},
+								"south": {"uv": [0, 0], "uv_size": [1, 6]},
+								"west": {"uv": [0, 0], "uv_size": [2, 6]},
+								"up": {"uv": [1, 2], "uv_size": [-1, -2]},
+								"down": {"uv": [1, 2], "uv_size": [-1, -2]}
+							}
+						},
+						{
+							"origin": [-4, 4, -1],
+							"size": [8, 2, 2],
+							"uv": {
+								"north": {"uv": [2, 0], "uv_size": [8, 2]},
+								"south": {"uv": [2, 0], "uv_size": [8, 2]},
+								"up": {"uv": [10, 8], "uv_size": [-8, -2]},
+								"down": {"uv": [10, 2], "uv_size": [-8, -2]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

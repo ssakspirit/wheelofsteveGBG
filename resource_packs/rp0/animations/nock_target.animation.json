@@ -1,0 +1,168 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.rwm.tnt_ring.idle": {
+			"loop": true,
+			"animation_length": 10,
+			"bones": {
+				"root": {
+					"rotation": [0, 0, 360],
+					"position": {
+						"7.5": [0, 1, 0],
+						"10.0": [0, 0, 0]
+					}
+				},
+				"target": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"5.0": [0, 0, 180]
+					},
+					"position": {
+						"0.0": [0, 0, 0],
+						"2.5": [0, 1, 0],
+						"5.0": [0, 0, 0]
+					}
+				},
+				"root": {
+					"relative_to": {
+						"rotation": "entity"
+					},
+					"rotation": {
+						"0.0": [0, 0, 0.01],
+						"10.0": [0, 360, 0]
+					}
+				}
+			}
+		},
+		"animation.rwm.nock_target_enderman.idle": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"target": {
+					"position": [0, 6, -10]
+				},
+				"right_arm": {
+					"rotation": [-22.5, 0, 0]
+				},
+				"left_arm": {
+					"rotation": [-22.5, 0, 0]
+				}
+			}
+		},
+		"animation.rwm.nock_target_enderman.reward": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"target": {
+					"position": [0, 6, -10],
+					"scale": {
+						"0.0": [1, 1, 1],
+						"0.15": {
+							"pre": [1, 1, 1],
+							"post": [0, 0, 0]
+						}
+					}
+				},
+				"enderman": {
+					"scale": {
+						"0.0": [1, 1, 1],
+						"1.0": {
+							"pre": [1, 1, 1],
+							"post": [0, 0, 0]
+						}
+					}
+				},
+				"head": {
+					"position": {
+						"0.15": [0, 0, 0],
+						"0.45": [0, 5, 0],
+						"1.0": [0, 5, 0]
+					}
+				},
+				"right_arm": {
+					"rotation": {
+						"0.0": [-22.5, 0, 0],
+						"0.15": [-22.5, 0, 0],
+						"0.35": [0, 0, 37.5]
+					}
+				},
+				"left_arm": {
+					"rotation": {
+						"0.0": [-22.5, 0, 0],
+						"0.15": [-22.5, 0, 0],
+						"0.35": [0, 0, -37.5]
+					}
+				}
+			},
+			"particle_effects": {
+				"0.15": {
+					"effect": "target_dissipate",
+					"locator": "target_locator"
+				},
+				"1.0": {
+					"effect": "mob_portal",
+					"locator": "enderman_locator"
+				}
+			}
+		},
+		"animation.rwm.nock_target_creeper.idle": {
+			"loop": true,
+			"animation_length": 3,
+			"bones": {
+				"target": {
+					"position": [0, 0, 0],
+					"scale": 1
+				},
+				"creeper": {
+					"position": {
+						"0.0": [0, -11, 0],
+						"0.5": [0, 0, 0],
+						"1.5": [0, 0, 0],
+						"2.0": [0, -11, 0]
+					}
+				},
+				"creeper_flash": {
+					"scale": 0
+				}
+			}
+		},
+		"animation.rwm.nock_target_creeper.reward": {
+			"animation_length": 4,
+			"bones": {
+				"target": {
+					"scale": {
+						"0.0": [1, 1, 1],
+						"0.15": {"pre": [1, 1, 1], "post": [0, 0, 0]}
+					}
+				},
+				"creeper": {
+					"scale": {
+						"1.3": [1, 1, 1],
+						"1.65": [1.25, 1.25, 1.25],
+						"1.7": {"pre": [1.25, 1.25, 1.25], "post": [0, 0, 0]}
+					}
+				},
+				"creeper_flash": {
+					"scale": {
+						"0.0": [0, 0, 0],
+						"0.3": {"pre": [0, 0, 0], "post": [1, 1, 1]},
+						"0.65": {"pre": [1, 1, 1], "post": [0, 0, 0]},
+						"0.9": {"pre": [0, 0, 0], "post": [1, 1, 1]},
+						"1.15": {"pre": [1, 1, 1], "post": [0, 0, 0]},
+						"1.4": {"pre": [0, 0, 0], "post": [1, 1, 1]}
+					}
+				}
+			},
+			"particle_effects": {
+				"0.15": {
+					"effect": "target_dissipate",
+					"locator": "target_locator"
+				},
+				"1.65": {
+					"effect": "explosion_death",
+					"locator": "creeper_locator"
+				}
+			}
+		}
+	}
+}

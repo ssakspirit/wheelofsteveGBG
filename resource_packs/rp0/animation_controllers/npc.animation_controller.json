@@ -1,0 +1,69 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.rwm.npc": {
+			"states": {
+				"npc_idle_1": {
+                    "animations": [
+						{"npc_idle_1": "query.property('rwm:skin') == 1"}
+					],
+					"transitions": [
+						{"npc_idle_2": "query.property('rwm:skin') == 2"},
+						{"npc_idle_3": "query.property('rwm:skin') == 3"},
+						{"npc_idle_4": "query.property('rwm:skin') == 4"},
+						{"npc_idle_5": "query.property('rwm:skin') == 5"}
+					],
+					"blend_transition": 1
+				},
+				"npc_idle_2": {
+                    "animations": [
+						{"npc_idle_2": "query.property('rwm:skin') == 2"}
+					],
+					"transitions": [
+						{"npc_idle_1": "query.property('rwm:skin') == 1"},
+						{"npc_idle_3": "query.property('rwm:skin') == 3"},
+						{"npc_idle_4": "query.property('rwm:skin') == 4"},
+						{"npc_idle_5": "query.property('rwm:skin') == 5"}
+					],
+					"blend_transition": 1
+				},
+				"npc_idle_3": {
+                    "animations": [
+						{"npc_idle_3": "query.property('rwm:skin') == 3"}
+					],
+					"transitions": [
+						{"npc_idle_1": "query.property('rwm:skin') == 1"},
+						{"npc_idle_2": "query.property('rwm:skin') == 2"},
+						{"npc_idle_4": "query.property('rwm:skin') == 4"},
+						{"npc_idle_5": "query.property('rwm:skin') == 5"}
+					],
+					"blend_transition": 1
+				},
+                "npc_idle_4": {
+                    "animations": [
+						{"npc_idle_4": "query.property('rwm:skin') == 4"}
+					],
+					"transitions": [
+						{"npc_idle_1": "query.property('rwm:skin') == 1"},
+						{"npc_idle_2": "query.property('rwm:skin') == 2"},
+						{"npc_idle_3": "query.property('rwm:skin') == 3"},
+						{"npc_idle_5": "query.property('rwm:skin') == 5"}
+					],
+					"blend_transition": 1
+				},
+                "npc_idle_5": {
+                    "animations": [
+						{"npc_idle_5": "query.property('rwm:skin') == 5"}
+					],
+					"transitions": [
+						{"npc_idle_1": "query.property('rwm:skin') == 1"},
+						{"npc_idle_2": "query.property('rwm:skin') == 2"},
+						{"npc_idle_3": "query.property('rwm:skin') == 3"},
+						{"npc_idle_4": "query.property('rwm:skin') == 4"}
+					],
+					"blend_transition": 1
+				}
+			}
+		}
+	}
+}

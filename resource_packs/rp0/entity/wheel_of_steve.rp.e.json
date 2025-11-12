@@ -1,0 +1,32 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:wheel_of_steve",
+      		"min_engine_version": "1.16.0",
+			"materials": {
+				"default": "conduit_wind"
+			},
+			"geometry": {
+                "default": "geometry.wheel_of_steve"
+			},
+			"textures": {
+                "default" : "textures/rwm/entity/wheel_of_steve"
+			},
+			"render_controllers": [
+				"controller.render.wheel_of_steve"
+			],
+			"animations": {
+                "spin_1": "animation.wheel_of_steve.spin_1",
+                "spin_2": "animation.wheel_of_steve.spin_2", 
+                "spin_3": "animation.wheel_of_steve.spin_3", 
+                "spin_4": "animation.wheel_of_steve.spin_4", 
+                "spin_5": "animation.wheel_of_steve.spin_5" 
+			},
+			"spawn_egg": {
+				"base_color": "#0000CC",
+				"overlay_color": "#66B2FF"
+			}
+		}
+	}
+}

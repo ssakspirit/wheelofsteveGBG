@@ -1,0 +1,132 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:npc_4",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,5],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "npc" ]
+			},
+			"minecraft:health": {
+				"value": 1,
+				"max": 1
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {},
+						"deals_damage": false
+					}
+				]
+			},
+			"minecraft:collision_box": {
+				"width": 0.6,
+				"height": 1.8
+			},
+            "minecraft:behavior.look_at_player": {
+               "priority": 2,
+               "look_distance": 6,
+               "probability": 0.12
+            },
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            },
+            "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "interact_text": "interact.npc_1",
+                            "vibration": "shear",
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        { 
+                                            "test": "is_family", 
+                                            "subject": "other", 
+                                            "value": "player" 
+                                        },
+                                        {
+                                            "test": "has_tag", 
+                                            "subject": "other",
+                                            "operator": "==", 
+                                            "value": ".host" 
+                                        }
+                                    ]
+                                },
+                            "event": "rwm:dialogue"
+                            }
+                        },
+                        {
+                            "interact_text": "interact.npc_1",
+                            "vibration": "shear",
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        { 
+                                            "test": "is_family", 
+                                            "subject": "other", 
+                                            "value": "player" 
+                                        },
+                                        {
+                                            "test": "has_tag", 
+                                            "subject": "other",
+                                            "operator": "!=", 
+                                            "value": ".host" 
+                                        }
+                                    ]
+                                },
+                            "event": "rwm:dialogue_nothost"
+                            }
+                        }
+                    ]
+            },
+            "minecraft:npc": {
+                "npc_data": {
+                    "portrait_offsets": {
+                        "translate": [-7, 30, 0],
+                        "scale": [1.25, 1.25, 1.25]
+                    }
+                }
+            }
+		},
+        "component_groups": {
+            "rwm:despawn": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+		"events": {
+            "rwm:despawn":{
+                "add":{
+                    "component_groups":[
+                        "rwm:despawn"
+                    ]
+                }
+			},
+            "rwm:dialogue":{
+                "queue_command":{
+                    "command": "dialogue open @s @p[tag=.host,r=6] npc_henry"
+                }
+			},
+            "rwm:dialogue_nothost":{
+                "queue_command":{
+                    "command": "dialogue open @s @p[tag=.nothost,r=6] npc_henry_nothost"
+                }
+			}
+		}
+	}
+}

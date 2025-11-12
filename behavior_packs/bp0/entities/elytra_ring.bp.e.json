@@ -1,0 +1,60 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:elytra_ring",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,2],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "elytra_ring" ]
+			},
+			"minecraft:health": {
+				"value": 1000,
+				"max": 1000
+			},
+			"minecraft:collision_box": {
+				"width": 0.1,
+				"height": 0.1
+			},
+            "minecraft:physics": {
+				"has_collision": false,
+				"has_gravity": false
+			},
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:knockback_resistance":{ 
+                "value": 1.0 
+            },
+            "minecraft:scale":{ 
+                "value": 1.5 
+            },
+            "minecraft:fire_immune": {},
+            "minecraft:push_through": { 
+                "value": 1.0
+            },
+            "minecraft:behavior.float": {
+                "priority": 0
+            },
+            "minecraft:nameable": {
+                "always_show": false
+            }
+		},
+        "component_groups": {
+        },
+		"events": {
+		}
+	}
+}

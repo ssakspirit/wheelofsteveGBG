@@ -1,0 +1,90 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:nock_minecart_hitbox",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,2],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "nock_minecart_hitbox" ]
+			},
+			"minecraft:health": {
+				"value": 9000,
+				"max": 9000
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {},
+						"deals_damage": true
+					}
+				]
+			},
+            "minecraft:custom_hit_test":{
+                "hitboxes": [
+                    {
+                        "width": 1.8,
+                        "height": 1.8,
+                        "pivot": [ 0, 0, 0 ]
+                    }
+                ]
+            },
+            "minecraft:behavior.look_at_player": {
+                "look_distance": 40,
+                "look_time": [0,0],
+                "probability": 1.00
+            },
+			"minecraft:collision_box": {
+				"width": 1.8,
+				"height": 1.8
+			},
+            "minecraft:rideable": {
+                "seat_count": 1,
+                "family_types": ["nock_target"],
+                "pull_in_entities": false,
+                "seats": [
+                    {
+                        "position": [ 0.0, 1.0, 0.0 ],
+                        "min_rider_count": 0,
+                        "max_rider_count": 1,
+                        "lock_rider_rotation": 0
+                    }
+                ]
+            },
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            },
+            "minecraft:physics": {}
+		},
+        "component_groups": {
+            "rwm:despawn": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+		"events": {
+			"rwm:despawn":{
+				"set_property": {"rwm:skin":0},
+                "add":{
+                    "component_groups":[
+                        "rwm:despawn"
+                    ]
+                }
+			}
+		}
+	}
+}

@@ -1,0 +1,580 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:grid_block",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,6],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "grid_block" ]
+			},
+			"minecraft:health": {
+				"value": 1,
+				"max": 1
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {},
+						"deals_damage": false
+					}
+				]
+			},
+			"minecraft:collision_box": {
+				"width": 0.1,
+				"height": 0.1
+			},
+            "minecraft:custom_hit_test":{
+                "hitboxes": [
+                    {
+                        "width": 0.6,
+                        "height": 1.0,
+                        "pivot": [ 0, 0, 0 ]
+                    }
+                ]
+            },
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            }
+		},
+        "component_groups": {
+            "rwm:grid_block_lime": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+                "minecraft:interact":{
+                    "interactions": [
+                        {
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { "test": "is_family", "subject": "other", "value": "player" },
+                                    { "test": "has_tag", "subject": "other", "operator": "!=", "value": "has_grid_block" }
+                                ]
+                            },
+                            "event":"rwm:grid_block_lime_recharge"
+                        },
+                        "interact_text": "grid_block_lime_obtain.interact",
+                        "add_items": {
+                            "table": "loot_tables/entities/grid_block_lime.json"
+                            }
+                        }
+                    ]
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						"on_damage": {},
+						"deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:grid_block_blue": {
+                "minecraft:mark_variant": {
+                    "value": 2
+                },
+                "minecraft:interact":{
+                    "interactions": [
+                        {
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { "test": "is_family", "subject": "other", "value": "player" },
+                                    { "test": "has_tag", "subject": "other", "operator": "!=", "value": "has_grid_block" }
+                                ]
+                            },
+                            "event":"rwm:grid_block_blue_recharge"
+                        },
+                        "interact_text": "grid_block_blue_obtain.interact",
+                        "add_items": {
+                            "table": "loot_tables/entities/grid_block_blue.json"
+                            }
+                        }
+                    ]
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						"on_damage": {},
+						"deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:grid_block_yellow": {
+                "minecraft:mark_variant": {
+                    "value": 3
+                },
+                "minecraft:interact":{
+                    "interactions": [
+                        {
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { "test": "is_family", "subject": "other", "value": "player" },
+                                    { "test": "has_tag", "subject": "other", "operator": "!=", "value": "has_grid_block" }
+                                ]
+                            },
+                            "event":"rwm:grid_block_yellow_recharge"
+                        },
+                        "interact_text": "grid_block_yellow_obtain.interact",
+                        "add_items": {
+                            "table": "loot_tables/entities/grid_block_yellow.json"
+                            }
+                        }
+                    ]
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						"on_damage": {},
+						"deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:grid_block_red": {
+                "minecraft:mark_variant": {
+                    "value": 4
+                },
+                "minecraft:interact":{
+                    "interactions": [
+                        {
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { "test": "is_family", "subject": "other", "value": "player" },
+                                    { "test": "has_tag", "subject": "other", "operator": "!=", "value": "has_grid_block" }
+                                ]
+                            },
+                            "event":"rwm:grid_block_red_recharge"
+                        },
+                        "interact_text": "grid_block_red_obtain.interact",
+                        "add_items": {
+                            "table": "loot_tables/entities/grid_block_red.json"
+                            }
+                        }
+                    ]
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						"on_damage": {},
+						"deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:grid_block_magenta": {
+                "minecraft:mark_variant": {
+                    "value": 5
+                },
+                "minecraft:interact":{
+                    "interactions": [
+                        {
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { "test": "is_family", "subject": "other", "value": "player" },
+                                    { "test": "has_tag", "subject": "other", "operator": "!=",  "value": "has_grid_block" }
+                                ]
+                            },
+                            "event":"rwm:grid_block_magenta_recharge"
+                        },
+                        "interact_text": "grid_block_magenta_obtain.interact",
+                        "add_items": {
+                            "table": "loot_tables/entities/grid_block_magenta.json"
+                            }
+                        }
+                    ]
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						"on_damage": {},
+						"deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:grid_block_lime_recharge": {
+                "minecraft:mark_variant": {
+                    "value": 6
+                },
+                 "minecraft:timer": {
+                     "time": [5, 5],
+                     "time_down_event": {
+                         "event": "rwm:grid_block_lime"
+                     }
+                 },
+			     "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						  "on_damage": {},
+						  "deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:grid_block_blue_recharge": {
+                "minecraft:mark_variant": {
+                    "value": 6
+                },
+                 "minecraft:timer": {
+                     "time": [5, 5],
+                     "time_down_event": {
+                         "event": "rwm:grid_block_blue"
+                     }
+                 },
+			     "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						  "on_damage": {},
+						  "deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:grid_block_yellow_recharge": {
+                "minecraft:mark_variant": {
+                    "value": 6
+                },
+                 "minecraft:timer": {
+                     "time": [5, 5],
+                     "time_down_event": {
+                         "event": "rwm:grid_block_yellow"
+                     }
+                 },
+			     "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						  "on_damage": {},
+						  "deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:grid_block_red_recharge": {
+                "minecraft:mark_variant": {
+                    "value": 6
+                },
+                 "minecraft:timer": {
+                     "time": [5, 5],
+                     "time_down_event": {
+                         "event": "rwm:grid_block_red"
+                     }
+                 },
+			     "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						  "on_damage": {},
+						  "deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:grid_block_magenta_recharge": {
+                "minecraft:mark_variant": {
+                    "value": 6
+                },
+                 "minecraft:timer": {
+                     "time": [5, 5],
+                     "time_down_event": {
+                         "event": "rwm:grid_block_magenta"
+                     }
+                 },
+			     "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						  "on_damage": {},
+						  "deals_damage": false
+					   }
+				    ]
+			     }
+            }
+        },
+		"events": {
+            "rwm:grid_block_connection":{
+                "queue_command": {
+                    "command": ["function utility/games/grid/block_connections"]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_connection"
+                    ]
+                }
+			},
+			"rwm:grid_block_lime":{
+				"set_property": {"rwm:skin":1},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_lime"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_blue",
+                        "rwm:grid_block_yellow",
+                        "rwm:grid_block_red",
+                        "rwm:grid_block_magenta",
+                        "rwm:grid_block_lime_recharge",
+                        "rwm:grid_block_blue_recharge",
+                        "rwm:grid_block_yellow_recharge",
+                        "rwm:grid_block_red_recharge",
+                        "rwm:grid_block_magenta_recharge",
+                        "rwm:grid_block_connection"
+                    ]
+                }
+			},
+            "rwm:grid_block_blue":{
+				"set_property": {"rwm:skin":2},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_blue"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_lime",
+                        "rwm:grid_block_yellow",
+                        "rwm:grid_block_red",
+                        "rwm:grid_block_magenta",
+                        "rwm:grid_block_lime_recharge",
+                        "rwm:grid_block_blue_recharge",
+                        "rwm:grid_block_yellow_recharge",
+                        "rwm:grid_block_red_recharge",
+                        "rwm:grid_block_magenta_recharge",
+                        "rwm:grid_block_connection"
+                    ]
+                }
+			},
+            "rwm:grid_block_yellow":{
+				"set_property": {"rwm:skin":3},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_yellow"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_lime",
+                        "rwm:grid_block_blue",
+                        "rwm:grid_block_red",
+                        "rwm:grid_block_magenta",
+                        "rwm:grid_block_lime_recharge",
+                        "rwm:grid_block_blue_recharge",
+                        "rwm:grid_block_yellow_recharge",
+                        "rwm:grid_block_red_recharge",
+                        "rwm:grid_block_magenta_recharge",
+                        "rwm:grid_block_connection"
+                    ]
+                }
+			},
+            "rwm:grid_block_red":{
+				"set_property": {"rwm:skin":4},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_red"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_lime",
+                        "rwm:grid_block_blue",
+                        "rwm:grid_block_yellow",
+                        "rwm:grid_block_magenta",
+                        "rwm:grid_block_lime_recharge",
+                        "rwm:grid_block_blue_recharge",
+                        "rwm:grid_block_yellow_recharge",
+                        "rwm:grid_block_red_recharge",
+                        "rwm:grid_block_magenta_recharge",
+                        "rwm:grid_block_connection"
+                    ]
+                }
+			},
+            "rwm:grid_block_magenta":{
+				"set_property": {"rwm:skin":5},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_magenta"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_lime",
+                        "rwm:grid_block_blue",
+                        "rwm:grid_block_yellow",
+                        "rwm:grid_block_red",
+                        "rwm:grid_block_lime_recharge",
+                        "rwm:grid_block_blue_recharge",
+                        "rwm:grid_block_yellow_recharge",
+                        "rwm:grid_block_red_recharge",
+                        "rwm:grid_block_magenta_recharge",
+                        "rwm:grid_block_connection"
+                    ]
+                }
+			},
+            "rwm:grid_block_lime_recharge":{
+				"set_property": {"rwm:skin":6},
+                "queue_command": {
+                    "command": ["event entity @s rwm:grid_block_connection"]
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_lime_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_lime"
+                    ]
+                }
+            },
+            "rwm:grid_block_blue_recharge":{
+				"set_property": {"rwm:skin":6},
+                "queue_command": {
+                    "command": ["event entity @s rwm:grid_block_connection"]
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_blue_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_blue"
+                    ]
+                }
+            },
+            "rwm:grid_block_yellow_recharge":{
+				"set_property": {"rwm:skin":6},
+                "queue_command": {
+                    "command": ["event entity @s rwm:grid_block_connection"]
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_yellow_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_yellow"
+                    ]
+                }
+            },
+            "rwm:grid_block_red_recharge":{
+				"set_property": {"rwm:skin":6},
+                "queue_command": {
+                    "command": ["event entity @s rwm:grid_block_connection"]
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_red_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_red"
+                    ]
+                }
+            },
+            "rwm:grid_block_magenta_recharge":{
+				"set_property": {"rwm:skin":6},
+                "queue_command": {
+                    "command": ["event entity @s rwm:grid_block_connection"]
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_magenta_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_magenta"
+                    ]
+                }
+            },
+            "rwm:grid_block_lime_stolen":{
+				"set_property": {"rwm:skin":6},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_lime_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_lime"
+                    ]
+                }
+            },
+            "rwm:grid_block_blue_stolen":{
+				"set_property": {"rwm:skin":6},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_blue_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_blue"
+                    ]
+                }
+            },
+            "rwm:grid_block_yellow_stolen":{
+				"set_property": {"rwm:skin":6},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_yellow_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_yellow"
+                    ]
+                }
+            },
+            "rwm:grid_block_red_stolen":{
+				"set_property": {"rwm:skin":6},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_red_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_red"
+                    ]
+                }
+            },
+            "rwm:grid_block_magenta_stolen":{
+				"set_property": {"rwm:skin":6},
+                "add":{
+                    "component_groups":[
+                        "rwm:grid_block_magenta_recharge"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:grid_block_magenta"
+                    ]
+                }
+            }
+		}
+	}
+}

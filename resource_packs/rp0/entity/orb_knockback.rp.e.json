@@ -1,0 +1,13 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:orb_knockback",
+      		"min_engine_version": "1.16.0",
+			"spawn_egg": {
+				"base_color": "#00994c",
+				"overlay_color": "#99FFCC"
+			}
+		}
+	}
+}

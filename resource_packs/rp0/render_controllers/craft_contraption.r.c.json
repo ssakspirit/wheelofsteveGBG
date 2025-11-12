@@ -1,0 +1,43 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.craft_contraption": {
+			"materials": [ { "*": "Material.default" } ],
+            "textures": [
+                "array.skins[query.mark_variant]"
+            ],
+            "geometry": "array.models[query.mark_variant]",
+			"arrays": {
+				"textures": {
+					"array.skins": [
+						"texture.craft_contraption_1_broken",
+						"texture.craft_contraption_2_broken",
+						"texture.craft_contraption_3_broken",
+						"texture.craft_contraption_4_broken",
+						"texture.craft_contraption_5_broken",
+                        "texture.craft_contraption_1_fixed",
+						"texture.craft_contraption_2_fixed",
+						"texture.craft_contraption_3_fixed",
+						"texture.craft_contraption_4_fixed",
+						"texture.craft_contraption_5_fixed"
+					]
+				},
+                "geometries": {
+                    "array.models": [
+                        "geometry.craft_contraption_1_broken",
+                        "geometry.craft_contraption_2_broken",
+                        "geometry.craft_contraption_3_broken",
+                        "geometry.craft_contraption_4_broken",
+                        "geometry.craft_contraption_5_broken",
+                        "geometry.craft_contraption_1_fixed",
+                        "geometry.craft_contraption_2_fixed",
+                        "geometry.craft_contraption_3_fixed",
+                        "geometry.craft_contraption_4_fixed",
+                        "geometry.craft_contraption_5_fixed"
+                    ]
+                }
+			},
+			"ignore_lighting" : true
+		}
+	}
+}

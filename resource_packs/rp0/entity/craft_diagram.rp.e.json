@@ -1,0 +1,42 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:craft_diagram",
+      		"min_engine_version": "1.16.0",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"geometry": {
+                "craft_diagram_1": "geometry.craft_diagram",
+                "craft_diagram_2": "geometry.craft_diagram",
+                "craft_diagram_3": "geometry.craft_diagram",
+                "craft_diagram_4": "geometry.craft_diagram",
+                "craft_diagram_5": "geometry.craft_diagram"
+                
+			},
+			"textures": {
+                "craft_diagram_1" : "textures/rwm/entity/craft_diagram_1",
+                "craft_diagram_2" : "textures/rwm/entity/craft_diagram_2",
+                "craft_diagram_3" : "textures/rwm/entity/craft_diagram_3",
+                "craft_diagram_4" : "textures/rwm/entity/craft_diagram_4",
+                "craft_diagram_5" : "textures/rwm/entity/craft_diagram_5"	
+			},
+			"render_controllers": [
+				"controller.render.craft_diagram"
+			],
+			"animations": {
+                "idle": "animation.craft_diagram.bob"
+			},
+			"scripts": {
+                "animate": [
+					"idle"
+				]
+			},
+			"spawn_egg": {
+				"base_color": "#0000CC",
+				"overlay_color": "#66B2FF"
+			}
+		}
+	}
+}

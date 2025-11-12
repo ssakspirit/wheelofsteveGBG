@@ -1,0 +1,27 @@
+{
+   "orange_glazed_terracotta": {
+     "isotropic": false,
+     "sound": "stone",
+     "textures": {
+       "up": "ct_corner_top",
+       "down": "ct_corner_top",
+       "north": "ct_corner_side",
+       "south": "ct_corner_side",
+       "east": "ct_corner_otherside",
+       "west": "ct_corner_otherside"
+     }
+   },
+   "yellow_glazed_terracotta": {
+     "isotropic": false,
+     "sound": "stone",
+     "textures": {
+       "up": "ct_side_top",
+       "down": "ct_side_top",
+       "north": "ct_side_side",
+       "south": "ct_side_side",
+       "east": "ct_side_side",
+       "west": "ct_side_side"
+     }
+   }
+ }
+ 

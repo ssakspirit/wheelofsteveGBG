@@ -1,0 +1,18 @@
+{
+    "format_version": "1.20.50",
+    "minecraft:item": {
+      "description": {
+        "identifier": "rwm:craft_part_9",
+        "menu_category": {
+          "category": "construction"
+        }  
+      },
+      "components": {
+        "minecraft:icon": {
+				"texture": "craft_part_9"
+			},
+        "minecraft:max_stack_size": 1,
+        "minecraft:use_duration": 1
+      }
+    }
+  }

@@ -1,0 +1,33 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:npc_4",
+      		"min_engine_version": "1.16.0",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"geometry": {
+                "default": "geometry.rwm.npc_4"
+			},
+			"textures": {
+                "default" : "textures/rwm/entity/npc/npc_4"
+			},
+			"render_controllers": [
+				"controller.render.default.entity"
+			],
+			"animations": {
+                "idle": "animation.npc.idle_4"         
+			},
+			"scripts": {
+                "animate": [
+					"idle"
+				]
+			},
+			"spawn_egg": {
+				"base_color": "#0000CC",
+				"overlay_color": "#66B2FF"
+			}
+		}
+	}
+}

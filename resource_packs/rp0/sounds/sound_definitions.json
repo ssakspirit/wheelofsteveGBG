@@ -1,0 +1,212 @@
+{
+   "format_version" : "1.20.20",
+   "sound_definitions" : {
+       
+      "record.11" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/11",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.13" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/13",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.5" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/5",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.blocks" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/blocks",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.cat" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/cat",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.chirp" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/chirp",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.creator" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "name" : "sounds/music/game/records/creator",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.creator_music_box" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "name" : "sounds/music/game/records/creator_music_box",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.far" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/far",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.mall" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/mall",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.mellohi" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/mellohi",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.otherside" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/otherside",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.pigstep" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/pigstep_master",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.precipice" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "name" : "sounds/music/game/records/precipice",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.relic" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/relic",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.stal" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/stal",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.strad" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/strad",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.wait" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/wait",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      },
+      "record.ward" : {
+         "category" : "ui",
+         "sounds" : [
+            {
+               "load_on_low_memory" : true,
+               "name" : "sounds/music/game/records/ward",
+               "stream" : true,
+               "volume" : 0.50
+            }
+         ]
+      }
+   }
+}

@@ -1,0 +1,66 @@
+{
+	"format_version": "1.21.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.craft_part_1",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "craft_part_1",
+					"parent": "root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "wheel_oil",
+					"parent": "craft_part_1",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-4, 0, -3],
+							"size": [8, 8, 8],
+							"uv": {
+								"north": {"uv": [24, 24], "uv_size": [8, 8]},
+								"east": {"uv": [24, 24], "uv_size": [8, 8]},
+								"south": {"uv": [24, 24], "uv_size": [8, 8]},
+								"west": {"uv": [24, 24], "uv_size": [8, 8]},
+								"up": {"uv": [32, 24], "uv_size": [-8, -8]},
+								"down": {"uv": [32, 24], "uv_size": [-8, -8]}
+							}
+						},
+						{
+							"origin": [1, 8, 1],
+							"size": [6, 6, 0],
+							"uv": {
+								"north": {"uv": [24, 10], "uv_size": [6, 6]}
+							}
+						},
+						{
+							"origin": [-5, 2, -1],
+							"size": [2, 6, 4],
+							"pivot": [-3, 8, 0],
+							"rotation": [0, 0, 22.5],
+							"uv": {
+								"north": {"uv": [30, 0], "uv_size": [2, 6]},
+								"east": {"uv": [26, 0], "uv_size": [4, 6]},
+								"south": {"uv": [30, 0], "uv_size": [2, 6]},
+								"west": {"uv": [26, 0], "uv_size": [4, 6]},
+								"up": {"uv": [30, 8], "uv_size": [-4, -2], "uv_rotation": 90},
+								"down": {"uv": [26, 8], "uv_size": [-4, -2], "uv_rotation": 90}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

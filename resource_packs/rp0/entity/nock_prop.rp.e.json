@@ -1,0 +1,107 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:nock_prop",
+      		"min_engine_version": "1.16.0",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"geometry": {
+                "armadillo": "geometry.target_armadillo",
+                "bee": "geometry.target_bee",
+                "camel": "geometry.target_camel",
+                "chicken": "geometry.target_chicken",
+                "cow": "geometry.target_cow",
+                "donkey": "geometry.target_donkey",
+                "fox": "geometry.target_fox",
+                "goat": "geometry.target_goat",
+                "llama": "geometry.target_llama",
+                "minecart": "geometry.target_minecart",
+                "pig": "geometry.target_pig",
+                "polarbear": "geometry.target_polarbear",
+                "rabbit_desert": "geometry.target_rabbit",
+                "rabbit_plains": "geometry.target_rabbit",
+                "sheep": "geometry.target_sheep",
+                "sniffer": "geometry.target_sniffer",
+                "snowgolem": "geometry.target_snowgolem",
+                "spider": "geometry.target_spider",
+                "wolf": "geometry.target_wolf"
+                
+			},
+			"textures": {
+                "armadillo": "textures/rwm/entity/target_mobs/armadillo",
+                "bee": "textures/rwm/entity/target_mobs/bee",
+                "camel": "textures/rwm/entity/target_mobs/camel",
+                "chicken": "textures/rwm/entity/target_mobs/chicken",
+                "cow": "textures/rwm/entity/target_mobs/cow",
+                "donkey": "textures/rwm/entity/target_mobs/donkey",
+                "fox": "textures/rwm/entity/target_mobs/fox",
+                "goat": "textures/rwm/entity/target_mobs/goat",
+                "llama": "textures/rwm/entity/target_mobs/llama",
+                "minecart": "textures/rwm/entity/target_mobs/minecart",
+                "pig": "textures/rwm/entity/target_mobs/pig",
+                "polarbear": "textures/rwm/entity/target_mobs/polar_bear",
+                "rabbit_desert": "textures/rwm/entity/target_mobs/rabbit_desert",
+                "rabbit_plains": "textures/rwm/entity/target_mobs/rabbit_plains",
+                "sheep": "textures/rwm/entity/target_mobs/sheep",
+                "sniffer": "textures/rwm/entity/target_mobs/sniffer",
+                "snowgolem": "textures/rwm/entity/target_mobs/snow_golem",
+                "spider": "textures/rwm/entity/target_mobs/spider",
+                "wolf": "textures/rwm/entity/target_mobs/wolf"
+                
+			},
+			"render_controllers": [
+				"controller.render.nock_prop"
+			],
+			"animations": {
+                "animation_controller": "controller.animation.rwm.nock_prop",
+                "idle_armadillo": "animation.target_armadillo.idle",
+                "idle_bee": "animation.target_bee.idle",
+                "idle_camel": "animation.target_camel.idle",
+                "idle_chicken": "animation.target_chicken.idle",
+                "idle_cow": "animation.target_cow.idle",
+                "idle_donkey": "animation.target_donkey.idle",
+                "idle_fox": "animation.target_fox.idle",
+                "idle_goat": "animation.target_goat.idle",
+                "idle_llama": "animation.target_llama.idle",
+                "idle_pig": "animation.target_pig.idle",
+                "idle_polarbear": "animation.target_polarbear.idle",
+                "idle_rabbit_desert": "animation.target_rabbit.idle",
+                "idle_rabbit_plains": "animation.target_rabbit.idle",
+                "idle_sheep": "animation.target_sheep.idle",
+                "idle_sniffer": "animation.target_sniffer.idle",
+                "idle_snowgolem": "animation.target_snowgolem.idle",
+                "idle_spider": "animation.target_spider.idle",
+                "idle_wolf": "animation.target_wolf.idle",
+                "reward_armadillo": "animation.target_armadillo.reward",
+                "reward_bee": "animation.target_bee.reward",
+                "reward_camel": "animation.target_camel.reward",
+                "reward_chicken": "animation.target_chicken.reward",
+                "reward_cow": "animation.target_cow.reward",
+                "reward_donkey": "animation.target_donkey.reward",
+                "reward_fox": "animation.target_fox.reward",
+                "reward_goat": "animation.target_goat.reward",
+                "reward_llama": "animation.target_llama.reward",
+                "reward_pig": "animation.target_pig.reward",
+                "reward_polarbear": "animation.target_polarbear.reward",
+                "reward_rabbit_desert": "animation.target_rabbit.reward",
+                "reward_rabbit_plains": "animation.target_rabbit.reward",
+                "reward_sheep": "animation.target_sheep.reward",
+                "reward_sniffer": "animation.target_sniffer.reward",
+                "reward_snowgolem": "animation.target_snowgolem.reward",
+                "reward_spider": "animation.target_spider.reward",
+                "reward_wolf": "animation.target_wolf.reward"
+			},
+			"scripts": {
+				"animate": [
+                    "animation_controller"
+				]
+			},
+			"spawn_egg": {
+				"base_color": "#0000CC",
+				"overlay_color": "#66B2FF"
+			}
+		}
+	}
+}

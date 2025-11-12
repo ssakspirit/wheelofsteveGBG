@@ -1,0 +1,237 @@
+﻿##
+## Wheel of Steve
+## Copyright 2024 http://rewrite.media
+## 
+
+map.version=1.0.12	#	###{LOCKED}
+lang.version=0.0.9	#	###{LOCKED}
+
+pack.name=史提夫轉盤	#	### Steve is a minecraft character and the wheel is a gameshow style spinner that chooses what mini games will be played. 
+pack.description=電影小遊戲所需資源	#	### Resources needed for name of map
+
+## Wins
+subtitle.objective.1000.1=§4§l隊伍 1 §a獲勝！	#	###{StrContains="§l"}{StrContains="§4"}{StrContains="§a"}Displayed when team 1 wins a single game.
+subtitle.objective.1000.2=§9§l隊伍 2 §a獲勝！	#	###{StrContains="§l"}{StrContains="§9"}{StrContains="§a"}Displayed when team 2 wins a single game.
+subtitle.objective.1000.3=§4隊伍 1 §a贏得§f §6史提夫轉盤！	#	###{StrContains="§4"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 1 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.4=§9隊伍 2 §a贏得§f §6史提夫轉盤！	#	###{StrContains="§9"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 12 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.5=§e§l平手！	#	###{StrContains="§l"}{StrContains="§e"}{StrContains="§a"} Displays when a game finishes in a draw.
+
+## Countdown
+subtitle.title=§r	#	###{LOCKED}
+subtitle.objective.101.1=§c§l3	#	###{LOCKED}
+subtitle.objective.101.2=§e§l2	#	###{LOCKED}
+subtitle.objective.101.3=§b§l1	#	###{LOCKED}
+subtitle.objective.101.4=§a§l開始！	#	###{StrContains="§a"}{StrContains="§l"}Displayed after a 3-2-1 countdown timer.
+
+## Interact text
+interact.craft_diagram_pickup=§6互動來撿起圖案。	#	###{StrContains="§6"}
+
+## Chat
+chat.join.team.1=§6你現在在§4隊伍 1§6！	#	###{StrContains="§6"}{StrContains="§4"}Displayed when the game moves you to the Team 1 team.
+chat.join.team.2=§6你現在在§9隊伍 2§6！	#	###{StrContains="§6"}{StrContains="§9"}Displayed when the game moves you to the Team 2 team.
+
+##Boards
+board.singleplayer.1=                                                                                                §l歡迎來到                                         §g史提夫轉盤§r                                                                                                                                                                                       §d想要讓其他玩家加入你的世界嗎？§r §l暫停選單 -> §r] (表情分頁)§l -> 開始主持§r然後         §o分享§r加入代碼給你的朋友們！                                                                                                   §b想要自己玩嗎？§r                       首先，走到§c左邊§r或§9右邊§r區域來選擇隊伍。然後，與你身後的按鈕§o互動§r。	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+board.multiplayer.1=                                                                                                §l歡迎來到                                         §g史提夫轉盤§r                                                                                                                                                                                   §d想要讓§o更多§r§d 玩家加入你的世界嗎？§r                     §l暫停選單 -> ] (表情分頁)§r                  然後§o分享§r 加入代碼給你的朋友們！                  你最多只能和 8 個人一起玩。§b想要開始遊戲嗎？§r                     首先，走到 §c左邊 §r或 §9右邊 §r區域來選擇隊伍。然後，主持人 (或世界建立者) 必須               與你身後的確認按鈕§o互動§r。	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+
+## Actionbar Objective
+actionbar.objective.000.10000=§6互動以開始	#	###{StrContains="§6"}
+actionbar.objective.001.1=§6歡迎！	#	###{StrContains="§6"}An introduction to the start of the map, the first word shown by its self, leading into the next message.
+actionbar.objective.001.2=§6您是這個世界的主持人。	#	###{StrContains="§6"}
+actionbar.objective.001.3=§6身為主持人，你可以選擇要玩哪些遊戲。%1其他玩家不能這麼做。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.4=§6首先：踏上兩個彩色平台中的一個%1來加入隊伍。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.5=§6每個隊伍最多可以加入 4 名玩家。%1盡量讓隊伍人數平均。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.6=§6在你繼續之前，請確保每個人都已加入隊伍。	#	###{StrContains="§6"}
+actionbar.objective.001.7=§6一旦您通過這個部分，如果您希望更多玩家加入，%1請建立新的世界。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.8=§6一旦每個人都加入了隊伍，%1主持人可以按下這個按鈕開始。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.9=§6允許所有玩家加入世界並選擇隊伍。%1然後按下金方塊上的按鈕。 	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.18=§a§l請確認：§r§6所有玩家都已加入世界並已加入隊伍。§r %1§f§l再次按下以確認。	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}{StrContains="§f"}
+
+actionbar.objective.001.10=§6有兩種玩法。	#	###{StrContains="§6"}
+actionbar.objective.001.11=§6主持人可以轉動史提夫轉盤。	#	###{StrContains="§6"}
+actionbar.objective.001.12=§6這會隨機選出一個小遊戲來遊玩。	#	###{StrContains="§6"}
+actionbar.objective.001.13=§6率先贏得 3 場隨機遊戲的隊伍，將可以玩到%1秘密小遊戲。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.14=§6主持人也可以和任何角色說話，%1來指定遊玩其中一個小遊戲。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.15=§6如果你想玩特定的遊戲，%1或想要練習的話，可以試試這個方法。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.16=§6如果用這種方式開始小遊戲，勝場將不會計入史提夫轉盤的進度。	#	###{StrContains="§6"}
+actionbar.objective.001.17=§6祝您好運！	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.003.20=我是史提夫。我們來玩§a§l魔球爭奪戰§r！在這個遊戲中，§l§6溝通§r是獲勝的關鍵。	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.21=我是亨利。我們來玩§a§l擊落挑戰§r。運用你的§l§6創意§r來獲勝！	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.22=我是蓋瑞特。運用團隊合作和§l§6協作§r來贏得§a§l機關合成大對決§r。	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.23=哈囉！我是娜塔莉。運用你的§l§6批判性思考§r來贏得§a§l方格戰爭§r。	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.24=我是黛恩。以§l§6社群§r的方式合作來贏得§a§l鞘翅亂鬥§r！	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.101.1=§6歡迎來到魔球爭奪戰。	#	###{StrContains="§6"} Mini game title, like capture the flag but with a glowing orb. 
+actionbar.objective.101.2=§6拿著魔球並與你的隊友合作來得分！	#	###{StrContains="§6"}
+actionbar.objective.101.3=§6持有魔球最久的隊伍獲勝。	#	###{StrContains="§6"}
+actionbar.objective.101.4=§6祝您好運！	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.101.5=§6搶奪魔球！(使用互動或攻擊來搶奪)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to take this orb from other players by interacting with them.
+actionbar.objective.101.6=§6持有魔球！(使用潛行來丟下它。)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to sneak to drop the orb if you have it.
+
+##Solo Contraption Craft Off
+actionbar.objective.201.1=§6歡迎來到機關合成大對決。	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.201.2=§6你的目標是合成 8 個零件來修理你隊伍的機器。	#	###{StrContains="§6"}
+actionbar.objective.201.3=§6想獲勝，就要在時間結束前，比對手合成更多機器零件。	#	###{StrContains="§6"}
+actionbar.objective.201.4=§6想合成機器零件，%1請依照這塊木板上顯示的藍圖指示。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.5=§6互動來撿起架上的物品，%1並將其帶到合成區。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.6=§6拿起一件物品並對著合成區的空格互動，即可放置。	#	###{StrContains="§6"}
+actionbar.objective.201.7=§6用空手來清掉空格上的物品。	#	###{StrContains="§6"}
+actionbar.objective.201.8=§6記住，在另一隊之前用正確的方式合成 8 個物品就能獲勝。	#	###{StrContains="§6"}
+actionbar.objective.201.9=§6祝您好運！	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.202.1=§6歡迎來到機關合成大對決。	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.202.2=§6 和你的隊友合作來贏得勝利！	#	###{StrContains="§6"}
+actionbar.objective.202.3=§6你的任務是修好 3 台壞掉的機器。%1為此，你需要合成零件。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.4=§6倉庫裡有一名玩家。他們需要找到一個圖樣，%1圖樣上會顯示如何製作機器零件。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.5=§6 在他們與圖樣互動後，就可以把它移到板子上。	#	###{StrContains="§6"}
+actionbar.objective.202.6=§6與木板互動會將圖樣顯示給你的隊友看。	#	###{StrContains="§6"}
+actionbar.objective.202.7=§6隊伍的其餘成員必須合力複製在他們的合成區中顯示的%1圖樣。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.8=§6他們可以透過%1與架上的合成物品互動來拾取物品。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.9=§6拿著零件並對著空格互動，%1就能將零件加入合成區。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.10=§6用空手來清掉空格上的物品。	#	###{StrContains="§6"}
+actionbar.objective.202.11=§6圖樣合成完畢後，修復好的零件就會出現%1在倉庫裡那位玩家的桌上。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.12=§6他們必須把零件帶到正確的區域，%1並透過互動來完成修復。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.13=§6如果還有更多零件要修，%1新的圖樣就會出現在倉庫的某個地方。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.14=§6一個接一個地持續修復機器，直到機器全部再次運作為止。	#	###{StrContains="§6"}
+actionbar.objective.202.15=§6率先完全修好機器的隊伍獲勝。	#	###{StrContains="§6"}
+actionbar.objective.202.16=§6祝您好運！	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+
+
+actionbar.objective.301.1=§6歡迎來到方格戰爭！	#	###{StrContains="§6"} Mini game title, players build with Minecraft blocks in a grid as quickly as possible. 
+actionbar.objective.301.2=§6合作在您小隊隊伍的木板上建造相同的圖案。	#	###{StrContains="§6"}
+actionbar.objective.301.3=§6比對手更快配對出圖樣來獲得 1 分。%1得分最高的隊伍獲勝。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.4=§6想要收集方塊，就去互動你競技場中旋轉的方塊。	#	###{StrContains="§6"}
+actionbar.objective.301.5=§6你一次只能攜帶 §c§l一個§r §6方塊。%1 §6放下攜帶中的方塊才能拿新的。#	###{StrContains="§6"}{StrContains="§c"}{StrContains="§l"}{StrContains="§r"}
+actionbar.objective.301.6=§6當一隊在某個競技場中拿走一個方塊時，另一隊在短時間內將%1無法拿取它。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.7=§6如果你的隊伍出錯了，就用 §f「清空木板」§6 按鈕來修正。	#	###{StrContains="§6"}{StrContains="§f"}
+actionbar.objective.301.8=§6祝您好運！	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.301.9=§6完成圖案！	#	###{StrContains="§6"}Players need to copy and complete the patter shown in front of them.
+
+actionbar.objective.401.1=§6歡迎來到擊落挑戰。	#	###{StrContains="§6"} Mini game title, it's a joke in English "Knock it off" is a saying to tell someone to stop it, nock is the term used to describe pulling an arrow to the ready position. The game is an archery shooting game. 
+actionbar.objective.401.2=§6試著透過命中目標來打敗另一隊。	#	###{StrContains="§6"}
+actionbar.objective.401.3=§6拿起你的弓，盡你所能地射中更多目標。	#	###{StrContains="§6"}
+actionbar.objective.401.4=§6得分比對方隊伍高即可獲勝！	#	###{StrContains="§6"}
+actionbar.objective.401.5=§6祝您好運！	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.401.6=§6射擊目標！	#	###{StrContains="§6"}Players need to shoot the targets to score points and win the game.
+
+
+
+actionbar.objective.501.1=§6歡迎來到鞘翅亂鬥。	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
+actionbar.objective.501.2=§6你的目標是把炸藥丟進對手的 %1火山，來摧毀他們的塔。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.3=§6墜落時，按下跳躍來展開鞘翅並滑翔。	#	###{StrContains="§6"}
+actionbar.objective.501.4=§6按下互動來使用煙火以獲得加速。	#	###{StrContains="§6"}
+actionbar.objective.501.5=§6飛靠近炸藥來撿起它。	#	###{StrContains="§6"}
+actionbar.objective.501.6=§6飛到對手的火山上方時，%1攻擊或潛行來丟下炸藥。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.7=§6先得到 10 分，或時間到時得分最高的玩家獲勝。	#	###{StrContains="§6"}
+actionbar.objective.501.8=§6祝您好運！	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.501.9=§6在你墜落時按下跳躍來開始飛行。	#	###{StrContains="§6"}
+actionbar.objective.501.10=§6將炸藥丟進 §9藍色火山§6 來得分。%1按下攻擊或潛行來丟下。	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
+actionbar.objective.501.11=§6將炸藥丟進 §4紅色火山§6 來得分。%1按下攻擊或潛行來丟下。	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
+
+
+actionbar.objective.601.1=§6歡迎來到最終對決。	#	###{StrContains="§6"} Mini game title, the final showdown is the last mini game played. 
+actionbar.objective.601.2=§6是時候揭曉誰是史提夫轉盤的最終贏家了。	#	###{StrContains="§6"} Refers to name of the game world, Wheel of Steve
+actionbar.objective.601.3=§6沿著山坡往下走，%1並盡可能收集最多的翡翠。	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.601.4=§6收集到最多翡翠的玩家獲勝。	#	###{StrContains="§6"}
+actionbar.objective.601.5=§6注意你的腳步！如果你掉下去了，你就出局了。	#	###{StrContains="§6"}
+actionbar.objective.601.6=§6跟緊點。如果你掉隊了，你就會被淘汰出局。	#	###{StrContains="§6"}
+actionbar.objective.601.7=§6祝您好運！	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.601.8=§6收集翡翠並待在畫面裡！	#	###{StrContains="§6"}
+
+##Dialogue
+steve.n=§6史提夫	#	###{StrContains="§6"} A Minecraft Movie character name. 
+henry.n=§6亨利	#	###{StrContains="§6"} A Minecraft Movie character name. 
+garett.n=§6蓋瑞特	#	###{StrContains="§6"} A Minecraft Movie character name. 
+dawn.n=§6黛恩	#	###{StrContains="§6"} A Minecraft Movie character name. 
+natalie.n=§6娜塔莉	#	###{StrContains="§6"} A Minecraft Movie character name. 
+wheel.n=§6史提夫轉盤	#	###{StrContains="§6"} refers to world title. Wheel of Steve
+
+steve.d=我是史提夫。我聽說你正在尋求練習§l§6溝通§r。我有適合你的遊戲。我稱之為§a§l魔球爭奪戰§r。你想玩嗎？	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+henry.d=嘿！我是亨利。我做了一個好玩的遊戲，我叫它§a§l擊落挑戰§r。這會用最經典的射箭來考驗你的§l§6創意§r。想玩嗎？ 	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+garett.d=我就知道。我一眼就看出你跟我，蓋瑞特·蓋瑞森，一樣是個專業玩家。最強的玩家都具備強大的團隊合作與 §l§6協作能力§r。我們來試試我稱為 §a§l機關合成賽§r 的小遊戲如何？這會好好考驗你的技術！準備好了嗎？	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+dawn.d=嗨！我是黛恩！與你的隊伍建立起強大的§l§6社群§r，是成為第一的關鍵。要不要來場能培養團隊情誼的遊戲？我準備了§a§l鞘翅大亂鬥§r！這是在高空飛行、投擲炸藥的遊戲，保證能考驗你們。想玩嗎？	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+natalie.d=哈囉！我是娜塔莉。我聽說你可能會來。我準備了叫做§a§l方格戰爭§r的小益智遊戲來測試你的§l§6批判性思考§r。有興趣玩嗎？	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+npc.nothost.d= 抱歉，只有主持人才能跟我開始遊戲。	#	###
+
+wheel.d=歡迎來到史提夫轉盤！轉我一下來玩隨機小遊戲吧！率先贏得 3 場小遊戲的隊伍就能解鎖秘密遊戲！	#	###
+
+steve.b1=玩魔球爭奪戰	#	### Refers to playing the mini game title 
+steve.b2=算了。	#	### player is saying “no I don't want to play the game now”
+henry.b1=玩擊落挑戰	#	### Refers to playing the mini game title
+henry.b2=算了。	#	### Player is saying “no I don't want to play the game now” 
+garett.b1=玩機關合成大對決	#	### Refers to playing the mini game title
+garett.b2=算了。	#	### player is saying “no I don't want to play the game now” 
+dawn.b1=玩鞘翅亂鬥	#	### Refers to playing the mini game title 
+dawn.b2=算了。	#	### player is saying “no I don't want to play the game now” 
+natalie.b1=玩方格戰爭	#	### Refers to playing the mini game title 
+natalie.b2=算了。	#	### player is saying “no I don't want to play the game now” 
+npc.nothost.b1=再見。	#	### Goodbye
+wheel.b1=轉動轉盤	#	### Spin the “Wheel of Steve” gameshow style spinner. 
+wheel.b2=算了。	#	### Player is saying, no I don't want to right now. 
+
+## Items
+item.rwm:orb=魔法球	#	### The orb from orb ambush. It's a blue sphere the player needs to keep hold of to score points.
+item.rwm:craft_diagram_1=合成圖 1	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_2=合成圖 2	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_3=合成圖 3	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_4=合成圖 4	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_5=合成圖 5	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_part_1=輪軸油	#	### A small wooden gear, used as a crafting component.
+item.rwm:craft_part_2=拳擊手套	#	### A bright red bloxing glove, used as a crafting component.
+item.rwm:craft_part_3=水桶提把	#	### The handle to a bucket you can carry around, used as a crafting component.
+item.rwm:craft_part_4=皮靴	#	### A single leather boot, used as a crafting component.
+item.rwm:craft_part_5=燈泡	#	### A single light bulb, used as a crafting component.
+item.rwm:craft_part_6=螺帽和螺栓	#	### A small gathering of metal nuts and bolts, used as a crafting component.
+item.rwm:craft_part_7=機械框架	#	### A small cube-like frame, used as a crafting component. 
+item.rwm:craft_part_8=雞	#	### A small Minecraft-chicken that can be picked up into the students inventory, used as a crafting component.
+item.rwm:craft_part_9=金屬桿	#	### A small single metal rod, used as a crafting component.
+item.rwm:craft_part_10=齒輪齒	#	### A small metal gear tooth, used as a crafting component.
+item.rwm:craft_part_11=小齒輪	#	### A single small metal gear, used as a crafting component.
+item.rwm:craft_part_12=滑輪	#	### The actual small metal pulley, used as a crafting component.
+item.rwm:craft_contraption_fixed_1=輪子維修零件	#	### The finalized, crafted wheel repair part, used to fix a the final contraption. It looks like a small wodden wheel.
+item.rwm:craft_contraption_fixed_2=小雞拳擊機維修零件	#	### The finalized, crafted chicken puncher, used to fix a the final contraption. It looks like a chicken with a boxing glove.
+item.rwm:craft_contraption_fixed_3=滑輪維修零件	#	### The finalized component, used to fix a the final contraption. It looks like a full pulley and rope system.
+item.rwm:craft_contraption_fixed_4=礦車維修零件	#	### The finalized component, used to fix a the final contraption. It looks like a small minecart.
+item.rwm:craft_contraption_fixed_5=籠子維修零件	#	### The finalized component, used to fix a the final contraption. It looks like a small metal cage.
+
+item.diamond_helmet.name=§9隊伍 2 頭盔	#	###{StrContains="§9"} Named item for team 2's helmet.
+item.diamond_chestplate.name=§9隊伍 2 胸甲	#	###{StrContains="§9"} Named item for team 2's chestplate.
+item.diamond_leggings.name=§9隊伍 2 護腿	#	###{StrContains="§9"} Named item for team 2's leggings.
+item.diamond_boots.name=§9隊伍 2 靴子	#	###{StrContains="§9"} Named item for team 2's boots.
+item.iron_helmet.name=§m隊伍 1 頭盔	#	###{StrContains="§m"} Named item for team 1's helmet.
+item.iron_chestplate.name=§m隊伍 1 胸甲	#	###{StrContains="§m"} Named item for team 1's chestplate.
+item.iron_leggings.name=§m隊伍 1 護腿	#	###{StrContains="§m"} Named item for team 1's leggings.
+item.iron_boots.name=§m隊伍 1 靴子	#	###{StrContains="§m"} Named item for team 1's boots.
+
+## Interacts
+interact.marker.start_map=§6開始地圖	#	###{StrContains="§6"} Displays on the students screen when they are hoving over the button to start the game.
+interact.wheel_of_steve=§6轉動史提夫轉盤？	#	###{StrContains="§6"} Displays on the students screen when hoving over the giant Wheel of Steve in the center of the lobby.
+interact.npc_1=§6交談	#	###{StrContains="§6"} Displayed when hovering over any NPC that is interactable.
+interact.craft_board_change=§6顯示圖樣。	#	###{StrContains="§6"} Displayed when hovering over the crafting board with a diagram in the players inventory.
+interact.craft_part_pickup=§6撿起零件。	#	###{StrContains="§6"} Dislpayed when hovering over an crafting component in Contraption Craft Off.
+interact.craft_crafting_change=§6放置零件。	#	###{StrContains="§6"} Displayed when holding a crafting part and hovering over the crafting table in Contraption Craft Off.
+interact.craft_contraption_change=§6修理機關。	#	###{StrContains="§6"} Displayed when you have a fixed contraption in your inventory and hover over the contraption in Contraption Craft Off.
+grid_block_magenta.interact=撿起§d洋紅色§r方塊	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime.interact=撿起§a淡黃綠色§r方塊	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue.interact=撿起§9藍色§r方塊	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red.interact=撿起§c紅色§r方塊	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow.interact=撿起§e黃色§r方塊	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+grid_block_magenta_obtain.interact=撿起§d洋紅色§r方塊	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime_obtain.interact=撿起§a淡黃綠色§r方塊	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue_obtain.interact=撿起§9藍色§r方塊	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red_obtain.interact=撿起§c紅色§r方塊	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow_obtain.interact=撿起§e黃色§r方塊	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+orb.flag.ride.interact=互動來取得魔球。	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.unride.interact=互動來取得魔球。	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+

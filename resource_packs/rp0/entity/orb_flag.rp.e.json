@@ -1,0 +1,31 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:attachable": {
+		"description": {
+			"identifier": "rwm:orb_flag",
+			"materials": {
+				"default": "entity_emissive",
+				"outer": "entity_alphablend"
+			},
+			"textures": {
+				"default": "textures/rwm/entity/orb"
+			},
+			"geometry": {
+				"default": "geometry.orb",
+				"outer": "geometry.orb_outer"
+			},
+			"animations": {
+                "idle": "animation.orb.idle"
+			},
+			"scripts": {
+                "animate": [
+					"idle"
+				]
+			},
+			"render_controllers": [
+				"controller.render.orb",
+				"controller.render.orb_outer"
+			]
+		}
+	}
+}

@@ -1,0 +1,33 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:fog_wall",
+			"materials": {
+				"default": "entity_lead_base"
+			},
+			"textures": {
+				"default": "textures/rwm/entity/fog_wall"
+			},
+			"geometry": {
+				"default": "geometry.fog_wall"
+			},
+			"animations": {
+				"scale": "animation.fog_wall.scale"
+			},
+			"scripts": {
+				"animate": [
+					"scale"
+				],
+                "should_update_bones_and_effects_offscreen": true
+			},
+			"render_controllers": [
+				"controller.render.default.entity"
+			],
+			"spawn_egg": {
+				"base_color": "#0d7e27",
+				"overlay_color": "#212121"
+			}
+		}
+	}
+}

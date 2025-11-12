@@ -1,0 +1,882 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:craft_crafting_part",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,13],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "craft_crafting_part" ]
+			},
+			"minecraft:health": {
+				"value": 1,
+				"max": 1
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {},
+						"deals_damage": false
+					}
+				]
+			},
+			"minecraft:collision_box": {
+				"width": 0.5,
+				"height": 0.1
+			},
+            "minecraft:custom_hit_test":{
+                "hitboxes": [
+                    {
+                        "width": 0.7,
+                        "height": 0.4,
+                        "pivot": [ 0, 0, 0 ]
+                    }
+                ]
+            },
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            },
+            "minecraft:interact": {
+                "interactions": [
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_1" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_1"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_2" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_2"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_3" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_3"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_4" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_4"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_5" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_5"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_6" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_6"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_7" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_7"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_8" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_8"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_9" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_9"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_10" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_10"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_11" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_11"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "use_item": true,
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "has_equipment", 
+                                        "subject": "other",
+                                        "domain": "hand", 
+                                        "value": "rwm:craft_part_12" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_12"
+                        }
+                    },
+                    {
+                        "interact_text": "interact.craft_crafting_change",
+                        "vibration": "shear",
+                        "swing": true,
+                        "on_interact": {
+                            "filters": {
+                                "all_of": [
+                                    { 
+                                        "test": "is_family", 
+                                        "subject": "other", 
+                                        "value": "player" 
+                                    },
+                                    {
+                                        "test": "has_tag", 
+                                        "subject": "other",
+                                        "operator": "==", 
+                                        "value": "craft_player" 
+                                    },
+                                    {
+                                        "test": "any_slot_empty", 
+                                        "subject": "other",
+                                        "operator": "equals", 
+                                        "value": "hand" 
+                                    }
+                                ]
+                            },
+                        "event": "rwm:craft_crafting_null"
+                        }
+                    }
+                ]
+            }
+		},
+        "component_groups": {
+            "rwm:craft_crafting_1": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                }
+            },
+            "rwm:craft_crafting_2": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                }
+            },
+            "rwm:craft_crafting_3": {
+                "minecraft:mark_variant": {
+                    "value": 2
+                }
+            },
+            "rwm:craft_crafting_4": {
+                "minecraft:mark_variant": {
+                    "value": 3
+                }
+            },
+            "rwm:craft_crafting_5": {
+                "minecraft:mark_variant": {
+                    "value": 4
+                }
+            },
+            "rwm:craft_crafting_6": {
+                "minecraft:mark_variant": {
+                    "value": 5
+                }
+            },
+            "rwm:craft_crafting_7": {
+                "minecraft:mark_variant": {
+                    "value": 6
+                }
+            },
+            "rwm:craft_crafting_8": {
+                "minecraft:mark_variant": {
+                    "value": 7
+                }
+            },
+            "rwm:craft_crafting_9": {
+                "minecraft:mark_variant": {
+                    "value": 8
+                }
+            },
+            "rwm:craft_crafting_10": {
+                "minecraft:mark_variant": {
+                    "value": 9
+                }
+            },
+            "rwm:craft_crafting_11": {
+                "minecraft:mark_variant": {
+                    "value": 10
+                }
+            },
+            "rwm:craft_crafting_12": {
+                "minecraft:mark_variant": {
+                    "value": 11
+                }
+            },
+            "rwm:craft_crafting_null": {
+                "minecraft:mark_variant": {
+                    "value": 12
+                },
+                "minecraft:scale": {
+                    "value": 0.001
+                }
+            },
+            "rwm:despawn": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+		"events": {
+			"rwm:craft_crafting_1":{
+				"set_property": {"rwm:skin":1},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_1"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_2":{
+				"set_property": {"rwm:skin":2},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_2"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_2"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_3":{
+				"set_property": {"rwm:skin":3},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_3"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_3"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_4":{
+				"set_property": {"rwm:skin":4},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_4"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_4"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_5":{
+				"set_property": {"rwm:skin":5},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_5"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_5"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_6":{
+				"set_property": {"rwm:skin":6},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_6"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_6"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_7":{
+				"set_property": {"rwm:skin":7},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_7"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_7"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_8":{
+				"set_property": {"rwm:skin":8},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_8"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_8"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_9":{
+				"set_property": {"rwm:skin":9},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_9"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_9"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_10":{
+				"set_property": {"rwm:skin":10},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_10"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_10"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_11":{
+				"set_property": {"rwm:skin":11},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_11"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_11"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_12",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_12":{
+				"set_property": {"rwm:skin":12},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_12"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_12"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_null"
+                    ]
+                }
+			},
+            "rwm:craft_crafting_null":{
+				"set_property": {"rwm:skin":13},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/part_null"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:craft_crafting_null"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:craft_crafting_1",
+                        "rwm:craft_crafting_2",
+                        "rwm:craft_crafting_3",
+                        "rwm:craft_crafting_4",
+                        "rwm:craft_crafting_5",
+                        "rwm:craft_crafting_6",
+                        "rwm:craft_crafting_7",
+                        "rwm:craft_crafting_8",
+                        "rwm:craft_crafting_9",
+                        "rwm:craft_crafting_10",
+                        "rwm:craft_crafting_11",
+                        "rwm:craft_crafting_12"
+                    ]
+                }
+			},
+            "rwm:despawn":{
+                "add":{
+                    "component_groups":[
+                        "rwm:despawn"
+                    ]
+                }
+			}
+		}
+	}
+}

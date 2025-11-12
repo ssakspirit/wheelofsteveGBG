@@ -1,0 +1,237 @@
+﻿##
+## Wheel of Steve
+## Copyright 2024 http://rewrite.media
+## 
+
+map.version=1.0.12	#	###{LOCKED}
+lang.version=0.0.9	#	###{LOCKED}
+
+pack.name=Steve Çarkı	#	### Steve is a minecraft character and the wheel is a gameshow style spinner that chooses what mini games will be played. 
+pack.description=Film Mini Oyunları için gereken kaynaklar	#	### Resources needed for name of map
+
+## Wins
+subtitle.objective.1000.1=§4§lTakım 1 §aKazandı!	#	###{StrContains="§l"}{StrContains="§4"}{StrContains="§a"}Displayed when team 1 wins a single game.
+subtitle.objective.1000.2=§9§lTakım 2 §aKazandı!	#	###{StrContains="§l"}{StrContains="§9"}{StrContains="§a"}Displayed when team 2 wins a single game.
+subtitle.objective.1000.3=§4Takım 1§f §6Steve Çarkı'nı §aKazandı!	#	###{StrContains="§4"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 1 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.4=§9Takım 2§f §6Steve Çarkı'nı §aKazandı!	#	###{StrContains="§9"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 12 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.5=§e§lBeraberlik!	#	###{StrContains="§l"}{StrContains="§e"}{StrContains="§a"} Displays when a game finishes in a draw.
+
+## Countdown
+subtitle.title=§r	#	###{LOCKED}
+subtitle.objective.101.1=§c§l3	#	###{LOCKED}
+subtitle.objective.101.2=§e§l2	#	###{LOCKED}
+subtitle.objective.101.3=§b§l1	#	###{LOCKED}
+subtitle.objective.101.4=§a§lBaşla!	#	###{StrContains="§a"}{StrContains="§l"}Displayed after a 3-2-1 countdown timer.
+
+## Interact text
+interact.craft_diagram_pickup=§6Deseni almak için etkileşime geçin.	#	###{StrContains="§6"}
+
+## Chat
+chat.join.team.1=§6Artık §4Takım 1§6'desiniz!	#	###{StrContains="§6"}{StrContains="§4"}Displayed when the game moves you to the Team 1 team.
+chat.join.team.2=§6Artık §9Takım 2§6'desiniz!	#	###{StrContains="§6"}{StrContains="§9"}Displayed when the game moves you to the Team 2 team.
+
+##Boards
+board.singleplayer.1=                                                                                                §l§gSteve Çarkı'na§r                                         Hoş Geldiniz                                                                                                                                                                                       §dOyuncuların dünyanıza katılmasını ister misiniz?§r             §lDuraklat Menüsü -> §r] (Yüzler sekmesi)§l -> Sunucuyu Başlat§r         Ardından katılma kodunu arkadaşlarınızla §opaylaşın§r!                                                                                                   §bYalnız mı oynamak istersiniz?§r                       Öncelikle §cSol §rveya §9Sağ §ralanda yürüyerek bir takım seçin.         Ardından, arkanızdaki düğmeyle §oetkileşim kurun§r.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+board.multiplayer.1=                                                                                                §l§gSteve Çarkı'na§r                                        Hoş Geldiniz                                                                                                                                                                     §dDünyanıza §odaha fazla§r§d oyuncunun katılmasını ister misiniz?§r                     §lDuraklat Menüsü -> ] (Yüzler sekmesi)§r              Ardından katılma kodunu arkadaşlarınızla §opaylaşın§r!             En fazla 8 kişiyle oynayabilirsiniz.                                                                                           §bOyuna başlamak ister misiniz?§r                     Öncelikle §cSol §rveya §9Sağ §ralanda yürüyerek bir takım seçin.            Ardından, sunucu veya dünya oluşturucu, arkanızda bulunan onay düğmesiyle               §oetkileşime geçmelidir§r.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+
+## Actionbar Objective
+actionbar.objective.000.10000=§6Başlamak için Etkileşime Geçin	#	###{StrContains="§6"}
+actionbar.objective.001.1=§6Hoş geldiniz!	#	###{StrContains="§6"}An introduction to the start of the map, the first word shown by its self, leading into the next message.
+actionbar.objective.001.2=§6Bu dünyanın sunucusu sizsiniz.	#	###{StrContains="§6"}
+actionbar.objective.001.3=§6Sunucu olarak hangi oyunların oynanacağını seçebilirsiniz. %1Diğer oyuncular bunu yapamaz.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.4=§6İlk önce, bir takıma katılmak için renkli iki platformdan %1birine adım atın.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.5=§6Her takıma en fazla 4 oyuncu katılabilir. %1Takımlardaki oyuncu sayısının eşit olmasını sağlamaya çalışın.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.6=§6Devam etmeden önce herkesin bir takıma katıldığından emin olun.	#	###{StrContains="§6"}
+actionbar.objective.001.7=§6Bu bölümü geçtikten sonra daha fazla oyuncunun %1katılmasını istiyorsanız yeni bir dünya yaratın.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.8=§6Herkes bir takıma katıldıktan sonra, %1sunucu oyunu başlatmak için bu düğmeye basabilir.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.9=§6Tüm oyuncuların dünyaya katılmasını ve bir takım seçmesini bekleyin. %1Ardından altın blok üzerindeki düğmeye basın. 	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.18=§a§lLütfen onaylayın: §r§6Tüm oyuncular dünyaya katıldı ve bir takımdalar.§r %1§f§lOnaylamak için tekrar basın.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}{StrContains="§f"}
+
+actionbar.objective.001.10=§6İki şekilde oynayabilirsiniz.	#	###{StrContains="§6"}
+actionbar.objective.001.11=§6Sunucu, Steve Çarkı'nı döndürebilir.	#	###{StrContains="§6"}
+actionbar.objective.001.12=§6Böylece oynanacak rastgele bir mini oyun seçilir.	#	###{StrContains="§6"}
+actionbar.objective.001.13=§6Rastgele 3 oyun kazanan ilk takım, %1gizli bir mini oyun oynar.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.14=§6Sunucu, mini oyunlardan birini oynamak için %1herhangi bir karakterle de konuşabilir.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.15=§6Belirli bir oyunu oynamak veya sadece pratik yapmak %1istiyorsanız bu yöntemi deneyin.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.16=§6Mini oyunlar bu şekilde başlatılırsa Steve Çarkı'nda galibiyet olarak sayılmaz.	#	###{StrContains="§6"}
+actionbar.objective.001.17=§6İyi şanslar!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.003.20=Adım Steve. Hadi §a§lKüre Pususu§r oynayalım! Bu oyunda zafere giden yol §l§6iletişimden§r geçer.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.21=Adım Henry. Hadi §a§lYaylan Bakalım§r oynayalım. Kazanmak için §l§6yaratıcılığınızı§r kullanın!	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.22=Adım Garett. §a§lMekanizma Üretmece'yi§r kazanmak için takım olarak çalışın ve §l§6iş birliği§r yapın.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.23=Ben Natalie. §a§lIzgara Savaşları'nı§r kazanmak için §l§6eleştirel düşünme§r yetinizi kullanın.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.24=Ben Dawn. §a§lElytra Mücadelesi'ni§r kazanmak için bir §l§6topluluk§r olarak çalışın!	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.101.1=§6Küre Pususu'na hoş geldiniz.	#	###{StrContains="§6"} Mini game title, like capture the flag but with a glowing orb. 
+actionbar.objective.101.2=§6Küreyi tutun ve puan kazanmak için takımınızla çalışın!	#	###{StrContains="§6"}
+actionbar.objective.101.3=§6Küreyi en uzun süre tutan takım kazanır.	#	###{StrContains="§6"}
+actionbar.objective.101.4=§6İyi şanslar!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.101.5=§6Küreyi alın! (Küreyi kapmak için etkileşim kurma veya saldırma işlevini kullanın)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to take this orb from other players by interacting with them.
+actionbar.objective.101.6=§6Küreyi tutun! (Küreyi düşürmek için gizlice dolaşma işlevini kullanın.)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to sneak to drop the orb if you have it.
+
+##Solo Contraption Craft Off
+actionbar.objective.201.1=§6Mekanizma Üretmece'ye hoş geldiniz.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.201.2=§6Amacınız, takımınızın makinelerini onarmak için 8 parça yapmak.	#	###{StrContains="§6"}
+actionbar.objective.201.3=§6Kazanmak için süre bitmeden rakibinizden daha fazla makine parçası yapın.	#	###{StrContains="§6"}
+actionbar.objective.201.4=§6Makine parçalarını yapmak için %1bu panoda gösterilen planı izleyin.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.5=§6Raflardaki eşyalarla etkileşime geçerek onları alın ve %1eşya yapma alanına getirin.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.6=§6Bir eşyayı alın ve yerleştirmek için eşya yapma alanındaki bir alanla etkileşime geçin.	#	###{StrContains="§6"}
+actionbar.objective.201.7=§6Alanı temizlemek için boş bir el kullanın.	#	###{StrContains="§6"}
+actionbar.objective.201.8=§6Unutmayın, kazanmak için diğer takımdan önce 8 eşyayı doğru bir şekilde yapmanız gerekir.	#	###{StrContains="§6"}
+actionbar.objective.201.9=§6İyi şanslar!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.202.1=§6Mekanizma Üretmece'ye hoş geldiniz.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.202.2=§6 Kazanmak için takımınızla çalışın!	#	###{StrContains="§6"}
+actionbar.objective.202.3=§6Göreviniz, 3 bozuk makineyi tamir etmek. %1Bunun için parça yapmanız gerekecek.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.4=§6Depoda bir oyuncu var. Oyuncunun, makine parçasının nasıl %1yapılacağını gösteren bir desen bulması gerekiyor.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.5=§6 Oyuncu, desenle etkileşime geçtikten sonra onu panoya taşıyabilir.	#	###{StrContains="§6"}
+actionbar.objective.202.6=§6Panoyla etkileşime geçerseniz takımınız deseni görebilir.	#	###{StrContains="§6"}
+actionbar.objective.202.7=§6Takımın geri kalanı, kendi eşya yapma alanlarında %1görüntülenen desenin aynısını yapmak için birlikte çalışmalıdır.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.8=§6Raflarda bulunan eşya yapma malzemeleriyle %1etkileşime geçerek onları toplayabilirler.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.9=§6Bir parçayı tutun ve eşya yapma alanına %1eklemek için bir alanla etkileşime geçin.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.10=§6Alanı temizlemek için boş bir el kullanın.	#	###{StrContains="§6"}
+actionbar.objective.202.11=§6Desen yapıldığında tamir edilen parça, %1depodaki oyuncu için bir masada görünecek.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.12=§6Oyuncunun parçayı doğru alana getirmesi %1ve onarımı tamamlamak için etkileşime geçmesi gerekir.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.13=§6Tamir edilecek daha fazla parça varsa %1depoda bir yerde yeni bir desen belirecektir.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.14=§6Hepsi tekrar çalışır hâle gelene kadar makineleri tek tek tamir etmeye devam edin.	#	###{StrContains="§6"}
+actionbar.objective.202.15=§6Makinesini tamamen tamir eden ilk takım kazanır.	#	###{StrContains="§6"}
+actionbar.objective.202.16=§6İyi şanslar!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+
+
+actionbar.objective.301.1=§6Izgara Savaşları'na hoş geldiniz!	#	###{StrContains="§6"} Mini game title, players build with Minecraft blocks in a grid as quickly as possible. 
+actionbar.objective.301.2=§6Kendi takımınızın panosundaki desenin aynısını oluşturmak için birlikte çalışın.	#	###{StrContains="§6"}
+actionbar.objective.301.3=§6Puan kazanmak için desenin aynısını diğer takımdan önce yapın. %1En çok puanı alan takım kazanır.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.4=§6Blokları toplamak için arenanızdaki dönen bloklarla etkileşime geçin.	#	###{StrContains="§6"}
+actionbar.objective.301.5=§6Tek seferde yalnızca §c§lbir§r §6blok taşıyabilirsiniz.	%1 §6Yeni bir blok almak için elinizdeki bloku bırakın. #	###{StrContains="§6"}{StrContains="§c"}{StrContains="§l"}{StrContains="§r"}
+actionbar.objective.301.6=§6Bir takım bir arenada bir blok aldığında diğer takım %1kısa bir süreliğine o bloku alamaz.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.7=§6Takımınız hata yaparsa bu hatayı düzeltmek için §f''Panoyu Temizle''§6 düğmesini kullanın.	#	###{StrContains="§6"}{StrContains="§f"}
+actionbar.objective.301.8=§6İyi şanslar!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.301.9=§6Deseni tamamlayın!	#	###{StrContains="§6"}Players need to copy and complete the patter shown in front of them.
+
+actionbar.objective.401.1=§6Yaylan Bakalım'a hoş geldiniz.	#	###{StrContains="§6"} Mini game title, it's a joke in English "Knock it off" is a saying to tell someone to stop it, nock is the term used to describe pulling an arrow to the ready position. The game is an archery shooting game. 
+actionbar.objective.401.2=§6Hedefleri vurarak diğer takımı yenmeye çalışın.	#	###{StrContains="§6"}
+actionbar.objective.401.3=§6Yayınızı alın ve olabildiğince çok hedefi vurmaya çalışın.	#	###{StrContains="§6"}
+actionbar.objective.401.4=§6Kazanmak için diğer takımdan daha fazla puan alın!	#	###{StrContains="§6"}
+actionbar.objective.401.5=§6İyi şanslar!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.401.6=§6Hedefleri vurun!	#	###{StrContains="§6"}Players need to shoot the targets to score points and win the game.
+
+
+
+actionbar.objective.501.1=§6Elytra Mücadelesi'ne hoş geldiniz.	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
+actionbar.objective.501.2=§6Amacınız, rakibinizin volkanına %1TNT bırakarak kulesini yıkmak.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.3=§6Düşerken zıplama tuşuna basarak elytra kanatlarınızı açın ve havada süzülün.	#	###{StrContains="§6"}
+actionbar.objective.501.4=§6Etkileşim tuşuna basıp havai fişekleri kullanarak hız takviyesi yapın.	#	###{StrContains="§6"}
+actionbar.objective.501.5=§6TNT'yi almak için ona yakın uçun.	#	###{StrContains="§6"}
+actionbar.objective.501.6=§6Rakibinizin volkanının üzerinden uçarken %1 TNT'yi bırakmak için saldırı veya gizlice dolaş düğmesini kullanın.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.7=§6On puanı ilk alan veya zaman dolduğunda en çok puanı toplayan kazanır.	#	###{StrContains="§6"}
+actionbar.objective.501.8=§6İyi şanslar!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.501.9=§6Uçmaya başlamak için düşerken zıplama düğmesine basın.	#	###{StrContains="§6"}
+actionbar.objective.501.10=§6Puan kazanmak için TNT'yi §9Mavi Volkana§6 bırakın. %1Bırakmak için saldırı veya gizlice dolaş düğmesine basın.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
+actionbar.objective.501.11=§6Puan kazanmak için TNT'yi §4Kırmızı Volkana§6 bırakın. %1Bırakmak için saldırı veya gizlice dolaş düğmesine basın.	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
+
+
+actionbar.objective.601.1=§6Son Hesaplaşma'ya hoş geldiniz.	#	###{StrContains="§6"} Mini game title, the final showdown is the last mini game played. 
+actionbar.objective.601.2=§6Steve Çarkı'nın nihai kazananını öğrenmenin zamanı geldi.	#	###{StrContains="§6"} Refers to name of the game world, Wheel of Steve
+actionbar.objective.601.3=§6Dağ yamacından aşağı inin %1ve toplayabildiğiniz kadar çok zümrüt toplayın.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.601.4=§6En çok zümrüt toplayan oyuncu kazanır.	#	###{StrContains="§6"}
+actionbar.objective.601.5=§6Adımlarınıza dikkat edin! Düşerseniz oyun dışı kalırsınız.	#	###{StrContains="§6"}
+actionbar.objective.601.6=§6Yakın durun. Geride kalırsanız oyun dışı kalırsınız.	#	###{StrContains="§6"}
+actionbar.objective.601.7=§6İyi şanslar!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.601.8=§6Zümrüt toplayın ve ekranda kalın!	#	###{StrContains="§6"}
+
+##Dialogue
+steve.n=§6Steve	#	###{StrContains="§6"} A Minecraft Movie character name. 
+henry.n=§6Henry	#	###{StrContains="§6"} A Minecraft Movie character name. 
+garett.n=§6Garett	#	###{StrContains="§6"} A Minecraft Movie character name. 
+dawn.n=§6Dawn	#	###{StrContains="§6"} A Minecraft Movie character name. 
+natalie.n=§6Natalie	#	###{StrContains="§6"} A Minecraft Movie character name. 
+wheel.n=§6Steve Çarkı	#	###{StrContains="§6"} refers to world title. Wheel of Steve
+
+steve.d=Adım Steve. §l§6İletişim§r pratiği yapmak istediğinizi duydum. Tam size göre bir oyunum var. Adı §a§lKüre Pususu§r. Oynamak ister misiniz?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+henry.d=Merhaba! Ben Henry. §a§lYaylan Bakalım§r adını verdiğim eğlenceli bir oyun geliştirdim. Oyun, eski moda okçuluk tekniklerini kullanarak §l§6yaratıcılığınızı§r test edecek. Oynamak ister misiniz? 	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+garett.d=Biliyordum. Bizzat ben, yani Garett Garrison gibi profesyonel bir oyuncu olduğunuzu bir bakışta anlamıştım. En iyi oyuncular, takım çalışması ve §l§6iş birliği§r konusunda güçlü olur. §a§lMekanizma Üretmece§r adını verdiğim oyunu denemeye ne dersiniz? Yeteneklerinizi test etmeye hazır mısınız?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+dawn.d=Merhaba! Ben Dawn! Takım üyelerinizin güçlü bir §l§6topluluğun§r parçası olduklarını hissetmelerini sağlamak, en iyisi olmak için çok önemlidir. Bu takım çalışması bağlarını kurmaya yardımcı olacak bir oyuna ne dersiniz? §a§lElytra Mücadelesi§r adında bir oyun hazırladım! Yükseklerde uçacağınız, TNT bırakacağınız ve becerilerinizi sınayacak bir oyun sizi bekliyor. Oynamak ister misiniz?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+natalie.d=Merhaba! Adım Natalie. Yanıma uğrayabileceğinizi söylemişlerdi, ben de §l§6eleştirel düşüncenizi§r test etmek için §a§lIzgara Savaşları§r adında küçük bir bulmaca oyunu hazırladım. Oynamakla ilgileniyor musunuz?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+npc.nothost.d= Üzgünüm, sadece sunucu benimle oyun başlatabilir.	#	###
+
+wheel.d=Steve Çarkı'na hoş geldiniz! Rastgele bir mini oyun oynamak için beni çevirin! 3 mini oyunu kazanan ilk takım, gizli bir oyunun kilidini açacak!	#	###
+
+steve.b1=Oyna	#	### Refers to playing the mini game title 
+steve.b2=Boş ver.	#	### player is saying “no I don't want to play the game now”
+henry.b1=Oyna	#	### Refers to playing the mini game title
+henry.b2=Boş ver.	#	### Player is saying “no I don't want to play the game now” 
+garett.b1=Oyna	#	### Refers to playing the mini game title
+garett.b2=Boş ver.	#	### player is saying “no I don't want to play the game now” 
+dawn.b1=Oyna	#	### Refers to playing the mini game title 
+dawn.b2=Boş ver.	#	### player is saying “no I don't want to play the game now” 
+natalie.b1=Oyna	#	### Refers to playing the mini game title 
+natalie.b2=Boş ver.	#	### player is saying “no I don't want to play the game now” 
+npc.nothost.b1=Bay.	#	### Goodbye
+wheel.b1=Tekerleği Çevir	#	### Spin the “Wheel of Steve” gameshow style spinner. 
+wheel.b2=Boş ver.	#	### Player is saying, no I don't want to right now. 
+
+## Items
+item.rwm:orb=Küre	#	### The orb from orb ambush. It's a blue sphere the player needs to keep hold of to score points.
+item.rwm:craft_diagram_1=1. Şemayı yapın	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_2=2. Şemayı yapın	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_3=3. Şemayı yapın	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_4=4. Şemayı yapın	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_5=5. Şemayı yapın	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_part_1=Tekerlek Yağı	#	### A small wooden gear, used as a crafting component.
+item.rwm:craft_part_2=Boks Eldiveni	#	### A bright red bloxing glove, used as a crafting component.
+item.rwm:craft_part_3=Kova Tutacağı	#	### The handle to a bucket you can carry around, used as a crafting component.
+item.rwm:craft_part_4=Deri Bot	#	### A single leather boot, used as a crafting component.
+item.rwm:craft_part_5=Lamba Ampulü	#	### A single light bulb, used as a crafting component.
+item.rwm:craft_part_6=Somunlar ve Cıvatalar	#	### A small gathering of metal nuts and bolts, used as a crafting component.
+item.rwm:craft_part_7=Mekanik Çerçeve	#	### A small cube-like frame, used as a crafting component. 
+item.rwm:craft_part_8=Tavuk	#	### A small Minecraft-chicken that can be picked up into the students inventory, used as a crafting component.
+item.rwm:craft_part_9=Metal Çubuk	#	### A small single metal rod, used as a crafting component.
+item.rwm:craft_part_10=Dişli Dişi	#	### A small metal gear tooth, used as a crafting component.
+item.rwm:craft_part_11=Küçük Dişli	#	### A single small metal gear, used as a crafting component.
+item.rwm:craft_part_12=Makara	#	### The actual small metal pulley, used as a crafting component.
+item.rwm:craft_contraption_fixed_1=Tekerlek Onarım Parçası	#	### The finalized, crafted wheel repair part, used to fix a the final contraption. It looks like a small wodden wheel.
+item.rwm:craft_contraption_fixed_2=Tavuk Dövücü Onarım Parçası	#	### The finalized, crafted chicken puncher, used to fix a the final contraption. It looks like a chicken with a boxing glove.
+item.rwm:craft_contraption_fixed_3=Makara Onarım Parçası	#	### The finalized component, used to fix a the final contraption. It looks like a full pulley and rope system.
+item.rwm:craft_contraption_fixed_4=Maden Arabası Onarım Parçası	#	### The finalized component, used to fix a the final contraption. It looks like a small minecart.
+item.rwm:craft_contraption_fixed_5=Kafes Onarım Parçası	#	### The finalized component, used to fix a the final contraption. It looks like a small metal cage.
+
+item.diamond_helmet.name=§9Takım 2 Başlık	#	###{StrContains="§9"} Named item for team 2's helmet.
+item.diamond_chestplate.name=§9Takım 2 Göğüs Zırhı	#	###{StrContains="§9"} Named item for team 2's chestplate.
+item.diamond_leggings.name=§9Takım 2 Bacak Zırhları	#	###{StrContains="§9"} Named item for team 2's leggings.
+item.diamond_boots.name=§9Takım 2 Botlar	#	###{StrContains="§9"} Named item for team 2's boots.
+item.iron_helmet.name=§mTakım 1 Başlık	#	###{StrContains="§m"} Named item for team 1's helmet.
+item.iron_chestplate.name=§mTakım 1 Göğüs Zırhı	#	###{StrContains="§m"} Named item for team 1's chestplate.
+item.iron_leggings.name=§mTakım 1 Bacak Zırhları	#	###{StrContains="§m"} Named item for team 1's leggings.
+item.iron_boots.name=§mTakım 1 Botlar	#	###{StrContains="§m"} Named item for team 1's boots.
+
+## Interacts
+interact.marker.start_map=§6Başlangıç Haritası	#	###{StrContains="§6"} Displays on the students screen when they are hoving over the button to start the game.
+interact.wheel_of_steve=§6Steve Çarkı Çevrilsin mi?	#	###{StrContains="§6"} Displays on the students screen when hoving over the giant Wheel of Steve in the center of the lobby.
+interact.npc_1=§6Konuşun	#	###{StrContains="§6"} Displayed when hovering over any NPC that is interactable.
+interact.craft_board_change=§6Deseni görüntüleyin.	#	###{StrContains="§6"} Displayed when hovering over the crafting board with a diagram in the players inventory.
+interact.craft_part_pickup=§6Parçayı alın.	#	###{StrContains="§6"} Dislpayed when hovering over an crafting component in Contraption Craft Off.
+interact.craft_crafting_change=§6Parçayı yerleştirin.	#	###{StrContains="§6"} Displayed when holding a crafting part and hovering over the crafting table in Contraption Craft Off.
+interact.craft_contraption_change=§6Mekanizmayı onarın.	#	###{StrContains="§6"} Displayed when you have a fixed contraption in your inventory and hover over the contraption in Contraption Craft Off.
+grid_block_magenta.interact=§dEflatun§r Bloku alın	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime.interact=§aAçık Yeşil§r Bloku alın	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue.interact=§9Mavi§r Bloku alın	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red.interact=§cKırmızı§r Bloku alın	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow.interact=§eSarı§r Bloku alın	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+grid_block_magenta_obtain.interact=§dEflatun§r Bloku alın	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime_obtain.interact=§aAçık Yeşil§r Bloku alın	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue_obtain.interact=§9Mavi§r Bloku alın	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red_obtain.interact=§cKırmızı§r Bloku alın	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow_obtain.interact=§eSarı§r Bloku alın	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+orb.flag.ride.interact=Küreyi almak için etkileşime geçin.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.unride.interact=Küreyi almak için etkileşime geçin.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+

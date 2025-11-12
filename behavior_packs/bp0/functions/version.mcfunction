@@ -1,0 +1,1 @@
+tellraw @s { "rawtext": [ { "text": "§nCurrent Map Version is §pv" }, { "translate": "map.version" } ] }

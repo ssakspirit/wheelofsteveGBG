@@ -1,0 +1,237 @@
+﻿##
+## Wheel of Steve
+## Copyright 2024 http://rewrite.media
+## 
+
+map.version=1.0.12	#	###{LOCKED}
+lang.version=0.0.9	#	###{LOCKED}
+
+pack.name=Steves hjul	#	### Steve is a minecraft character and the wheel is a gameshow style spinner that chooses what mini games will be played. 
+pack.description=Nødvendige ressourcer til filmminispil	#	### Resources needed for name of map
+
+## Wins
+subtitle.objective.1000.1=§4§lHold 1 §avinder!	#	###{StrContains="§l"}{StrContains="§4"}{StrContains="§a"}Displayed when team 1 wins a single game.
+subtitle.objective.1000.2=§9§lHold 2 §avinder!	#	###{StrContains="§l"}{StrContains="§9"}{StrContains="§a"}Displayed when team 2 wins a single game.
+subtitle.objective.1000.3=§4Hold 1 §avinder §f §6Steves hjul!	#	###{StrContains="§4"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 1 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.4=§9Hold 2 §avinder §f §6Steves hjul!	#	###{StrContains="§9"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 12 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.5=§e§lUafgjort!	#	###{StrContains="§l"}{StrContains="§e"}{StrContains="§a"} Displays when a game finishes in a draw.
+
+## Countdown
+subtitle.title=§r	#	###{LOCKED}
+subtitle.objective.101.1=§c§l3	#	###{LOCKED}
+subtitle.objective.101.2=§e§l2	#	###{LOCKED}
+subtitle.objective.101.3=§b§l1	#	###{LOCKED}
+subtitle.objective.101.4=§a§lAfsted!	#	###{StrContains="§a"}{StrContains="§l"}Displayed after a 3-2-1 countdown timer.
+
+## Interact text
+interact.craft_diagram_pickup=§6Interagér for at samle mønsteret op.	#	###{StrContains="§6"}
+
+## Chat
+chat.join.team.1=§6Du er nu på §4hold 1§6!	#	###{StrContains="§6"}{StrContains="§4"}Displayed when the game moves you to the Team 1 team.
+chat.join.team.2=§6Du er nu på §9hold 2§6!	#	###{StrContains="§6"}{StrContains="§9"}Displayed when the game moves you to the Team 2 team.
+
+##Boards
+board.singleplayer.1=                                                                                                §lVelkommen til                                         §gSteves hjul§r                                                                                                                                                                                       §dVil du have andre spillere med i din verden?§r             §lPausemenu -> §r] (Fanebladet Ansigter)§l -> Begynd hosting§r         §oDel§r så deltagerkoden med dine venner!                                                                                                   §bVil du spille alene?§r                       Vælg først et hold ved at gå i det §cvenstre §reller §9højre §rområde.       §oInteragér§r så med knappen bag dig.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+board.multiplayer.1=                                                                                                §lVelkommen til                                         §gSteves hjul§r                                                                                                                                                                                   §dVil du have §oflere§r§d spillere med i din verden?§r                     §lPausemenu -> ] (Fanebladet Ansigter)§r              Så §odel§r deltagerkoden med dine venner!             Du kan kun spille med maksimalt 8 personer.                                                                                                   §bVil du starte spillet?§r                     Vælg først et hold ved at gå i det §cvenstre §reller §9højre §rområde.            Så skal værten (eller verdensskaberen)               §ointeragere§r med bekræft-knappen bag dig.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+
+## Actionbar Objective
+actionbar.objective.000.10000=§6Interagér for at starte	#	###{StrContains="§6"}
+actionbar.objective.001.1=§6Velkommen!	#	###{StrContains="§6"}An introduction to the start of the map, the first word shown by its self, leading into the next message.
+actionbar.objective.001.2=§6Du er vært for denne verden.	#	###{StrContains="§6"}
+actionbar.objective.001.3=§6Som vært kan du vælge, hvilke spil der skal spilles. %1Det kan andre spillere ikke gøre.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.4=§6Først og fremmest: Træd ind på en af de to farvede platforme %1for at komme med på et hold.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.5=§6Op til 4 spillere kan deltage på hvert hold. %1Prøv at have lige hold, hvis det er muligt.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.6=§6Sørg for, at alle tilmelder sig et hold, før du fortsætter.	#	###{StrContains="§6"}
+actionbar.objective.001.7=§6Lav en ny verden, hvis du vil have, at flere spillere skal deltage, %1når du har passeret denne sektion.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.8=§6Når alle har tilmeldt sig et hold, %1kan værten trykke på denne knap for at starte.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.9=§6Tillad alle spillere at tilmelde sig verdenen og vælge et hold. %1Tryk derefter på knappen på guldblokken. 	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.18=§a§lBekræft venligst: §r§6Alle spillere er kommet med i verdenen og er på et hold.§r %1§f§lTryk igen for at bekræfte.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}{StrContains="§f"}
+
+actionbar.objective.001.10=§6Der er to måder at spille på.	#	###{StrContains="§6"}
+actionbar.objective.001.11=§6Værten kan dreje på Steves hjul.	#	###{StrContains="§6"}
+actionbar.objective.001.12=§6Dette vil vælge et tilfældigt minispil, der skal spilles.	#	###{StrContains="§6"}
+actionbar.objective.001.13=§6Det første hold, der vinder 3 tilfældige spil, får lov til at spille %1i et hemmeligt minispil.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.14=§6Værten kan også tale med enhver figur %1for at spille et af minispillene.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.15=§6Prøv denne måde, hvis du vil spille et bestemt spil, %1eller hvis du vil øve dig.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.16=§6Hvis minispil startes på denne måde, tæller de ikke som gevinster fra Steves hjul.	#	###{StrContains="§6"}
+actionbar.objective.001.17=§6Held og lykke!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.003.20=Jeg hedder Steve. Lad os spille §a§lKuglebaghold§r! I dette spil er §l§6kommunikation§r nøglen til sejr.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.21=Jeg hedder Henry. Lad os spille §a§lNock it Off§r. Brug din §l§6kreativitet§r for at vinde!	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.22=Jeg hedder Garett. Brug teamwork og §l§6samarbejde§r til at vinde §a§lDen store apparatdyst§r.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.23=Hej! Jeg hedder Natalie. Brug §l§6kritisk tænkning§r for at vinde §a§lGitterkrigene§r.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.24=Jeg hedder Dawn. Arbejd i §l§6fællesskab§r for at vinde §a§lElytra Rumble§r!	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.101.1=§6Velkommen til Kuglebagholdet.	#	###{StrContains="§6"} Mini game title, like capture the flag but with a glowing orb. 
+actionbar.objective.101.2=§6Hold kuglen, og arbejd sammen med dit hold for at optjene point!	#	###{StrContains="§6"}
+actionbar.objective.101.3=§6Det hold, der har kuglen i længst tid, vinder.	#	###{StrContains="§6"}
+actionbar.objective.101.4=§6Held og lykke!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.101.5=§6Få fat i kuglen! (Brug interagér eller angrib for at få fat i den)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to take this orb from other players by interacting with them.
+actionbar.objective.101.6=§6Hold fast på kuglen! (Brug snig for at slippe den.)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to sneak to drop the orb if you have it.
+
+##Solo Contraption Craft Off
+actionbar.objective.201.1=§6Velkommen til Den store apparatdyst.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.201.2=§6Dit mål er at fremstille 8 maskindele for at reparere dit holds maskiner.	#	###{StrContains="§6"}
+actionbar.objective.201.3=§6For at vinde skal du fremstille flere maskindele end din modstander, før tiden udløber.	#	###{StrContains="§6"}
+actionbar.objective.201.4=§6For at fremstille maskindele %1skal du følge planen vist på denne tavle.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.5=§6Interagér med genstandene på hylderne for at samle dem op, %1og tag dem hen til fremstillingsområdet.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.6=§6Saml en genstand op, og interagér med en plads på fremstillingsområdet for at placere den.	#	###{StrContains="§6"}
+actionbar.objective.201.7=§6Brug en tom hånd for at rydde pladsen.	#	###{StrContains="§6"}
+actionbar.objective.201.8=§6Husk, at du skal fremstille 8 genstande på den rigtige måde inden det andet hold for at vinde.	#	###{StrContains="§6"}
+actionbar.objective.201.9=§6Held og lykke!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.202.1=§6Velkommen til Den store apparatdyst.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.202.2=§6 Arbejd sammen med dit hold for at vinde!	#	###{StrContains="§6"}
+actionbar.objective.202.3=§6Din opgave er at reparere 3 ødelagte maskiner. %1For at gøre dette skal du fremstille maskindele.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.4=§6Der er en spiller på lageret. De skal finde et mønster, %1der viser, hvordan man laver maskindelen.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.5=§6 Når de har interageret med mønsteret, kan de flytte det til brættet.	#	###{StrContains="§6"}
+actionbar.objective.202.6=§6Interaktion med brættet vil vise mønsteret til dit hold.	#	###{StrContains="§6"}
+actionbar.objective.202.7=§6Resten af holdet skal arbejde sammen om at kopiere %1det viste mønster i deres fremstillingsområde.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.8=§6De kan samle fremstillingsingredienser op %1ved at interagere med dem på hylderne.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.9=§6Hold en maskindel, og interagér med en plads %1for at føje den til fremstillingsområdet.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.10=§6Brug en tom hånd for at rydde pladsen.	#	###{StrContains="§6"}
+actionbar.objective.202.11=§6Når mønsteret er fremstillet, vises den reparerede maskindel %1på et bord for spilleren på lageret.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.12=§6De skal føre maskindelen hen til det rigtige område %1og interagere for at afslutte reparationer.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.13=§6Hvis der er flere maskindele, der skal repareres, %1vil et nyt mønster dukke op et sted på lageret.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.14=§6Bliv ved med at reparere maskinerne en ad gangen, indtil de alle fungerer igen.	#	###{StrContains="§6"}
+actionbar.objective.202.15=§6Det første hold, der reparerer sin maskine helt færdig, vinder.	#	###{StrContains="§6"}
+actionbar.objective.202.16=§6Held og lykke!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+
+
+actionbar.objective.301.1=§6 Velkommen til Gitterkrigene!	#	###{StrContains="§6"} Mini game title, players build with Minecraft blocks in a grid as quickly as possible. 
+actionbar.objective.301.2=§6Arbejd sammen om at bygge det samme mønster på dit eget holds bræt.	#	###{StrContains="§6"}
+actionbar.objective.301.3=§6Match mønsteret før modstanderholdet for at score et point. %1Holdet med flest point vinder.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.4=§6For at samle blokke skal du interagere med de roterende blokke i din arena.	#	###{StrContains="§6"}
+actionbar.objective.301.5=§6Du kan kun bære §c§lén§r §6blok ad gangen.	%1 §6Slip den bårne blok for at tage en ny. #	###{StrContains="§6"}{StrContains="§c"}{StrContains="§l"}{StrContains="§r"}
+actionbar.objective.301.6=§6Når et hold gør krav på en blok i den ene arena, kan det andet hold %1ikke gøre krav på den i et stykke tid.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.7=§6Hvis dit hold laver en fejl, skal du bruge knappen §f“Ryd tavle“§6 til at rette den.	#	###{StrContains="§6"}{StrContains="§f"}
+actionbar.objective.301.8=§6Held og lykke!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.301.9=§6Færdiggør mønsteret!	#	###{StrContains="§6"}Players need to copy and complete the patter shown in front of them.
+
+actionbar.objective.401.1=§6Velkommen til Nock it Off.	#	###{StrContains="§6"} Mini game title, it's a joke in English "Knock it off" is a saying to tell someone to stop it, nock is the term used to describe pulling an arrow to the ready position. The game is an archery shooting game. 
+actionbar.objective.401.2=§6Prøv at slå det andet hold ved at ramme målene.	#	###{StrContains="§6"}
+actionbar.objective.401.3=§6Tag fat i din bue og prøv at ramme så mange mål som muligt.	#	###{StrContains="§6"}
+actionbar.objective.401.4=§6Scor flere point end det andet hold for at vinde!	#	###{StrContains="§6"}
+actionbar.objective.401.5=§6Held og lykke!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.401.6=§6Skyd målene!	#	###{StrContains="§6"}Players need to shoot the targets to score points and win the game.
+
+
+
+actionbar.objective.501.1=§6Velkommen til Elytra Rumble.	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
+actionbar.objective.501.2=§6Dit mål er at smide TNT i din modstanders %1vulkan for at vælte deres tårn.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.3=§6Tryk på hop, mens du falder, for at åbne dine elytra-vinger og svæve.	#	###{StrContains="§6"}
+actionbar.objective.501.4=§6Tryk på interagér for at bruge fyrværkeri til at få et fartboost.	#	###{StrContains="§6"}
+actionbar.objective.501.5=§6Flyv tæt på TNT for at samle det op.	#	###{StrContains="§6"}
+actionbar.objective.501.6=§6Når du flyver over din modstanders vulkan, %1kan du angribe eller snige for at smide TNT'en.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.7=§6Den, der først får 10 point, eller har flest point, når tiden løber ud, vinder.	#	###{StrContains="§6"}
+actionbar.objective.501.8=§6Held og lykke!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.501.9=§6Tryk på hop, mens du falder, for at begynde at flyve.	#	###{StrContains="§6"}
+actionbar.objective.501.10=§6Smid TNT i den §9blå vulkan§6 for at score. %1Tryk på angrib eller snig for at kaste.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
+actionbar.objective.501.11=§6Smid TNT ned i den §4røde vulkan§6 for at score. %1Tryk på angrib eller snig for at kaste.	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
+
+
+actionbar.objective.601.1=§6Velkommen til Det endelige opgør.	#	###{StrContains="§6"} Mini game title, the final showdown is the last mini game played. 
+actionbar.objective.601.2=§6Det er tid til at finde ud af, hvem den ultimative vinder af Steves hjul bliver.	#	###{StrContains="§6"} Refers to name of the game world, Wheel of Steve
+actionbar.objective.601.3=§6Gå ned ad bjergskråningen, %1og saml så mange smaragder, som du kan.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.601.4=§6Den spiller, der samler flest smaragder, vinder.	#	###{StrContains="§6"}
+actionbar.objective.601.5=§6Pas på, hvor du træder! Hvis du falder ned, er du ude af spillet.	#	###{StrContains="§6"}
+actionbar.objective.601.6=§6Hold dig tæt på. Hvis du kommer bagud, er du ude af spillet.	#	###{StrContains="§6"}
+actionbar.objective.601.7=§6Held og lykke!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.601.8=§6Saml smaragder, og bliv på skærmen!	#	###{StrContains="§6"}
+
+##Dialogue
+steve.n=§6Steve	#	###{StrContains="§6"} A Minecraft Movie character name. 
+henry.n=§6Henry	#	###{StrContains="§6"} A Minecraft Movie character name. 
+garett.n=§6Garett	#	###{StrContains="§6"} A Minecraft Movie character name. 
+dawn.n=§6Dawn	#	###{StrContains="§6"} A Minecraft Movie character name. 
+natalie.n=§6Natalie	#	###{StrContains="§6"} A Minecraft Movie character name. 
+wheel.n=§6Steves hjul	#	###{StrContains="§6"} refers to world title. Wheel of Steve
+
+steve.d=Jeg hedder Steve. Jeg hører, at du ønsker at øve dig i §l§6kommunikation§r. Jeg har lige spillet til dig. Jeg kalder det §a§lKuglebaghold§r. Vil du spille?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+henry.d=Hejsa! Jeg hedder Henry. Jeg har lavet et sjovt spil, som jeg kalder §a§lNock it Off§r. Det tester din §l§6kreativitet§r med noget god, gammeldags bueskydning. Vil du spille? 	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+garett.d=Jeg vidste det. Jeg kunne se, at du var en professionel gamer som mig, Garett Garrison, fra den anden side af banen. De bedste spillere har stærkt teamwork og §l§6samarbejde§r. Hvad med at prøve et lille spil, som jeg kalder §a§lDen store apparatdyst§r? Det vil sætte dine færdigheder på prøve! Er du klar?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+dawn.d=Hej! Jeg hedder Dawn! At opbygge et stærkt §l§6fællesskab§r med dit team er afgørende for at være de bedste. Hvad med et spil, der vil hjælpe med at opbygge bånd af samarbejde? Jeg har sat §a§lElytra Rumble§r op! Det er et højtflyvende, TNT-kastende spil, der helt sikkert vil sætte dine evner på prøve. Vil du spille?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+natalie.d=Hej! Jeg hedder Natalie. Jeg fik at vide, at du måske ville komme forbi. Jeg har lavet et lille puslespil, der hedder §a§lGitterkrigene§r, for at teste din §l§6kritiske tænkning§r. Er du interesseret i at spille?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+npc.nothost.d= Beklager, det er kun værten, der kan starte spil med mig.	#	###
+
+wheel.d=Velkommen til Steves hjul! Drej mig for at spille et tilfældigt minispil! Det første hold, der vinder 3 minispil, får lov til at låse op for et hemmeligt spil!	#	###
+
+steve.b1=Spil	#	### Refers to playing the mini game title 
+steve.b2=Glem det.	#	### player is saying “no I don't want to play the game now”
+henry.b1=Spil	#	### Refers to playing the mini game title
+henry.b2=Glem det.	#	### Player is saying “no I don't want to play the game now” 
+garett.b1=Spil	#	### Refers to playing the mini game title
+garett.b2=Glem det.	#	### player is saying “no I don't want to play the game now” 
+dawn.b1=Spil	#	### Refers to playing the mini game title 
+dawn.b2=Glem det.	#	### player is saying “no I don't want to play the game now” 
+natalie.b1=Spil	#	### Refers to playing the mini game title 
+natalie.b2=Glem det.	#	### player is saying “no I don't want to play the game now” 
+npc.nothost.b1=Farvel.	#	### Goodbye
+wheel.b1=Drej hjulet	#	### Spin the “Wheel of Steve” gameshow style spinner. 
+wheel.b2=Glem det.	#	### Player is saying, no I don't want to right now. 
+
+## Items
+item.rwm:orb=Kugle	#	### The orb from orb ambush. It's a blue sphere the player needs to keep hold of to score points.
+item.rwm:craft_diagram_1=Fremstillingsdiagram 1	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_2=Fremstillingsdiagram 2	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_3=Fremstillingsdiagram 3	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_4=Fremstillingsdiagram 4	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_5=Fremstillingsdiagram 5	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_part_1=Hjulolie	#	### A small wooden gear, used as a crafting component.
+item.rwm:craft_part_2=Boksehandske	#	### A bright red bloxing glove, used as a crafting component.
+item.rwm:craft_part_3=Spandhåndtag	#	### The handle to a bucket you can carry around, used as a crafting component.
+item.rwm:craft_part_4=Læderstøvle	#	### A single leather boot, used as a crafting component.
+item.rwm:craft_part_5=Lampepære	#	### A single light bulb, used as a crafting component.
+item.rwm:craft_part_6=Møtrikker og bolte	#	### A small gathering of metal nuts and bolts, used as a crafting component.
+item.rwm:craft_part_7=Mekanisk ramme	#	### A small cube-like frame, used as a crafting component. 
+item.rwm:craft_part_8=Kylling	#	### A small Minecraft-chicken that can be picked up into the students inventory, used as a crafting component.
+item.rwm:craft_part_9=Metalstang	#	### A small single metal rod, used as a crafting component.
+item.rwm:craft_part_10=Tandhjulstand	#	### A small metal gear tooth, used as a crafting component.
+item.rwm:craft_part_11=Lille tandhjul	#	### A single small metal gear, used as a crafting component.
+item.rwm:craft_part_12=Trisse	#	### The actual small metal pulley, used as a crafting component.
+item.rwm:craft_contraption_fixed_1=Hjulreparationsdel	#	### The finalized, crafted wheel repair part, used to fix a the final contraption. It looks like a small wodden wheel.
+item.rwm:craft_contraption_fixed_2=Kyllingebokser-reparationsdel	#	### The finalized, crafted chicken puncher, used to fix a the final contraption. It looks like a chicken with a boxing glove.
+item.rwm:craft_contraption_fixed_3=Trissereparationsdel	#	### The finalized component, used to fix a the final contraption. It looks like a full pulley and rope system.
+item.rwm:craft_contraption_fixed_4=Minevognsreparationsdel	#	### The finalized component, used to fix a the final contraption. It looks like a small minecart.
+item.rwm:craft_contraption_fixed_5=Burreparationsdel	#	### The finalized component, used to fix a the final contraption. It looks like a small metal cage.
+
+item.diamond_helmet.name=§9Hold 2 – hjelm	#	###{StrContains="§9"} Named item for team 2's helmet.
+item.diamond_chestplate.name=§9Hold 2 – brystplade	#	###{StrContains="§9"} Named item for team 2's chestplate.
+item.diamond_leggings.name=§9Hold 2 – bukser	#	###{StrContains="§9"} Named item for team 2's leggings.
+item.diamond_boots.name=§9Hold 2 – støvler	#	###{StrContains="§9"} Named item for team 2's boots.
+item.iron_helmet.name=§mHold 1 – hjelm	#	###{StrContains="§m"} Named item for team 1's helmet.
+item.iron_chestplate.name=§mHold 1 – brystplade	#	###{StrContains="§m"} Named item for team 1's chestplate.
+item.iron_leggings.name=§mHold 1 – bukser	#	###{StrContains="§m"} Named item for team 1's leggings.
+item.iron_boots.name=§mHold 1 – støvler	#	###{StrContains="§m"} Named item for team 1's boots.
+
+## Interacts
+interact.marker.start_map=§6Start kort	#	###{StrContains="§6"} Displays on the students screen when they are hoving over the button to start the game.
+interact.wheel_of_steve=§6Drej på Steves hjul?	#	###{StrContains="§6"} Displays on the students screen when hoving over the giant Wheel of Steve in the center of the lobby.
+interact.npc_1=§6Tal	#	###{StrContains="§6"} Displayed when hovering over any NPC that is interactable.
+interact.craft_board_change=§6Vis mønster.	#	###{StrContains="§6"} Displayed when hovering over the crafting board with a diagram in the players inventory.
+interact.craft_part_pickup=§6Saml del op.	#	###{StrContains="§6"} Dislpayed when hovering over an crafting component in Contraption Craft Off.
+interact.craft_crafting_change=§6Placér del.	#	###{StrContains="§6"} Displayed when holding a crafting part and hovering over the crafting table in Contraption Craft Off.
+interact.craft_contraption_change=§6Reparér apparat.	#	###{StrContains="§6"} Displayed when you have a fixed contraption in your inventory and hover over the contraption in Contraption Craft Off.
+grid_block_magenta.interact=Saml den §dlyslilla§r blok op	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime.interact=Saml den §alimegrønne§r blok op	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue.interact=Saml den §9blå§r blok op	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red.interact=Saml den §crøde§r blok op	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow.interact=Saml den §egule§r blok op	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+grid_block_magenta_obtain.interact=Saml den §dlyslilla§r blok op	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime_obtain.interact=Saml den §alimegrønne§r blok op	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue_obtain.interact=Saml den §9blå§r blok op	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red_obtain.interact=Saml den §crøde§r blok op	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow_obtain.interact=Saml den §egule§r blok op	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+orb.flag.ride.interact=Interagér for at tage kuglen.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.unride.interact=Interagér for at tage kuglen.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+

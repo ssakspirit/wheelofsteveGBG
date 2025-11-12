@@ -1,0 +1,161 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:elytra_bomb",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,2],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "elytra_bomb" ]
+			},
+			"minecraft:health": {
+				"value": 1,
+				"max": 1
+			},
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            }
+		},
+        "component_groups": {
+            "rwm:elytra_bomb_interact": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:interact":{
+                    "interactions": [
+                        {
+                        "on_interact": {
+                            "event": "rwm:elytra_bomb_pickup"
+                        },
+                        "interact_text": "elytra.bomb.pickup.interact"
+                        }
+                    ]
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						"on_damage": {
+                            "event":"rwm:elytra_bomb_pickup"
+                        },
+						"deals_damage": false
+					   }
+				    ]
+			     },
+                "minecraft:collision_box": {
+				    "width": 1.0,
+				    "height": 1.0
+			     },
+                "minecraft:scale": {
+				    "value": 2.0
+			     }
+            },
+            "rwm:elytra_bomb_pickup": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+                "minecraft:collision_box": {
+				    "width": 1.0,
+				    "height": 1.0
+                },
+                "minecraft:scale": {
+				    "value": 1.0
+			     },
+                "minecraft:physics": {
+                }
+            },
+            "rwm:elytra_bomb_explode": {
+                "minecraft:explode": {
+                    "breaks_blocks": false,
+                    "causes_fire": false,
+                    "fuse_length": [3.0, 3.0],
+                    "fuse_lit": true,
+                    "power": 3.0
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						"deals_damage": false
+					   }
+				    ]
+			     },
+                "minecraft:physics": {
+                },
+                "minecraft:collision_box": {
+				    "width": 1.0,
+				    "height": 1.0
+                },
+                "minecraft:scale": {
+				    "value": 1.0
+			     },
+                 "minecraft:timer": {
+                     "time": [3.05, 3.05],
+                     "time_down_event": {
+                         "event": "rwm:despawn"
+                     }
+                 }
+            },
+            "rwm:despawn": {
+                "minecraft:despawn": {}
+            }
+        },
+		"events": {
+			"rwm:elytra_bomb_interact":{
+				"set_property": {"rwm:skin":0},
+                "add":{
+                    "component_groups":[
+                        "rwm:elytra_bomb_interact"
+                    ]
+                }
+			},
+            "rwm:elytra_bomb_pickup":{
+				"set_property": {"rwm:skin":1},
+                "queue_command": {
+                    "command": ["function utility/games/elytra/pickup_bomb"]
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:elytra_bomb_pickup"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:elytra_bomb_interact"
+                    ]
+                }
+			},
+			"rwm:elytra_bomb_explode":{
+				"set_property": {"rwm:skin":1},
+                "add":{
+                    "component_groups":[
+                        "rwm:elytra_bomb_explode"
+                    ]
+                },
+                "queue_command": {
+                    "command": ["function utility/games/elytra/bomb_active"]
+                }
+			},
+			"rwm:despawn":{
+                "add":{
+                    "component_groups":[
+                        "rwm:despawn"
+                    ]
+                }
+			}
+		}
+	}
+}

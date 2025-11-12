@@ -1,0 +1,60 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.orb",
+				"texture_width": 16,
+				"texture_height": 16,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "waist",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "body",
+					"parent": "waist",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "rightArm",
+					"parent": "body",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "rightItem",
+					"parent": "rightArm",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "item",
+					"parent": "rightItem",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "orb_inner",
+					"parent": "item",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-2, 0, -2],
+							"size": [4, 4, 4],
+							"uv": {
+								"north": {"uv": [5, 5], "uv_size": [-5, -5]},
+								"east": {"uv": [5, 5], "uv_size": [-5, -5]},
+								"south": {"uv": [5, 5], "uv_size": [-5, -5]},
+								"west": {"uv": [5, 5], "uv_size": [-5, -5]},
+								"up": {"uv": [0, 0], "uv_size": [5, 5]},
+								"down": {"uv": [0, 0], "uv_size": [5, 5]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

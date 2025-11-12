@@ -1,0 +1,40 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.craft_part_7",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "craft_part_7",
+					"parent": "root",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-6, 0, -6],
+							"size": [12, 12, 12],
+							"uv": {
+								"north": {"uv": [20, 0], "uv_size": [12, 12]},
+								"east": {"uv": [20, 0], "uv_size": [12, 12]},
+								"south": {"uv": [20, 0], "uv_size": [12, 12]},
+								"west": {"uv": [20, 0], "uv_size": [12, 12]},
+								"up": {"uv": [32, 32], "uv_size": [-12, -12]},
+								"down": {"uv": [32, 32], "uv_size": [-12, -12]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

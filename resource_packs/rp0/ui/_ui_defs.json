@@ -1,0 +1,10 @@
+{
+  "ui_defs": [
+    "ui/mxui/npcplus_common.json",
+    "ui/mxui/npcplus_fullscreen_common.mxujsoni",
+    "ui/mxui/npcplus_screen_definitions.json",
+    "ui/mxui/npcplus_teacher_view.json",
+    "ui/mxui/npcplus_vanilla_screen.json",
+    "ui/mcd/mcd_dark_npc_screen.json"
+  ]
+}

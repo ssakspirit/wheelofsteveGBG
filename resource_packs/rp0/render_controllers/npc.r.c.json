@@ -1,0 +1,33 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.rwm.npc": {
+			"materials": [ { "*": "Material.default" } ],
+            "textures": [
+                "array.skins[query.mark_variant]"
+            ],
+            "geometry": "array.models[query.mark_variant]",
+			"arrays": {
+				"textures": {
+					"array.skins": [
+						"texture.npc_1",
+						"texture.npc_2",
+						"texture.npc_3",
+						"texture.npc_4",
+						"texture.npc_5"
+					]
+				},
+                "geometries": {
+                    "array.models": [
+                        "geometry.npc_1",
+                        "geometry.npc_2",
+                        "geometry.npc_3",
+                        "geometry.npc_4",
+                        "geometry.npc_5"
+                    ]
+                }
+			},
+			"ignore_lighting" : false
+		}
+	}
+}

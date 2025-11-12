@@ -1,0 +1,63 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.rwm.nock_prop": {
+			"states": {
+				"idle": {
+                    "animations": [
+						{"idle_armadillo": "query.property('rwm:skin') == 1 && query.is_baby == 0"},
+                        {"idle_bee": "query.property('rwm:skin') == 2 && query.is_baby == 0"},
+                        {"idle_camel": "query.property('rwm:skin') == 3 && query.is_baby == 0"},
+                        {"idle_chicken": "query.property('rwm:skin') == 4 && query.is_baby == 0"},
+                        {"idle_cow": "query.property('rwm:skin') == 5 && query.is_baby == 0"},
+                        {"idle_donkey": "query.property('rwm:skin') == 6 && query.is_baby == 0"},
+                        {"idle_fox": "query.property('rwm:skin') == 7 && query.is_baby == 0"},
+                        {"idle_goat": "query.property('rwm:skin') == 8 && query.is_baby == 0"},
+                        {"idle_llama": "query.property('rwm:skin') == 9 && query.is_baby == 0"},
+                        //{"idle_minecart": "query.property('rwm:skin') == 10 && query.is_baby == 0"},
+                        {"idle_pig": "query.property('rwm:skin') == 11 && query.is_baby == 0"},
+                        {"idle_polarbear": "query.property('rwm:skin') == 12 && query.is_baby == 0"},
+                        {"idle_rabbit_desert": "query.property('rwm:skin') == 13 && query.is_baby == 0"},
+                        {"idle_rabbit_plains": "query.property('rwm:skin') == 14 && query.is_baby == 0"},
+                        {"idle_sheep": "query.property('rwm:skin') == 15 && query.is_baby == 0"},
+                        {"idle_sniffer": "query.property('rwm:skin') == 16 && query.is_baby == 0"},
+                        {"idle_snowgolem": "query.property('rwm:skin') == 17 && query.is_baby == 0"},
+                        {"idle_spider": "query.property('rwm:skin') == 18 && query.is_baby == 0"},
+                        {"idle_wolf": "query.property('rwm:skin') == 19 && query.is_baby == 0"}
+					],
+					"transitions": [
+						{"reward": "query.is_baby == 1"}
+					],
+					"blend_transition": 1
+				},
+				"reward": {
+                    "animations": [
+						{"reward_armadillo": "query.property('rwm:skin') == 1 && query.is_baby == 1"},
+                        {"reward_bee": "query.property('rwm:skin') == 2 && query.is_baby == 1"},
+                        {"reward_camel": "query.property('rwm:skin') == 3 && query.is_baby == 1"},
+                        {"reward_chicken": "query.property('rwm:skin') == 4 && query.is_baby == 1"},
+                        {"reward_cow": "query.property('rwm:skin') == 5 && query.is_baby == 1"},
+                        {"reward_donkey": "query.property('rwm:skin') == 6 && query.is_baby == 1"},
+                        {"reward_fox": "query.property('rwm:skin') == 7 && query.is_baby == 1"},
+                        {"reward_goat": "query.property('rwm:skin') == 8 && query.is_baby == 1"},
+                        {"reward_llama": "query.property('rwm:skin') == 9 && query.is_baby == 1"},
+                        //{"reward_minecart": "query.property('rwm:skin') == 10 && query.is_baby == 1"},
+                        {"reward_pig": "query.property('rwm:skin') == 11 && query.is_baby == 1"},
+                        {"reward_polarbear": "query.property('rwm:skin') == 12 && query.is_baby == 1"},
+                        {"reward_rabbit_desert": "query.property('rwm:skin') == 13 && query.is_baby == 1"},
+                        {"reward_rabbit_plains": "query.property('rwm:skin') == 14 && query.is_baby == 1"},
+                        {"reward_sheep": "query.property('rwm:skin') == 15 && query.is_baby == 1"},
+                        {"reward_sniffer": "query.property('rwm:skin') == 16 && query.is_baby == 1"},
+                        {"reward_snowgolem": "query.property('rwm:skin') == 17 && query.is_baby == 1"},
+                        {"reward_spider": "query.property('rwm:skin') == 18 && query.is_baby == 1"},
+                        {"reward_wolf": "query.property('rwm:skin') == 19 && query.is_baby == 1"}
+					],
+					"transitions": [
+						{"idle": "query.is_baby == 0"}
+					],
+					"blend_transition": 1
+				}
+			}
+		}
+	}
+}

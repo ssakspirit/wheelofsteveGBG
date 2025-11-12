@@ -1,0 +1,37 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.rwm.player.commands": {
+			"initial_state": "none",
+			"states": {
+				"none": {
+					"on_entry": [""],
+					"transitions": [
+						{
+							"orb_drop": "query.mark_variant == 1 && q.has_rider == 1 && query.is_sneaking == 1"
+                        },
+                        {
+                            "elytra_bomb_drop": "(query.mark_variant == 5 && q.has_rider == 1 && variable.attack_time >= 0.7 && q.is_baby == 0) || (query.mark_variant == 5 && q.has_rider == 1 && query.is_sneaking == 1 && q.is_baby == 0)"
+						}
+					]
+				},
+				"orb_drop": {
+					"on_entry": ["/event entity @e[type=rwm:orb_flag] rwm:orb_flag_unride_player"],
+					"transitions": [
+						{
+							"none": "query.all_animations_finished == 1"
+						}
+					]
+				},
+				"elytra_bomb_drop": {
+					"on_entry": ["/event entity @e[type=rwm:elytra_bomb,c=1,r=7] rwm:elytra_bomb_explode"],
+					"transitions": [
+						{
+							"none": "query.all_animations_finished == 1"
+						}
+					]
+				}
+			}
+		}
+	}
+}

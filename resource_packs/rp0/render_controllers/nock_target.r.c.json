@@ -1,0 +1,22 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.nock_target": {
+			"materials": [ { "*": "Material.default" } ],
+            "geometry": "Geometry.default",
+            "textures": [
+                "array.skins[query.mark_variant]"
+            ],
+			"arrays": {
+				"textures": {
+					"array.skins": [
+                        "texture.default",
+						"texture.creeper",
+						"texture.enderman"
+					]
+				}
+			},
+			"ignore_lighting" : true
+		}
+	}
+}

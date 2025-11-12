@@ -1,0 +1,29 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.craft_contraption": {
+			"states": {
+				"broken": {
+					"animations": [
+						{"broken": "query.property('rwm:skin') <= 5"}
+					],
+					"transitions": [
+						{"fixed": "query.property('rwm:skin') >= 6"}
+					],
+					"blend_transition": 1,
+					"blend_via_shortest_path": true
+				},
+				"fixed": {
+					"animations": [
+						{"fixed": "query.property('rwm:skin') >= 6"}
+					],
+					"transitions": [
+						{"broken": "query.property('rwm:skin') <= 5"}
+					],
+					"blend_transition": 1,
+					"blend_via_shortest_path": true
+				}
+			}
+		}
+	}
+}

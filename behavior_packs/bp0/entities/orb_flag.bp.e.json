@@ -1,0 +1,267 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:orb_flag",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,2],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "orb_flag" ]
+			},
+			"minecraft:health": {
+				"value": 1000,
+				"max": 1000
+			},
+			"minecraft:collision_box": {
+				"width": 0.5,
+				"height": 0.5
+			},
+            "minecraft:custom_hit_test":{
+                "hitboxes": [
+                    {
+                        "width": 2.2,
+                        "height": 3.0,
+                        "pivot": [ 0, 0, 0 ]
+                    }
+                ]
+            },
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            },
+            "minecraft:scale": {
+                "value": 2.0
+            },
+            "minecraft:physics": {
+            }
+		},
+        "component_groups": {
+            "rwm:orb_flag_new_ride": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:timer": {
+                     "time": [1, 1],
+                     "time_down_event": {
+                         "event": "rwm:orb_flag_ride"
+                     }
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {
+						  "on_damage": {},
+						  "deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:orb_flag_ride": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:interact":{
+                    "interactions": [
+                        {
+                        "on_interact": {
+                            "event": "rwm:orb_flag_unride_player"
+                        },
+                        "interact_text": "orb.flag.unride.interact"
+                        }
+                    ]
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {   
+						"on_damage": {
+                            "filters": {
+                                "any_of": [
+                                    { "test": "is_family", "subject": "other", "value": "player" },
+                                    { "test": "is_family", "subject": "other", "value": "orb_enemy" }
+                                ]
+                            },
+                            "event":"rwm:orb_flag_unride_player"
+                        },
+				        "deals_damage": false
+                        },
+                        {  
+                        "on_damage": {},
+						"deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:orb_flag_unride": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+                "minecraft:interact":{
+                    "interactions": [
+                        {
+                        "on_interact": {
+                            "event":"rwm:orb_flag_ride_player"
+                        },
+                        "interact_text": "orb.flag.ride.interact"
+                        }
+                    ]
+                },
+                "minecraft:damage_sensor": {
+				    "triggers": [
+					   {   
+						"on_damage": {
+                            "filters": {
+                                "any_of": [
+                                    { "test": "is_family", "subject": "other", "value": "player" },
+                                    { "test": "is_family", "subject": "other", "value": "orb_enemy" }
+                                ]
+                            },
+                            "event":"rwm:orb_flag_ride_player"
+                        },
+				        "deals_damage": false
+                        },
+                        {  
+                        "on_damage": {},
+						"deals_damage": false
+					   }
+				    ]
+			     }
+            },
+            "rwm:orb_flag_boom": {
+                "minecraft:behavior.knockback_roar": {
+                    "attack_time": 0.1,
+                    "knockback_damage": 0,
+                    "duration": 0.5,
+                    "cooldown_time": 1,
+                    "knockback_horizontal_strength": 2,
+                    "knockback_vertical_strength": 1,
+                    "knockback_range": 4,
+                    "on_roar_end": {
+                        "event": "rwm:orb_flag_boom_end"
+                    },
+                    "knockback_filters": {
+                            "test": "has_tag",
+                            "subject": "other",
+                            "operator": "==",
+                            "value": "orb_player"
+                    }
+                },
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "spawn_entity": "rwm:orb_knockback",
+                            "num_to_spawn": 2,
+                            "single_use": true,
+                            "min_wait_time": 0,
+                            "max_wait_time": 0
+                        }
+                    ]
+                }
+            }
+        },
+		"events": {
+			"rwm:orb_flag_ride":{
+				"set_property": {"rwm:skin":0},
+                "add":{
+                    "component_groups":[
+                        "rwm:orb_flag_ride"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:orb_flag_unride",
+                        "rwm:orb_flag_new_ride"
+                    ]
+                }
+			},
+            "rwm:orb_flag_new_ride":{
+				"set_property": {"rwm:skin":0},
+                "add":{
+                    "component_groups":[
+                        "rwm:orb_flag_new_ride"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:orb_flag_ride"
+                    ]
+                }
+			},
+			"rwm:orb_flag_unride":{
+				"set_property": {"rwm:skin":1},
+                "add":{
+                    "component_groups":[
+                        "rwm:orb_flag_unride",
+                        "rwm:orb_flag_boom"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:orb_flag_ride",
+                        "rwm:orb_flag_new_ride"
+                    ]
+                },
+                "trigger": "rwm:orb_flag_ride_player"
+			},
+            "rwm:orb_flag_boom":{
+                "add":{
+                    "component_groups":[
+                        "rwm:orb_flag_boom"
+                    ]
+                },
+                "trigger": "rwm:orb_flag_unride_player"
+			},
+            "rwm:orb_flag_boom_end":{
+                "remove":{
+                    "component_groups":[
+                        "rwm:orb_flag_boom",
+                        "rwm:orb_flag_boom_end"
+                    ]
+                }
+			},
+			"rwm:orb_flag_ride_player":{
+				"queue_command": {
+                    "command": ["function utility/games/orb/pickup_orb"]
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:orb_flag_new_ride"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:orb_flag_unride"
+                    ]
+                }
+			},
+            "rwm:orb_flag_unride_player":{
+				"queue_command": {
+                    "command": ["function utility/games/orb/drop_orb"]
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:orb_flag_unride",
+                        "rwm:orb_flag_boom"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:orb_flag_ride"
+                    ]
+                }
+			}
+		}
+	}
+}

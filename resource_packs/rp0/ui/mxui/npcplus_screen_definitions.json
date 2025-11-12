@@ -1,0 +1,15 @@
+{
+  "namespace": "npcplus_screen_defs",
+  "custom_dialog_screens": {
+    "type": "panel",
+    "controls": [
+      { "vanilla_dialog_screen@npcplus_common.vanilla_screen_def": {} },
+      {
+        "mcd_dark_npc_dialog@npcplus_common.custom_screen_def": {
+          "$npcplus_screen_content": "mcd_mcd_dark_npc.mcd_dark_screen",
+          "$npcplus_screen_prefix": "~:"
+        }
+      }
+    ]
+  }
+}

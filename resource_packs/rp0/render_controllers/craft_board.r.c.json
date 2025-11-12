@@ -1,0 +1,35 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.craft_board": {
+			"materials": [ { "*": "Material.default" } ],
+            "textures": [
+                "array.skins[query.mark_variant]"
+            ],
+            "geometry": "array.models[query.mark_variant]",
+			"arrays": {
+				"textures": {
+					"array.skins": [
+						"texture.craft_board_1",
+						"texture.craft_board_2",
+						"texture.craft_board_3",
+						"texture.craft_board_4",
+						"texture.craft_board_5",
+						"texture.craft_board_blank"
+					]
+				},
+                "geometries": {
+                    "array.models": [
+                        "geometry.craft_board_1",
+                        "geometry.craft_board_2",
+                        "geometry.craft_board_3",
+                        "geometry.craft_board_4",
+                        "geometry.craft_board_5",
+                        "geometry.craft_board_blank"
+                    ]
+                }
+			},
+			"ignore_lighting" : true
+		}
+	}
+}

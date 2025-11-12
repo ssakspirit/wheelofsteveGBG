@@ -1,0 +1,10 @@
+[
+  {
+    "flipbook_texture": "textures/rwm/entity/wheel_of_steve",
+    "atlas_tile": "wheel_of_steve",
+    "frames": [
+      0,
+      1
+    ]
+  }
+]

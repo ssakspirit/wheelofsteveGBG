@@ -1,0 +1,13 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.fog_wall.scale": {
+			"loop": true,
+			"bones": {
+				"fog_wall": {
+					"scale": 64
+				}
+			}
+		}
+	}
+}

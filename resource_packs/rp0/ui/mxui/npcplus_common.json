@@ -1,0 +1,266 @@
+{
+  "namespace": "npcplus_common",
+
+  "student_button@common_buttons.light_text_button": {
+    "$button_type_panel": "npc_interact.student_button_label_panel",
+    "$pressed_button_name": "button.student_button",
+    "$student_button_size|default": ["100%", 20],
+    "size": "$student_button_size",
+    "bindings": [
+      {
+        "binding_type": "collection_details",
+        "binding_collection_name": "student_buttons_collection",
+        "binding_collection_prefix": "student_buttons"
+      },
+      {
+        "binding_name": "#student_button_visible",
+        "binding_type": "collection",
+        "binding_name_override": "#visible",
+        "binding_collection_name": "student_buttons_collection"
+      }
+    ]
+  },
+
+  "option_toggle_button_template": {
+    "$button_text_color|default": "$light_button_default_text_color",
+    "$toggle_bg_texture|default": "textures/ui/button_borderless_light",
+    "$border_color|default": "$dark_border_default_color",
+    "size": ["100% - 2px", "100% - 2px"],
+    "type": "image",
+    "controls": [
+      {
+        "toggle_bg": {
+          "type": "image",
+          "texture": "$toggle_bg_texture",
+          "layer": 4
+        }
+      },
+      {
+        "toggle_border": {
+          "type": "image",
+          "size": ["100% + 2px", "100% + 2px"],
+          "texture": "textures/ui/focus_border_white",
+          "color": "$border_color",
+          "layer": 5
+        }
+      },
+      {
+        "toggle_label": {
+          "type": "label",
+          "max_size": ["100% - 10px", "100%"],
+          "text": "$toggle_label_text",
+          "color": "$button_text_color",
+          "layer": 5
+        }
+      }
+    ]
+  },
+
+  "option_toggle_button_on@npcplus_common.option_toggle_button_template": {
+    "$button_text_color": "$light_toggle_checked_default_text_color",
+    "$toggle_bg_texture": "textures/ui/button_borderless_lightpressednohover"
+  },
+
+  "option_toggle_button_off@npcplus_common.option_toggle_button_template": {
+    "$button_text_color": "$light_toggle_default_text_color"
+  },
+
+  "option_toggle_button_on_hover@npcplus_common.option_toggle_button_template": {
+    "$button_text_color": "$light_toggle_checked_hover_text_color",
+    "$border_color": "$dark_border_hover_color",
+    "$toggle_bg_texture": "textures/ui/button_borderless_lightpressed"
+  },
+
+  "option_toggle_button_off_hover@npcplus_common.option_toggle_button_template": {
+    "$button_text_color": "$light_toggle_hover_text_color",
+    "$border_color": "$dark_border_hover_color",
+    "$toggle_bg_texture": "textures/ui/button_borderless_lighthover"
+  },
+
+  "option_toggle_button_on_locked@npcplus_common.option_toggle_button_on": {
+    "$button_text_color": "$light_button_locked_text_color",
+    "$border_color": "$dark_border_locked_color",
+    "alpha": 0.5
+  },
+
+  "option_toggle_button_off_locked@npcplus_common.option_toggle_button_off": {
+    "$button_text_color": "$light_button_locked_text_color",
+    "$border_color": "$dark_border_locked_color",
+    "alpha": 0.5
+  },
+
+  "npcp_title_label": {
+    "anchor_from": "top_middle",
+    "anchor_to": "top_middle",
+    "offset": [0, 8],
+    "type": "label",
+    "size": ["default", 10],
+    "color": "$title_text_color",
+    "$title_text|default": "#title_text",
+    "text": "$title_text",
+    "shadow": false,
+    "layer": 4,
+    "bindings": [
+      {
+        "binding_name": "#title_text"
+      }
+    ]
+  },
+
+  "npcp_prefixed_title_label@npcplus_common.npcp_title_label": {
+    "$title_text": "#sfp_title_text",
+    "bindings": [
+      {
+        "binding_name": "#title_text"
+      },
+      {
+        "binding_type": "view",
+        "source_property_name": "(#title_text - $npcplus_global_prefix - $npcplus_screen_prefix)",
+        "target_property_name": "#sfp_title_text"
+      }
+    ]
+  },
+
+  "npcp_dialog_message": {
+    "type": "label",
+    "size": ["100%-10px", "default"],
+    "$dialog_text|default": "#dialogtext",
+    "text": "$dialog_text",
+    "bindings": [
+      {
+        "binding_name": "#dialogtext"
+      }
+    ]
+  },
+
+  "npcp_prefixed_dialog_message@npcplus_common.npcp_dialog_message": {
+    "$dialog_text": "#sfp_dialog_text",
+    "bindings": [
+      {
+        "binding_name": "#dialogtext"
+      },
+      {
+        "binding_type": "view",
+        "source_property_name": "(#dialogtext - $npcplus_global_prefix - $npcplus_screen_prefix)",
+        "target_property_name": "#sfp_dialog_text"
+      }
+    ]
+  },
+
+  "custom_screen_def": {
+    "type": "panel",
+    "$npcplus_screen_prefix|default": "",
+    "$npcplus_screen_content|default": "common.empty_panel",
+    "controls": [{ "npcplus_screen@$npcplus_screen_content": {} }],
+    "bindings": [
+      {
+        "binding_name": "#dialogtext"
+      },
+      {
+        "binding_type": "view",
+        //"source_property_name": "(#dialogtext - (#dialogtext - $npcplus_global_prefix - $npcplus_screen_prefix)) = $npcplus_global_prefix + $npcplus_screen_prefix)",
+        "source_property_name": "(#dialogtext = #dialogtext)",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+
+  "vanilla_screen_def": {
+    "type": "panel",
+    "controls": [
+      { "vanilla_student_screen@npcplus_vanilla_screen.vanilla_screen": {} }
+    ],
+    "bindings": [
+      {
+        "binding_name": "#dialogtext"
+      },
+      {
+        "binding_type": "view",
+        //"source_property_name": "(#dialogtext = #dialogtext - $npcplus_global_prefix)",
+        "source_property_name": "(#dialogtext = $npcplus_global_prefix)",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+
+  "base_input_panel": {
+    "type": "input_panel"
+  },
+
+  "content_focus_panel@base_input_panel": {
+    "focus_identifier": "default_npcp_focus",
+    "focus_enabled": true
+  },
+
+  "npcplus_screen_base": {
+    "type": "panel",
+    "$show_safezone_border|default": false, // For testing purposes, show safe zone screen limits
+    "$safezone_screen_content": "common.base_screen_empty_panel",
+    "$no_safezone_screen_content": "common.base_screen_empty_panel",
+    "$additional_screen_content": "common.base_screen_empty_panel",
+    "$safezone_screen_animations|default": [
+      "@common.screen_exit_animation_push_offset",
+      "@common.screen_exit_animation_pop_offset",
+      "@common.screen_entrance_animation_push_offset",
+      "@common.screen_entrance_animation_pop_offset",
+      "@common.screen_exit_animation_push_fade",
+      "@common.screen_exit_animation_pop_fade",
+      "@common.screen_entrance_animation_push_fade",
+      "@common.screen_entrance_animation_pop_fade"
+    ],
+    "$no_safezone_screen_animations|default": [
+      "@common.screen_exit_animation_push_alpha",
+      "@common.screen_exit_animation_pop_alpha",
+      "@common.screen_entrance_animation_push_alpha",
+      "@common.screen_entrance_animation_pop_alpha"
+    ],
+    "controls": [
+      {
+        "screen_safezone_border@common.safezone_outer_matrix": {
+          "$screen_content": "common.focus_border_white",
+          "ignored": "(not $show_safezone_border)",
+          "size": ["100% + 2px", "100% + 2px"],
+          "layer": 100
+        }
+      },
+      {
+        "no_safezone_panel@$no_safezone_screen_content": {
+          "anims": "$no_safezone_screen_animations",
+          "propagate_alpha": true,
+          "layer": 2
+        }
+      },
+      {
+        "safezone_screen@common.safezone_outer_matrix": {
+          "$screen_content": "$safezone_screen_content",
+          "anims": "$safezone_screen_animations",
+          "propagate_alpha": true,
+          "layer": 2
+        }
+      },
+      {
+        "loading_bars_background": {
+          "type": "image",
+          "texture": "textures/ui/effect_background",
+          "size": ["33%", "100%c + 16px"],
+          "alpha": 0.0,
+          "propagate_alpha": true,
+          "animation_reset_name": "screen_animation_reset",
+          "disable_anim_fast_forward": true,
+          "anims": [
+            "@common.loading_bar_init_animation_push",
+            "@common.loading_bar_init_animation_pop"
+          ],
+          "controls": [
+            {
+              "loading_bars@common_store.progress_loading_bars": {
+                "size": ["100%", "8%x"],
+                "max_size": []
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:craft_contraption",
+      		"min_engine_version": "1.16.0",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"geometry": {
+                "craft_contraption_1_broken": "geometry.craft_contraption_1_broken",
+                "craft_contraption_2_broken": "geometry.craft_contraption_2_broken",
+                "craft_contraption_3_broken": "geometry.craft_contraption_3_broken",
+                "craft_contraption_4_broken": "geometry.craft_contraption_4_broken",
+                "craft_contraption_5_broken": "geometry.craft_contraption_5_broken",
+                "craft_contraption_1_fixed": "geometry.craft_contraption_1_fixed",
+                "craft_contraption_2_fixed": "geometry.craft_contraption_2_fixed",
+                "craft_contraption_3_fixed": "geometry.craft_contraption_3_fixed",
+                "craft_contraption_4_fixed": "geometry.craft_contraption_4_fixed",
+                "craft_contraption_5_fixed": "geometry.craft_contraption_5_fixed"
+                
+			},
+			"textures": {
+                "craft_contraption_1_broken" : "textures/rwm/entity/craft_contraption_fixed",
+                "craft_contraption_2_broken" : "textures/rwm/entity/craft_contraption_fixed",
+                "craft_contraption_3_broken" : "textures/rwm/entity/craft_contraption_fixed",
+                "craft_contraption_4_broken" : "textures/rwm/entity/craft_contraption_fixed",
+                "craft_contraption_5_broken" : "textures/rwm/entity/craft_contraption_fixed",
+                "craft_contraption_1_fixed" : "textures/rwm/entity/craft_contraption_fixed",
+                "craft_contraption_2_fixed" : "textures/rwm/entity/craft_contraption_fixed",
+                "craft_contraption_3_fixed" : "textures/rwm/entity/craft_contraption_fixed",
+                "craft_contraption_4_fixed" : "textures/rwm/entity/craft_contraption_fixed",
+                "craft_contraption_5_fixed" : "textures/rwm/entity/craft_contraption_fixed"
+			},
+			"render_controllers": [
+				"controller.render.craft_contraption"
+			],
+			"spawn_egg": {
+				"base_color": "#0000CC",
+				"overlay_color": "#66B2FF"
+			}
+		}
+	}
+}

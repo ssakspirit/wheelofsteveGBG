@@ -1,0 +1,237 @@
+﻿##
+## Wheel of Steve
+## Copyright 2024 http://rewrite.media
+## 
+
+map.version=1.0.12	#	###{LOCKED}
+lang.version=0.0.9	#	###{LOCKED}
+
+pack.name=Roda do Steve	#	### Steve is a minecraft character and the wheel is a gameshow style spinner that chooses what mini games will be played. 
+pack.description=Recursos necessários para Minijogos de Cinema	#	### Resources needed for name of map
+
+## Wins
+subtitle.objective.1000.1=§4§lEquipa 1 §aVence!	#	###{StrContains="§l"}{StrContains="§4"}{StrContains="§a"}Displayed when team 1 wins a single game.
+subtitle.objective.1000.2=§9§lEquipa 2 §aVence!	#	###{StrContains="§l"}{StrContains="§9"}{StrContains="§a"}Displayed when team 2 wins a single game.
+subtitle.objective.1000.3=§4Equipa 1 §aVence §fa §6Roda do Steve!	#	###{StrContains="§4"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 1 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.4=§9Equipa 2 §aVence §fa §6Roda do Steve!	#	###{StrContains="§9"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 12 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.5=§e§lEmpate!	#	###{StrContains="§l"}{StrContains="§e"}{StrContains="§a"} Displays when a game finishes in a draw.
+
+## Countdown
+subtitle.title=§r	#	###{LOCKED}
+subtitle.objective.101.1=§c§l3	#	###{LOCKED}
+subtitle.objective.101.2=§e§l2	#	###{LOCKED}
+subtitle.objective.101.3=§b§l1	#	###{LOCKED}
+subtitle.objective.101.4=§a§lVai!	#	###{StrContains="§a"}{StrContains="§l"}Displayed after a 3-2-1 countdown timer.
+
+## Interact text
+interact.craft_diagram_pickup=§6Interage para apanhar o padrão.	#	###{StrContains="§6"}
+
+## Chat
+chat.join.team.1=§6Estás agora na §4Equipa 1§6!	#	###{StrContains="§6"}{StrContains="§4"}Displayed when the game moves you to the Team 1 team.
+chat.join.team.2=§6Estás agora na §9Equipa 2§6!	#	###{StrContains="§6"}{StrContains="§9"}Displayed when the game moves you to the Team 2 team.
+
+##Boards
+board.singleplayer.1=                                                                                                §lBem-vindo à                                         §gRoda do Steve§r                                                                                                                                                                                       §dQueres ter jogadores no teu mundo?§r             §lMenu de Pausa -> §r] (separador Caras)§l -> Começar a Ser Anfitrião§r         Depois §opartilha§r o código de acesso com os amigos!                                                                                                   §bQueres jogar sozinho?§r                       Primeiro, escolhe uma equipa ao caminhar na zona §cEsquerda §rou §9Direita§r.         Depois, §ointerage§r com o botão atrás de ti.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+board.multiplayer.1=                                                                                                §lBem-vindo à                                         §gRoda do Steve§r                                                                                                                                                                                   §dQueres ter §omais§r§d jogadores no teu mundo?§r                     §lMenu de Pausa -> ] (separador Caras)§r                  Depois §opartilha§r o código de acesso com os amigos!                  Podes jogar no máximo com 8 pessoas.                                                                                                   §bQueres começar o jogo?§r                     Primeiro, escolhe uma equipa caminhando na zona §cEsquerda §rou §9Direita§r.            Depois, o anfitrião (ou criador do mundo) tem               de §ointeragir§r com o botão de confirmação atrás de ti.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+
+## Actionbar Objective
+actionbar.objective.000.10000=§6Interage para Começar	#	###{StrContains="§6"}
+actionbar.objective.001.1=§6Bem-vindo!	#	###{StrContains="§6"}An introduction to the start of the map, the first word shown by its self, leading into the next message.
+actionbar.objective.001.2=§6És o anfitrião deste mundo.	#	###{StrContains="§6"}
+actionbar.objective.001.3=§6Como anfitrião, podes escolher que jogos são jogados. %1Os outros jogadores não podem fazer isso.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.4=§6Primeiro que tudo: vai para uma das duas plataformas coloridas %1para te juntares a uma equipa.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.5=§6Até 4 jogadores podem juntar-se a cada equipa. %1Tenta ter equipas equilibradas, se possível.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.6=§6Certifica-te de que toda a gente entra numa equipa antes de avançares.	#	###{StrContains="§6"}
+actionbar.objective.001.7=§6Cria um novo mundo se quiseres que mais jogadores entrem %1após passares esta secção.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.8=§6Depois de toda a gente se ter juntado a uma equipa, %1o anfitrião pode premir este botão para começar.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.9=§6Permite que todos os jogadores entrem no mundo e escolham uma equipa. %1Depois prime o botão no bloco de ouro. 	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.18=§a§lConfirma: §r§6Todos os jogadores entraram no mundo e estão numa equipa.§r %1§f§lPrime novamente para confirmar.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}{StrContains="§f"}
+
+actionbar.objective.001.10=§6Há duas formas de jogar.	#	###{StrContains="§6"}
+actionbar.objective.001.11=§6O anfitrião pode girar a Roda do Steve.	#	###{StrContains="§6"}
+actionbar.objective.001.12=§6Isto vai escolher um minijogo escolhido aleatoriamente.	#	###{StrContains="§6"}
+actionbar.objective.001.13=§6A primeira equipa a ganhar 3 jogos escolhidos aleatoriamente pode jogar %1um minijogo secreto.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.14=§6O anfitrião também pode falar com qualquer personagem %1para jogar um dos minijogos.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.15=§6Experimenta desta forma se quiseres jogar um jogo específico %1ou se quiseres praticar.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.16=§6Se os minijogos começarem desta forma, não vão contar para as vitórias na Roda do Steve.	#	###{StrContains="§6"}
+actionbar.objective.001.17=§6Boa sorte!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.003.20=Eu sou o Steve. Vamos jogar §a§lEmboscada do Orbe§r! Neste minijogo, a §l§6comunicação§r é a chave para a vitória.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.21=Eu sou o Henry. Vamos jogar §a§lTiro Certeiro§r. Dá largas à tua §l§6criatividade§r para ganhar!	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.22=Eu sou o Garett. Recorre ao trabalho de equipa e à §l§6cooperação§r para vencer no minijogo §a§lMestres das Engenhocas§r.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.23=Olá! Eu sou a Natalie. Usa o teu §l§6raciocínio crítico§r para vencer em §a§lGuerras nas Grelhas§r.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.24=O meu nome é Dawn. Trabalha como uma §l§6comunidade§r para vencer no minijogo §a§lDuelo em Elytra§r!	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.101.1=§6Bem-vindo ao minijogo Orb Ambush.	#	###{StrContains="§6"} Mini game title, like capture the flag but with a glowing orb. 
+actionbar.objective.101.2=§6Segura a esfera e trabalha com a tua equipa para ganharem pontos!	#	###{StrContains="§6"}
+actionbar.objective.101.3=§6A equipa que tiver o orbe mais tempo ganha.	#	###{StrContains="§6"}
+actionbar.objective.101.4=§6Boa sorte!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.101.5=§6Pega no orbe! (Usa a interação ou o ataque para o apanhar)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to take this orb from other players by interacting with them.
+actionbar.objective.101.6=§6Controla o orbe! (Agacha-te para o largar.)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to sneak to drop the orb if you have it.
+
+##Solo Contraption Craft Off
+actionbar.objective.201.1=§6Bem-vindo ao minijogo Mestres das Engenhocas.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.201.2=§6O teu objetivo é criar 8 peças para reparar as máquinas da tua equipa.	#	###{StrContains="§6"}
+actionbar.objective.201.3=§6Para ganhar, cria mais peças para a máquina que o teu adversário antes que o tempo acabe.	#	###{StrContains="§6"}
+actionbar.objective.201.4=§6Para criar peças para a máquina, %1segue o plano apresentado nesta placa.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.5=§6Interage com as peças nas prateleiras para as apanhares %1e leva-as para a zona de criação.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.6=§6Apanha uma peça e interage com um espaço na zona de trabalho para a colocar.	#	###{StrContains="§6"}
+actionbar.objective.201.7=§6Usa uma mão vazia para esvaziar o espaço.	#	###{StrContains="§6"}
+actionbar.objective.201.8=§6Não te esqueças, cria corretamente 8 itens antes da outra equipa para ganhar.	#	###{StrContains="§6"}
+actionbar.objective.201.9=§6Boa sorte!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.202.1=§6Bem-vindo ao minijogo Mestres das Engenhocas.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.202.2=§6Trabalha em conjunto com a tua equipa para ganhar!	#	###{StrContains="§6"}
+actionbar.objective.202.3=§6O teu objetivo é reparar 3 máquinas avariadas. %1Para isso, tens de criar peças.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.4=§6Está um jogador no armazém. Tem de encontrar um padrão %1que mostre como fazer a peça para a máquina.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.5=§6 Depois de interagir com o padrão, o jogador já o pode mover para a placa.	#	###{StrContains="§6"}
+actionbar.objective.202.6=§6Interagir com a placa mostra o padrão à tua equipa.	#	###{StrContains="§6"}
+actionbar.objective.202.7=§6O resto da equipa tem de trabalhar em conjunto para copiar %1o padrão apresentado na sua zona de criação.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.8=§6Podem apanhar itens de criação %1interagindo com eles nas prateleiras.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.9=§6Pega numa peça e interage com um espaço %1para a adicionares à zona de criação.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.10=§6Usa uma mão vazia para esvaziar o espaço.	#	###{StrContains="§6"}
+actionbar.objective.202.11=§6Assim que o padrão for criado, o jogador verá a peça reparada %1numa mesa no armazém.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.12=§6Deve levar a peça para a zona correta %1e interagir para concluir as reparações.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.13=§6Se houver mais peças para reparar, %1um novo padrão irá aparecer algures no armazém.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.14=§6Continua a reparar as máquinas uma de cada vez até que estejam todas novamente a funcionar.	#	###{StrContains="§6"}
+actionbar.objective.202.15=§6A primeira equipa a reparar a sua máquina por completo ganha.	#	###{StrContains="§6"}
+actionbar.objective.202.16=§6Boa sorte!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+
+
+actionbar.objective.301.1=§6Bem-vindo ao minijogo Guerras nas Grelhas!	#	###{StrContains="§6"} Mini game title, players build with Minecraft blocks in a grid as quickly as possible. 
+actionbar.objective.301.2=§6Trabalha em equipa para construir o mesmo padrão na placa da tua equipa.	#	###{StrContains="§6"}
+actionbar.objective.301.3=§6Faz corresponder o padrão antes da equipa adversária para ganhar um ponto. %1A equipa com mais pontos ganha.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.4=§6Para recolher blocos, interage com os blocos rotativos na tua arena.	#	###{StrContains="§6"}
+actionbar.objective.301.5=§6Só podes transportar §c§lum§r §6bloco de cada vez.	%1 §6Larga o bloco para apanhar um novo. #	###{StrContains="§6"}{StrContains="§c"}{StrContains="§l"}{StrContains="§r"}
+actionbar.objective.301.6=§6Quando uma equipa reclama um bloco numa arena, a outra equipa%1 não a poderá reclamar durante algum tempo.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.7=§6Se a tua equipa cometer um erro, usa o botão §f “Limpar Placa” §6 para o corrigir.	#	###{StrContains="§6"}{StrContains="§f"}
+actionbar.objective.301.8=§6Boa sorte!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.301.9=§6Conclui o padrão!	#	###{StrContains="§6"}Players need to copy and complete the patter shown in front of them.
+
+actionbar.objective.401.1=§6Bem-vindo ao minijogo Tiro Certeiro.	#	###{StrContains="§6"} Mini game title, it's a joke in English "Knock it off" is a saying to tell someone to stop it, nock is the term used to describe pulling an arrow to the ready position. The game is an archery shooting game. 
+actionbar.objective.401.2=§6Tenta ganhar à outra equipa ao atingir os alvos.	#	###{StrContains="§6"}
+actionbar.objective.401.3=§6Pega no arco e tenta atingir o máximo de alvos que conseguires.	#	###{StrContains="§6"}
+actionbar.objective.401.4=§6Marca mais pontos do que a outra equipa para ganhar!	#	###{StrContains="§6"}
+actionbar.objective.401.5=§6Boa sorte!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.401.6=§6Dispara sobre os alvos!	#	###{StrContains="§6"}Players need to shoot the targets to score points and win the game.
+
+
+
+actionbar.objective.501.1=§6Bem-vindo ao minijogo Duelo em Elytra.	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
+actionbar.objective.501.2=§6O objetivo é largar TNT no vulcão do %1adversário para derrubar a sua torre.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.3=§6Enquanto cais, prime saltar para abrir as asas de élitro e planar.	#	###{StrContains="§6"}
+actionbar.objective.501.4=§6Prime Interagir para usar fogo de artifício e ganhar um aumento de velocidade.	#	###{StrContains="§6"}
+actionbar.objective.501.5=§6Voa perto do TNT para o apanhar.	#	###{StrContains="§6"}
+actionbar.objective.501.6=§6Ao sobrevoar o vulcão do adversário, %1 ataca ou agacha-te para largar o TNT.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.7=§6Quem conseguir 10 pontos primeiro ou quem tiver o maior número de pontos quando o tempo se esgotar ganha.	#	###{StrContains="§6"}
+actionbar.objective.501.8=§6Boa sorte!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.501.9=§6Prime Saltar enquanto cais para começar a voar.	#	###{StrContains="§6"}
+actionbar.objective.501.10=§6Larga TNT no §9Vulcão Azul§6 para pontuar. %1Para largar o TNT, prime atacar ou agachar.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
+actionbar.objective.501.11=§6Larga TNT no §4Vulcão Vermelho§6 para pontuar. %1Para largar o TNT, prime atacar ou agachar.	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
+
+
+actionbar.objective.601.1=§6Bem-vindo ao Confronto Final.	#	###{StrContains="§6"} Mini game title, the final showdown is the last mini game played. 
+actionbar.objective.601.2=§6Está na hora de descobrir quem será o derradeiro vencedor da Roda do Steve.	#	###{StrContains="§6"} Refers to name of the game world, Wheel of Steve
+actionbar.objective.601.3=§6Desce a encosta da montanha %1e apanha o maior número de esmeraldas que conseguires.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.601.4=§6O jogador que apanhar mais esmeraldas ganha.	#	###{StrContains="§6"}
+actionbar.objective.601.5=§6Cuidado onde pões os pés! Se caíres, ficas fora do jogo.	#	###{StrContains="§6"}
+actionbar.objective.601.6=§6Fica por perto. Se ficares para trás, ficas fora do jogo.	#	###{StrContains="§6"}
+actionbar.objective.601.7=§6Boa sorte!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.601.8=§6Apanha esmeraldas e mantém-te no ecrã!	#	###{StrContains="§6"}
+
+##Dialogue
+steve.n=§6Steve	#	###{StrContains="§6"} A Minecraft Movie character name. 
+henry.n=§6Henry	#	###{StrContains="§6"} A Minecraft Movie character name. 
+garett.n=§6Garett	#	###{StrContains="§6"} A Minecraft Movie character name. 
+dawn.n=§6Dawn	#	###{StrContains="§6"} A Minecraft Movie character name. 
+natalie.n=§6Natalie	#	###{StrContains="§6"} A Minecraft Movie character name. 
+wheel.n=§6Roda do Steve	#	###{StrContains="§6"} refers to world title. Wheel of Steve
+
+steve.d=Eu sou o Steve. Ouvi dizer que queres praticar a §l§6comunicação§r. Tenho o minijogo ideal para ti. Eu chamo-lhe §a§lEmboscada do Orbe§r. Queres jogar?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+henry.d=Olá! Eu sou o Henry. Fiz um jogo divertido a que chamei §a§lNock it Off§r. Este jogo vai testar a tua §l§6criatividade§r com tiro ao alvo à antiga. Queres jogar? 	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+garett.d=Eu sabia. Eu vi logo que eras um gamer pro como eu, Garett Garrison. Os melhores gamers têm um forte sentido de trabalho de equipa e §l§6colaboração§r. Que tal experimentarmos um pequeno jogo a que gosto de chamar §a§lContraption Craft Off§r? Vai pôr as tuas capacidades à prova! Estás pronto?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+dawn.d=Olá! Chamo-me Dawn! Construir uma §l§6comunidade§r forte com a equipa é crucial para ser a melhor equipa. Que tal um jogo que ajuda a criar laços de equipa? Eu preparei o §a§lElytra Rumble§r! É um jogo de voo e lançamento de TNT que testa as tuas capacidades. Queres jogar?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+natalie.d=Olá! Eu sou a Natalie. Disseram-me que eras capaz de vir aqui. Eu tenho um pequeno jogo de quebra-cabeças chamado §a§lGuerras nas Grelhas§r para testar o teu §l§6raciocínio crítico§r. Estás interessado em jogar?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+npc.nothost.d= Lamento, só o anfitrião pode começar jogos comigo.	#	###
+
+wheel.d=Bem-vindo à Roda do Steve! Dá-me uma volta para jogar um minijogo escolhido aleatoriamente! A primeira equipa para ganhar 3 minijogos vai desbloquear um jogo secreto!	#	###
+
+steve.b1=Jogar Emboscada do Orbe	#	### Refers to playing the mini game title 
+steve.b2=Esquece.	#	### player is saying “no I don't want to play the game now”
+henry.b1=Jogar	#	### Refers to playing the mini game title
+henry.b2=Esquece.	#	### Player is saying “no I don't want to play the game now” 
+garett.b1=Jogar	#	### Refers to playing the mini game title
+garett.b2=Esquece.	#	### player is saying “no I don't want to play the game now” 
+dawn.b1=Jogar Elytra	#	### Refers to playing the mini game title 
+dawn.b2=Esquece.	#	### player is saying “no I don't want to play the game now” 
+natalie.b1=Jogar	#	### Refers to playing the mini game title 
+natalie.b2=Esquece.	#	### player is saying “no I don't want to play the game now” 
+npc.nothost.b1=Adeus.	#	### Goodbye
+wheel.b1=Girar a Roda	#	### Spin the “Wheel of Steve” gameshow style spinner. 
+wheel.b2=Esquece.	#	### Player is saying, no I don't want to right now. 
+
+## Items
+item.rwm:orb=Orbe	#	### The orb from orb ambush. It's a blue sphere the player needs to keep hold of to score points.
+item.rwm:craft_diagram_1=Diagrama de Criação 1	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_2=Diagrama de Criação 2	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_3=Diagrama de Criação 3	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_4=Diagrama de Criação 4	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_5=Diagrama de Criação 5	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_part_1=Óleo de Roda	#	### A small wooden gear, used as a crafting component.
+item.rwm:craft_part_2=Luva de Boxe	#	### A bright red bloxing glove, used as a crafting component.
+item.rwm:craft_part_3=Pega de Balde	#	### The handle to a bucket you can carry around, used as a crafting component.
+item.rwm:craft_part_4=Bota de Cabedal	#	### A single leather boot, used as a crafting component.
+item.rwm:craft_part_5=Lâmpada	#	### A single light bulb, used as a crafting component.
+item.rwm:craft_part_6=Porcas e Parafusos	#	### A small gathering of metal nuts and bolts, used as a crafting component.
+item.rwm:craft_part_7=Estrutura Mecânica	#	### A small cube-like frame, used as a crafting component. 
+item.rwm:craft_part_8=Galinha	#	### A small Minecraft-chicken that can be picked up into the students inventory, used as a crafting component.
+item.rwm:craft_part_9=Vara de Metal	#	### A small single metal rod, used as a crafting component.
+item.rwm:craft_part_10=Dente de Engrenagem	#	### A small metal gear tooth, used as a crafting component.
+item.rwm:craft_part_11=Engrenagem Pequena	#	### A single small metal gear, used as a crafting component.
+item.rwm:craft_part_12=Roldana	#	### The actual small metal pulley, used as a crafting component.
+item.rwm:craft_contraption_fixed_1=Peça de Reparação de Roda	#	### The finalized, crafted wheel repair part, used to fix a the final contraption. It looks like a small wodden wheel.
+item.rwm:craft_contraption_fixed_2=Peça de Reparação de Batedor de Galinhas	#	### The finalized, crafted chicken puncher, used to fix a the final contraption. It looks like a chicken with a boxing glove.
+item.rwm:craft_contraption_fixed_3=Peça de Reparação de Roldana	#	### The finalized component, used to fix a the final contraption. It looks like a full pulley and rope system.
+item.rwm:craft_contraption_fixed_4=Peça de Reparação de Vagoneta	#	### The finalized component, used to fix a the final contraption. It looks like a small minecart.
+item.rwm:craft_contraption_fixed_5=Peça de Reparação de Jaula	#	### The finalized component, used to fix a the final contraption. It looks like a small metal cage.
+
+item.diamond_helmet.name=§9Capacete da Equipa 2	#	###{StrContains="§9"} Named item for team 2's helmet.
+item.diamond_chestplate.name=§9Peitoral da Equipa 2	#	###{StrContains="§9"} Named item for team 2's chestplate.
+item.diamond_leggings.name=§9Perneiras da Equipa 2	#	###{StrContains="§9"} Named item for team 2's leggings.
+item.diamond_boots.name=§9Botas da Equipa 2	#	###{StrContains="§9"} Named item for team 2's boots.
+item.iron_helmet.name=§mCapacete da Equipa 1	#	###{StrContains="§m"} Named item for team 1's helmet.
+item.iron_chestplate.name=§mPeitoral da Equipa 1	#	###{StrContains="§m"} Named item for team 1's chestplate.
+item.iron_leggings.name=§mPerneiras da Equipa 1	#	###{StrContains="§m"} Named item for team 1's leggings.
+item.iron_boots.name=§mBotas da Equipa 1	#	###{StrContains="§m"} Named item for team 1's boots.
+
+## Interacts
+interact.marker.start_map=§6Iniciar Mapa	#	###{StrContains="§6"} Displays on the students screen when they are hoving over the button to start the game.
+interact.wheel_of_steve=§6Girar a Roda do Steve?	#	###{StrContains="§6"} Displays on the students screen when hoving over the giant Wheel of Steve in the center of the lobby.
+interact.npc_1=§6Falar	#	###{StrContains="§6"} Displayed when hovering over any NPC that is interactable.
+interact.craft_board_change=§6Ver padrão.	#	###{StrContains="§6"} Displayed when hovering over the crafting board with a diagram in the players inventory.
+interact.craft_part_pickup=§6Apanhar peça.	#	###{StrContains="§6"} Dislpayed when hovering over an crafting component in Contraption Craft Off.
+interact.craft_crafting_change=§6Colocar peça.	#	###{StrContains="§6"} Displayed when holding a crafting part and hovering over the crafting table in Contraption Craft Off.
+interact.craft_contraption_change=§6Reparar engenhoca.	#	###{StrContains="§6"} Displayed when you have a fixed contraption in your inventory and hover over the contraption in Contraption Craft Off.
+grid_block_magenta.interact=Apanhar Bloco §dMagenta§r	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime.interact=Apanhar Bloco §aVerde-Lima§r	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue.interact=Apanhar Bloco §9Azul§r	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red.interact=Apanhar Bloco §cVermelho§r	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow.interact=Apanhar Bloco §eAmarelo§r	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+grid_block_magenta_obtain.interact=Apanhar Bloco §dMagenta§r	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime_obtain.interact=Apanhar Bloco §aVerde-Lima§r	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue_obtain.interact=Apanhar Bloco §9Azul§r	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red_obtain.interact=Apanhar Bloco §cVermelho§r	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow_obtain.interact=Apanhar Bloco §eAmarelo§r	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+orb.flag.ride.interact=Interage para apanhar a esfera.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.unride.interact=Interage para apanhar a esfera.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+

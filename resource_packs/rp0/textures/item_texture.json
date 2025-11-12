@@ -1,0 +1,29 @@
+{
+	"resource_pack_name": "Minecraft Minigames",
+	"texture_name": "atlas.items",
+	"texture_data": {
+		"orb": {"textures":"textures/rwm/items/orb"},
+        "craft_diagram_1": {"textures":"textures/rwm/items/craft_diagram_1"},
+        "craft_diagram_2": {"textures":"textures/rwm/items/craft_diagram_2"},
+        "craft_diagram_3": {"textures":"textures/rwm/items/craft_diagram_3"},
+        "craft_diagram_4": {"textures":"textures/rwm/items/craft_diagram_4"},
+        "craft_diagram_5": {"textures":"textures/rwm/items/craft_diagram_5"},
+        "craft_part_1": {"textures":"textures/rwm/items/craft_part_1"},
+        "craft_part_2": {"textures":"textures/rwm/items/craft_part_2"},
+        "craft_part_3": {"textures":"textures/rwm/items/craft_part_3"},
+        "craft_part_4": {"textures":"textures/rwm/items/craft_part_4"},
+        "craft_part_5": {"textures":"textures/rwm/items/craft_part_5"},
+        "craft_part_6": {"textures":"textures/rwm/items/craft_part_6"},
+        "craft_part_7": {"textures":"textures/rwm/items/craft_part_7"},
+        "craft_part_8": {"textures":"textures/rwm/items/craft_part_8"},
+        "craft_part_9": {"textures":"textures/rwm/items/craft_part_9"},
+        "craft_part_10": {"textures":"textures/rwm/items/craft_part_10"},
+        "craft_part_11": {"textures":"textures/rwm/items/craft_part_11"},
+        "craft_part_12": {"textures":"textures/rwm/items/craft_part_12"},
+        "craft_contraption_fixed_1": {"textures":"textures/rwm/items/craft_contraption_fixed_1"},
+        "craft_contraption_fixed_2": {"textures":"textures/rwm/items/craft_contraption_fixed_2"},
+        "craft_contraption_fixed_3": {"textures":"textures/rwm/items/craft_contraption_fixed_3"},
+        "craft_contraption_fixed_4": {"textures":"textures/rwm/items/craft_contraption_fixed_4"},
+        "craft_contraption_fixed_5": {"textures":"textures/rwm/items/craft_contraption_fixed_5"}
+	}
+}

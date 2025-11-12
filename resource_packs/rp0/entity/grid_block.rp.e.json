@@ -1,0 +1,39 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:grid_block",
+      		"min_engine_version": "1.16.0",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"geometry": {
+				"default": "geometry.rwm.grid_block"
+			},
+			"textures": {
+				"default" : "textures/blocks/concrete_lime",
+                "lime" : "textures/blocks/concrete_lime",
+                "blue" : "textures/blocks/concrete_blue",
+                "yellow" : "textures/blocks/concrete_yellow",
+                "red" : "textures/blocks/concrete_red",
+                "magenta" : "textures/blocks/concrete_magenta",
+                "null" : "textures/blocks/barrier"	
+			},
+			"render_controllers": [
+				"controller.render.grid_block"
+			],
+			"animations": {
+                "idle": "animation.rwm.grid_block.idle"
+			},
+			"scripts": {
+                "animate": [
+					"idle"
+				]
+			},
+			"spawn_egg": {
+				"base_color": "#0fff00",
+				"overlay_color": "#d200cf"
+			}
+		}
+	}
+}

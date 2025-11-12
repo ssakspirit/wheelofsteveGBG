@@ -1,0 +1,47 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.craft_part": {
+			"materials": [ { "*": "Material.default" } ],
+            "textures": [
+                "array.skins[query.mark_variant]"
+            ],
+            "geometry": "array.models[query.mark_variant]",
+			"arrays": {
+				"textures": {
+					"array.skins": [
+						"texture.craft_part_1",
+						"texture.craft_part_2",
+						"texture.craft_part_3",
+						"texture.craft_part_4",
+						"texture.craft_part_5",
+						"texture.craft_part_6",
+						"texture.craft_part_7",
+						"texture.craft_part_8",
+						"texture.craft_part_9",
+						"texture.craft_part_10",
+						"texture.craft_part_11",
+						"texture.craft_part_12"
+					]
+				},
+                "geometries": {
+                    "array.models": [
+                        "geometry.craft_part_1",
+                        "geometry.craft_part_2",
+                        "geometry.craft_part_3",
+                        "geometry.craft_part_4",
+                        "geometry.craft_part_5",
+                        "geometry.craft_part_6",
+                        "geometry.craft_part_7",
+                        "geometry.craft_part_8",
+                        "geometry.craft_part_9",
+                        "geometry.craft_part_10",
+                        "geometry.craft_part_11",
+                        "geometry.craft_part_12"
+                    ]
+                }
+			},
+			"ignore_lighting" : false
+		}
+	}
+}

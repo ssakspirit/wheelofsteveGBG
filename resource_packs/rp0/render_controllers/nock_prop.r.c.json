@@ -1,0 +1,61 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.nock_prop": {
+			"materials": [ { "*": "Material.default" } ],
+            "textures": [
+                "array.skins[query.mark_variant]"
+            ],
+            "geometry": "array.models[query.mark_variant]",
+			"arrays": {
+				"textures": {
+					"array.skins": [
+						"texture.armadillo",
+						"texture.bee",
+						"texture.camel",
+						"texture.chicken",
+						"texture.cow",
+						"texture.donkey",
+						"texture.fox",
+						"texture.goat",
+						"texture.llama",
+						"texture.minecart",
+						"texture.pig",
+						"texture.polarbear",
+                        "texture.rabbit_desert",
+                        "texture.rabbit_plains",
+                        "texture.sheep",
+                        "texture.sniffer",
+                        "texture.snowgolem",
+                        "texture.spider",
+                        "texture.wolf"
+					]
+				},
+                "geometries": {
+                    "array.models": [
+                        "geometry.armadillo",
+						"geometry.bee",
+						"geometry.camel",
+						"geometry.chicken",
+						"geometry.cow",
+						"geometry.donkey",
+						"geometry.fox",
+						"geometry.goat",
+						"geometry.llama",
+						"geometry.minecart",
+						"geometry.pig",
+						"geometry.polarbear",
+                        "geometry.rabbit_desert",
+                        "geometry.rabbit_plains",
+                        "geometry.sheep",
+                        "geometry.sniffer",
+                        "geometry.snowgolem",
+                        "geometry.spider",
+                        "geometry.wolf"
+                    ]
+                }
+			},
+			"ignore_lighting" : false
+		}
+	}
+}

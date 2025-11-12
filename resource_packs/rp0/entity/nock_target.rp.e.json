@@ -1,0 +1,27 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:nock_target",
+      		"min_engine_version": "1.16.0",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"geometry": {
+				"default": "geometry.rwm.nock_target"
+			},
+			"textures": {
+				"default" : "textures/rwm/entity/nock_target",
+                "creeper" : "textures/rwm/entity/nock_target_creeper",
+                "enderman" : "textures/rwm/entity/nock_target_enderman"
+			},
+			"render_controllers": [
+				"controller.render.nock_target"
+			],
+			"spawn_egg": {
+				"base_color": "#FFFFFF",
+				"overlay_color": "#FF0000"
+			}
+		}
+	}
+}

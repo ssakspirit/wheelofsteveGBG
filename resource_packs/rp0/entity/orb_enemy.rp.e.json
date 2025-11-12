@@ -1,0 +1,43 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:orb_enemy",
+      		"min_engine_version": "1.16.0",
+            "materials": {
+                "default": "entity_alphatest"
+            },
+            "textures": {
+                "default": "textures/entity/piglin/zombie_piglin"
+            },
+            "geometry": {
+                "default": "geometry.piglin"
+            },
+            "scripts": {
+                "animate": [
+                {
+                    "move": "query.is_moving"
+                },
+                "bob",
+                "look_at_target_controller"
+                ]
+            },
+            "animations": {
+                "move": "animation.orb_enemy.move",
+                "bob": "animation.humanoid.bob",
+                "look_at_target_controller": "controller.animation.humanoid.look_at_target",
+                "look_at_target_default": "animation.humanoid.look_at_target.default",
+                "look_at_target_gliding": "animation.humanoid.look_at_target.gliding",
+                "look_at_target_swimming": "animation.humanoid.look_at_target.swimming"
+            },
+            "render_controllers": [
+                "controller.render.piglin"
+            ],
+            "enable_attachables": true,
+            "spawn_egg": {
+				"base_color": "#0d2f7e",
+				"overlay_color": "#690d7e"
+			}
+		}
+	}
+}

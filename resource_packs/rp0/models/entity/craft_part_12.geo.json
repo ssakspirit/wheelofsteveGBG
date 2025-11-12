@@ -1,0 +1,60 @@
+{
+	"format_version": "1.21.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.craft_part_12",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "craft_part_12",
+					"parent": "root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "pulley1",
+					"parent": "craft_part_12",
+					"pivot": [0, 9, -1],
+					"rotation": [0, 0, 45],
+					"cubes": [
+						{
+							"origin": [-3, 6, -3],
+							"size": [6, 6, 6],
+							"uv": {
+								"north": {"uv": [26, 20], "uv_size": [6, 6]},
+								"east": {"uv": [26, 20], "uv_size": [-6, 6]},
+								"south": {"uv": [26, 20], "uv_size": [6, 6]},
+								"west": {"uv": [20, 20], "uv_size": [6, 6]},
+								"up": {"uv": [26, 26], "uv_size": [-6, -6], "uv_rotation": 90},
+								"down": {"uv": [20, 20], "uv_size": [6, 6], "uv_rotation": 90}
+							}
+						},
+						{
+							"origin": [-2, 0, -2],
+							"size": [4, 6, 4],
+							"pivot": [0, 9, 0],
+							"rotation": [0, 0, -45],
+							"uv": {
+								"north": {"uv": [27, 26], "uv_size": [4, 6]},
+								"east": {"uv": [27, 26], "uv_size": [4, 6]},
+								"south": {"uv": [27, 26], "uv_size": [4, 6]},
+								"west": {"uv": [27, 26], "uv_size": [4, 6]},
+								"up": {"uv": [31, 30], "uv_size": [-4, -4]},
+								"down": {"uv": [31, 30], "uv_size": [-4, -4]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

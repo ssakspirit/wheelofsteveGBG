@@ -1,0 +1,237 @@
+﻿##
+## Wheel of Steve
+## Copyright 2024 http://rewrite.media
+## 
+
+map.version=1.0.12	#	###{LOCKED}
+lang.version=0.0.9	#	###{LOCKED}
+
+pack.name=Stevovo koleso	#	### Steve is a minecraft character and the wheel is a gameshow style spinner that chooses what mini games will be played. 
+pack.description=Zdroje potrebné pre filmové minihry	#	### Resources needed for name of map
+
+## Wins
+subtitle.objective.1000.1=§4§l1. tím §avyhráva!	#	###{StrContains="§l"}{StrContains="§4"}{StrContains="§a"}Displayed when team 1 wins a single game.
+subtitle.objective.1000.2=§9§l2. tím §avyhráva!	#	###{StrContains="§l"}{StrContains="§9"}{StrContains="§a"}Displayed when team 2 wins a single game.
+subtitle.objective.1000.3=§41. tím §avyhráva §f§6Stevovo koleso!	#	###{StrContains="§4"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 1 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.4=§92. tím §avyhráva §f§6Stevovo koleso!	#	###{StrContains="§9"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 12 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.5=§e§lRemíza!	#	###{StrContains="§l"}{StrContains="§e"}{StrContains="§a"} Displays when a game finishes in a draw.
+
+## Countdown
+subtitle.title=§r	#	###{LOCKED}
+subtitle.objective.101.1=§c§l3	#	###{LOCKED}
+subtitle.objective.101.2=§e§l2	#	###{LOCKED}
+subtitle.objective.101.3=§b§l1	#	###{LOCKED}
+subtitle.objective.101.4=§a§lŠtart!	#	###{StrContains="§a"}{StrContains="§l"}Displayed after a 3-2-1 countdown timer.
+
+## Interact text
+interact.craft_diagram_pickup=§6Zdvihnúť schému.	#	###{StrContains="§6"}
+
+## Chat
+chat.join.team.1=§6Pripojili ste sa k §41. tímu§6!	#	###{StrContains="§6"}{StrContains="§4"}Displayed when the game moves you to the Team 1 team.
+chat.join.team.2=§6Pripojili ste sa k §92. tímu§6!	#	###{StrContains="§6"}{StrContains="§9"}Displayed when the game moves you to the Team 2 team.
+
+##Boards
+board.singleplayer.1=                                                                                                §lVitajte v §gStevovom kolese§r                                                                                                                                                                                       §dChcete, aby sa hráči pripojili k vášmu svetu?§r             §lPonuka pozastavenia -> §r] (karta Tváre)§l -> Začať hosťovanie§r Potom §ozdieľajte§r s priateľmi kód pripojenia!                                                                                                   §bChcete hrať sami?§r Najprv si vyberte tím tak, že prejdete do §cľavej §ralebo §9pravej §roblasti.    Potom §opoužite§r tlačidlo potvrdenia za vami.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+board.multiplayer.1=                                                                                                §lVitajte v §gStevovom kolese§r                                                                                                                                                                                   §dChcete, aby sa k vášmu svetu pripojilo §oviac§r§d hráčov?§r                     §lPonuka pozastavenia -> ] (karta Tváre)§r Potom §ozdieľajte§r s priateľmi kód pripojenia, aby sa pripojili!             Hrať môžete s maximálne 8 ľuďmi.                                                                                                   §bChcete začať hru?§r Najprv si vyberte tím tak, že prejdete do §cľavej §ralebo §9pravej §roblasti.            Potom musí hostiteľ (alebo tvorca sveta) §opoužiť§r tlačidlo potvrdenia za vami.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+
+## Actionbar Objective
+actionbar.objective.000.10000=§6Interact to Start	#	###{StrContains="§6"}
+actionbar.objective.001.1=§6Vitajte.	#	###{StrContains="§6"}An introduction to the start of the map, the first word shown by its self, leading into the next message.
+actionbar.objective.001.2=§6Ste hostiteľom tohto sveta.	#	###{StrContains="§6"}
+actionbar.objective.001.3=§6Ako hostiteľ si môžete vybrať, ktoré hry sa budú hrať. %1Ostatní hráči to nemôžu urobiť.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.4=§6Po prvé: vstúpte na jednu z dvoch farebných platforiem, %1aby ste sa pripojili k tímu.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.5=§6Ku každému tímu sa môžu pripojiť až 4 hráči. %1Ak je to možné, snažte sa mať tímy s rovnakým počtom hráčov.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.6=§6Pred pokračovaním sa uistite, že sa všetci pripoja a vyberú si tím.	#	###{StrContains="§6"}
+actionbar.objective.001.7=§6Ak prejdete touto časťou a chcete, aby sa pripojilo %1viac hráčov, vytvorte nový svet.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.8=§6Keď sa všetci pripoja k tímu, %1hostiteľ môže spustiť hru stlačením tohto tlačidla.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.9=§6Povoľte všetkým hráčom pripojiť sa k svetu a vybrať si tím. %1Potom stlačte tlačidlo na zlatom bloku. 	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.18=§a§lPotvrďte, že: §r§6Všetci hráči sa pripojili k svetu a sú v tíme.§r %1§f§lStlačte znova na potvrdenie.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}{StrContains="§f"}
+
+actionbar.objective.001.10=§6Môžete hrať dvomi spôsobmi.	#	###{StrContains="§6"}
+actionbar.objective.001.11=§6Hostiteľ môže roztočiť Stevovo koleso.	#	###{StrContains="§6"}
+actionbar.objective.001.12=§6Tým sa vyberie náhodná minihra, ktorá sa bude hrať.	#	###{StrContains="§6"}
+actionbar.objective.001.13=§6Prvý tím, ktorý vyhrá 3 náhodné hry, môže súťažiť %1v tajnej minihre.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.14=§6V opačnom prípade môže hostiteľ spustiť konkrétnu %1minihru rozhovorom s príslušnou postavou.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.15=§6Tento spôsob použite, ak chcete hrať konkrétnu hru %1alebo len trénovať.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.16=§6Minihry spustené týmto spôsobom sa do výhier o Stevovo koleso nezapočítavajú.	#	###{StrContains="§6"}
+actionbar.objective.001.17=§6Veľa šťastia!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.003.20=Som Steve. Poďme si zahrať hru §a§lGuľové prepadnutie§r! Kľúčom k víťazstvu v tejto hre je §l§6komunikácia§r.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.21=Som Henry. Poďme si zahrať hru §a§lTrafte to§r. Využite svoju §l§6kreativitu§r a vyhrajte!	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.22=Som Garett. Využite tímovú prácu a §l§6spoluprácu§r, aby ste vyhrali hru §a§lVýroba výmyslov§r.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.23=Ahoj! Som Natalie. Použite svoje §l§6kritické myslenie§r a vyhrajte hru §a§lVojna mriežok§r.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.24=Som Dawn. Pracujte ako §l§6komunita§r a vyhrajte hru §a§lBitka kroviek§r!	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.101.1=§6Vitajte v hre Guľové prepadnutie.	#	###{StrContains="§6"} Mini game title, like capture the flag but with a glowing orb. 
+actionbar.objective.101.2=§6Spolupracujte držaním gule, aby ste získali body pre svoj tím.	#	###{StrContains="§6"}
+actionbar.objective.101.3=§6Vyhráva tím, ktorý podrží guľu najdlhšie.	#	###{StrContains="§6"}
+actionbar.objective.101.4=§6Veľa šťastia!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.101.5=§6Chyťte guľu! (Použite interakciu alebo útok, aby ste ju chytili.)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to take this orb from other players by interacting with them.
+actionbar.objective.101.6=§6Držte guľu! (Ak ju chcete pustiť, prikrčte sa.)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to sneak to drop the orb if you have it.
+
+##Solo Contraption Craft Off
+actionbar.objective.201.1=§6Vitajte v hre Výroba výmyslov.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.201.2=§6Vaším cieľom je skonštruovať 8 dielov na opravu strojov svojho tímu.	#	###{StrContains="§6"}
+actionbar.objective.201.3=§6Ak chcete vyhrať, pred uplynutím času opravte viac strojov ako váš súper.	#	###{StrContains="§6"}
+actionbar.objective.201.4=§6Ak chcete stavať diely stroja, %1budete musieť postupovať podľa pokynov zobrazených na tejto tabuli.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.5=§6Interagujte s dielmi na policiach, aby ste získali predmet, %1a prineste ich do výrobnej oblasti.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.6=§6Držte diel a interagujte so slotom, aby ste ho pridali do výrobnej oblasti.	#	###{StrContains="§6"}
+actionbar.objective.201.7=§6Prázdnou rukou vyprázdnite slot.	#	###{StrContains="§6"}
+actionbar.objective.201.8=§6Nezabudnite, že na výhru musíte správne vyrobiť 8 predmetov skôr ako druhý tím.	#	###{StrContains="§6"}
+actionbar.objective.201.9=§6Veľa šťastia!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.202.1=§6Vitajte v hre Výroba výmyslov.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.202.2=§6Ak chcete vyhrať, budete musieť spolupracovať so svojím tímom.	#	###{StrContains="§6"}
+actionbar.objective.202.3=§6Vaším cieľom je opraviť 3 pokazené stroje. %1Na to budete musieť vyrobiť nejaké predmety.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.4=§6Jeden hráč je v sklade. Jeho cieľom je nájsť schému, %1ktorá zobrazuje recepty na výrobu predmetov pre tím.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.5=§6Po interakcii so schémou ju môže preniesť na tabuľu.	#	###{StrContains="§6"}
+actionbar.objective.202.6=§6Interakcia s tabuľou zobrazí recept na výrobu predmetov pre príslušný tím.	#	###{StrContains="§6"}
+actionbar.objective.202.7=§6Zvyšok tímu musí spolupracovať, aby replikoval %1zobrazený vzor vo svojej výrobnej oblasti.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.8=§6Na to si tím môže vyzdvihnúť prísady na výrobu predmetov %1interakciou s predmetmi na policiach.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.9=§6Držte diel a interagujte so slotom, %1aby ste ho pridali do výrobnej oblasti.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.10=§6Prázdnou rukou vyprázdnite slot.	#	###{StrContains="§6"}
+actionbar.objective.202.11=§6Po nájdení zhodnej schémy sa opravený diel objaví %1na stole pre hráča v sklade.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.12=§6Predmet musí preniesť do správneho stroja %1a interakciou dokončiť opravy.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.13=§6Ak ešte zostávajú ďalšie stroje, %1niekde v sklade sa objaví nová schéma.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.14=§6Proces opravy opakujte, kým nebudú všetky stroje opravené.	#	###{StrContains="§6"}
+actionbar.objective.202.15=§6Vyhráva tím, ktorý ako prvý opraví všetky svoje stroje.	#	###{StrContains="§6"}
+actionbar.objective.202.16=§6Veľa šťastia!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+
+
+actionbar.objective.301.1=§6Vitajte v hre Vojna mriežok!	#	###{StrContains="§6"} Mini game title, players build with Minecraft blocks in a grid as quickly as possible. 
+actionbar.objective.301.2=§6Spolupracujte na vytvorení rovnakého vzoru na tabuli vlastného tímu.	#	###{StrContains="§6"}
+actionbar.objective.301.3=§6Ak vzor správne skopírujete skôr ako tím súpera, získate bod. %1Vyhráva tím s najväčším počtom bodov.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.4=§6Ak chcete zbierať bloky, interagujte s rotujúcimi blokmi vo svojej aréne.	#	###{StrContains="§6"}
+actionbar.objective.301.5=§6Naraz môžete zobrať §c§llen jeden§r §6blok.	###{StrContains="§6"}{StrContains="§c"}{StrContains="§l"}{StrContains="§r"}
+actionbar.objective.301.6=§6Keď blok získate v jednej aréne, tím súpera %1ho na krátky čas nebude môcť získať.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.7=§6Ak váš tím urobí chybu, použite tlačidlo §fVymazať tabuľu§6.	#	###{StrContains="§6"}{StrContains="§f"}
+actionbar.objective.301.8=§6Veľa šťastia!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.301.9=§6Dokončite vzor!	#	###{StrContains="§6"}Players need to copy and complete the patter shown in front of them.
+
+actionbar.objective.401.1=§6Vitajte v hre Trafte to.	#	###{StrContains="§6"} Mini game title, it's a joke in English "Knock it off" is a saying to tell someone to stop it, nock is the term used to describe pulling an arrow to the ready position. The game is an archery shooting game. 
+actionbar.objective.401.2=§6Súťažte s tímom súpera tak, že budete triafať terče.	#	###{StrContains="§6"}
+actionbar.objective.401.3=§6Pomocou luku zasiahnite čo najviac terčov.	#	###{StrContains="§6"}
+actionbar.objective.401.4=§6Získajte viac bodov ako druhý tím, aby ste vyhrali!	#	###{StrContains="§6"}
+actionbar.objective.401.5=§6Veľa šťastia!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.401.6=§6Strieľajte na terče!	#	###{StrContains="§6"}Players need to shoot the targets to score points and win the game.
+
+
+
+actionbar.objective.501.1=§6Vitajte v hre Bitka kroviek.	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
+actionbar.objective.501.2=§6Vaším cieľom je zhodiť bomby do súperovej %1sopky a zničiť tak jeho vežu.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.3=§6Keď pri páde stlačíte tlačidlo skoku, roztvoríte krídla kroviek a budete plachtiť.	#	###{StrContains="§6"}
+actionbar.objective.501.4=§6Stlačením tlačidla interakcie použijete ohňostroj na zvýšenie rýchlosti.	#	###{StrContains="§6"}
+actionbar.objective.501.5=§6Leťte blízko k bombe, aby ste ju chytili.	#	###{StrContains="§6"}
+actionbar.objective.501.6=§6Keď letíte nad súperovou sopkou, %1pomocou tlačidla útoku zhoďte bombu.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.7=§6Vyhráva tím, ktorý ako prvý získa 10 bodov alebo bude mať najviac bodov po skončení časovača.	#	###{StrContains="§6"}
+actionbar.objective.501.8=§6Veľa šťastia!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.501.9=§6Ak pri páde stlačíte tlačidlo skoku, začnete lietať.	#	###{StrContains="§6"}
+actionbar.objective.501.10=§6Hádzaním bômb do §9modrej sopky§6 skórujte.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
+actionbar.objective.501.11=§6Hádzaním bômb do §4červenej sopky§6 skórujte.	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
+
+
+actionbar.objective.601.1=§6Vitajte v záverečnom zúčtovaní.	#	###{StrContains="§6"} Mini game title, the final showdown is the last mini game played. 
+actionbar.objective.601.2=§6Je čas určiť konečného víťaza Stevovho kolesa.	#	###{StrContains="§6"} Refers to name of the game world, Wheel of Steve
+actionbar.objective.601.3=§6Spustite sa dole horským svahom %1a pozbierajte čo najviac smaragdov.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.601.4=§6Vyhráva hráč, ktorý získa najviac smaragdov.	#	###{StrContains="§6"}
+actionbar.objective.601.5=§6Dávajte pozor, aby ste nespadli z okraja, inak budete vyradení.	#	###{StrContains="§6"}
+actionbar.objective.601.6=§6Nezaostávajte ani sa nezatúlajte príliš dopredu, pretože to povedie k vašej eliminácii.	#	###{StrContains="§6"}
+actionbar.objective.601.7=§6Veľa šťastia!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.601.8=§6Zbierajte smaragdy a zostaňte v zábere kamery!	#	###{StrContains="§6"}
+
+##Dialogue
+steve.n=§6Steve	#	###{StrContains="§6"} A Minecraft Movie character name. 
+henry.n=§6Henry	#	###{StrContains="§6"} A Minecraft Movie character name. 
+garett.n=§6Garett	#	###{StrContains="§6"} A Minecraft Movie character name. 
+dawn.n=§6Dawn	#	###{StrContains="§6"} A Minecraft Movie character name. 
+natalie.n=§6Natalie	#	###{StrContains="§6"} A Minecraft Movie character name. 
+wheel.n=§6Stevovo koleso	#	###{StrContains="§6"} refers to world title. Wheel of Steve
+
+steve.d=Volám sa Steve. Počul som, že si chcete precvičiť §l§6komunikáciu§r. Mám pre vás tú pravú hru. Volám ju §a§lGuľové prepadnutie§r. Chcete sa zahrať?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+henry.d=Ahoj! Volám sa Henry. Vytvoril som zábavnú hru, ktorú nazývam §a§lTrafte to§r. Otestuje vašu §l§6kreativitu§r pri starej dobrej lukostreľbe. Chceli by ste sa zahrať? 	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+garett.d=Vedel som to. Cez celé ihrisko som videl, že ste profesionálny hráč ako ja, Garett Garrison. Najlepší hráči majú silný zmysel pre tímovú prácu a §l§6spoluprácu§r. Čo keby sme vyskúšali malú hru, ktorú rád nazývam §a§lVýroba výmyslov§r? Vaše zručnosti sa v nej podrobia dokonalej skúške! Ste pripravení?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+dawn.d=Ahoj! Volám sa Dawn! Budovanie silnej §l§6komunity§r s vaším tímom je rozhodujúce pre to, aby ste boli najlepší. Čo by ste povedali na hru, ktorá pomôže vybudovať tieto putá tímovej práce? Prichystala som pre vás §a§lBitku kroviek§r! Je to hra s lietaním vo výškach a hádzaním TNT, ktorá vás určite otestuje. Chcete sa zahrať?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+natalie.d=Ahoj! Volám sa Natalie. Povedali mi, že sa možno zastavíte. Vytvorila som malú logickú hru s názvom §a§lVojna mriežok§r, aby som otestovala vaše §l§6kritické myslenie§r. Chcete si ju zahrať?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+npc.nothost.d=Ľutujem, ale nie ste hostiteľ. Prostredníctvom mňa môže hry spúšťať iba hostiteľ.	#	###
+
+wheel.d=Vitajte v Stevovom kolese! Roztočte ma a zahrajte si náhodnú minihru! Prvý tím, ktorý vyhrá 3 minihry, sa zúčastní tajnej minihry!	#	###
+
+steve.b1=Zahrajte si	#	### Refers to playing the mini game title 
+steve.b2=Nechajte to tak.	#	### player is saying “no I don't want to play the game now”
+henry.b1=Zahrajte si	#	### Refers to playing the mini game title
+henry.b2=Nechajte to tak.	#	### Player is saying “no I don't want to play the game now” 
+garett.b1=Zahrajte si	#	### Refers to playing the mini game title
+garett.b2=Nechajte to tak.	#	### player is saying “no I don't want to play the game now” 
+dawn.b1=Zahrajte si	#	### Refers to playing the mini game title 
+dawn.b2=Nechajte to tak.	#	### player is saying “no I don't want to play the game now” 
+natalie.b1=Zahrajte si	#	### Refers to playing the mini game title 
+natalie.b2=Nechajte to tak.	#	### player is saying “no I don't want to play the game now” 
+npc.nothost.b1=Majte sa.	#	### Goodbye
+wheel.b1=Roztočiť koleso	#	### Spin the “Wheel of Steve” gameshow style spinner. 
+wheel.b2=Nechajte to tak.	#	### Player is saying, no I don't want to right now. 
+
+## Items
+item.rwm:orb=Guľa	#	### The orb from orb ambush. It's a blue sphere the player needs to keep hold of to score points.
+item.rwm:craft_diagram_1=Výrobná schéma 1	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_2=Výrobná schéma 2	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_3=Výrobná schéma 3	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_4=Výrobná schéma 4	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_5=Výrobná schéma 5	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_part_1=Olej na kolesá	#	### A small wooden gear, used as a crafting component.
+item.rwm:craft_part_2=Boxerská rukavica	#	### A bright red bloxing glove, used as a crafting component.
+item.rwm:craft_part_3=Rukoväť vedra	#	### The handle to a bucket you can carry around, used as a crafting component.
+item.rwm:craft_part_4=Kožená čižma	#	### A single leather boot, used as a crafting component.
+item.rwm:craft_part_5=Žiarovka	#	### A single light bulb, used as a crafting component.
+item.rwm:craft_part_6=Matice a skrutky	#	### A small gathering of metal nuts and bolts, used as a crafting component.
+item.rwm:craft_part_7=Mechanický rám	#	### A small cube-like frame, used as a crafting component. 
+item.rwm:craft_part_8=Sliepka	#	### A small Minecraft-chicken that can be picked up into the students inventory, used as a crafting component.
+item.rwm:craft_part_9=Kovová tyč	#	### A small single metal rod, used as a crafting component.
+item.rwm:craft_part_10=Zub ozubeného kolesa	#	### A small metal gear tooth, used as a crafting component.
+item.rwm:craft_part_11=Malé ozubené koleso	#	### A single small metal gear, used as a crafting component.
+item.rwm:craft_part_12=Kladka	#	### The actual small metal pulley, used as a crafting component.
+item.rwm:craft_contraption_fixed_1=Diel na opravu kolies	#	### The finalized, crafted wheel repair part, used to fix a the final contraption. It looks like a small wodden wheel.
+item.rwm:craft_contraption_fixed_2=Diel na opravu kuracieho dierovača	#	### The finalized, crafted chicken puncher, used to fix a the final contraption. It looks like a chicken with a boxing glove.
+item.rwm:craft_contraption_fixed_3=Diel na opravu kladky	#	### The finalized component, used to fix a the final contraption. It looks like a full pulley and rope system.
+item.rwm:craft_contraption_fixed_4=Diel na opravu banského vozíka	#	### The finalized component, used to fix a the final contraption. It looks like a small minecart.
+item.rwm:craft_contraption_fixed_5=Diel na opravu klietky	#	### The finalized component, used to fix a the final contraption. It looks like a small metal cage.
+
+item.diamond_helmet.name=§9Prilba 2. tímu	#	###{StrContains="§9"} Named item for team 2's helmet.
+item.diamond_chestplate.name=§9Hrudný pancier 2. tímu	#	###{StrContains="§9"} Named item for team 2's chestplate.
+item.diamond_leggings.name=§9Nohavice 2. tímu	#	###{StrContains="§9"} Named item for team 2's leggings.
+item.diamond_boots.name=§9Topánky 2. tímu	#	###{StrContains="§9"} Named item for team 2's boots.
+item.iron_helmet.name=§mPrilba 1. tímu	#	###{StrContains="§m"} Named item for team 1's helmet.
+item.iron_chestplate.name=§mHrudný pancier 1. tímu	#	###{StrContains="§m"} Named item for team 1's chestplate.
+item.iron_leggings.name=§mNohavice 1. tímu	#	###{StrContains="§m"} Named item for team 1's leggings.
+item.iron_boots.name=§mTopánky 1. tímu	#	###{StrContains="§m"} Named item for team 1's boots.
+
+## Interacts
+interact.marker.start_map=§6Spustiť mapu	#	###{StrContains="§6"} Displays on the students screen when they are hoving over the button to start the game.
+interact.wheel_of_steve=§6Roztočiť Stevovo koleso?	#	###{StrContains="§6"} Displays on the students screen when hoving over the giant Wheel of Steve in the center of the lobby.
+interact.npc_1=§6Rozprávať	#	###{StrContains="§6"} Displayed when hovering over any NPC that is interactable.
+interact.craft_board_change=§6Zobraziť schému.	#	###{StrContains="§6"} Displayed when hovering over the crafting board with a diagram in the players inventory.
+interact.craft_part_pickup=§6Zdvihnite diel.	#	###{StrContains="§6"} Dislpayed when hovering over an crafting component in Contraption Craft Off.
+interact.craft_crafting_change=§6Umiestnite diel.	#	###{StrContains="§6"} Displayed when holding a crafting part and hovering over the crafting table in Contraption Craft Off.
+interact.craft_contraption_change=§6Opraviť výmysel.	#	###{StrContains="§6"} Displayed when you have a fixed contraption in your inventory and hover over the contraption in Contraption Craft Off.
+grid_block_magenta.interact=Získať §dpurpurový§r blok	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime.interact=Získať §ažltozelený§r blok	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue.interact=Získať §9modrý§r blok	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red.interact=Získať §cčervený§r blok	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow.interact=Získať §ežltý§r blok	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+grid_block_magenta_obtain.interact=Získať §dpurpurový§r blok	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime_obtain.interact=Získať §ažltozelený§r blok	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue_obtain.interact=Získať §9modrý§r blok	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red_obtain.interact=Získať §cčervený§r blok	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow_obtain.interact=Získať §ežltý§r blok	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+orb.flag.ride.interact=Interagujte a získajte guľu.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.unride.interact=Interagujte a získajte guľu.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+

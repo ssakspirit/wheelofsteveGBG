@@ -1,0 +1,530 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:craft_contraption",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,10],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "craft_contraption" ]
+			},
+			"minecraft:health": {
+				"value": 1,
+				"max": 1
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {},
+						"deals_damage": false
+					}
+				]
+			},
+			"minecraft:collision_box": {
+				"width": 0.01,
+				"height": 0.01
+			},
+            "minecraft:custom_hit_test":{
+                "hitboxes": [
+                    {
+                        "width": 2.5,
+                        "height": 3.0,
+                        "pivot": [ 0, 0, 0 ]
+                    }
+                ]
+            },
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            }
+		},
+        "component_groups": {
+            "rwm:contraption_1_broken": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "interact_text": "interact.craft_contraption_change",
+                            "vibration": "shear",
+                            "use_item": true,
+                            "swing": true,
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        { 
+                                            "test": "is_family", 
+                                            "subject": "other", 
+                                            "value": "player" 
+                                        },
+                                        {
+                                            "test": "has_tag", 
+                                            "subject": "other",
+                                            "operator": "==", 
+                                            "value": "craft_player" 
+                                        },
+                                        {
+                                            "test": "has_equipment", 
+                                            "subject": "other",
+                                            "domain": "hand", 
+                                            "value": "rwm:craft_contraption_fixed_1" 
+                                        }
+                                    ]
+                                },
+                            "event": "rwm:contraption_1_fixed"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rwm:contraption_2_broken": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "interact_text": "interact.craft_contraption_change",
+                            "vibration": "shear",
+                            "use_item": true,
+                            "swing": true,
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        { 
+                                            "test": "is_family", 
+                                            "subject": "other", 
+                                            "value": "player" 
+                                        },
+                                        {
+                                            "test": "has_tag", 
+                                            "subject": "other",
+                                            "operator": "==", 
+                                            "value": "craft_player" 
+                                        },
+                                        {
+                                            "test": "has_equipment", 
+                                            "subject": "other",
+                                            "domain": "hand", 
+                                            "value": "rwm:craft_contraption_fixed_2" 
+                                        }
+                                    ]
+                                },
+                            "event": "rwm:contraption_2_fixed"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rwm:contraption_3_broken": {
+                "minecraft:mark_variant": {
+                    "value": 2
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "interact_text": "interact.craft_contraption_change",
+                            "vibration": "shear",
+                            "use_item": true,
+                            "swing": true,
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        { 
+                                            "test": "is_family", 
+                                            "subject": "other", 
+                                            "value": "player" 
+                                        },
+                                        {
+                                            "test": "has_tag", 
+                                            "subject": "other",
+                                            "operator": "==", 
+                                            "value": "craft_player" 
+                                        },
+                                        {
+                                            "test": "has_equipment", 
+                                            "subject": "other",
+                                            "domain": "hand", 
+                                            "value": "rwm:craft_contraption_fixed_3" 
+                                        }
+                                    ]
+                                },
+                            "event": "rwm:contraption_3_fixed"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rwm:contraption_4_broken": {
+                "minecraft:mark_variant": {
+                    "value": 3
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "interact_text": "interact.craft_contraption_change",
+                            "vibration": "shear",
+                            "use_item": true,
+                            "swing": true,
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        { 
+                                            "test": "is_family", 
+                                            "subject": "other", 
+                                            "value": "player" 
+                                        },
+                                        {
+                                            "test": "has_tag", 
+                                            "subject": "other",
+                                            "operator": "==", 
+                                            "value": "craft_player" 
+                                        },
+                                        {
+                                            "test": "has_equipment", 
+                                            "subject": "other",
+                                            "domain": "hand", 
+                                            "value": "rwm:craft_contraption_fixed_4" 
+                                        }
+                                    ]
+                                },
+                            "event": "rwm:contraption_4_fixed"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rwm:contraption_5_broken": {
+                "minecraft:mark_variant": {
+                    "value": 4
+                },
+                "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "interact_text": "interact.craft_contraption_change",
+                            "vibration": "shear",
+                            "use_item": true,
+                            "swing": true,
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        { 
+                                            "test": "is_family", 
+                                            "subject": "other", 
+                                            "value": "player" 
+                                        },
+                                        {
+                                            "test": "has_tag", 
+                                            "subject": "other",
+                                            "operator": "==", 
+                                            "value": "craft_player" 
+                                        },
+                                        {
+                                            "test": "has_equipment", 
+                                            "subject": "other",
+                                            "domain": "hand", 
+                                            "value": "rwm:craft_contraption_fixed_5" 
+                                        }
+                                    ]
+                                },
+                            "event": "rwm:contraption_5_fixed"
+                            }
+                        }
+                    ]
+                }
+            },
+            "rwm:contraption_1_fixed": {
+                "minecraft:mark_variant": {
+                    "value": 5
+                }
+            },
+            "rwm:contraption_2_fixed": {
+                "minecraft:mark_variant": {
+                    "value": 6
+                }
+            },
+            "rwm:contraption_3_fixed": {
+                "minecraft:mark_variant": {
+                    "value": 7
+                }
+            },
+            "rwm:contraption_4_fixed": {
+                "minecraft:mark_variant": {
+                    "value": 8
+                }
+            },
+            "rwm:contraption_5_fixed": {
+                "minecraft:mark_variant": {
+                    "value": 9
+                }
+            },
+            "rwm:despawn": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+		"events": {
+			"rwm:contraption_1_broken":{
+				"set_property": {"rwm:skin":1},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/contraption_1_break"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_2_broken",
+                        "rwm:contraption_3_broken",
+                        "rwm:contraption_4_broken",
+                        "rwm:contraption_5_broken",
+                        "rwm:contraption_1_fixed",
+                        "rwm:contraption_2_fixed",
+                        "rwm:contraption_3_fixed",
+                        "rwm:contraption_4_fixed",
+                        "rwm:contraption_5_fixed"
+                    ]
+                }
+			},
+            "rwm:contraption_2_broken":{
+				"set_property": {"rwm:skin":2},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/contraption_2_break"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_2_broken"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken",
+                        "rwm:contraption_3_broken",
+                        "rwm:contraption_4_broken",
+                        "rwm:contraption_5_broken",
+                        "rwm:contraption_1_fixed",
+                        "rwm:contraption_2_fixed",
+                        "rwm:contraption_3_fixed",
+                        "rwm:contraption_4_fixed",
+                        "rwm:contraption_5_fixed"
+                    ]
+                }
+			},
+            "rwm:contraption_3_broken":{
+				"set_property": {"rwm:skin":3},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/contraption_3_break"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_3_broken"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken",
+                        "rwm:contraption_2_broken",
+                        "rwm:contraption_4_broken",
+                        "rwm:contraption_5_broken",
+                        "rwm:contraption_1_fixed",
+                        "rwm:contraption_2_fixed",
+                        "rwm:contraption_3_fixed",
+                        "rwm:contraption_4_fixed",
+                        "rwm:contraption_5_fixed"
+                    ]
+                }
+			},
+            "rwm:contraption_4_broken":{
+				"set_property": {"rwm:skin":4},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/contraption_4_break"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_4_broken"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken",
+                        "rwm:contraption_2_broken",
+                        "rwm:contraption_3_broken",
+                        "rwm:contraption_5_broken",
+                        "rwm:contraption_1_fixed",
+                        "rwm:contraption_2_fixed",
+                        "rwm:contraption_3_fixed",
+                        "rwm:contraption_4_fixed",
+                        "rwm:contraption_5_fixed"
+                    ]
+                }
+			},
+            "rwm:contraption_5_broken":{
+				"set_property": {"rwm:skin":5},
+                "queue_command":{
+                    "command": "function utility/games/craft/tagging/contraption_5_break"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_5_broken"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken",
+                        "rwm:contraption_2_broken",
+                        "rwm:contraption_3_broken",
+                        "rwm:contraption_4_broken",
+                        "rwm:contraption_1_fixed",
+                        "rwm:contraption_2_fixed",
+                        "rwm:contraption_3_fixed",
+                        "rwm:contraption_4_fixed",
+                        "rwm:contraption_5_fixed"
+                    ]
+                }
+			},
+            "rwm:contraption_1_fixed":{
+				"set_property": {"rwm:skin":6},
+                "queue_command":{
+                    "command": "function utility/games/craft/random_next_diagram_multiplayer"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_1_fixed"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken",
+                        "rwm:contraption_2_broken",
+                        "rwm:contraption_3_broken",
+                        "rwm:contraption_4_broken",
+                        "rwm:contraption_5_broken",
+                        "rwm:contraption_2_fixed",
+                        "rwm:contraption_3_fixed",
+                        "rwm:contraption_4_fixed",
+                        "rwm:contraption_5_fixed"
+                    ]
+                }
+			},
+            "rwm:contraption_2_fixed":{
+				"set_property": {"rwm:skin":7},
+                "queue_command":{
+                    "command": "function utility/games/craft/random_next_diagram_multiplayer"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_2_fixed"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken",
+                        "rwm:contraption_2_broken",
+                        "rwm:contraption_3_broken",
+                        "rwm:contraption_4_broken",
+                        "rwm:contraption_5_broken",
+                        "rwm:contraption_1_fixed",
+                        "rwm:contraption_3_fixed",
+                        "rwm:contraption_4_fixed",
+                        "rwm:contraption_5_fixed"
+                    ]
+                }
+			},
+            "rwm:contraption_3_fixed":{
+				"set_property": {"rwm:skin":8},
+                "queue_command":{
+                    "command": "function utility/games/craft/random_next_diagram_multiplayer"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_3_fixed"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken",
+                        "rwm:contraption_2_broken",
+                        "rwm:contraption_3_broken",
+                        "rwm:contraption_4_broken",
+                        "rwm:contraption_5_broken",
+                        "rwm:contraption_1_fixed",
+                        "rwm:contraption_2_fixed",
+                        "rwm:contraption_4_fixed",
+                        "rwm:contraption_5_fixed"
+                    ]
+                }
+			},
+            "rwm:contraption_4_fixed":{
+				"set_property": {"rwm:skin":9},
+                "queue_command":{
+                    "command": "function utility/games/craft/random_next_diagram_multiplayer"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_4_fixed"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken",
+                        "rwm:contraption_2_broken",
+                        "rwm:contraption_3_broken",
+                        "rwm:contraption_4_broken",
+                        "rwm:contraption_5_broken",
+                        "rwm:contraption_1_fixed",
+                        "rwm:contraption_2_fixed",
+                        "rwm:contraption_3_fixed",
+                        "rwm:contraption_5_fixed"
+                    ]
+                }
+			},
+            "rwm:contraption_5_fixed":{
+				"set_property": {"rwm:skin":10},
+                "queue_command":{
+                    "command": "function utility/games/craft/random_next_diagram_multiplayer"
+                },
+                "add":{
+                    "component_groups":[
+                        "rwm:contraption_5_fixed"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:contraption_1_broken",
+                        "rwm:contraption_2_broken",
+                        "rwm:contraption_3_broken",
+                        "rwm:contraption_4_broken",
+                        "rwm:contraption_5_broken",
+                        "rwm:contraption_1_fixed",
+                        "rwm:contraption_2_fixed",
+                        "rwm:contraption_3_fixed",
+                        "rwm:contraption_4_fixed"
+                    ]
+                }
+			},
+            "rwm:despawn":{
+                "add":{
+                    "component_groups":[
+                        "rwm:despawn"
+                    ]
+                }
+			}
+		}
+	}
+}

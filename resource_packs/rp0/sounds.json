@@ -1,0 +1,54 @@
+{
+   "individual_event_sounds" : {
+      "events" : {
+		 "ambient.basalt_deltas.additions" : {
+            "sound" : ""
+         },
+		 "ambient.basalt_deltas.mood" : {
+            "sound" : ""
+         },
+		 "ambient.basalt_deltas.loop" : {
+            "sound" : ""
+         },
+         "ambient.cave" : {
+            "sound" : ""
+         },
+		 "ambient.crimson_forest.additions" : {
+            "sound" : ""
+         },
+		 "ambient.crimson_forest.loop" : {
+            "sound" : ""
+         },
+         "ambient.crimson_forest.mood" : {
+            "sound" : ""
+         },
+		 "ambient.nether_wastes.additions" : {
+            "sound" : ""
+         },
+         "ambient.nether_wastes.loop" : {
+            "sound" : ""
+         },
+         "ambient.nether_wastes.mood" : {
+            "sound" : ""
+         },
+		 "ambient.soulsand_valley.additions" : {
+            "sound" : ""
+         },
+         "ambient.soulsand_valley.loop" : {
+            "sound" : ""
+         },
+         "ambient.soulsand_valley.mood" : {
+            "sound" : ""
+         },
+		 "ambient.warped_forest.additions" : {
+            "sound" : ""
+         },
+         "ambient.warped_forest.loop" : {
+            "sound" : ""
+         },
+         "ambient.warped_forest.mood" : {
+            "sound" : ""
+         }
+      }
+   }
+}

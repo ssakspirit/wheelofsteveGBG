@@ -1,0 +1,26 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.grid_block": {
+			"materials": [ { "*": "Material.default" } ],
+            "geometry": "Geometry.default",
+            "textures": [
+                "array.skins[query.mark_variant]"
+            ],
+			"arrays": {
+				"textures": {
+					"array.skins": [
+                        "texture.default",
+						"texture.lime",
+						"texture.blue",
+						"texture.yellow",
+						"texture.red",
+						"texture.magenta",
+						"texture.null"
+					]
+				}
+			},
+			"ignore_lighting" : true
+		}
+	}
+}

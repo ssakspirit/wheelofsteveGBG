@@ -1,0 +1,415 @@
+{
+	"format_version": "1.14.0",
+	"minecraft:npc_dialogue": {
+		"scenes": [
+			{
+				"scene_tag": "npc_steve",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "steve.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "steve.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "steve.b1"
+								}
+							]
+						},
+						"commands": ["/execute if entity @p[r=6,tag=.host] run /function utility/games/orb/game_start "]
+					},
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "steve.b2"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_henry",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "henry.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "henry.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "henry.b1"
+								}
+							]
+						},
+						"commands": ["/execute if entity @p[r=6,tag=.host] run /function utility/games/nock/game_start "]
+					},
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "henry.b2"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_garett",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "garett.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "garett.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "garett.b1"
+								}
+							]
+						},
+						"commands": ["/execute if entity @p[r=6,tag=.host] run /function utility/games/craft/game_start "]
+					},
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "garett.b2"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_dawn",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "dawn.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "dawn.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "dawn.b1"
+								}
+							]
+						},
+						"commands": ["/execute if entity @p[r=6,tag=.host] run /function utility/games/elytra/game_start "]
+					},
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "dawn.b2"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_natalie",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "natalie.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "natalie.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "natalie.b1"
+								}
+							]
+						},
+						"commands": ["/execute if entity @p[r=6,tag=.host] run /function utility/games/grid/game_start "]
+					},
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "natalie.b2"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_steve_nothost",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "steve.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "npc.nothost.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "npc.nothost.b1"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_henry_nothost",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "henry.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "npc.nothost.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "npc.nothost.b1"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_garett_nothost",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "garett.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "npc.nothost.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "npc.nothost.b1"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_dawn_nothost",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "dawn.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "npc.nothost.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "npc.nothost.b1"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_natalie_nothost",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "natalie.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "npc.nothost.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "npc.nothost.b1"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_wheel_of_steve",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "wheel.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "wheel.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "wheel.b1"
+								}
+							]
+						},
+						"commands": ["/execute if entity @p[r=6,tag=.host] run /function utility/wheel/spin_start"]
+					},
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "wheel.b2"
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"scene_tag": "npc_wheel_of_steve_nothost",
+				"npc_name": {
+					"rawtext": [
+						{
+							"translate": "wheel.n"
+						}
+					]
+				},
+				"text": {
+					"rawtext": [
+						{
+							"translate": "npc.nothost.d",
+							"with": ["\n"]
+						}
+					]
+				},
+				"buttons": [
+					{
+						"name": {
+							"rawtext": [
+								{
+									"translate": "npc.nothost.b1"
+								}
+							]
+						}
+					}
+				]
+			}
+		]
+	}
+}

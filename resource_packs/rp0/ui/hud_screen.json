@@ -1,0 +1,11 @@
+{
+	"hud_title_text": {
+		"offset": [0, "-33%"]
+	},
+	"hud_title_text/title_frame/title": {
+		"font_size": "large"
+	},
+	"hud_title_text/subtitle_frame/subtitle": {
+		"font_size": "medium"
+	}
+}

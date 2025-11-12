@@ -1,0 +1,761 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:nock_prop",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,19],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+            "minecraft:mark_variant": {
+                    "value": 0
+            },
+			"minecraft:type_family": {
+				"family": [ "nock_prop" ]
+			},
+			"minecraft:health": {
+				"value": 1,
+				"max": 1
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {},
+						"deals_damage": false
+					}
+				]
+			},
+			"minecraft:collision_box": {
+				"width": 0.1,
+				"height": 0.1
+			},
+            "minecraft:custom_hit_test":{
+                "hitboxes": [
+                    {
+                        "width": 0.1,
+                        "height": 0.1,
+                        "pivot": [ 0, 0, 0 ]
+                    }
+                ]
+            },
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            }
+		},
+        "component_groups": {
+            "rwm:armadillo": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                }
+            },
+            "rwm:bee": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                }
+            },
+            "rwm:camel": {
+                "minecraft:mark_variant": {
+                    "value":2
+                }
+            },
+            "rwm:chicken": {
+                "minecraft:mark_variant": {
+                    "value": 3
+                }
+            },
+            "rwm:cow": {
+                "minecraft:mark_variant": {
+                    "value": 4
+                }
+            },
+            "rwm:donkey": {
+                "minecraft:mark_variant": {
+                    "value": 5
+                }
+            },
+            "rwm:fox": {
+                "minecraft:mark_variant": {
+                    "value": 6
+                }
+            },
+            "rwm:goat": {
+                "minecraft:mark_variant": {
+                    "value": 7
+                }
+            },
+            "rwm:llama": {
+                "minecraft:mark_variant": {
+                    "value": 8
+                }
+            },
+            "rwm:minecart": {
+                "minecraft:mark_variant": {
+                    "value": 9
+                }
+            },
+            "rwm:pig": {
+                "minecraft:mark_variant": {
+                    "value": 10
+                }
+            },
+            "rwm:polarbear": {
+                "minecraft:mark_variant": {
+                    "value": 11
+                }
+            },
+            "rwm:rabbit_desert": {
+                "minecraft:mark_variant": {
+                    "value": 12
+                }
+            },
+            "rwm:rabbit_plains": {
+                "minecraft:mark_variant": {
+                    "value": 13
+                }
+            },
+            "rwm:sheep": {
+                "minecraft:mark_variant": {
+                    "value": 14
+                }
+            },
+            "rwm:sniffer": {
+                "minecraft:mark_variant": {
+                    "value": 15
+                }
+            },
+            "rwm:snowgolem": {
+                "minecraft:mark_variant": {
+                    "value": 16
+                }
+            },
+            "rwm:spider": {
+                "minecraft:mark_variant": {
+                    "value": 17
+                }
+            },
+            "rwm:wolf": {
+                "minecraft:mark_variant": {
+                    "value": 18
+                }
+            },
+            "rwm:animate": {
+                "minecraft:is_baby": {},
+                "minecraft:timer": {
+                     "time": [3, 3],
+                     "time_down_event": {
+                         "event": "rwm:nock_animate_end"
+                     }
+                }
+            },
+            "rwm:despawn": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+		"events": {
+			"rwm:nock_armadillo":{
+				"set_property": {"rwm:skin":1},
+                "add":{
+                    "component_groups":[
+                        "rwm:armadillo"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_bee":{
+				"set_property": {"rwm:skin":2},
+                "add":{
+                    "component_groups":[
+                        "rwm:bee"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_camel":{
+				"set_property": {"rwm:skin":3},
+                "add":{
+                    "component_groups":[
+                        "rwm:camel"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_chicken":{
+				"set_property": {"rwm:skin":4},
+                "add":{
+                    "component_groups":[
+                        "rwm:chicken"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_cow":{
+				"set_property": {"rwm:skin":5},
+                "add":{
+                    "component_groups":[
+                        "rwm:cow"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_donkey":{
+				"set_property": {"rwm:skin":6},
+                "add":{
+                    "component_groups":[
+                        "rwm:donkey"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_fox":{
+				"set_property": {"rwm:skin":7},
+                "add":{
+                    "component_groups":[
+                        "rwm:fox"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_goat":{
+				"set_property": {"rwm:skin":8},
+                "add":{
+                    "component_groups":[
+                        "rwm:goat"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_llama":{
+				"set_property": {"rwm:skin":9},
+                "add":{
+                    "component_groups":[
+                        "rwm:llama"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_minecart":{
+				"set_property": {"rwm:skin":10},
+                "add":{
+                    "component_groups":[
+                        "rwm:minecart"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_pig":{
+				"set_property": {"rwm:skin":11},
+                "add":{
+                    "component_groups":[
+                        "rwm:pig"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_polarbear":{
+				"set_property": {"rwm:skin":12},
+                "add":{
+                    "component_groups":[
+                        "rwm:polarbear"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_rabbit_desert":{
+				"set_property": {"rwm:skin":13},
+                "add":{
+                    "component_groups":[
+                        "rwm:rabbit_desert"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_rabbit_plains":{
+				"set_property": {"rwm:skin":14},
+                "add":{
+                    "component_groups":[
+                        "rwm:rabbit_plains"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_sheep":{
+				"set_property": {"rwm:skin":15},
+                "add":{
+                    "component_groups":[
+                        "rwm:sheep"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_sniffer":{
+				"set_property": {"rwm:skin":16},
+                "add":{
+                    "component_groups":[
+                        "rwm:sniffer"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:snowgolem",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_snowgolem":{
+				"set_property": {"rwm:skin":17},
+                "add":{
+                    "component_groups":[
+                        "rwm:snowgolem"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:spider",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_spider":{
+				"set_property": {"rwm:skin":18},
+                "add":{
+                    "component_groups":[
+                        "rwm:spider"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:wolf"
+                    ]
+                }
+			},
+            "rwm:nock_wolf":{
+				"set_property": {"rwm:skin":19},
+                "add":{
+                    "component_groups":[
+                        "rwm:wolf"
+                    ]
+                },
+                "remove":{
+                    "component_groups":[
+                        "rwm:armadillo",
+                        "rwm:bee",
+                        "rwm:camel",
+                        "rwm:chicken",
+                        "rwm:cow",
+                        "rwm:donkey",
+                        "rwm:fox",
+                        "rwm:goat",
+                        "rwm:llama",
+                        "rwm:minecart",
+                        "rwm:pig",
+                        "rwm:polarbear",
+                        "rwm:rabbit_desert",
+                        "rwm:rabbit_plains",
+                        "rwm:sheep",
+                        "rwm:sniffer",
+                        "rwm:snowgolem",
+                        "rwm:spider"
+                    ]
+                }
+			},
+            "rwm:nock_animate":{
+                "add":{
+                    "component_groups":[
+                        "rwm:animate"
+                    ]
+                }
+			},
+            "rwm:nock_animate_end":{
+                "remove":{
+                    "component_groups":[
+                        "rwm:animate"
+                    ]
+                }
+			},
+            "rwm:despawn":{
+                "add":{
+                    "component_groups":[
+                        "rwm:despawn"
+                    ]
+                }
+			}
+		}
+	}
+}

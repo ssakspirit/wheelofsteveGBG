@@ -1,0 +1,127 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:wheel_of_steve",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,5],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "wheel_of_steve" ]
+			},
+			"minecraft:health": {
+				"value": 1,
+				"max": 1
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {},
+						"deals_damage": false
+					}
+				]
+			},
+			"minecraft:collision_box": {
+				"width": 0.6,
+				"height": 3.8
+			},
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            },
+            "minecraft:interact": {
+                    "interactions": [
+                        {
+                            "interact_text": "interact.wheel_of_steve",
+                            "vibration": "shear",
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        { 
+                                            "test": "is_family", 
+                                            "subject": "other", 
+                                            "value": "player" 
+                                        },
+                                        {
+                                            "test": "has_tag", 
+                                            "subject": "other",
+                                            "operator": "==", 
+                                            "value": ".host" 
+                                        }
+                                    ]
+                                },
+                            "event": "rwm:dialogue"
+                            }
+                        },
+                        {
+                            "interact_text": "interact.wheel_of_steve",
+                            "vibration": "shear",
+                            "on_interact": {
+                                "filters": {
+                                    "all_of": [
+                                        { 
+                                            "test": "is_family", 
+                                            "subject": "other", 
+                                            "value": "player" 
+                                        },
+                                        {
+                                            "test": "has_tag", 
+                                            "subject": "other",
+                                            "operator": "!=", 
+                                            "value": ".host" 
+                                        }
+                                    ]
+                                },
+                            "event": "rwm:dialogue_nothost"
+                            }
+                        }
+                    ]
+            },
+            "minecraft:npc": {
+                "npc_data": {
+                    "portrait_offsets": {
+                        "translate": [-7, -25, 0],
+                        "scale": [0.6, 0.6, 0.6]
+                    }
+                }
+            }
+		},
+        "component_groups": {
+            "rwm:despawn": {
+                "minecraft:instant_despawn": {}
+            }
+        },
+		"events": {
+            "rwm:despawn":{
+                "add":{
+                    "component_groups":[
+                        "rwm:despawn"
+                    ]
+                }
+			},
+            "rwm:dialogue":{
+                "queue_command":{
+                    "command": "dialogue open @s @p[tag=.host,r=6] npc_wheel_of_steve"
+                }
+			},
+            "rwm:dialogue_nothost":{
+                "queue_command":{
+                    "command": "dialogue open @s @p[tag=.nothost,r=6,c=1] npc_wheel_of_steve_nothost"
+                }
+			}
+		}
+	}
+}

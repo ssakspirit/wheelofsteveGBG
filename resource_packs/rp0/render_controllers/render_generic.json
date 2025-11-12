@@ -1,0 +1,15 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.default.entity": {
+			"geometry": "Geometry.default",
+			"materials": [{"*": "Material.default"}],
+			"textures": ["Texture.default"]
+		},
+		"controller.render.default_item": {
+			"geometry": "Geometry.default_item",
+			"materials": [{"*": "Material.default_item"}],
+			"textures": ["Texture.default_item"]
+		}
+	}
+}

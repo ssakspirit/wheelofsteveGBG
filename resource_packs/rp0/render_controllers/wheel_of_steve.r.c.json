@@ -1,0 +1,18 @@
+{
+	"format_version": "1.20.0",
+	"render_controllers": {
+		"controller.render.wheel_of_steve": {
+			"geometry": "Geometry.default",
+			"textures": ["Texture.default"],
+			"materials": [
+				{
+					"*": "Material.default"	//Make sure to use a material with 'USE_UV_ANIM' enabled, such as 'conduit_wind'!
+				}
+			],
+			"uv_anim": {
+				"scale": [1, "1 / 2"],
+				"offset": [0, "Math.mod(Math.floor(query.life_time * 7), 2) / 2"]
+			}
+		}
+	}
+}

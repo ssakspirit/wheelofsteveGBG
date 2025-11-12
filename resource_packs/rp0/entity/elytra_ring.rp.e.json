@@ -1,0 +1,33 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "rwm:elytra_ring",
+      		"min_engine_version": "1.16.0",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"geometry": {
+				"default": "geometry.tnt_ring"
+			},
+			"textures": {
+				"default" : "textures/rwm/entity/tnt_ring"
+			},
+			"render_controllers": [
+				"controller.render.default.entity"
+			],
+			"animations": {
+                "idle": "animation.rwm.tnt_ring.idle"
+			},
+			"scripts": {
+                "animate": [
+					"idle"
+				]
+			},
+			"spawn_egg": {
+				"base_color": "#FFFFFF",
+				"overlay_color": "#FF0000"
+			}
+		}
+	}
+}

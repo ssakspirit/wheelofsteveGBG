@@ -1,0 +1,87 @@
+{
+	"format_version": "1.20.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "rwm:marker",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"rwm:skin":{
+					"type":"int",
+					"range":[0,2],
+					"default": 0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:type_family": {
+				"family": [ "marker" ]
+			},
+			"minecraft:health": {
+				"value": 1,
+				"max": 1
+			},
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {},
+						"deals_damage": false
+					}
+				]
+			},
+			"minecraft:collision_box": {
+				"width": 4.0,
+				"height": 4.0
+			},
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+            "minecraft:nameable": {
+                "always_show": false
+            }
+		},
+        "component_groups": {
+            "rwm:marker_start_map": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:interact":{
+                    "interactions": [
+                        {
+                        "on_interact": {
+                            "event":"rwm:marker_start_map_activate"
+                        },
+                        "interact_text": "interact.marker.start_map"
+                        }
+                    ]
+                }
+            }
+        },
+		"events": {
+			"rwm:marker_start_map":{
+				"set_property": {"rwm:skin":0},
+                "add":{
+                    "component_groups":[
+                        "rwm:marker_start_map"
+                    ]
+                }
+			},
+			"rwm:marker_clear":{
+				"set_property": {"rwm:skin":1},
+                "remove":{
+                    "component_groups":[
+                        "rwm:marker_start_map"
+                    ]
+                }
+			},
+			"rwm:marker_start_map_activate":{
+				"queue_command": {
+                    "command": "function utility/lobby/lobby_start"
+                }
+			}
+		}
+	}
+}

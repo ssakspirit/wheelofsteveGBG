@@ -1,0 +1,237 @@
+﻿##
+## Wheel of Steve
+## Copyright 2024 http://rewrite.media
+## 
+
+map.version=1.0.12	#	###{LOCKED}
+lang.version=0.0.9	#	###{LOCKED}
+
+pack.name=Τροχός του Steve	#	### Steve is a minecraft character and the wheel is a gameshow style spinner that chooses what mini games will be played. 
+pack.description=Απαιτούμενοι πόροι για Μίνι Παιχνίδια Ταινιών	#	### Resources needed for name of map
+
+## Wins
+subtitle.objective.1000.1=§4§lΗ ομάδα 1 §aΚέρδισε!	#	###{StrContains="§l"}{StrContains="§4"}{StrContains="§a"}Displayed when team 1 wins a single game.
+subtitle.objective.1000.2=§9§lΗ ομάδα 2 §aΚέρδισε!	#	###{StrContains="§l"}{StrContains="§9"}{StrContains="§a"}Displayed when team 2 wins a single game.
+subtitle.objective.1000.3=§4Η Ομάδα 1 §aκέρδισε §fστον §6Τροχό του Steve!	#	###{StrContains="§4"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 1 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.4=§9Η Ομάδα 2 §aκέρδισε §fστον §6Τροχό του Steve!	#	###{StrContains="§9"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 12 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.5=§e§lΙσοπαλία!	#	###{StrContains="§l"}{StrContains="§e"}{StrContains="§a"} Displays when a game finishes in a draw.
+
+## Countdown
+subtitle.title=§r	#	###{LOCKED}
+subtitle.objective.101.1=§c§l3	#	###{LOCKED}
+subtitle.objective.101.2=§e§l2	#	###{LOCKED}
+subtitle.objective.101.3=§b§l1	#	###{LOCKED}
+subtitle.objective.101.4=§a§lΠάμε!	#	###{StrContains="§a"}{StrContains="§l"}Displayed after a 3-2-1 countdown timer.
+
+## Interact text
+interact.craft_diagram_pickup=§6Αλληλεπίδρασε για να μαζέψεις το μοτίβο.	#	###{StrContains="§6"}
+
+## Chat
+chat.join.team.1=§6Είσαι τώρα στην §4Ομάδα 1§6!	#	###{StrContains="§6"}{StrContains="§4"}Displayed when the game moves you to the Team 1 team.
+chat.join.team.2=§6Είσαι τώρα στην §9Ομάδα 2§6!	#	###{StrContains="§6"}{StrContains="§9"}Displayed when the game moves you to the Team 2 team.
+
+##Boards
+board.singleplayer.1=                                                                                                §lΚαλώς ήρθες στον                                         §gΤροχό του Steve§r                                                                                                                                                                                       §dΘέλεις να συμμετάσχουν παίκτες στον κόσμο σου;§r             §lΜενού Παύσης -> §r] (καρτέλα Πρόσωπα)§l -> Έναρξη Φιλοξενίας§r         Έπειτα, §oκοινοποίησε§r τον κωδικό συμμετοχής στους φίλους σου!                                                                                                   §bΘέλεις να παίξεις μόνος σου;§r                       Πρώτα, διάλεξε μια ομάδα περπατώντας στην §cΑριστερή §rή §9Δεξιά §rπεριοχή.         Έπειτα, §oαλληλεπίδρασε§r με το κουμπί που βρίσκεται πίσω σου.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+board.multiplayer.1=                                                                                                §lΚαλώς ήρθες στον                                         §gΤροχό του Steve§r                                                                                                                                                                                   §dΘέλεις §oπερισσότεροι§r§d παίκτες να συμμετάσχουν στον κόσμο σου;§r                     §lΜενού Παύσης -> ] (καρτέλα Πρόσωπα)§r              Έπειτα, §oκοινοποίησε§r τον κωδικό συμμετοχής στους φίλους σου για να συμμετάσχουν!             Μπορείς να παίξεις με μέγιστο αριθμό 8 ατόμων.                                                                                                   §bΘέλεις να ξεκινήσεις το παιχνίδι;§r                     Πρώτα, διάλεξε μια ομάδα περπατώντας στην §cΑριστερή §rή §9Δεξιά §rπεριοχή.            Έπειτα, ο φρουρός (ή δημιουργός κόσμου) πρέπει               να §oαλληλεπιδράσει§r με το κουμπί επιβεβαίωσης που βρίσκεται πίσω σου.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+
+## Actionbar Objective
+actionbar.objective.000.10000=§6Αλληλεπίδρασε για Έναρξη	#	###{StrContains="§6"}
+actionbar.objective.001.1=§6Καλώς όρισες!	#	###{StrContains="§6"}An introduction to the start of the map, the first word shown by its self, leading into the next message.
+actionbar.objective.001.2=§6Είσαι ο διοργανωτής αυτού του κόσμου.	#	###{StrContains="§6"}
+actionbar.objective.001.3=§6Ως φρουρός, μπορείς να επιλέξεις ποια παιχνίδια παίζονται. %1Οι άλλοι παίκτες δεν μπορούν να το κάνουν αυτό.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.4=§6Αρχικά: πήγαινε σε μια από τις δύο χρωματιστές πλατφόρμες %1για να μπεις σε μια ομάδα.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.5=§6Έως και 4 παίκτες μπορούν να συμμετάσχουν σε κάθε ομάδα. %1Προσπάθησε να έχεις ισορροπημένες ομάδες αν γίνεται.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.6=§6Φρόντισε να μπουν όλοι σε ομάδα πριν συνεχίσεις.	#	###{StrContains="§6"}
+actionbar.objective.001.7=§6Φτιάξε έναν νέο κόσμο αν θέλεις να συμμετάσχουν περισσότεροι παίκτες %1μόλις περάσεις αυτό το τμήμα.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.8=§6Μόλις μπουν όλοι σε ομάδα, %1ο διοργανωτής μπορεί να πατήσει αυτό το κουμπί για να ξεκινήσει.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.9=§6Επίτρεψε σε όλους τους παίκτες να συμμετάσχουν στον κόσμο και να επιλέξουν μια ομάδα. %1Έπειτα, πάτησε το κουμπί στον χρυσό κύβο. 	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.18=§a§lΕπιβεβαίωσε: §r§6Όλοι οι παίκτες έχουν συνδεθεί στον κόσμο και έχουν μπει σε ομάδα.§r %1§f§lΠάτησε ξανά για να επιβεβαιώσεις.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}{StrContains="§f"}
+
+actionbar.objective.001.10=§6Υπάρχουν δύο τρόποι παιχνιδιού.	#	###{StrContains="§6"}
+actionbar.objective.001.11=§6Ο διοργανωτής μπορεί να γυρίσει τον Τροχό του Steve.	#	###{StrContains="§6"}
+actionbar.objective.001.12=§6Αυτό θα επιλέξει ένα τυχαίο μίνι παιχνίδι για να παίξεις.	#	###{StrContains="§6"}
+actionbar.objective.001.13=§6Η πρώτη ομάδα που θα κερδίσει 3 τυχαία παιχνίδια θα παίξει %1σε ένα μυστικό μίνι παιχνίδι.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.14=§6Ο φρουρός μπορεί επίσης να μιλήσει με οποιονδήποτε χαρακτήρα %1για να παίξει ένα από τα μίνι παιχνίδια.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.15=§6Χρησιμοποίησε αυτήν τη μέθοδο αν θέλεις να παίξεις ένα συγκεκριμένο παιχνίδι %1ή αν θέλεις απλώς να εξασκηθείς.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.001.16=§6Αν τα μίνι παιχνίδια ξεκινούν με αυτόν τον τρόπο, δεν θα μετριούνται ως νίκες στον Τροχό του Steve.	#	###{StrContains="§6"}
+actionbar.objective.001.17=§6Καλή τύχη!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.003.20=Είμαι ο Steve. Ας παίξουμε §a§lΕνέδρα Σφαίρας§r! Σε αυτό το παιχνίδι, η §l§6επικοινωνία§r είναι το κλειδί για τη νίκη.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.21=Είμαι ο Henry. Ας παίξουμε §a§lΡίξ' το§r. Χρησιμοποίησε τη §l§6δημιουργικότητά§r σου για να κερδίσεις!	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.22=Είμαι ο Garett. Αξιοποίησε την ομαδική δουλειά και τη §l§6συνεργασία§r για να κερδίσεις στον §a§lΔιαγωνισμό Κατασκευής Μηχανήματος§r.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.003.23=Γεια! Είμαι η Natalie. Χρησιμοποίησε την §l§6κριτική σκέψη§r σου για να κερδίσεις τους §a§lΠολέμους Πλέγματος§r.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+actionbar.objective.003.24=Είμαι η Dawn. Δουλέψτε ως §l§6κοινότητα§r για να κερδίσετε τη §a§lΜάχη Έλυτρων§r!	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+actionbar.objective.101.1=§6Καλώς όρισες στην Ενέδρα Σφαίρας.	#	###{StrContains="§6"} Mini game title, like capture the flag but with a glowing orb. 
+actionbar.objective.101.2=§6Κράτησε τη σφαίρα και συνεργάσου με την ομάδα σου για να κερδίσεις πόντους!	#	###{StrContains="§6"}
+actionbar.objective.101.3=§6Η ομάδα που κρατάει τη σφαίρα για το μεγαλύτερο διάστημα κερδίζει.	#	###{StrContains="§6"}
+actionbar.objective.101.4=§6Καλή τύχη!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.101.5=§6Άρπαξε τη σφαίρα! (Χρησιμοποίησε την αλληλεπίδραση ή την επίθεση για να την αρπάξεις)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to take this orb from other players by interacting with them.
+actionbar.objective.101.6=§6Κράτα τη σφαίρα! (Χρησιμοποίησε το κρύψιμο για να τη ρίξεις.)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to sneak to drop the orb if you have it.
+
+##Solo Contraption Craft Off
+actionbar.objective.201.1=§6Καλώς όρισες στον Διαγωνισμό Κατασκευής Μηχανήματος.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.201.2=§6Ο στόχος σου είναι να κατασκευάσεις 8 εξαρτήματα, για να επιδιορθώσεις τις μηχανές της ομάδας σου.	#	###{StrContains="§6"}
+actionbar.objective.201.3=§6Για να κερδίσεις, επιδιόρθωσε περισσότερες μηχανές από τον αντίπαλό σου πριν τελειώσει ο χρόνος.	#	###{StrContains="§6"}
+actionbar.objective.201.4=§6Για να κατασκευάσεις εξαρτήματα μηχανών, %1ακολούθησε το σχέδιο που εμφανίζεται σε αυτόν τον πίνακα.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.5=§6Αλληλεπίδρασε με τα αντικείμενα στα ράφια για να τα μαζέψεις %1και να τα φέρεις στην περιοχή κατασκευής.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.201.6=§6Μάζεψε ένα αντικείμενο και αλληλεπίδρασε με έναν χώρο στην περιοχή κατασκευής για να το τοποθετήσεις.	#	###{StrContains="§6"}
+actionbar.objective.201.7=§6Χρησιμοποίησε ένα άδειο χέρι για να αδειάσεις τον χώρο.	#	###{StrContains="§6"}
+actionbar.objective.201.8=§6Να θυμάσαι, κατασκεύασε 8 αντικείμενα σωστά πριν από την άλλη ομάδα για να κερδίσεις.	#	###{StrContains="§6"}
+actionbar.objective.201.9=§6Καλή τύχη!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+actionbar.objective.202.1=§6Καλώς όρισες στον Διαγωνισμό Κατασκευής Μηχανήματος.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.202.2=§6 Συνεργάσου με την ομάδα σου για να κερδίσεις!	#	###{StrContains="§6"}
+actionbar.objective.202.3=§6Η δουλειά σου είναι να επιδιορθώσεις 3 κατεστραμμένες μηχανές. %1Για να το κάνεις, θα πρέπει να κατασκευάσεις εξαρτήματα.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.4=§6Υπάρχει ένας παίκτης στην αποθήκη. Πρέπει να βρει ένα μοτίβο που να %1δείχνει πώς να φτιάξεις το εξάρτημα.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.5=§6 Αφού αλληλεπιδράσει με το μοτίβο, μπορεί να το μετακινήσει στον πίνακα.	#	###{StrContains="§6"}
+actionbar.objective.202.6=§6Η αλληλεπίδραση με τον πίνακα θα δείξει το μοτίβο στην ομάδα σου.	#	###{StrContains="§6"}
+actionbar.objective.202.7=§6Η υπόλοιπη ομάδα πρέπει να συνεργαστεί για να αντιγράψει %1το σχέδιο που εμφανίζεται στην περιοχή κατασκευής της.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.8=§6Μπορεί να μαζέψει αντικείμενα κατασκευών %1αλληλεπιδρώντας μαζί τους στα ράφια.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.9=§6Κράτησε ένα εξάρτημα και αλληλεπίδρασε με έναν χώρο %1για να το προσθέσεις στην περιοχή κατασκευής.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.10=§6Χρησιμοποίησε ένα άδειο χέρι για να αδειάσεις τον χώρο.	#	###{StrContains="§6"}
+actionbar.objective.202.11=§6Μόλις κατασκευαστεί το μοτίβο, θα εμφανιστεί το εξάρτημα που επισκευάστηκε %1σε ένα τραπέζι για τον παίκτη στην αποθήκη.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.12=§6Πρέπει να φέρει το εξάρτημα στη σωστή περιοχή %1και να αλληλεπιδράσει για να ολοκληρώσει τις επιδιορθώσεις.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.13=§6Αν υπάρχουν κι άλλα εξαρτήματα που χρειάζονται επιδιόρθωση, %1ένα νέο μοτίβο θα εμφανιστεί κάπου στην αποθήκη.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.14=§6Συνέχισε να επιδιορθώνεις τις μηχανές μία μία, μέχρι να λειτουργήσουν όλες ξανά.	#	###{StrContains="§6"}
+actionbar.objective.202.15=§6Η πρώτη ομάδα που θα επιδιορθώσει πρώτη όλες τις μηχανές της κερδίζει.	#	###{StrContains="§6"}
+actionbar.objective.202.16=§6Καλή τύχη!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+
+
+
+actionbar.objective.301.1=§6Καλώς όρισες στους Πολέμους Πλέγματος!	#	###{StrContains="§6"} Mini game title, players build with Minecraft blocks in a grid as quickly as possible. 
+actionbar.objective.301.2=§6Δούλεψε για να κατασκευάσεις το ίδιο μοτίβο στον πίνακα της ομάδας σου.	#	###{StrContains="§6"}
+actionbar.objective.301.3=§6Ταίριαξε το μοτίβο πριν από την αντίπαλη ομάδα για να αποκτήσεις έναν πόντο. %1Η ομάδα με τους περισσότερους πόντους κερδίζει.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.4=§6Για να συλλέξεις κύβους, αλληλεπίδρασε με τους περιστρεφόμενους κύβους στην αρένα σου.	#	###{StrContains="§6"}
+actionbar.objective.301.5=§6Μπορείς να μεταφέρεις μόνο §c§lέναν§r §6κύβο τη φορά. %1 §6Ρίξε τον κύβο που κουβαλάς, για να πάρεις έναν νέο. #	###{StrContains="§6"}{StrContains="§c"}{StrContains="§l"}{StrContains="§r"}
+actionbar.objective.301.6=§6Όταν μια ομάδα διεκδικεί έναν κύβο σε μια αρένα, η άλλη ομάδα %1δεν μπορεί να τον διεκδικήσει για λίγο.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.301.7=§6Αν η ομάδα σου κάνει λάθος, χρησιμοποίησε το κουμπί §f«Εκκαθάριση Πίνακα»§6 για να το διορθώσεις.	#	###{StrContains="§6"}{StrContains="§f"}
+actionbar.objective.301.8=§6Καλή τύχη!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.301.9=§6Ολοκλήρωσε το μοτίβο!	#	###{StrContains="§6"}Players need to copy and complete the patter shown in front of them.
+
+actionbar.objective.401.1=§6Καλώς ήρθες στο Ρίξ' το.	#	###{StrContains="§6"} Mini game title, it's a joke in English "Knock it off" is a saying to tell someone to stop it, nock is the term used to describe pulling an arrow to the ready position. The game is an archery shooting game. 
+actionbar.objective.401.2=§6Δοκίμασε να νικήσεις την άλλη ομάδα χτυπώντας τους στόχους.	#	###{StrContains="§6"}
+actionbar.objective.401.3=§6Πάρε το τόξο σου και προσπάθησε να χτυπήσεις όσο περισσότερους στόχους μπορείς.	#	###{StrContains="§6"}
+actionbar.objective.401.4=§6Σκόραρε περισσότερους πόντους από την άλλη ομάδα για να κερδίσεις!	#	###{StrContains="§6"}
+actionbar.objective.401.5=§6Καλή τύχη!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.401.6=§6Ρίξε στους στόχους!	#	###{StrContains="§6"}Players need to shoot the targets to score points and win the game.
+
+
+
+actionbar.objective.501.1=§6Καλώς όρισες στη Μάχη Έλυτρων.	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
+actionbar.objective.501.2=§6Ο στόχος σου είναι να ρίξεις δυναμίτη στο %1ηφαίστειο του αντιπάλου σου για να καταστρέψεις τον πύργο του.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.3=§6Όταν πέφτεις, πάτησε άλμα για να ανοίξεις τα φτερά του έλυτρά σου και να αιωρηθείς.	#	###{StrContains="§6"}
+actionbar.objective.501.4=§6Πάτησε αλληλεπίδραση για να χρησιμοποιήσεις πυροτεχνήματα και να δώσεις στον εαυτό σου μια ώθηση ταχύτητας.	#	###{StrContains="§6"}
+actionbar.objective.501.5=§6Πέταξε κοντά στον δυναμίτη για να τον μαζέψεις.	#	###{StrContains="§6"}
+actionbar.objective.501.6=§6Όταν πετάς πάνω από το ηφαίστειο του αντιπάλου σου, %1 κάνε επίθεση ή κρυφή κίνηση για να ρίξεις τον δυναμίτη.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.7=§6Όποιος πάρει πρώτος 10 πόντους ή έχει τους περισσότερους πόντους όταν τελειώσει ο χρόνος, νικάει.	#	###{StrContains="§6"}
+actionbar.objective.501.8=§6Καλή τύχη!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.501.9=§6Πάτησε άλμα ενώ πέφτεις για ν' αρχίσεις να πετάς.	#	###{StrContains="§6"}
+actionbar.objective.501.10=§6Ρίξε δυναμίτη στο §9Μπλε Ηφαίστειο§6 για να σκοράρεις. %1Πάτησε επίθεση ή κρυφή κίνηση για να ρίξεις.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
+actionbar.objective.501.11=§6Ρίξε δυναμίτη στο §4Κόκκινο Ηφαίστειο§6 για να σκοράρεις. %1Πάτησε επίθεση ή κρυφή κίνηση για να ρίξεις.	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
+
+
+actionbar.objective.601.1=§6Καλώς όρισες στην Τελική Αναμέτρηση.	#	###{StrContains="§6"} Mini game title, the final showdown is the last mini game played. 
+actionbar.objective.601.2=§6Ήρθε η ώρα να μάθεις ποιος θα είναι ο απόλυτος νικητής του Τροχού του Steve.	#	###{StrContains="§6"} Refers to name of the game world, Wheel of Steve
+actionbar.objective.601.3=§6Κατέβα την πλαγιά του βουνού %1και μάζεψε όσο περισσότερα σμαράγδια μπορείς.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.601.4=§6Ο παίκτης που θα μαζέψει τα περισσότερα σμαράγδια κερδίζει.	#	###{StrContains="§6"}
+actionbar.objective.601.5=§6Πρόσεχε πού πατάς! Αν πέσεις, θα βγεις από το παιχνίδι.	#	###{StrContains="§6"}
+actionbar.objective.601.6=§6Μείνε κοντά. Αν μείνεις πίσω, θα βγεις από το παιχνίδι.	#	###{StrContains="§6"}
+actionbar.objective.601.7=§6Καλή τύχη!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
+actionbar.objective.601.8=§6Μάζεψε σμαράγδια και μείνε στην οθόνη!	#	###{StrContains="§6"}
+
+##Dialogue
+steve.n=§6Steve	#	###{StrContains="§6"} A Minecraft Movie character name. 
+henry.n=§6Henry	#	###{StrContains="§6"} A Minecraft Movie character name. 
+garett.n=§6Garett	#	###{StrContains="§6"} A Minecraft Movie character name. 
+dawn.n=§6Dawn	#	###{StrContains="§6"} A Minecraft Movie character name. 
+natalie.n=§6Natalie	#	###{StrContains="§6"} A Minecraft Movie character name. 
+wheel.n=§6Τροχός του Steve	#	###{StrContains="§6"} refers to world title. Wheel of Steve
+
+steve.d=Είμαι ο Steve. Άκουσα θέλεις να εξασκηθείς στην §l§6επικοινωνία§r. Έχω το κατάλληλο παιχνίδι για σένα. Το αποκαλώ §a§lΕνέδρα Σφαίρας§r. Θες να παίξεις;	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+henry.d=Γεια! Είμαι ο Χένρι. Έχω φτιάξει ένα διασκεδαστικό παιχνίδι το οποίο αποκαλώ §a§lΡίξ' το§r. Θα δοκιμάσει τη §l§6δημιουργικότητά§r σου με λίγη καλή, παλιομοδίτικη τοξοβολία! Θα ήθελες να παίξεις; 	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+garett.d=Το ήξερα. Κατάλαβα ότι είσαι επαγγελματίας παίκτης σαν εμένα, τον Garett Garrison, από απέναντι. Οι καλύτεροι παίκτες έχουν ισχυρή αίσθηση ομαδικότητας και §l§6συνεργασίας§r. Πώς θα σου φαινόταν να δοκιμάσουμε ένα παιχνιδάκι που αποκαλώ §a§lΜάχη Κατασκευών§r; Θα είναι η απόλυτη δοκιμασία για τις ικανότητές σου! Είσαι έτοιμος;	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+dawn.d=Γεια! Είμαι η Ντον! Η δημιουργία μιας ισχυρής §l§6κοινότητας§r με την ομάδα σου είναι ζωτικής σημασίας για να γίνεις ο καλύτερος. Τι θα έλεγες για ένα παιχνίδι που θα σε βοηθήσει να χτίσεις αυτές τις σχέσεις ομαδικότητας; Έχω ετοιμάσει το παιχνίδι §a§lΜάχη Ελύτρων§r! Είναι ένα παιχνίδι όπου πετάς ψηλά και ρίχνεις δυναμίτες το οποίο θα τεστάρει σίγουρα τις ικανότητές σου. Θες να παίξεις;	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+
+natalie.d=Γεια! Είμαι η Natalie. Μου είπαν ότι μπορεί να έρθεις. Έχω ετοιμάσει ένα μικρό παιχνίδι παζλ με το όνομα §a§lΠόλεμοι Πλέγματος§r το οποίο θα τεστάρει την §l§6κριτική σκέψη§r σου. Θες να παίξεις;	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+
+npc.nothost.d= Λυπούμαστε, μόνο ο φρουρός μπορεί να ξεκινήσει παιχνίδια μ' εμένα.	#	###
+
+wheel.d=Καλώς ήρθες στον τροχό του Steve! Κάνε μια περιστροφή για να παίξεις ένα τυχαίο μίνι παιχνίδι! Η πρώτη ομάδα που θα κερδίσει 3 μίνι παιχνίδια θα ξεκλειδώσει ένα μυστικό παιχνίδι!	#	###
+
+steve.b1=Παίξε	#	### Refers to playing the mini game title 
+steve.b2=Άσ' το.	#	### player is saying “no I don't want to play the game now”
+henry.b1=Παίξε	#	### Refers to playing the mini game title
+henry.b2=Άσ' το.	#	### Player is saying “no I don't want to play the game now” 
+garett.b1=Παίξε	#	### Refers to playing the mini game title
+garett.b2=Άσ' το.	#	### player is saying “no I don't want to play the game now” 
+dawn.b1=Παίξε	#	### Refers to playing the mini game title 
+dawn.b2=Άσ' το.	#	### player is saying “no I don't want to play the game now” 
+natalie.b1=Παίξε	#	### Refers to playing the mini game title 
+natalie.b2=Άσ' το.	#	### player is saying “no I don't want to play the game now” 
+npc.nothost.b1=Αντίο.	#	### Goodbye
+wheel.b1=Γύρισε τον τροχό	#	### Spin the “Wheel of Steve” gameshow style spinner. 
+wheel.b2=Άσ' το.	#	### Player is saying, no I don't want to right now. 
+
+## Items
+item.rwm:orb=Σφαίρα	#	### The orb from orb ambush. It's a blue sphere the player needs to keep hold of to score points.
+item.rwm:craft_diagram_1=Διάγραμμα Κατασκευής 1	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_2=Διάγραμμα Κατασκευής 2	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_3=Διάγραμμα Κατασκευής 3	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_4=Διάγραμμα Κατασκευής 4	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_diagram_5=Διάγραμμα Κατασκευής 5	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
+item.rwm:craft_part_1=Λάδι Τροχού	#	### A small wooden gear, used as a crafting component.
+item.rwm:craft_part_2=Γάντι του μποξ	#	### A bright red bloxing glove, used as a crafting component.
+item.rwm:craft_part_3=Λαβή Κουβά	#	### The handle to a bucket you can carry around, used as a crafting component.
+item.rwm:craft_part_4=Δερμάτινη Μπότα	#	### A single leather boot, used as a crafting component.
+item.rwm:craft_part_5=Λάμπα	#	### A single light bulb, used as a crafting component.
+item.rwm:craft_part_6=Παξιμάδια και βίδες	#	### A small gathering of metal nuts and bolts, used as a crafting component.
+item.rwm:craft_part_7=Μηχανικό Πλαίσιο	#	### A small cube-like frame, used as a crafting component. 
+item.rwm:craft_part_8=Κοτόπουλο	#	### A small Minecraft-chicken that can be picked up into the students inventory, used as a crafting component.
+item.rwm:craft_part_9=Μεταλλική Ράβδος	#	### A small single metal rod, used as a crafting component.
+item.rwm:craft_part_10=Δόντι Γραναζιού	#	### A small metal gear tooth, used as a crafting component.
+item.rwm:craft_part_11=Μικρό Γρανάζι	#	### A single small metal gear, used as a crafting component.
+item.rwm:craft_part_12=Τροχαλία	#	### The actual small metal pulley, used as a crafting component.
+item.rwm:craft_contraption_fixed_1=Εξάρτημα Επισκευής Τροχού	#	### The finalized, crafted wheel repair part, used to fix a the final contraption. It looks like a small wodden wheel.
+item.rwm:craft_contraption_fixed_2=Εξάρτημα Επισκευής Κοπανητή Κοτόπουλων	#	### The finalized, crafted chicken puncher, used to fix a the final contraption. It looks like a chicken with a boxing glove.
+item.rwm:craft_contraption_fixed_3=Εξάρτημα Επισκευής Τροχαλίας	#	### The finalized component, used to fix a the final contraption. It looks like a full pulley and rope system.
+item.rwm:craft_contraption_fixed_4=Εξάρτημα Επισκευής Βαγονέτου	#	### The finalized component, used to fix a the final contraption. It looks like a small minecart.
+item.rwm:craft_contraption_fixed_5=Εξάρτημα Επισκευής Κλουβιού	#	### The finalized component, used to fix a the final contraption. It looks like a small metal cage.
+
+item.diamond_helmet.name=§9Κράνος Ομάδας 2	#	###{StrContains="§9"} Named item for team 2's helmet.
+item.diamond_chestplate.name=§9Θώρακας Ομάδας 2	#	###{StrContains="§9"} Named item for team 2's chestplate.
+item.diamond_leggings.name=§9Περικνημίδες Ομάδας 2	#	###{StrContains="§9"} Named item for team 2's leggings.
+item.diamond_boots.name=§9Μπότες Ομάδας 2	#	###{StrContains="§9"} Named item for team 2's boots.
+item.iron_helmet.name=§mΚράνος Ομάδας 1	#	###{StrContains="§m"} Named item for team 1's helmet.
+item.iron_chestplate.name=§mΘώρακας Ομάδας 1	#	###{StrContains="§m"} Named item for team 1's chestplate.
+item.iron_leggings.name=§mΠερικνημίδες Ομάδας 1	#	###{StrContains="§m"} Named item for team 1's leggings.
+item.iron_boots.name=§mΜπότες Ομάδας 1	#	###{StrContains="§m"} Named item for team 1's boots.
+
+## Interacts
+interact.marker.start_map=§6Χάρτη Εκκίνησης	#	###{StrContains="§6"} Displays on the students screen when they are hoving over the button to start the game.
+interact.wheel_of_steve=§6Θα γυρίσεις τον Τροχό του Steve;	#	###{StrContains="§6"} Displays on the students screen when hoving over the giant Wheel of Steve in the center of the lobby.
+interact.npc_1=§6Μίλησε	#	###{StrContains="§6"} Displayed when hovering over any NPC that is interactable.
+interact.craft_board_change=§6Μοτίβο παρουσίασης.	#	###{StrContains="§6"} Displayed when hovering over the crafting board with a diagram in the players inventory.
+interact.craft_part_pickup=§6Σήκωσε το Εξάρτημα.	#	###{StrContains="§6"} Dislpayed when hovering over an crafting component in Contraption Craft Off.
+interact.craft_crafting_change=§6Τοποθέτησε το Εξάρτημα.	#	###{StrContains="§6"} Displayed when holding a crafting part and hovering over the crafting table in Contraption Craft Off.
+interact.craft_contraption_change=§6Επισκεύασε το μηχάνημα.	#	###{StrContains="§6"} Displayed when you have a fixed contraption in your inventory and hover over the contraption in Contraption Craft Off.
+grid_block_magenta.interact=Μάζεψε τον §dφούξια§r κύβο	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime.interact=Μάζεψε τον §aπρασινοκίτρινο§r κύβο	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue.interact=Μάζεψε τον §9μπλε§r κύβο	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red.interact=Μάζεψε τον §cκόκκινο§r κύβο	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow.interact=Μάζεψε τον §eκίτρινο§r κύβο	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+grid_block_magenta_obtain.interact=Μάζεψε τον §dφούξια§r κύβο	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime_obtain.interact=Μάζεψε τον §aπρασινοκίτρινο§r κύβο	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue_obtain.interact=Μάζεψε τον §9μπλε§r κύβο	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red_obtain.interact=Μάζεψε τον §cκόκκινο§r κύβο	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow_obtain.interact=Μάζεψε τον §eκίτρινο§r κύβο	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+orb.flag.ride.interact=Αλληλεπίδρασε για να πάρεις τη σφαίρα.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.unride.interact=Αλληλεπίδρασε για να πάρεις τη σφαίρα.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+

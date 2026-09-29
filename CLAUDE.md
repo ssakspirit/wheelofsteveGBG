@@ -74,7 +74,17 @@ The main loop (`functions/loops/tick.mcfunction`) uses scoreboard-based state ma
 - Scoreboard objectives track global game state
 - Korean language support in dialogue and messages
 
+## Gyeongbokgung (경복궁) Theming
+This fork re-themes the world to Gyeongbokgung. **Game rules must not change.**
+- Change only presentation: RP textures/models/sounds/particles, fog colors, lang strings, and NEW files (decor structures, decor entities, admin placement functions).
+- Frozen (never modify or delete): everything under `behavior_packs/bp0/` except `texts/`, plus fog distance values. All `rwm:` identifiers, coordinates, collision boxes, item IDs stay as they are.
+- `baseline-rules` tag = original rules. Check with `node tools/rule-guard.js` (also run by the Stop hook and GitHub Actions).
+- Paired assets must change together: craft part icons ↔ board diagrams ↔ part/contraption models; wheel texture segments ↔ `spin_1..5`; team red/blue.
+- Decor must stay outside game zones/camera paths; no iron_block in Grid, no interactive blocks (doors, buttons), no projectile-breakable blocks near Nock, blocks ≤ y319.
+
 ## Version Control
+* Remote `origin` = github.com/ssakspirit/wheelofsteveGBG, `upstream` = original wheelofstevefinalgame.
+* Commit `db/`/`level.dat` only with the world closed (the Stop hook excludes them while Education runs).
 * Whenever code changes are made, you must record a one-line description with emoji in korean of the change in `.commit_message.txt` with Edit Tool.
    - Read `.commit_message.txt` first, and then Edit.
    - Overwrite regardless of existing content.

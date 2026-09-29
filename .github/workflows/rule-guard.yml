@@ -1,0 +1,18 @@
+name: Rule guard
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  rule-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 게임 규칙 파일 변경 검사 (baseline-rules 대비)
+        run: node tools/rule-guard.js

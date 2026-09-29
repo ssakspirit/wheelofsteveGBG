@@ -66,6 +66,8 @@ The main loop (`functions/loops/tick.mcfunction`) uses scoreboard-based state ma
 - Load world in Minecraft Education Edition
 - Use admin commands via `functions/admin.mcfunction` for debugging
 - Admin observers can monitor without affecting gameplay
+- Developer helpers: `/function dev/help` lists them (`dev/tp/<place>`, `dev/start/<game>`, `dev/build`, `dev/play`, `dev/status`, `dev/zones`, `dev/fog_off`, `dev/host`). They live in `functions/dev/`, and only call existing entry points (add new files; never change existing game functions).
+- Do not tp into the start room (X −5..5, Y 20..35, Z −5..5): it triggers host detection / score reset.
 
 ## Key Conventions
 - Entity files use `.bp.e.json` (behavior) and `.rp.e.json` (resource) naming

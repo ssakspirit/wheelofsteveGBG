@@ -6,14 +6,14 @@
 map.version=1.0.12	#	###{LOCKED}
 lang.version=0.0.9	#	###{LOCKED}
 
-pack.name=스티브의 바퀴	#	### Steve is a minecraft character and the wheel is a gameshow style spinner that chooses what mini games will be played. 
-pack.description=영화 미니게임에 필요한 자원	#	### Resources needed for name of map
+pack.name=세종대왕의 혼천의	#	### Steve is a minecraft character and the wheel is a gameshow style spinner that chooses what mini games will be played. 
+pack.description=경복궁 미니게임에 필요한 자원	#	### Resources needed for name of map
 
 ## Wins
 subtitle.objective.1000.1=§4§l팀 1 §a승리!	#	###{StrContains="§l"}{StrContains="§4"}{StrContains="§a"}Displayed when team 1 wins a single game.
 subtitle.objective.1000.2=§9§l팀 2 §a승리!	#	###{StrContains="§l"}{StrContains="§9"}{StrContains="§a"}Displayed when team 2 wins a single game.
-subtitle.objective.1000.3=§4팀 1§a이 스티브의 §f바퀴에서 §6승리했습니다!	#	###{StrContains="§4"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 1 wins a specific group of games called "Wheel of Steve"
-subtitle.objective.1000.4=§9팀 2§a가 스티브의 §f바퀴에서 §6승리했습니다!	#	###{StrContains="§9"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 12 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.3=§4팀 1§a이 세종대왕의 §f혼천의에서 §6승리했습니다!	#	###{StrContains="§4"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 1 wins a specific group of games called "Wheel of Steve"
+subtitle.objective.1000.4=§9팀 2§a가 세종대왕의 §f혼천의에서 §6승리했습니다!	#	###{StrContains="§9"}{StrContains="§a"}{StrContains="§f"}{StrContains="§6"}Displayed when team 12 wins a specific group of games called "Wheel of Steve"
 subtitle.objective.1000.5=§e§l무승부!	#	###{StrContains="§l"}{StrContains="§e"}{StrContains="§a"} Displays when a game finishes in a draw.
 
 ## Countdown
@@ -31,8 +31,8 @@ chat.join.team.1=§6§4팀 1§6에 참가했습니다!	#	###{StrContains="§6"}{
 chat.join.team.2=§6§9팀 2§6에 참가했습니다!	#	###{StrContains="§6"}{StrContains="§9"}Displayed when the game moves you to the Team 2 team.
 
 ##Boards
-board.singleplayer.1=                                                                                                §l§g스티브의 바퀴§r에                                         오신 것을 환영합니다                                                                                                                                                                                       §d다른 플레이어를 월드에 초대하고 싶나요?§r             §l일시정지 메뉴 -> §r](얼굴 탭)§l -> 호스팅 시작§r         그 다음 참여 코드를 친구들과 §o공유§r하세요!                                                                                                   §b혼자서 즐기고 싶나요?§r                       우선 §c왼쪽 §r또는 §9오른쪽 §r구역으로 가서 팀을 고르세요.    그 다음 뒤에 있는 확인 버튼과 §o상호작용§r하세요.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
-board.multiplayer.1=                                                                                                §l§g스티브의 바퀴§r에                                         오신 것을 환영합니다                                                                                                                                                                                       §d§o더 많은 플레이어§r§d를 월드에 초대하고 싶나요?§r              §l일시정지 메뉴 -> ](얼굴 탭)§r         그 그 다음 참여 코드를 친구들과 §o공유§r하세요!             최대 8명과 즐길 수 있습니다.                                                                                                   §b게임을 시작하고 싶나요?§r                     우선 §c왼쪽 §r또는 §9오른쪽 §r구역으로 가서 팀을 고르세요.            그 다음 호스트 또는 월드 제작자가               여러분 뒤에 있는 확인 버튼과 §o상호작용§r해야 합니다.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+board.singleplayer.1=                                                                                                §l§g세종대왕의 혼천의§r에                                       오신 것을 환영합니다                                                                                                                                                                                       §d다른 플레이어를 월드에 초대하고 싶나요?§r             §l일시정지 메뉴 -> §r](얼굴 탭)§l -> 호스팅 시작§r         그 다음 참여 코드를 친구들과 §o공유§r하세요!                                                                                                   §b혼자서 즐기고 싶나요?§r                       우선 §c왼쪽 §r또는 §9오른쪽 §r구역으로 가서 팀을 고르세요.    그 다음 뒤에 있는 확인 버튼과 §o상호작용§r하세요.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
+board.multiplayer.1=                                                                                                §l§g세종대왕의 혼천의§r에                                       오신 것을 환영합니다                                                                                                                                                                                       §d§o더 많은 플레이어§r§d를 월드에 초대하고 싶나요?§r              §l일시정지 메뉴 -> ](얼굴 탭)§r         그 그 다음 참여 코드를 친구들과 §o공유§r하세요!             최대 8명과 즐길 수 있습니다.                                                                                                   §b게임을 시작하고 싶나요?§r                     우선 §c왼쪽 §r또는 §9오른쪽 §r구역으로 가서 팀을 고르세요.            그 다음 호스트 또는 월드 제작자가               여러분 뒤에 있는 확인 버튼과 §o상호작용§r해야 합니다.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
 
 ## Actionbar Objective
 actionbar.objective.000.10000=§6Interact to Start	#	###{StrContains="§6"}
@@ -48,33 +48,33 @@ actionbar.objective.001.9=§6모든 플레이어가 월드에 참여하고 팀�
 actionbar.objective.001.18=§a§l꼭 확인해 주세요.§r§6모든 플레이어가 월드에 참여하고 팀을 고른 상태여야 합니다.§r %1§f§l다시 눌러 확인하세요.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}{StrContains="§f"}
 
 actionbar.objective.001.10=§6두 가지 방법으로 플레이할 수 있습니다.	#	###{StrContains="§6"}
-actionbar.objective.001.11=§6호스트는 스티브의 바퀴를 돌릴 수 있습니다.	#	###{StrContains="§6"}
+actionbar.objective.001.11=§6호스트는 세종대왕의 혼천의를 돌릴 수 있습니다.	#	###{StrContains="§6"}
 actionbar.objective.001.12=§6이렇게 하면 즐길 수 있는 미니게임이 무작위로 선택됩니다.	#	###{StrContains="§6"}
 actionbar.objective.001.13=§6무작위로 선택된 3개의 게임에서 이긴 팀은 %1비밀 미니게임을 즐길 수 있습니다.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.001.14=§6아니면 호스트가 아무 캐릭터와 대화해서 %1특정 미니게임을 트리거할 수도 있습니다.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.001.15=§6플레이하고 싶은 게임이 따로 있거나 %1연습하고 싶다면 이 방법을 활용하세요.	#	###{StrContains="§6"}{StrContains="%1"}
-actionbar.objective.001.16=§6이렇게 시작된 미니게임은 스티브의 바퀴 승리 기록에 포함되지 않습니다.	#	###{StrContains="§6"}
+actionbar.objective.001.16=§6이렇게 시작된 미니게임은 혼천의 승리 기록에 포함되지 않습니다.	#	###{StrContains="§6"}
 actionbar.objective.001.17=§6행운을 빌어요!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
 
-actionbar.objective.003.20=저는 스티브예요. §a§l오브 매복§r을 해 볼까요! 이 게임에서 이기려면 §l§6소통이§r 무엇보다 중요해요.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+actionbar.objective.003.20=나는 영의정 황희라네. §a§l여의주를 지켜라§r를 해 보세! 이 대결에서 이기려면 §l§6소통이§r 무엇보다 중요하다네.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
-actionbar.objective.003.21=저는 헨리예요. §a§l준비하시고 쏘세요§r를 해 보죠. §l§6창의력§r을 발휘해서 승리하세요!	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+actionbar.objective.003.21=나는 태조 이성계다. §a§l태조의 활쏘기 대회§r를 열겠노라. §l§6창의력§r을 발휘해서 승리하거라!	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
 
-actionbar.objective.003.22=저는 개럿이에요. 팀워크를 발휘하고 §l§6협동§r하면서 §a§l기계 만들기 대회§r에서 승리하세요.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+actionbar.objective.003.22=저는 장영실입니다. 팀워크를 발휘하고 §l§6협동§r하면서 §a§l장영실의 발명 공방§r에서 승리하세요.	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
-actionbar.objective.003.23=안녕하세요! 나탈리라고 해요.§l§6논리적 사고§r를 이용하면서 §a§l그리드 워즈§r에서 이기세요.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+actionbar.objective.003.23=어서 오시오! 나는 정도전이오. §l§6논리적 사고§r를 이용해서 §a§l궁궐 설계도 맞추기§r에서 이기시오.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
 
-actionbar.objective.003.24=던이라고 해요. §l§6커뮤니티§r가 되어 §a§l딱지날개 럼블§r에서 이기세요!	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+actionbar.objective.003.24=나는 장수 김종서다. 하나 된 §l§6커뮤니티§r가 되어 §a§l하늘 공성전§r에서 이겨라!	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
-actionbar.objective.101.1=§6오브 매복에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, like capture the flag but with a glowing orb. 
-actionbar.objective.101.2=§6힘을 합쳐 오브를 지키고 팀을 위해 점수를 획득하세요.	#	###{StrContains="§6"}
-actionbar.objective.101.3=§6오브를 가장 오래 지키는 팀이 승리합니다.	#	###{StrContains="§6"}
+actionbar.objective.101.1=§6여의주를 지켜라에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, like capture the flag but with a glowing orb. 
+actionbar.objective.101.2=§6힘을 합쳐 여의주를 지키고 팀을 위해 점수를 획득하세요.	#	###{StrContains="§6"}
+actionbar.objective.101.3=§6여의주를 가장 오래 지키는 팀이 승리합니다.	#	###{StrContains="§6"}
 actionbar.objective.101.4=§6행운을 빌어요!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
-actionbar.objective.101.5=§6오브를 가져오세요!(상호작용이나 공격으로 오브를 잡으세요)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to take this orb from other players by interacting with them.
-actionbar.objective.101.6=§6오브를 지키세요! (웅크리기로 떨어뜨리세요)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to sneak to drop the orb if you have it.
+actionbar.objective.101.5=§6여의주를 가져오세요!(상호작용이나 공격으로 여의주를 잡으세요)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to take this orb from other players by interacting with them.
+actionbar.objective.101.6=§6여의주를 지키세요! (웅크리기로 떨어뜨리세요)	#	###{StrContains="§6"}The orb is an object in the game teams fight to retain. You are able to sneak to drop the orb if you have it.
 
 ##Solo Contraption Craft Off
-actionbar.objective.201.1=§6기계 만들기 대회에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.201.1=§6장영실의 발명 공방에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
 actionbar.objective.201.2=§6목표는 팀의 기계를 수리하기 위해 8개의 부품을 건설하는 것입니다.	#	###{StrContains="§6"}
 actionbar.objective.201.3=§6승리하려면 시간이 끝나기 전에 상대보다 더 많은 기계를 고치세요.	#	###{StrContains="§6"}
 actionbar.objective.201.4=§6기계 부품을 건설하려면 %1이 보드에 표시된 지시를 따라야 합니다.	#	###{StrContains="§6"}{StrContains="%1"}
@@ -84,7 +84,7 @@ actionbar.objective.201.7=§6빈 손으로 슬롯을 비우세요.	#	###{StrCont
 actionbar.objective.201.8=§6승리하려면 다른 팀보다 더 빠르게 아이템 8개를 올바로 제작해야 한다는 것을 명심하세요!	#	###{StrContains="§6"}
 actionbar.objective.201.9=§6행운을 빌어요!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
 
-actionbar.objective.202.1=§6기계 만들기 대회에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
+actionbar.objective.202.1=§6장영실의 발명 공방에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
 actionbar.objective.202.2=§6승리하려면 팀과 협력해야 합니다.	#	###{StrContains="§6"}
 actionbar.objective.202.3=§6망가진 기계 3개를 고치는 것이 목표입니다.%1이렇게 하려면 아이템을 좀 만들어야 할 거예요.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.202.4=§6플레이어 한 명은 창고에 있습니다. 이 플레이어는 팀을 위해 제작법을 보여주는 %1도면을 찾아야 합니다.	#	###{StrContains="§6"}{StrContains="%1"}
@@ -103,7 +103,7 @@ actionbar.objective.202.16=§6행운을 빌어요!	#	###{StrContains="§6"}Endin
 
 
 
-actionbar.objective.301.1=§6그리드 워즈에 오신 것을 환영합니다!	#	###{StrContains="§6"} Mini game title, players build with Minecraft blocks in a grid as quickly as possible. 
+actionbar.objective.301.1=§6궁궐 설계도 맞추기에 오신 것을 환영합니다!	#	###{StrContains="§6"} Mini game title, players build with Minecraft blocks in a grid as quickly as possible. 
 actionbar.objective.301.2=§6협동하여 자신의 팀의 보드에 같은 패턴을 만드세요.	#	###{StrContains="§6"}
 actionbar.objective.301.3=§6상대 팀보다 먼저 패턴을 제대로 베끼면 점수를 얻습니다. %1가장 많은 점수가 있는 팀이 승리합니다.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.301.4=§6블록을 모으려면 아레나의 회전 블록과 상호작용하세요.	#	###{StrContains="§6"}
@@ -113,7 +113,7 @@ actionbar.objective.301.7=§6팀이 실수했다면 §f“보드 지우기”§6
 actionbar.objective.301.8=§6행운을 빌어요!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
 actionbar.objective.301.9=§6패턴을 완료하세요!	#	###{StrContains="§6"}Players need to copy and complete the patter shown in front of them.
 
-actionbar.objective.401.1=§6준비하시고 쏘세요에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, it's a joke in English "Knock it off" is a saying to tell someone to stop it, nock is the term used to describe pulling an arrow to the ready position. The game is an archery shooting game. 
+actionbar.objective.401.1=§6태조의 활쏘기 대회에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, it's a joke in English "Knock it off" is a saying to tell someone to stop it, nock is the term used to describe pulling an arrow to the ready position. The game is an archery shooting game. 
 actionbar.objective.401.2=§6과녁을 맞추면서 상대 팀과 경쟁하세요.	#	###{StrContains="§6"}
 actionbar.objective.401.3=§6활을 사용하여 최대한 많은 과녁을 쏘세요.	#	###{StrContains="§6"}
 actionbar.objective.401.4=§6다른 팀보다 더 많은 점수를 얻고 승리하세요!	#	###{StrContains="§6"}
@@ -122,21 +122,21 @@ actionbar.objective.401.6=§6과녁을 쏘세요!	#	###{StrContains="§6"}Player
 
 
 
-actionbar.objective.501.1=§6딱지날개 럼블에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
-actionbar.objective.501.2=§6목표는 적의 화산으로 폭탄을 떨어뜨려 %1탑을 파괴하는 것입니다.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.1=§6하늘 공성전에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
+actionbar.objective.501.2=§6목표는 적의 성루로 폭탄을 떨어뜨려 %1탑을 파괴하는 것입니다.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.501.3=§6떨어지는 동안 점프를 누르면 딱지날개를 펴고 활공할 수 있습니다.	#	###{StrContains="§6"}
 actionbar.objective.501.4=§6상호작용을 눌러 폭죽을 사용하여 속도를 높이세요.	#	###{StrContains="§6"}
 actionbar.objective.501.5=§6폭탄 옆에 가까이 날아가서 잡으세요.	#	###{StrContains="§6"}
-actionbar.objective.501.6=§6적의 화산 위를 날아다니면 %1공격을 사용하여 폭탄을 떨어뜨리세요.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.6=§6적의 성루 위를 날아다니면 %1공격을 사용하여 폭탄을 떨어뜨리세요.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.501.7=§6최초로 10점을 득점하거나 타이머가 끝난 후 점수가 가장 많은 팀이 승리합니다.	#	###{StrContains="§6"}
 actionbar.objective.501.8=§6행운을 빌어요!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
 actionbar.objective.501.9=§6낙하 중 점프를 누르면 비행을 시작합니다.	#	###{StrContains="§6"}
-actionbar.objective.501.10=§6§9파란색 화산§6에 폭탄을 떨어뜨려 점수를 획득하세요.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
-actionbar.objective.501.11=§6§4빨간색 화산§6에 폭탄을 떨어뜨려 점수를 획득하세요.	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
+actionbar.objective.501.10=§6§9파란색 성루§6에 폭탄을 떨어뜨려 점수를 획득하세요.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
+actionbar.objective.501.11=§6§4빨간색 성루§6에 폭탄을 떨어뜨려 점수를 획득하세요.	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
 
 
-actionbar.objective.601.1=§6최후의 결전에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, the final showdown is the last mini game played. 
-actionbar.objective.601.2=§6스티브의 바퀴의 최종 승자를 결정할 시간입니다.	#	###{StrContains="§6"} Refers to name of the game world, Wheel of Steve
+actionbar.objective.601.1=§6근정전 최후의 결전에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, the final showdown is the last mini game played. 
+actionbar.objective.601.2=§6세종대왕의 혼천의 최종 승자를 결정할 시간입니다.	#	###{StrContains="§6"} Refers to name of the game world, Wheel of Steve
 actionbar.objective.601.3=§6산비탈을 내려가 %1최대한 많은 에메랄드를 모아야 합니다.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.601.4=§6가장 많은 에메랄드를 얻은 플레이어가 승리합니다.	#	###{StrContains="§6"}
 actionbar.objective.601.5=§6낭떠러지에서 떨어지면 탈락하게 되니 조심하세요.	#	###{StrContains="§6"}
@@ -145,43 +145,43 @@ actionbar.objective.601.7=§6행운을 빌어요!	#	###{StrContains="§6"}Ending
 actionbar.objective.601.8=§6에메랄드를 모으고 카메라 시야를 확보하세요!	#	###{StrContains="§6"}
 
 ##Dialogue
-steve.n=§6스티브	#	###{StrContains="§6"} A Minecraft Movie character name. 
-henry.n=§6헨리	#	###{StrContains="§6"} A Minecraft Movie character name. 
-garett.n=§6개럿	#	###{StrContains="§6"} A Minecraft Movie character name. 
-dawn.n=§6던	#	###{StrContains="§6"} A Minecraft Movie character name. 
-natalie.n=§6나탈리	#	###{StrContains="§6"} A Minecraft Movie character name. 
-wheel.n=§6스티브의 바퀴	#	###{StrContains="§6"} refers to world title. Wheel of Steve
+steve.n=§6영의정 황희	#	###{StrContains="§6"} Orb Ambush host: Hwang Hui (GBG).
+henry.n=§6태조 이성계	#	###{StrContains="§6"} Nock it Off host: King Taejo Yi Seong-gye (GBG).
+garett.n=§6장영실	#	###{StrContains="§6"} Craft Off host: Jang Yeong-sil (GBG).
+dawn.n=§6김종서	#	###{StrContains="§6"} Elytra Rumble host: Kim Jong-seo (GBG).
+natalie.n=§6정도전	#	###{StrContains="§6"} Grid Wars host: Jeong Do-jeon (GBG).
+wheel.n=§6세종대왕	#	###{StrContains="§6"} Wheel host: King Sejong (GBG).
 
-steve.d=저는 스티브예요. §l§6의사소통§r 연습을 하고 있다고 들었어요. 여러분을 위해 딱 맞는 게임을 준비했어요. 저는 §a§l오브 매복§r 라고 부릅니다. 해볼래요?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+steve.d=나는 영의정 황희라네. 백성의 말도, 신하의 말도 귀 기울여 듣는 것이 내 일이지. 오늘은 §l§6의사소통§r 연습을 해 보세. 준비한 대결은 §a§l여의주를 지켜라§r라네. 해 보겠는가?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
-henry.d=안녕하세요! 저는 헨리라고 해요. 제가 재미있는 게임을 만들었어요. §a§l준비하시고 쏘세요§r라고 불러요. §l§6창의성§r을 테스트해볼 수 있을 거예요. 해볼래요? 	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+henry.d=나는 이 나라를 세운 태조 이성계다! 활쏘기라면 누구에게도 지지 않지. §a§l태조의 활쏘기 대회§r에서 너희의 §l§6창의성§r을 시험해 보겠다. 해 보겠느냐?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
 
-garett.d=그럴 줄 알았어요. 멀리서 봐도 저 개럿 개릿슨처럼 프로 게이머라는 걸 알아볼 수 있었어요. 최고의 게이머들은 팀워크와 §l§6협동§r 능력을 가지고 있거든요. §a§l기계 제작 대결§r을 해볼까요? 실력을 극한으로 시험해 볼 수 있어요! 준비됐나요?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+garett.d=반갑습니다! 저는 장영실입니다. 자격루와 측우기도 여럿이 힘을 모았기에 만들 수 있었지요. 팀워크와 §l§6협동§r만 있으면 무엇이든 고칠 수 있습니다. §a§l장영실의 발명 공방§r에서 망가진 발명품을 고쳐 볼까요? 준비됐나요?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
-dawn.d=안녕하세요! 저는 던이에요! 최고가 되려면 팀과 함께 강력한 §l§6커뮤니티§r를 구축하는 게 매우 중요합니다. 팀워크를 강화할 수 있는 게임을 해보는 건 어떨까요? §a§l딱지날개 소동§r을 준비해 놓았습니다! 고공비행 TNT 낙하 게임이에요. 플레이해 볼까요?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+dawn.d=나는 북방을 지키는 장수 김종서다! 성을 지키려면 모두가 하나 된 §l§6커뮤니티§r가 되어야 하지. §a§l하늘 공성전§r을 준비했다! 하늘을 날아 적의 성루에 폭탄을 떨어뜨리는 대결이다. 해 보겠느냐?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
-natalie.d=안녕하세요! 저는 나탈리라고 해요. 저를 찾아올 거라고 들었어요. 여러분의 §l§6비판적 사고§r 테스트하기 위해 §a§l그리드 워즈§r라는 작은 퍼즐 게임을 만들었어요. 한번 해보실래요?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+natalie.d=어서 오시오. 나는 경복궁을 설계하고 전각마다 이름을 지은 정도전이오. 궁궐은 치밀한 §l§6비판적 사고§r로 지어졌소. §a§l궁궐 설계도 맞추기§r로 그대들의 생각하는 힘을 시험해 보겠소. 해 보시겠소?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
 
 npc.nothost.d=죄송합니다. 플레이어님은 호스트가 아닙니다. 호스트만 게임을 시작할 수 있습니다.	#	###
 
-wheel.d=스티브의 바퀴에 오신 것을 환영합니다! 저를 돌려서 무작위 미니 게임을 플레이하세요! 미니 게임 3개를 먼저 이기는 팀은 비밀 미니 게임에 참가할 수 있습니다!	#	###
+wheel.d=나는 조선의 임금 세종이니라. 경복궁에 온 것을 환영하노라! 혼천의를 돌려 무작위 대결을 펼쳐 보거라. 대결 3개를 먼저 이기는 팀은 비밀 대결에 나설 수 있느니라!	#	###
 
-steve.b1=오브 매복 플레이	#	### Refers to playing the mini game title 
+steve.b1=여의주를 지켜라 시작	#	### Refers to playing the mini game title 
 steve.b2=됐어요.	#	### player is saying “no I don't want to play the game now”
-henry.b1=준비하시고 쏘세요 플레이	#	### Refers to playing the mini game title
+henry.b1=태조의 활쏘기 대회 시작	#	### Refers to playing the mini game title
 henry.b2=됐어요.	#	### Player is saying “no I don't want to play the game now” 
-garett.b1=제작 대결 플레이	#	### Refers to playing the mini game title
+garett.b1=장영실의 발명 공방 시작	#	### Refers to playing the mini game title
 garett.b2=됐어요.	#	### player is saying “no I don't want to play the game now” 
-dawn.b1=딱지날개 플레이	#	### Refers to playing the mini game title 
+dawn.b1=하늘 공성전 시작	#	### Refers to playing the mini game title 
 dawn.b2=됐어요.	#	### player is saying “no I don't want to play the game now” 
-natalie.b1=그리드 워즈 플레이	#	### Refers to playing the mini game title 
+natalie.b1=궁궐 설계도 맞추기 시작	#	### Refers to playing the mini game title 
 natalie.b2=됐어요.	#	### player is saying “no I don't want to play the game now” 
 npc.nothost.b1=안녕.	#	### Goodbye
-wheel.b1=바퀴 돌리기	#	### Spin the “Wheel of Steve” gameshow style spinner. 
+wheel.b1=혼천의 돌리기	#	### Spin the “Wheel of Steve” gameshow style spinner. 
 wheel.b2=됐어요.	#	### Player is saying, no I don't want to right now. 
 
 ## Items
-item.rwm:orb=오브	#	### The orb from orb ambush. It's a blue sphere the player needs to keep hold of to score points.
+item.rwm:orb=여의주	#	### The orb from orb ambush. It's a blue sphere the player needs to keep hold of to score points.
 item.rwm:craft_diagram_1=제작 도표 1	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
 item.rwm:craft_diagram_2=제작 도표 2	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
 item.rwm:craft_diagram_3=제작 도표 3	#	### Crafting diagram is used in Craft Off, an engineering diagram on how to craft a specific item.
@@ -216,7 +216,7 @@ item.iron_boots.name=§m팀 1 부츠	#	###{StrContains="§m"} Named item for tea
 
 ## Interacts
 interact.marker.start_map=§6지도 시작	#	###{StrContains="§6"} Displays on the students screen when they are hoving over the button to start the game.
-interact.wheel_of_steve=§6스티브의 바퀴를 돌리시겠습니까?	#	###{StrContains="§6"} Displays on the students screen when hoving over the giant Wheel of Steve in the center of the lobby.
+interact.wheel_of_steve=§6혼천의를 돌리시겠습니까?	#	###{StrContains="§6"} Displays on the students screen when hoving over the giant Wheel of Steve in the center of the lobby.
 interact.npc_1=§6대화	#	###{StrContains="§6"} Displayed when hovering over any NPC that is interactable.
 interact.craft_board_change=§6도표를 표시합니다.	#	###{StrContains="§6"} Displayed when hovering over the crafting board with a diagram in the players inventory.
 interact.craft_part_pickup=§6부품을 집습니다.	#	###{StrContains="§6"} Dislpayed when hovering over an crafting component in Contraption Craft Off.
@@ -232,6 +232,6 @@ grid_block_lime_obtain.interact=§a연두색§r 블록 획득	#	###{StrContains=
 grid_block_blue_obtain.interact=§9파란색§r 블록 획득	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
 grid_block_red_obtain.interact=§c빨간색§r 블록 획득	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
 grid_block_yellow_obtain.interact=§e노란색§r 블록 획득	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
-orb.flag.ride.interact=상호작용하여 오브를 획득하세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
-orb.flag.unride.interact=상호작용하여 오브를 획득하세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.ride.interact=상호작용하여 여의주를 획득하세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.unride.interact=상호작용하여 여의주를 획득하세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
 

@@ -183,23 +183,23 @@ wheel.b2=됐어요.	#	### Player is saying, no I don't want to right now.
 ## Items
 item.emerald.name=엽전	#	### Vanilla emerald renamed to yeopjeon (Joseon coin) for the finale.
 item.rwm:orb=옥새	#	### The royal seal (okse) in Okse Jaengtaljeon (Orb Ambush).
-item.rwm:craft_diagram_1=자격루 설계도 1	#	### Jagyeokru repair blueprint used in Craft Off.
-item.rwm:craft_diagram_2=자격루 설계도 2	#	### Jagyeokru repair blueprint used in Craft Off.
-item.rwm:craft_diagram_3=자격루 설계도 3	#	### Jagyeokru repair blueprint used in Craft Off.
-item.rwm:craft_diagram_4=자격루 설계도 4	#	### Jagyeokru repair blueprint used in Craft Off.
-item.rwm:craft_diagram_5=자격루 설계도 5	#	### Jagyeokru repair blueprint used in Craft Off.
+item.rwm:craft_diagram_1=설계도 ① 물 공급 장치	#	### Jagyeokru repair blueprint used in Craft Off.
+item.rwm:craft_diagram_2=설계도 ② 잣대 장치	#	### Jagyeokru repair blueprint used in Craft Off.
+item.rwm:craft_diagram_3=설계도 ③ 구슬 신호 장치	#	### Jagyeokru repair blueprint used in Craft Off.
+item.rwm:craft_diagram_4=설계도 ④ 종·북·징 시보 장치	#	### Jagyeokru repair blueprint used in Craft Off.
+item.rwm:craft_diagram_5=설계도 ⑤ 십이지신 시각 알림 장치	#	### Jagyeokru repair blueprint used in Craft Off.
 item.rwm:craft_part_1=물항아리(파수호)	#	### Jagyeokru part: 물항아리(파수호) (craft part 1).
 item.rwm:craft_part_2=물받이 통(수수호)	#	### Jagyeokru part: 물받이 통(수수호) (craft part 2).
-item.rwm:craft_part_3=잣대(부전)	#	### Jagyeokru part: 잣대(부전) (craft part 3).
-item.rwm:craft_part_4=작은 쇠구슬	#	### Jagyeokru part: 작은 쇠구슬 (craft part 4).
-item.rwm:craft_part_5=큰 쇠구슬	#	### Jagyeokru part: 큰 쇠구슬 (craft part 5).
-item.rwm:craft_part_6=숟가락 장치	#	### Jagyeokru part: 숟가락 장치 (craft part 6).
+item.rwm:craft_part_3=숟가락 장치	#	### Jagyeokru part: 잣대(부전) (craft part 3).
+item.rwm:craft_part_4=시보 인형	#	### Jagyeokru part: 작은 쇠구슬 (craft part 4).
+item.rwm:craft_part_5=십이지신 인형	#	### Jagyeokru part: 큰 쇠구슬 (craft part 5).
+item.rwm:craft_part_6=청동 이음쇠	#	### Jagyeokru part: 숟가락 장치 (craft part 6).
 item.rwm:craft_part_7=구슬 통로	#	### Jagyeokru part: 구슬 통로 (craft part 7).
-item.rwm:craft_part_8=종	#	### Jagyeokru part: 종 (craft part 8).
-item.rwm:craft_part_9=북	#	### Jagyeokru part: 북 (craft part 9).
-item.rwm:craft_part_10=징	#	### Jagyeokru part: 징 (craft part 10).
-item.rwm:craft_part_11=시보 인형	#	### Jagyeokru part: 시보 인형 (craft part 11).
-item.rwm:craft_part_12=십이지신 인형	#	### Jagyeokru part: 십이지신 인형 (craft part 12).
+item.rwm:craft_part_8=나무 받침틀	#	### Jagyeokru part: 종 (craft part 8).
+item.rwm:craft_part_9=지렛대	#	### Jagyeokru part: 북 (craft part 9).
+item.rwm:craft_part_10=굴대(회전축)	#	### Jagyeokru part: 징 (craft part 10).
+item.rwm:craft_part_11=작은 쇠구슬	#	### Jagyeokru part: 시보 인형 (craft part 11).
+item.rwm:craft_part_12=큰 쇠구슬	#	### Jagyeokru part: 십이지신 인형 (craft part 12).
 item.rwm:craft_contraption_fixed_1=물 공급 장치 수리 부품	#	### Repair part for Jagyeokru device 1: 물 공급 장치.
 item.rwm:craft_contraption_fixed_2=잣대 장치 수리 부품	#	### Repair part for Jagyeokru device 2: 잣대 장치.
 item.rwm:craft_contraption_fixed_3=구슬 신호 장치 수리 부품	#	### Repair part for Jagyeokru device 3: 구슬 신호 장치.
@@ -223,16 +223,16 @@ interact.craft_board_change=§6설계도를 표시합니다.	#	###{StrContains="
 interact.craft_part_pickup=§6부품을 집습니다.	#	###{StrContains="§6"} Dislpayed when hovering over an crafting component in Contraption Craft Off.
 interact.craft_crafting_change=§6부품을 배치합니다.	#	###{StrContains="§6"} Displayed when holding a crafting part and hovering over the crafting table in Contraption Craft Off.
 interact.craft_contraption_change=§6장치를 수리합니다.	#	###{StrContains="§6"} Displayed when you have a fixed contraption in your inventory and hover over the contraption in Contraption Craft Off.
-grid_block_magenta.interact=§d자홍색§r 블록 획득	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
-grid_block_lime.interact=§a연두색§r 블록 획득	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
-grid_block_blue.interact=§9파란색§r 블록 획득	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
-grid_block_red.interact=§c빨간색§r 블록 획득	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
-grid_block_yellow.interact=§e노란색§r 블록 획득	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
-grid_block_magenta_obtain.interact=§d자홍색§r 블록 획득	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
-grid_block_lime_obtain.interact=§a연두색§r 블록 획득	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
-grid_block_blue_obtain.interact=§9파란색§r 블록 획득	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
-grid_block_red_obtain.interact=§c빨간색§r 블록 획득	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
-grid_block_yellow_obtain.interact=§e노란색§r 블록 획득	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+grid_block_magenta.interact=§d자홍 매화 전돌§r 획득	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime.interact=§a연두 대나무 전돌§r 획득	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue.interact=§9파랑 거북등 전돌§r 획득	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red.interact=§c빨강 모란 전돌§r 획득	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow.interact=§e노랑 국화 전돌§r 획득	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
+grid_block_magenta_obtain.interact=§d자홍 매화 전돌§r 획득	#	###{StrContains="§d"}{StrContains="§r"} Displayed when you hover over a Magenta block you can take.
+grid_block_lime_obtain.interact=§a연두 대나무 전돌§r 획득	#	###{StrContains="§a"}{StrContains="§r"} Displayed when you hover over a Lime block you can take.
+grid_block_blue_obtain.interact=§9파랑 거북등 전돌§r 획득	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
+grid_block_red_obtain.interact=§c빨강 모란 전돌§r 획득	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
+grid_block_yellow_obtain.interact=§e노랑 국화 전돌§r 획득	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
 orb.flag.ride.interact=상호작용하여 옥새를 획득하세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
 orb.flag.unride.interact=상호작용하여 옥새를 획득하세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
 

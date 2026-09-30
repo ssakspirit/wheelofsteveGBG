@@ -8,10 +8,10 @@
 				"default": "conduit_wind"
 			},
 			"geometry": {
-                "default": "geometry.wheel_of_steve"
+                "default": "geometry.honcheonui"
 			},
 			"textures": {
-                "default" : "textures/rwm/entity/wheel_of_steve"
+                "default" : "textures/rwm/entity/honcheonui"
 			},
 			"render_controllers": [
 				"controller.render.wheel_of_steve"

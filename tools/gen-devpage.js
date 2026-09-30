@@ -29,8 +29,28 @@ const blobSha = f => {
   const buf = fs.readFileSync(f);
   return crypto.createHash("sha1").update(`blob ${buf.length}\0`).update(buf).digest("hex");
 };
+// git cat-file --batch 로 원본 파일 여러 개를 한 번에 읽는다 (파일마다 git show 를 부르면 수십 초 걸림)
+function catBatch(specs) {
+  if (!specs.length) return [];
+  const out = execFileSync("git", ["cat-file", "--batch"], { input: specs.join("\n") + "\n", maxBuffer: 512 << 20, stdio: ["pipe", "pipe", "ignore"] });
+  const res = []; let i = 0;
+  for (let k = 0; k < specs.length; k++) {
+    const nl = out.indexOf(10, i), head = out.slice(i, nl).toString();
+    if (head.endsWith("missing")) { res.push(null); i = nl + 1; continue; }
+    const size = +head.split(" ")[2];
+    res.push(out.slice(nl + 1, nl + 1 + size)); i = nl + 1 + size + 1;
+  }
+  return res;
+}
+// 리소스 팩 원본은 처음에 한꺼번에 읽어 둔다
+const BASE_RP = (() => {
+  const files = [...baseTree.keys()].filter(f => f.startsWith(RP));
+  const bufs = catBatch(files.map(f => `${BASELINE}:${f}`));
+  return new Map(files.map((f, i) => [f, bufs[i]]));
+})();
+const baseBuf = f => BASE_RP.has(f) ? BASE_RP.get(f) : (() => { try { return git(["show", `${BASELINE}:${f}`], { buffer: true }); } catch { return null; } })();
 // 텍스트 파일은 줄바꿈 변환 영향을 받으므로 원본 내용과 직접 비교
-const baseText = f => { try { return git(["show", `${BASELINE}:${f}`]); } catch { return null; } };
+const baseText = f => baseBuf(f)?.toString("utf8") ?? null;
 function status(f) {
   if (!baseTree.has(f)) return "new";
   if (!exists(f)) return "deleted";
@@ -67,13 +87,13 @@ for (const k of new Set([...langBase.keys(), ...langNow.keys()])) {
 
 // ---------- 3D 미리보기용 모델 ----------
 // 두 형식(1.8~1.10의 "geometry.x" 키, 1.12+의 "minecraft:geometry" 배열)을 같은 모양으로 정리한다
-function loadGeometry(file, id) {
-  if (!exists(file)) return null;
-  const j = JSON.parse(read(file).replace(/^\s*\/\/.*$/gm, ""));
+function loadGeometry(file, id, text = exists(file) ? read(file) : null) {
+  if (text == null) return null;
+  const j = JSON.parse(text.replace(/^\s*\/\/.*$/gm, ""));
   let g = null, tw = 64, th = 64;
   if (j["minecraft:geometry"]) {
     g = j["minecraft:geometry"].find(x => x.description.identifier === id) || j["minecraft:geometry"][0];
-    tw = g.description.texture_width; th = g.description.texture_height;
+    tw = g.description.texture_width ?? 64; th = g.description.texture_height ?? 64;
   } else {
     const key = Object.keys(j).find(k => k.split(":")[0] === id) || Object.keys(j).find(k => k.startsWith("geometry."));
     g = j[key]; tw = g.texturewidth ?? 64; th = g.textureheight ?? 64;
@@ -87,6 +107,15 @@ function loadGeometry(file, id) {
   };
 }
 const dataUri = f => exists(f) ? "data:image/png;base64," + fs.readFileSync(f).toString("base64") : null;
+const baseDataUri = f => baseTree.has(f) ? "data:image/png;base64," + baseBuf(f).toString("base64") : null;
+// 텍스처나 모델이 원본과 다르면 원본 쪽을 함께 실어 변경 전/후를 나란히 보여 준다
+function beforeOf(tex, texStatus, geo, geoStatus, id) {
+  if (texStatus !== "changed" && geoStatus !== "changed") return null;
+  return {
+    texData: texStatus === "changed" ? baseDataUri(tex) : null,
+    model: geoStatus === "changed" ? loadGeometry(geo, id, baseText(geo)) : null,
+  };
+}
 
 // ---------- 호스트(NPC) ----------
 const hosts = [
@@ -98,22 +127,40 @@ const hosts = [
 ].map(h => {
   const tex = `${RP}textures/rwm/entity/npc/${h.id}.png`;
   const geo = `${RP}models/entity/npc/${h.id}.geo.json`;
+  const texStatus = status(tex), geoStatus = status(geo), geoId = `geometry.rwm.${h.id}`;
   return {
-    ...h, tex, texStatus: status(tex), geoStatus: status(geo),
-    model: loadGeometry(geo, `geometry.rwm.${h.id}`), texData: dataUri(tex),
+    ...h, tex, texStatus, geoStatus,
+    model: loadGeometry(geo, geoId), texData: dataUri(tex),
+    before: beforeOf(tex, texStatus, geo, geoStatus, geoId),
     name: t(`${h.key}.n`), nameBefore: langBase.get(`${h.key}.n`),
     button: t(`${h.key}.b1`), dialogue: t(`${h.key}.d`),
   };
 });
+// 바퀴는 클라이언트 엔티티가 실제로 쓰는 모델·텍스처를 따라간다 (다른 파일로 바꿔 끼워도 게임과 같은 모습을 보여 줌)
+const WHEEL_TEX0 = `${RP}textures/rwm/entity/wheel_of_steve.png`, WHEEL_GEO0 = `${RP}models/entity/wheel_of_steve.geo.json`, WHEEL_ID0 = "geometry.wheel_of_steve";
+const wheelDesc = JSON.parse(read(`${RP}entity/wheel_of_steve.rp.e.json`))["minecraft:client_entity"].description;
+const wheelGeoId = wheelDesc.geometry.default;
+const wheelTex = `${RP}${wheelDesc.textures.default}.png`;
+const wheelGeo = fs.readdirSync(`${RP}models/entity`).map(f => `${RP}models/entity/${f}`)
+  .find(f => f.endsWith(".json") && read(f).includes(`"${wheelGeoId}"`)) || WHEEL_GEO0;
+const swapped = (file, file0) => file === file0 ? status(file) : "changed"; // 다른 파일로 교체됐으면 '변경됨'
 const wheel = {
-  tex: `${RP}textures/rwm/entity/wheel_of_steve.png`,
-  texStatus: status(`${RP}textures/rwm/entity/wheel_of_steve.png`),
+  tex: wheelTex, texStatus: swapped(wheelTex, WHEEL_TEX0),
   name: t("wheel.n"), nameBefore: langBase.get("wheel.n"), dialogue: t("wheel.d"), button: t("wheel.b1"),
-  geoStatus: status(`${RP}models/entity/wheel_of_steve.geo.json`),
-  model: loadGeometry(`${RP}models/entity/wheel_of_steve.geo.json`, "geometry.wheel_of_steve"),
-  texData: dataUri(`${RP}textures/rwm/entity/wheel_of_steve.png`),
+  geoStatus: swapped(wheelGeo, WHEEL_GEO0),
+  model: loadGeometry(wheelGeo, wheelGeoId), texData: dataUri(wheelTex),
   frames: 2, // render controller의 uv_anim: 텍스처를 위아래 2장으로 나눠 번갈아 보여 줌
 };
+wheel.before = wheel.texStatus === "changed" || wheel.geoStatus === "changed"
+  ? { texData: baseDataUri(WHEEL_TEX0), model: loadGeometry(WHEEL_GEO0, WHEEL_ID0, baseText(WHEEL_GEO0)) }
+  : null;
+// 게임에 아직 연결하지 않은 새 모델 시안 (파일이 있고, 바퀴가 아직 쓰지 않을 때만 보여 준다)
+const drafts = [
+  { id: "honcheonui", name: "혼천의 (새 모델 시안)", geo: `${RP}models/entity/honcheonui.geo.json`, geoId: "geometry.honcheonui",
+    tex: `${RP}textures/rwm/entity/honcheonui.png`, frames: 2, note: "게임에 아직 연결하지 않은 새 바퀴 모델 · 생성: tools/skins/honcheonui.js" },
+].filter(d => exists(d.geo) && exists(d.tex) && d.geoId !== wheelGeoId).map(d => ({
+  ...d, draft: true, texStatus: status(d.tex), geoStatus: status(d.geo), model: loadGeometry(d.geo, d.geoId), texData: dataUri(d.tex),
+}));
 
 // ---------- 아이템 ----------
 const itemTex = JSON.parse(read(`${RP}textures/item_texture.json`)).texture_data;
@@ -139,7 +186,10 @@ const pngs = [...new Set([...walk(RP).map(f => f.split(path.sep).join("/")), ...
   .map(f => {
     let w = 0, h = 0;
     if (exists(f)) { const b = fs.readFileSync(f); w = b.readUInt32BE(16); h = b.readUInt32BE(20); }
-    return { file: f, rel: f.slice(RP.length), status: status(f), w, h };
+    const st = status(f);
+    // 바뀐 그림은 내장 데이터로 싣는다: 원본과 나란히 보여 주고, 브라우저 캐시에 옛 그림이 남지 않게
+    return { file: f, rel: f.slice(RP.length), status: st, w, h,
+      data: st === "changed" || st === "new" ? dataUri(f) : null, beforeData: st === "changed" ? baseDataUri(f) : null };
   })
   .sort((a, b) => a.rel.localeCompare(b.rel, "en", { numeric: true }));
 
@@ -153,6 +203,129 @@ const sounds = [...new Set([...Object.keys(sdBase), ...Object.keys(sdNow)])].sor
   changed: JSON.stringify(sdBase[k]) !== JSON.stringify(sdNow[k]),
 }));
 const soundFiles = walk(`${RP}sounds`).map(f => f.split(path.sep).join("/")).filter(f => /\.(ogg|wav|fsb)$/i.test(f));
+
+// ---------- 장소·게임 (tools/places.js) ----------
+const { places: TP_PLACES, sections: SECTIONS, games: GAMES, sequences: SEQS, devCommands, devRecipes } = require("./places");
+// 명령어 탭: 안내 목록 + 이동·연습 시작 명령은 places·games에서 자동으로 만든다 (gen-dev.js가 만드는 것과 같은 목록)
+const commands = {
+  groups: [
+    ...devCommands.slice(0, 2),
+    { group: "게임 시작 (연습 경기)", items: GAMES.map(([name, , label]) => ({ cmd: `/function dev/start/${name}`, desc: `${label} 연습 경기 시작 — NPC 대화로 시작하는 것과 같고, 어전대회 승리 기록에는 들어가지 않음` })) },
+    { group: "이동", items: TP_PLACES.map(([name, pos, , label]) => ({ cmd: `/function dev/tp/${name}`, desc: `${label} (${pos})` })) },
+    ...devCommands.slice(2),
+  ],
+  recipes: devRecipes,
+  seqs: SEQS.map(s => ({ ...s, title: SECTIONS.find(x => x.id === s.game)?.title || s.game })),
+};
+// 주석 달린 JSON: 줄 전체 주석과, 따옴표가 없는 줄 끝 주석(`"a": 1 // 설명`)을 지운다
+const jsonc = s => JSON.parse(s.replace(/^\s*\/\/.*$/gm, "").replace(/\s\/\/[^"\n]*$/gm, ""));
+function fogInfo(id) {
+  const f = `${RP}fogs/${id}.json`, air = s => { try { return jsonc(s)["minecraft:fog_settings"].distance.air; } catch { return null; } };
+  const now = exists(f) ? air(read(f)) : null, before = air(baseText(f) || "");
+  return { id, color: now?.fog_color ?? null, end: now?.fog_end ?? null, beforeColor: before?.fog_color ?? null, beforeEnd: before?.fog_end ?? null };
+}
+// 엔티티: 행동팩 정의 + 리소스팩 텍스처
+const entities = new Map();
+for (const f of fs.readdirSync(`${BP}entities`)) {
+  try { const id = jsonc(read(`${BP}entities/${f}`))["minecraft:entity"].description.identifier; entities.set(id, { id, bp: f, rp: null, textures: [] }); } catch {}
+}
+for (const f of fs.readdirSync(`${RP}entity`)) {
+  try {
+    const d = jsonc(read(`${RP}entity/${f}`))["minecraft:client_entity"].description;
+    const e = entities.get(d.identifier) || { id: d.identifier, bp: null, textures: [] };
+    entities.set(d.identifier, { ...e, rp: f, textures: [...new Set(Object.values(d.textures || {}))].map(t => t.replace(/^textures\//, "") + ".png") });
+  } catch {}
+}
+// 함수 폴더: 파일 수, 시작 지점, 쓰는 소리(playsound)
+function funcInfo(dir) {
+  const d = `${BP}functions/${dir}`;
+  if (!exists(d)) return { dir, count: 0, entries: [], sounds: {} };
+  const files = walk(d).filter(f => f.endsWith(".mcfunction"));
+  const sounds = {};
+  for (const f of files) for (const m of read(f).matchAll(/playsound\s+([a-z0-9_.]+)/g)) sounds[m[1]] = (sounds[m[1]] || 0) + 1;
+  const entries = files.map(f => f.split(path.sep).join("/").slice(`${BP}functions/`.length))
+    .filter(f => /\/(game_start|game_end|start|end|tick|main)\.mcfunction$/.test(f));
+  return { dir, count: files.length, entries, sounds };
+}
+// ---------- 텍스처 ↔ 3D 모델 (원본·현재 각각) ----------
+// 클라이언트 엔티티의 textures 키는 같은 이름의 geometry 키(없으면 default)와 짝을 이룬다.
+const norm = f => f.split(path.sep).join("/");
+const geoIdsOf = text => {
+  try {
+    const j = jsonc(text);
+    return j["minecraft:geometry"] ? j["minecraft:geometry"].map(g => g.description.identifier) : Object.keys(j).filter(k => k.startsWith("geometry.")).map(k => k.split(":")[0]);
+  } catch { return []; }
+};
+const geoIndex = files => { const m = new Map(); for (const [f, text] of files) if (text) for (const id of geoIdsOf(text)) if (!m.has(id)) m.set(id, { f, text }); return m; };
+const nowGeo = geoIndex(walk(`${RP}models`).map(norm).filter(f => f.endsWith(".json")).map(f => [f, read(f)]));
+const baseGeo = geoIndex([...BASE_RP.keys()].filter(f => f.startsWith(`${RP}models/`) && f.endsWith(".json")).map(f => [f, baseText(f)]));
+const uvAnimRCs = new Set(fs.readdirSync(`${RP}render_controllers`).flatMap(f => {
+  try { const j = jsonc(read(`${RP}render_controllers/${f}`)).render_controllers; return Object.keys(j).filter(k => JSON.stringify(j[k]).includes("uv_anim")); } catch { return []; }
+}));
+function pairsOf(files) {
+  const out = [];
+  for (const text of files) {
+    let d; try { d = jsonc(text)["minecraft:client_entity"].description; } catch { continue; }
+    const geos = d.geometry || {}, frames = (d.render_controllers || []).some(rc => uvAnimRCs.has(typeof rc === "string" ? rc : Object.keys(rc)[0])) ? 2 : 1;
+    for (const [key, t] of Object.entries(d.textures || {})) {
+      const geo = geos[key] ?? geos.default ?? Object.values(geos)[0];
+      if (geo) out.push({ entity: d.identifier, key, tex: `${RP}${t}.png`, geo, frames });
+    }
+  }
+  return out;
+}
+const entFilesNow = fs.readdirSync(`${RP}entity`).map(f => read(`${RP}entity/${f}`));
+const entFilesBase = [...BASE_RP.keys()].filter(f => f.startsWith(`${RP}entity/`)).map(baseText).filter(Boolean);
+const pairsNow = pairsOf(entFilesNow), pairsBase = pairsOf(entFilesBase);
+const geoDict = {}; // "now|id" / "base|id" → 모델. 원본과 같은 파일이면 now 하나만 싣는다
+function geoRef(which, id) {
+  const now = nowGeo.get(id), base = baseGeo.get(id);
+  const src = which === "base" ? (base || now) : (now || base);
+  if (!src) return null;
+  const same = base && now && base.text.replace(/\r/g, "") === now.text.replace(/\r/g, ""); // 줄바꿈 차이는 무시
+  const key = which === "base" && same ? "now|" + id : which + "|" + id;
+  if (!(key in geoDict)) { try { geoDict[key] = loadGeometry(src.f, id, src.text); } catch { geoDict[key] = null; } }
+  return geoDict[key] ? key : null;
+}
+for (const p of pngs) {
+  const mine = [...pairsNow, ...pairsBase].filter(x => x.tex === p.file);
+  const seen = new Set(), models = [];
+  for (const x of mine) {
+    const k = x.entity + "|" + x.key;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    const now = pairsNow.find(y => y.tex === p.file && y.entity === x.entity && y.key === x.key);
+    const base = pairsBase.find(y => y.tex === p.file && y.entity === x.entity && y.key === x.key);
+    const ent = x.entity.replace(/^rwm:/, "");
+    const key = x.key.replace(new RegExp("^" + ent + "_"), "").replace(/^craft_part_/, "")
+      .replace(/^(\d+)_broken$/, "$1번 고장").replace(/^(\d+)_fixed$/, "$1번 수리");
+    models.push({
+      label: ent + (x.key !== "default" ? " · " + key : ""),
+      after: p.status === "deleted" ? null : geoRef("now", (now || x).geo),
+      before: p.status === "new" ? null : geoRef("base", (base || x).geo),
+      frames: x.frames, unused: !now,
+    });
+  }
+  if (!models.length) continue;
+  p.models = models;
+  if (!p.data && p.status !== "deleted") p.data = dataUri(p.file);
+  if (!p.beforeData && p.status === "deleted") p.beforeData = baseDataUri(p.file);
+}
+
+const sections = SECTIONS.map(s => {
+  const funcs = s.funcs.map(funcInfo);
+  const sounds = {};
+  for (const fi of funcs) for (const [k, n] of Object.entries(fi.sounds)) sounds[k] = (sounds[k] || 0) + n;
+  const ents = [...entities.values()].filter(e => s.entities.some(re => new RegExp(re).test(e.id.replace(/^rwm:/, ""))))
+    .sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
+  return {
+    ...s,
+    tpInfo: s.tps.map(id => TP_PLACES.find(p => p[0] === id)).filter(Boolean).map(([id, pos, face, label]) => ({ id, pos, face, label })),
+    fogs: s.fogs.map(fogInfo), funcs: funcs.map(({ sounds, ...fi }) => fi), entities: ents,
+    entityTex: [...new Set(ents.flatMap(e => e.textures))],
+    sounds: Object.entries(sounds).sort((a, b) => b[1] - a[1]).map(([name, n]) => ({ name, n, custom: !!sdNow[name], changed: JSON.stringify(sdBase[name]) !== JSON.stringify(sdNow[name]) })),
+  };
+});
 
 // ---------- 파일 변경 목록과 규칙 검사 ----------
 const changedFiles = git(["diff", "--name-status", "--no-renames", BASELINE, "--", "."])
@@ -169,7 +342,7 @@ const dirty = git(["status", "--porcelain", "--", ".", ":(exclude)db", ":(exclud
 
 const data = {
   generated: new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }),
-  head, dirty, baseline: BASELINE, guard, wheel, hosts, items, armor, pngs, langRows, sounds, soundFiles, changedFiles,
+  head, dirty, baseline: BASELINE, guard, wheel, drafts, hosts, sections, geo: geoDict, commands, items, armor, pngs, langRows, sounds, soundFiles, changedFiles,
   world: t("pack.name"),
 };
 
@@ -192,7 +365,7 @@ h1{margin:0;font-size:26px;letter-spacing:-.5px}
 h1 small{font-size:14px;color:var(--muted);font-weight:500;margin-left:8px}
 .meta{color:var(--muted);font-size:13px;margin-top:6px}
 nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
-nav .in{max-width:1200px;margin:auto;padding:8px 20px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav .in{max-width:1200px;margin:auto;padding:6px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 nav a{color:var(--ink);text-decoration:none;padding:4px 10px;border-radius:999px;background:var(--chip);font-size:13px}
 nav label{margin-left:auto;font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
 nav input[type=search]{padding:5px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font:inherit;font-size:13px;width:180px}
@@ -237,8 +410,82 @@ canvas.v3d:active{cursor:grabbing}
 .v3d-wrap .hint{position:absolute;left:6px;bottom:4px;font-size:11px;color:#cfd8e3;pointer-events:none}
 .v3d-wrap .err{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-size:12px;color:#e9dcc9}
 .cap{font-size:11px;color:var(--muted);text-align:center;margin-top:2px}
+.ver{font-size:13px;font-weight:700;margin-bottom:-2px}
+.ver span{font-size:11px;font-weight:500;color:var(--muted);margin-left:4px}
 .warn{color:var(--chg)}
-@media (max-width:640px){td.key{width:auto}nav label{margin-left:0}}
+/* 탭 */
+.tabbar{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1 1 auto;min-width:0}
+.tabbar::-webkit-scrollbar{display:none}
+.tabbar button{border:0;background:none;color:var(--muted);font:inherit;font-size:14px;font-weight:600;padding:8px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.tabbar button:hover{background:var(--chip);color:var(--ink)}
+.tabbar button.on{background:var(--ink);color:var(--bg)}
+.tabbar button .cnt{font-size:11px;font-weight:700;margin-left:5px;padding:0 6px;border-radius:999px;background:var(--chip);color:var(--chg)}
+.tabbar button.on .cnt{background:rgba(255,255,255,.2);color:inherit}
+.panel{display:none}.panel.on{display:block}
+.panel>h2:first-child,.panel>div:first-child{margin-top:18px}
+/* 장소·게임 */
+.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 14px}
+.subtabs button{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:5px 12px 5px 8px;font:inherit;font-size:13px;cursor:pointer}
+.subtabs button.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);font-weight:700}
+.dot{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.25);flex:none}
+.gno{font-size:11px;color:var(--muted);font-weight:600}
+.place-head{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--fog,#999);border-radius:12px;padding:14px 16px}
+.place-head h2{margin:0 0 4px;font-size:22px}
+.place-head h2 small{font-size:14px;color:var(--muted);font-weight:500;margin-left:6px}
+.place-head p{margin:6px 0 0;color:var(--ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:12px;background:var(--chip);border-radius:999px;padding:2px 9px;color:var(--muted)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.box h3,.sub h3{margin:0 0 8px;font-size:15px}
+.cmd{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px dashed var(--line)}
+.cmd:first-of-type{border-top:0}
+.cmd code{flex:1 1 auto;min-width:0;font-size:13px;background:var(--code);padding:3px 8px;border-radius:6px;overflow-wrap:anywhere}
+.cmd .lbl{font-size:12px;color:var(--muted);width:150px;flex:none}
+.cmd-extra{font-size:12px;color:var(--muted);margin:-2px 0 4px 158px}
+.copy{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;font:inherit;font-size:12px;padding:2px 8px;cursor:pointer;flex:none}
+.fogs{display:flex;gap:8px;flex-wrap:wrap}
+.fog{display:flex;align-items:center;gap:6px;font-size:12px;background:var(--chip);border-radius:8px;padding:4px 8px}
+.fog .sw{width:22px;height:16px;border-radius:4px;border:1px solid rgba(0,0,0,.25)}
+.sub{margin-top:18px;scroll-margin-top:70px}
+.sub>summary{list-style:none;cursor:pointer;padding:4px 0}
+.sub>summary::-webkit-details-marker{display:none}
+.sub>summary h3{display:inline-flex;align-items:baseline;gap:4px;margin:0}
+.sub>summary h3::before{content:"▸";font-size:12px;color:var(--muted);transition:transform .15s;display:inline-block;width:14px}
+.sub[open]>summary h3::before{transform:rotate(90deg)}
+.sub>summary+*{margin-top:8px}
+.sub h3 .n{font-size:12px;color:var(--muted);font-weight:500;margin-left:6px}
+.jump{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.list{display:flex;flex-wrap:wrap;gap:6px}
+.list span{font-size:12px;background:var(--chip);border-radius:6px;padding:2px 8px}
+.empty{font-size:13px;color:var(--muted)}
+.place-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.ptile{text-align:left;background:var(--panel);border:1px solid var(--line);border-top:5px solid var(--fog,#999);border-radius:12px;padding:12px 14px;cursor:pointer;font:inherit;color:var(--ink)}
+.ptile:hover{border-color:var(--ink)}
+.ptile b{font-size:16px}
+.ptile .small{margin-top:4px}
+.pair{display:flex;gap:6px;align-items:center;justify-content:center}
+.pair figure{margin:0;text-align:center}
+.pair figcaption{font-size:10px;color:var(--muted)}
+/* 명령어 탭 */
+.recipes{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+ol.steps{margin:0 0 6px;padding-left:22px}
+ol.steps li{margin:4px 0}
+ol.steps code,table.cmds code{font-size:13px;background:var(--code);padding:2px 7px;border-radius:6px;margin-right:6px;overflow-wrap:anywhere}
+table.cmds td.c{white-space:nowrap;width:1%}
+@media (max-width:760px){table.cmds td.c{white-space:normal}}
+/* 텍스처 3D 비교 창 */
+.b3d{margin-left:auto;font-weight:700}
+.tile-foot{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+dialog#dlg3d{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--panel);color:var(--ink);width:min(960px,94vw);max-height:92vh}
+dialog#dlg3d::backdrop{background:rgba(20,16,10,.55)}
+.dlg-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.dlg-head b{font-size:15px;word-break:break-all}
+#dlgModels{margin:10px 0}
+.dlg-body{gap:12px}
+canvas.v3d-dlg{display:block;width:100%;height:min(440px,56vh);cursor:grab;touch-action:none}
+@media (max-width:760px){.info-grid{grid-template-columns:1fr}.cmd{flex-wrap:wrap}.cmd .lbl{width:100%}.cmd-extra{margin-left:0}}
+@media (max-width:640px){td.key{width:auto}nav label{margin-left:0}#hostGrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -247,25 +494,46 @@ canvas.v3d:active{cursor:grabbing}
   <div class="meta" id="meta"></div>
 </header>
 <nav><div class="in">
-  <a href="#summary">요약</a><a href="#hosts">호스트</a><a href="#items">아이템</a><a href="#lang">문구</a>
-  <a href="#textures">텍스처</a><a href="#sounds">사운드</a><a href="#files">파일</a>
+  <div class="tabbar" id="tabbar" role="tablist"></div>
   <label><input type="checkbox" id="onlyChanged"> 바뀐 것만</label>
   <input type="search" id="q" placeholder="검색 (이름, 키, 파일)">
 </div></nav>
 <main>
-  <section id="summary"><h2>요약</h2><div class="cards" id="cards"></div></section>
-  <section id="hosts"><h2>호스트 NPC <span class="n">텍스처 64×64 · 원본 대비</span></h2><div class="grid" id="hostGrid"></div></section>
-  <section id="items"><h2>아이템 <span class="n">아이콘 · 이름</span></h2><div class="grid" id="itemGrid"></div></section>
-  <section id="lang"><h2>문구 (ko_KR) <span class="n" id="langN"></span></h2><div class="tabs" id="langTabs"></div>
+  <section class="panel" id="p-summary"><h2>요약</h2><div class="cards" id="cards"></div>
+    <h2 style="margin-top:26px">장소·게임 <span class="n">눌러서 자세히 보기</span></h2><div class="place-grid" id="placeOverview"></div></section>
+  <section class="panel" id="p-places"><div class="subtabs" id="placeTabs"></div><div id="placeBody"></div></section>
+  <section class="panel" id="p-commands"><h2>명령어 <span class="n">게임 채팅창에 입력 · 복사 버튼으로 옮기기</span></h2>
+    <div class="info-grid" style="margin-top:0">
+      <div class="box"><h3>준비</h3><div class="small" style="color:var(--ink)">① 월드 설정에서 <b>치트(명령어) 허용</b>을 켭니다. ② 명령은 <b>호스트(운영자)</b>만 쓸 수 있습니다.
+        ③ 게임 안에서 <b>T</b> 또는 <b>/</b> 키로 채팅창을 열고 붙여 넣습니다. 여러 줄을 한꺼번에 붙여 넣을 수는 없으니 한 줄씩 입력하세요.</div></div>
+      <div class="box"><h3>치트 안전장치</h3><div class="small" style="color:var(--ink)"><span class="badge b-changed">디버그</span> 표시가 붙은 치트는
+        <b>디버그 모드</b>(/function dev/debug/on)를 켠 사람만, <b>연습 경기</b>에서만 동작합니다. 혼천의로 시작한 어전대회 경기 중에는 스스로 거부하므로
+        실제 경기의 규칙·진행·승리 기록에는 영향이 없습니다. 모든 개발용 명령은 <code>functions/dev/</code>의 새 파일이고 기존 게임 파일은 바꾸지 않습니다.</div></div>
+    </div>
+    <h2 style="margin-top:22px;font-size:17px">자주 쓰는 순서 <span class="n">위에서부터 차례로 입력</span></h2><div class="recipes" id="cmdRecipes"></div>
+    <div id="cmdGroups"></div>
+    <h2 style="margin-top:22px;font-size:17px">게임별 진행 지점 <span class="n">치트가 건너뛰는 곳 (.seq, 20 = 1초)</span></h2>
+    <table><thead><tr><th>게임</th><th>act</th><th>경기 시작</th><th>경기 끝</th><th>설명</th></tr></thead><tbody id="cmdSeqs"></tbody></table>
+  </section>
+  <section class="panel" id="p-hosts"><h2>호스트 NPC <span class="n">텍스처 64×64 · 원본 대비</span></h2><div class="grid" id="hostGrid"></div></section>
+  <section class="panel" id="p-items"><h2>아이템 <span class="n">아이콘 · 이름</span></h2><div class="grid" id="itemGrid"></div></section>
+  <section class="panel" id="p-lang"><h2>문구 (ko_KR) <span class="n" id="langN"></span></h2><div class="tabs" id="langTabs"></div>
     <table><thead><tr><th>키</th><th>원본</th><th>현재</th></tr></thead><tbody id="langBody"></tbody></table></section>
-  <section id="textures"><h2>텍스처 전체 <span class="n" id="texN"></span></h2><div class="tabs" id="texTabs"></div><div class="tex-grid" id="texGrid"></div></section>
-  <section id="sounds"><h2>사운드 <span class="n" id="sndN"></span></h2>
+  <section class="panel" id="p-textures"><h2>텍스처 전체 <span class="n" id="texN"></span></h2>
+    <p class="small" style="margin:-6px 0 10px"><label><input type="checkbox" id="only3d"> 3D 모델이 있는 것만</label> · 타일의 <b>3D</b> 버튼을 누르면 게임 모델에 씌운 모습을 변경 전/후로 비교합니다.</p><div class="tabs" id="texTabs"></div><div class="tex-grid" id="texGrid"></div></section>
+  <section class="panel" id="p-sounds"><h2>사운드 <span class="n" id="sndN"></span></h2>
     <table><thead><tr><th>사운드 이벤트</th><th>원본 파일</th><th>현재 파일</th></tr></thead><tbody id="sndBody"></tbody></table>
     <p class="small" id="sndFiles"></p></section>
-  <section id="files"><h2>원본 대비 바뀐 파일 <span class="n" id="fileN"></span></h2>
+  <section class="panel" id="p-files"><h2>원본 대비 바뀐 파일 <span class="n" id="fileN"></span></h2>
     <table><thead><tr><th style="width:90px">상태</th><th>파일</th></tr></thead><tbody id="fileBody"></tbody></table>
     <h2 style="margin-top:18px;font-size:16px">규칙 보존 검사</h2><pre id="guard"></pre></section>
 </main>
+<dialog id="dlg3d" aria-labelledby="dlgTitle">
+  <div class="dlg-head"><div><b id="dlgTitle"></b> <span id="dlgBadges"></span></div><button class="copy" id="dlgClose">닫기</button></div>
+  <div class="subtabs" id="dlgModels"></div>
+  <div class="dual dlg-body" id="dlgBody"></div>
+  <div class="small" id="dlgNote"></div>
+</dialog>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const D =${JSON.stringify(data).replace(/</g, "\\u003c")};
@@ -310,10 +578,20 @@ function tileHost(h, isWheel) {
   const changed = h.texStatus !== "same" || h.nameBefore !== h.name || (h.geoStatus && h.geoStatus !== "same");
   if (only() && !changed) return "";
   if (!match(h.name, h.nameBefore, h.id, h.game, h.dialogue)) return "";
-  const flat = '<div class="img"><img class="px" src="'+esc(h.tex)+'" width="'+(isWheel?128:192)+'"></div>';
-  const media = h.model && h.texData
-    ? '<div class="dual"><div>'+flat+'<div class="cap">평면(텍스처)</div></div><div><div class="v3d-wrap"><canvas class="v3d" data-host="'+esc(h.id)+'"></canvas><span class="hint">'+(isWheel ? "드래그: 둘러보기 · 클릭: 바퀴 돌리기" : "드래그해서 돌리기")+'</span></div><div class="cap">3D(게임 모델)</div></div></div>'
-    : flat;
+  const view = (src, ver) => {
+    const flat = '<div class="img"><img class="px" src="'+esc(src)+'" width="'+(isWheel?128:192)+'"></div>';
+    return h.model && h.texData
+      ? '<div class="dual"><div>'+flat+'<div class="cap">평면(텍스처)</div></div><div><div class="v3d-wrap"><canvas class="v3d" data-host="'+esc(h.id)+'" data-ver="'+ver+'"></canvas><span class="hint">'+(isWheel ? "드래그: 둘러보기 · 클릭: 바퀴 돌리기" : "드래그해서 돌리기")+'</span></div><div class="cap">3D(게임 모델)</div></div></div>'
+      : flat;
+  };
+  const media = h.before
+    ? '<div class="ver">변경 전 <span>원본(' + esc(D.baseline) + ')</span></div>' + view(h.before.texData || h.texData || h.tex, "before")
+      + '<div class="ver">변경 후 <span>현재</span></div>' + view(h.texData || h.tex, "after")
+    : view(h.texData || h.tex, "after"); // 파일 경로 대신 내장 데이터를 써서 브라우저 캐시에 옛 그림이 남지 않게 한다
+  if (h.draft) return '<div class="tile">'+media
+    + "<h3>"+mc(h.name)+' <span class="badge b-new">시안</span></h3>'
+    + '<div>텍스처 '+badge(h.texStatus)+" · 모델 "+badge(h.geoStatus)+"</div>"
+    + '<div class="small">'+esc(h.note)+"</div></div>";
   return '<div class="tile">'+media
     + "<h3>"+mc(h.name)+"</h3>"
     + '<div class="small">원래 이름: '+mc(h.nameBefore)+"</div>"
@@ -335,20 +613,146 @@ function tabs(el, names, cur, set) {
   el.innerHTML = names.map(n => '<button class="'+(n===cur?"on":"")+'">'+esc(n)+"</button>").join("");
   [...el.children].forEach((b, i) => b.onclick = () => { set(names[i]); render(); });
 }
+const langRow = r => '<tr><td class="key">'+esc(r.key)+(r.changed?' <span class="badge b-changed">변경</span>':"")+'</td><td class="before">'+mc(r.before)+"</td><td>"+mc(r.after)+"</td></tr>";
+function texTile(p) {
+  const w = Math.min(128, Math.max(48, p.w * 4)), src = p.data || p.file;
+  const img = (s, width) => '<img class="px" loading="lazy" src="'+esc(s)+'" width="'+width+'">';
+  const pic = p.status === "deleted" ? "" : p.beforeData
+    ? '<div class="pair"><figure>'+img(p.beforeData, Math.round(w * 0.6))+'<figcaption>원본</figcaption></figure><figure>'+img(src, Math.round(w * 0.6))+"<figcaption>현재</figcaption></figure></div>"
+    : img(src, w);
+  const b3d = p.models ? '<button class="copy b3d" data-3d="'+esc(p.rel)+'" title="게임 모델에 씌워 보기'+(p.status !== "same" ? " (변경 전/후 비교)" : "")+'">3D</button>' : "";
+  return '<div class="tile"><div class="img">'+pic+'</div><div class="tile-foot">'+badge(p.status)+' <span class="small">'+p.w+"×"+p.h+"</span>"+b3d+'</div><div class="small">'+esc(p.rel)+"</div></div>";
+}
+
+// ---------- 탭 ----------
+const TABS = [["summary", "요약"], ["places", "장소·게임"], ["commands", "명령어"], ["hosts", "호스트"], ["items", "아이템"], ["lang", "문구"], ["textures", "텍스처"], ["sounds", "사운드"], ["files", "파일"]];
+const view = { tab: "summary", place: D.sections[0].id };
+function readHash() {
+  const [t, p] = decodeURIComponent(location.hash.slice(1)).split("/");
+  if (TABS.some(([id]) => id === t)) view.tab = t;
+  if (p && D.sections.some(s => s.id === p)) view.place = p;
+}
+const go = (tab, place) => { location.hash = tab + (place ? "/" + place : ""); };
+function renderTabbar() {
+  const n = {
+    places: D.sections.length, commands: D.commands.groups.reduce((a, g) => a + g.items.length, 0), hosts: D.hosts.filter(h => h.texStatus !== "same").length,
+    items: D.items.filter(i => i.texStatus !== "same" || i.nameBefore !== i.name).length,
+    lang: D.langRows.filter(r => r.changed).length, textures: D.pngs.filter(p => p.status !== "same").length,
+    sounds: D.sounds.filter(s => s.changed).length, files: D.changedFiles.length,
+  };
+  $("tabbar").innerHTML = TABS.map(([id, label]) => '<button role="tab" data-tab="'+id+'" class="'+(view.tab === id ? "on" : "")+'">'+esc(label)
+    + (n[id] ? '<span class="cnt">'+n[id]+"</span>" : "") + "</button>").join("");
+}
+
+// ---------- 장소·게임 ----------
+const openState = {}; // 접고 편 상태를 다시 그려도 유지
+const RX = {};
+const rx = s => RX[s] || (RX[s] = new RegExp(s));
+const texRel = p => p.rel.replace(/^textures\\//, "");
+const secLang = s => D.langRows.filter(r => s.lang.some(re => rx(re).test(r.key)));
+const secTex = s => D.pngs.filter(p => s.tex.some(re => rx(re).test(texRel(p))) || s.entityTex.includes(texRel(p)));
+const secItems = s => s.items ? D.items.filter(i => rx(s.items).test(i.id)) : [];
+const secHost = s => s.host === "wheel" ? { ...D.wheel, id: "wheel" } : D.hosts.find(h => h.id === s.host);
+const fogColor = s => s.fogs[0]?.color || "#999";
+const plain = x => String(x ?? "").replace(/§./g, "");
+function cmdRow(label, cmd, extra) {
+  return '<div class="cmd"><span class="lbl">'+esc(label)+'</span><code>'+esc(cmd)+'</code><button class="copy" data-copy="'+esc(cmd)+'">복사</button></div>'
+    + (extra ? '<div class="cmd-extra">'+esc(extra)+"</div>" : "");
+}
+function renderPlaceTabs() {
+  $("placeTabs").innerHTML = D.sections.map(s => '<button data-place="'+s.id+'" class="'+(view.place === s.id ? "on" : "")+'"><span class="dot" style="background:'+esc(fogColor(s))+'"></span>'
+    + esc(s.title) + (s.game ? ' <span class="gno">게임 '+s.game+"</span>" : "") + "</button>").join("");
+}
+function renderPlace() {
+  const s = D.sections.find(x => x.id === view.place);
+  const host = secHost(s), lang = secLang(s), tex = secTex(s), items = secItems(s);
+  const shownLang = lang.filter(r => (!only() || r.changed) && match(r.key, r.before, r.after));
+  const shownTex = tex.filter(p => (!only() || p.status !== "same") && match(p.rel));
+  // 소제목마다 접었다 펼 수 있다 (항목이 24개를 넘으면 처음엔 접어 둠). 위쪽 바로가기 줄로 이동.
+  const jumps = [];
+  const sub = (key, title, count, body, size = 0) => {
+    const id = "sec-" + key, open = openState[id] ?? size <= 24;
+    jumps.push('<button class="copy" data-jump="'+id+'">'+esc(title)+(size ? " "+size : "")+"</button>");
+    return '<details class="sub" id="'+id+'"'+(open ? " open" : "")+"><summary><h3>"+esc(title)+(count != null ? '<span class="n">'+count+"</span>" : "")+"</h3></summary>"+body+"</details>";
+  };
+  const none = '<div class="empty">없음</div>';
+  let h = '<div class="place-head" style="--fog:'+esc(fogColor(s))+'"><h2>'+esc(s.title)+"<small>"+esc(s.en)+"</small></h2>"
+    + '<div class="chips">' + (s.game ? '<span class="chip">게임 '+s.game+" · .game = "+s.game+" · seq/act"+s.game+"</span>" : '<span class="chip">.game = 0</span>')
+    + (host ? '<span class="chip">호스트 '+esc(plain(host.name))+"</span>" : "") + "</div><p>"+esc(s.desc)+"</p></div>";
+  h += '<div class="info-grid"><div class="box"><h3>바로가기 명령</h3>'
+    + s.tpInfo.map(t => cmdRow(t.label, "/function dev/tp/" + t.id, t.pos + " → " + t.face)).join("")
+    + (s.start ? cmdRow("연습 경기 시작", "/function dev/start/" + s.start) : "")
+    + (s.id === "craft" ? cmdRow("두 팀 모드로 시작", "/function dev/start/craft_team", "혼자서도 3개 고장·3개 먼저 수리 모드") + cmdRow("한 팀 모드로 시작", "/function dev/start/craft_solo") : "")
+    + (s.start ? cmdRow("디버그 모드 켜기", "/function dev/debug/on", "아래 치트는 디버그 모드·연습 경기에서만 동작")
+      + cmdRow("설명 건너뛰기", "/function dev/skip/intro") + cmdRow("끝 장면 보기(팀1 승)", "/function dev/skip/end")
+      + cmdRow("로비로 (기록 없음)", "/function dev/skip/lobby") : "")
+    + cmdRow("건축 모드", "/function dev/build") + "</div>"
+    + '<div class="box"><h3>구역 · 안개</h3><div class="small" style="color:var(--ink)">장식 금지 구역: '+esc(s.zone)+"</div>"
+    + (s.timer ? '<div class="small">타이머 위치 (덮지 않기): '+esc(s.timer)+"</div>" : "")
+    + s.notes.map(n => '<div class="small warn">⚠ '+esc(n)+"</div>").join("")
+    + '<div class="fogs" style="margin-top:8px">' + s.fogs.map(f => '<span class="fog"><span class="sw" style="background:'+esc(f.color)+'"></span>'+esc(f.id)
+      + ' <span class="small">'+esc(f.color)+" · "+esc(f.end)+"칸"+(f.beforeColor && f.beforeColor !== f.color ? " (원본 "+esc(f.beforeColor)+")" : "")+"</span></span>").join("") + "</div></div></div>";
+  let b = "";
+  if (host) b += sub("host", s.host === "wheel" ? "혼천의 (세종대왕)" : "호스트 NPC", null, '<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(340px,1fr))">'+(tileHost(host, s.host === "wheel") || none)+"</div>");
+  if (items.length) b += sub("items", "아이템", items.length, '<div class="grid">'+(items.map(tileItem).join("") || none)+"</div>", items.length);
+  b += sub("tex", "텍스처", "표시 "+shownTex.length+" / "+tex.length+" · 바뀐 "+tex.filter(p => p.status !== "same").length, shownTex.length ? '<div class="tex-grid">'+shownTex.map(texTile).join("")+"</div>" : none, tex.length);
+  b += sub("lang", "문구", "표시 "+shownLang.length+" / "+lang.length+" · 바뀐 "+lang.filter(r => r.changed).length,
+    shownLang.length ? "<table><thead><tr><th>키</th><th>원본</th><th>현재</th></tr></thead><tbody>"+shownLang.map(langRow).join("")+"</tbody></table>" : none, lang.length);
+  b += sub("ent", "엔티티", s.entities.length, s.entities.length ? '<div class="list">'+s.entities.map(e => "<span>"+esc(e.id)+(e.textures.length ? " · 텍스처 "+e.textures.length : "")+(e.rp ? "" : " · 보이지 않음")+"</span>").join("")+"</div>" : none);
+  b += sub("snd", "쓰는 소리", s.sounds.length, s.sounds.length ? '<div class="list">'+s.sounds.map(x => "<span>"+esc(x.name)+" ×"+x.n+(x.custom ? ' · <b class="'+(x.changed ? "warn" : "")+'">'+(x.changed ? "재정의 바뀜" : "재정의")+"</b>" : "")+"</span>").join("")+"</div>" : none);
+  b += sub("func", "함수 폴더", null, '<div class="list">'+s.funcs.map(f => "<span>functions/"+esc(f.dir)+" · "+f.count+"개"+(f.entries.length ? " · "+esc(f.entries.map(e => e.split("/").pop().replace(".mcfunction", "")).join(", ")) : "")+"</span>").join("")+"</div>");
+  $("placeBody").innerHTML = h + '<div class="jump">' + jumps.join("") + "</div>" + b;
+}
+function renderOverview() {
+  $("placeOverview").innerHTML = D.sections.map(s => {
+    const lang = secLang(s), tex = secTex(s), host = secHost(s);
+    const hostSt = host ? (host.texStatus !== "same" || (host.geoStatus && host.geoStatus !== "same") ? "새 모습" : "원본") : "없음";
+    return '<button class="ptile" data-go="places/'+s.id+'" style="--fog:'+esc(fogColor(s))+'"><b>'+esc(s.title)+"</b>"+(s.game ? ' <span class="gno">게임 '+s.game+"</span>" : "")
+      + '<div class="small">'+esc(s.en)+(host ? " · "+esc(plain(host.name)) : "")+"</div>"
+      + '<div class="small">호스트 '+hostSt+" · 문구 "+lang.filter(r => r.changed).length+"/"+lang.length+" · 텍스처 "+tex.filter(p => p.status !== "same").length+"/"+tex.length+"</div></button>";
+  }).join("");
+}
+
+// ---------- 명령어 ----------
+const copyBtn = cmd => '<button class="copy" data-copy="'+esc(cmd)+'">복사</button>';
+function renderCommands() {
+  const C = D.commands, sec = s => (s / 20).toFixed(s % 20 ? 1 : 0) + "초";
+  $("cmdRecipes").innerHTML = C.recipes.filter(r => match(r.title, r.note, ...r.steps)).map(r => '<div class="box"><h3>'+esc(r.title)+'</h3><ol class="steps">'
+    + r.steps.map(s => "<li><code>"+esc(s)+"</code>"+copyBtn(s)+"</li>").join("") + "</ol>"
+    + (r.note ? '<div class="small">'+esc(r.note)+"</div>" : "") + "</div>").join("") || '<div class="empty">검색 결과 없음</div>';
+  $("cmdGroups").innerHTML = C.groups.map(g => {
+    const rows = g.items.filter(it => match(it.cmd, it.desc, it.warn, g.group));
+    if (!rows.length) return "";
+    return '<h2 style="margin-top:22px;font-size:17px">'+esc(g.group)+' <span class="n">'+rows.length+"개</span></h2>"
+      + '<table class="cmds"><tbody>' + rows.map(it => '<tr><td class="c"><code>'+esc(it.cmd)+"</code>"+copyBtn(it.cmd)+"</td><td>"
+        + (it.debug ? '<span class="badge b-changed">디버그</span> ' : "") + esc(it.desc)
+        + (it.warn ? '<div class="small warn">⚠ '+esc(it.warn)+"</div>" : "") + "</td></tr>").join("") + "</tbody></table>";
+  }).join("");
+  $("cmdSeqs").innerHTML = C.seqs.map(s => "<tr><td>"+esc(s.title)+"</td><td>"+s.act+"</td><td>"+s.start+' <span class="small">('+sec(s.start)+")</span></td><td>"+s.end+' <span class="small">('+sec(s.end)+')</span></td><td class="small">'+esc(s.note || "")+"</td></tr>").join("");
+}
+
 function render() {
   renderHeader();
-  $("hostGrid").innerHTML = tileHost({ ...D.wheel, id: "wheel" }, true) + D.hosts.map(h => tileHost(h)).join("");
+  renderCommands();
+  renderTabbar();
+  for (const [id] of TABS) $("p-" + id).classList.toggle("on", view.tab === id);
+  renderOverview();
+  renderPlaceTabs();
+  renderPlace();
+  $("hostGrid").innerHTML = tileHost({ ...D.wheel, id: "wheel" }, true) + D.drafts.map(d => tileHost(d, true)).join("") + D.hosts.map(h => tileHost(h)).join("");
   $("itemGrid").innerHTML = D.items.concat(D.armor).map(tileItem).join("");
   const groups = ["전체", ...new Set(D.langRows.map(r => r.group))];
   tabs($("langTabs"), groups, langTab, v => langTab = v);
   const rows = D.langRows.filter(r => (langTab === "전체" || r.group === langTab) && (!only() || r.changed) && match(r.key, r.before, r.after));
   $("langN").textContent = "바뀐 " + D.langRows.filter(r => r.changed).length + "개 · 표시 " + rows.length + "개";
-  $("langBody").innerHTML = rows.map(r => '<tr><td class="key">'+esc(r.key)+(r.changed?' <span class="badge b-changed">변경</span>':"")+'</td><td class="before">'+mc(r.before)+"</td><td>"+mc(r.after)+"</td></tr>").join("");
-  const folders = ["전체", ...new Set(D.pngs.map(p => p.rel.split("/").slice(0, -1).join("/")))];
+  $("langBody").innerHTML = rows.map(langRow).join("");
+  const folderOf = p => p.rel.split("/").slice(0, -1).join("/") || "(루트)";
+  const folders = ["전체", ...new Set(D.pngs.map(folderOf))];
   tabs($("texTabs"), folders, texTab, v => texTab = v);
-  const tex = D.pngs.filter(p => (texTab === "전체" || p.rel.startsWith(texTab + "/") && p.rel.split("/").slice(0,-1).join("/") === texTab) && (!only() || p.status !== "same") && match(p.rel));
-  $("texN").textContent = "표시 " + tex.length + "개";
-  $("texGrid").innerHTML = tex.map(p => '<div class="tile"><div class="img">'+(p.status==="deleted"?"":'<img class="px" loading="lazy" src="'+esc(p.file)+'" width="'+Math.min(128, Math.max(48, p.w*4))+'">')+'</div><div>'+badge(p.status)+' <span class="small">'+p.w+"×"+p.h+'</span></div><div class="small">'+esc(p.rel)+"</div></div>").join("");
+  const tex = D.pngs.filter(p => (texTab === "전체" || folderOf(p) === texTab)
+    && (!only() || p.status !== "same") && (!$("only3d").checked || p.models) && match(p.rel));
+  $("texN").textContent = "표시 " + tex.length + "개 · 3D 모델 있는 텍스처 " + D.pngs.filter(p => p.models).length + "개";
+  $("texGrid").innerHTML = tex.map(texTile).join("");
   const snd = D.sounds.filter(s => (!only() || s.changed) && match(s.event, s.before, s.after));
   $("sndN").textContent = "정의 " + D.sounds.length + "개 · 바뀐 " + D.sounds.filter(s => s.changed).length + "개";
   $("sndBody").innerHTML = snd.map(s => '<tr><td class="key">'+esc(s.event)+(s.changed?' <span class="badge b-changed">변경</span>':"")+'</td><td class="before">'+esc(s.before ?? "(없음)")+"</td><td>"+esc(s.after ?? "(없음)")+"</td></tr>").join("");
@@ -364,10 +768,6 @@ function render() {
 // ---------- 3D 미리보기 (Bedrock geo.json → three.js) ----------
 // 좌표 변환 (Blockbench와 같은 방식): X축을 뒤집고, 회전은 X·Y 부호를 바꾸고 Z는 유지, 앞면(north)은 -Z
 const V3D = [];
-function disposeViewers() {
-  for (const v of V3D) { v.renderer.dispose(); v.renderer.forceContextLoss(); }
-  V3D.length = 0;
-}
 function faceRects(c) {
   const u = c.uv[0], v = c.uv[1], w = c.size[0], h = c.size[1], d = c.size[2];
   return { east: [u, v + d, d, h], north: [u + d, v + d, w, h], west: [u + d + w, v + d, d, h],
@@ -434,16 +834,31 @@ function buildModel(m, tex) {
   }
   return root;
 }
+const disposeViewer = v => { v.renderer.dispose(); v.renderer.forceContextLoss(); V3D.splice(V3D.indexOf(v), 1); };
+const no3D = cv => cv.parentNode.insertAdjacentHTML("beforeend", '<div class="err">3D 보기는 인터넷 연결이 필요합니다<br>(three.js를 불러오지 못함)</div>');
 function init3D() {
-  disposeViewers();
-  const canvases = document.querySelectorAll("canvas.v3d");
-  if (!window.THREE) {
-    canvases.forEach(cv => cv.parentNode.insertAdjacentHTML("beforeend", '<div class="err">3D 보기는 인터넷 연결이 필요합니다<br>(three.js를 불러오지 못함)</div>'));
-    return;
+  // 사라졌거나 숨은 캔버스의 뷰어만 정리하고, 이미 그리는 캔버스는 그대로 둔다
+  // (같은 캔버스를 다시 만들면 WebGL 문맥이 이미 버려진 상태라 그릴 수 없다). 3D 비교 창의 뷰어는 창이 따로 관리한다
+  for (const v of [...V3D]) {
+    const cv = v.renderer.domElement;
+    if (!v.dialog && (!cv.isConnected || cv.offsetParent === null)) disposeViewer(v);
   }
+  const drawing = new Set(V3D.map(v => v.renderer.domElement));
+  // 지금 보이는 캔버스만 새로 그린다 (숨은 탭은 크기가 0이고, WebGL 문맥도 아낀다)
+  const canvases = [...document.querySelectorAll("canvas.v3d")].filter(cv => cv.offsetParent !== null && !drawing.has(cv));
+  if (!window.THREE) return canvases.forEach(no3D);
   canvases.forEach(cv => {
-    const h = cv.dataset.host === "wheel" ? D.wheel : D.hosts.find(x => x.id === cv.dataset.host);
-    if (!h || !h.model) return;
+    const cur = cv.dataset.host === "wheel" ? D.wheel : [...D.drafts, ...D.hosts].find(x => x.id === cv.dataset.host);
+    if (!cur || !cur.model) return;
+    const h = cv.dataset.ver === "before" && cur.before
+      ? { ...cur, model: cur.before.model || cur.model, texData: cur.before.texData || cur.texData }
+      : cur;
+    makeViewer(cv, h, cv.dataset.host);
+  });
+}
+// 캔버스 하나에 모델을 그린다. group이 같은 뷰어끼리는 함께 돌아간다 (변경 전/후 비교)
+function makeViewer(cv, h, group, dialog = false) {
+  {
     const w = cv.clientWidth || 160, ht = cv.clientHeight || 220;
     const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio || 1);
@@ -470,19 +885,56 @@ function init3D() {
     const fov = 35, fit = Math.max(s.y, s.x * ht / w, s.z) / 2 / Math.tan(fov * Math.PI / 360) * 1.25;
     const cam = new THREE.PerspectiveCamera(fov, w / ht, 1, fit * 4);
     cam.position.set(0, s.y * 0.12, -fit); cam.lookAt(0, 0, 0);
-    const v = { renderer, scene, cam, holder, tex, frames, drag: false, moved: 0, lastX: 0, auto: true,
+    const v = { host: group, dialog, renderer, scene, cam, holder, tex, frames, drag: false, moved: 0, lastX: 0, auto: true,
       spinBone: model.userData.groups.wheel || null, spinStart: 0, spinFrom: 0 };
+    // 변경 전/후 뷰어는 같은 호스트끼리 함께 돌려 같은 각도에서 비교한다
+    const peers = () => V3D.filter(x => x.host === v.host);
     cv.onpointerdown = e => { v.drag = true; v.moved = 0; v.lastX = e.clientX; cv.setPointerCapture(e.pointerId); };
-    cv.onpointermove = e => { if (v.drag) { const dx = e.clientX - v.lastX; v.moved += Math.abs(dx); if (v.moved > 3) v.auto = false; holder.rotation.y += dx * 0.012; v.lastX = e.clientX; } };
+    cv.onpointermove = e => {
+      if (!v.drag) return;
+      const dx = e.clientX - v.lastX; v.moved += Math.abs(dx); v.lastX = e.clientX;
+      for (const p of peers()) { if (v.moved > 3) p.auto = false; p.holder.rotation.y += dx * 0.012; }
+    };
     cv.onpointerup = () => {
       v.drag = false;
       // 끌지 않고 클릭만 했으면 바퀴를 돌린다 (게임의 spin 애니메이션처럼 감속)
-      if (v.moved <= 3 && v.spinBone) { v.spinStart = performance.now(); v.spinFrom = v.spinBone.rotation.z; }
+      if (v.moved <= 3) for (const p of peers()) if (p.spinBone) { p.spinStart = performance.now(); p.spinFrom = p.spinBone.rotation.z; }
     };
-    cv.ondblclick = () => { v.auto = !v.auto; };
+    cv.ondblclick = () => { const auto = !v.auto; for (const p of peers()) p.auto = auto; };
     V3D.push(v);
-  });
+    return v;
+  }
 }
+
+// ---------- 텍스처 3D 비교 창 ----------
+// 텍스처를 그 텍스처가 입혀지는 게임 모델에 씌워 보여 준다. 원본과 다르면 변경 전/후를 나란히.
+const dlg = { rel: null, idx: 0 };
+function open3D(rel, idx = 0) {
+  const p = D.pngs.find(x => x.rel === rel);
+  if (!p || !p.models) return;
+  Object.assign(dlg, { rel, idx });
+  const m = p.models[idx];
+  const beforeGeo = m.before && D.geo[m.before], afterGeo = m.after && D.geo[m.after];
+  const beforeTex = p.beforeData || p.data, afterTex = p.data;
+  const differs = p.status !== "same" || m.before !== m.after;
+  const cols = [];
+  if (differs && beforeGeo && beforeTex) cols.push(["before", "변경 전", "원본(" + D.baseline + ")", beforeGeo, beforeTex]);
+  if (afterGeo && afterTex) cols.push(["after", p.status === "new" ? "새 파일" : differs ? "변경 후" : "현재", differs ? "현재" : "원본과 같음", afterGeo, afterTex]);
+  $("dlgTitle").textContent = p.rel;
+  $("dlgBadges").innerHTML = badge(p.status) + (m.before !== m.after ? ' <span class="badge b-changed">모델 변경</span>' : "")
+    + (m.unused ? ' <span class="badge b-same">지금 게임에서 안 씀</span>' : "");
+  $("dlgModels").innerHTML = p.models.length > 1 ? p.models.map((x, i) => '<button data-3d="'+esc(rel)+'" data-3d-idx="'+i+'" class="'+(i === idx ? "on" : "")+'">'+esc(x.label)+"</button>").join("") : '<span class="chip">'+esc(m.label)+"</span>";
+  $("dlgBody").style.gridTemplateColumns = cols.length > 1 ? "1fr 1fr" : "1fr";
+  $("dlgBody").innerHTML = cols.map(c => '<div><div class="ver">'+esc(c[1])+" <span>"+esc(c[2])+'</span></div><div class="v3d-wrap"><canvas class="v3d-dlg" data-col="'+c[0]+'"></canvas><span class="hint">드래그해서 돌리기 · 두 번 눌러 자동 회전</span></div></div>').join("")
+    || '<div class="empty">이 텍스처에 맞는 모델을 찾지 못했습니다.</div>';
+  $("dlgNote").textContent = p.models.length > 1 ? "이 텍스처는 모델 " + p.models.length + "개에 쓰입니다. 위에서 골라 보세요." : "";
+  const d = $("dlg3d");
+  if (!d.open) d.showModal();
+  close3DViewers();
+  if (!window.THREE) return d.querySelectorAll("canvas.v3d-dlg").forEach(no3D);
+  for (const c of cols) makeViewer(d.querySelector('canvas[data-col="'+c[0]+'"]'), { model: c[3], texData: c[4], frames: m.frames }, "dlg", true);
+}
+const close3DViewers = () => V3D.filter(v => v.dialog).forEach(disposeViewer);
 function loop() {
   const now = performance.now();
   for (const v of V3D) {
@@ -500,11 +952,49 @@ function loop() {
 }
 requestAnimationFrame(loop);
 
-$("q").oninput = render; $("onlyChanged").onchange = render;
+function fallbackCopy(t) {
+  const a = document.createElement("textarea");
+  a.value = t; a.style.position = "fixed"; a.style.opacity = "0";
+  document.body.appendChild(a); a.select();
+  try { document.execCommand("copy"); } catch {}
+  a.remove();
+}
+const copyText = t => navigator.clipboard && window.isSecureContext ? navigator.clipboard.writeText(t).catch(() => fallbackCopy(t)) : Promise.resolve(fallbackCopy(t));
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-tab]");
+  if (t) return go(t.dataset.tab, t.dataset.tab === "places" ? view.place : "");
+  const p = e.target.closest("[data-place]");
+  if (p) return go("places", p.dataset.place);
+  const g = e.target.closest("[data-go]");
+  if (g) { location.hash = g.dataset.go; return; }
+  const b3 = e.target.closest("[data-3d]");
+  if (b3) return open3D(b3.dataset["3d"], +(b3.dataset["3dIdx"] || 0));
+  if (e.target.id === "dlgClose" || e.target === $("dlg3d")) return $("dlg3d").close(); // 닫기 버튼, 창 바깥 누르기
+  const j = e.target.closest("[data-jump]");
+  if (j) { const d = $(j.dataset.jump); if (d) { d.open = true; openState[d.id] = true; d.scrollIntoView({ behavior: "smooth", block: "start" }); } return; }
+  const c = e.target.closest("[data-copy]");
+  if (c) copyText(c.dataset.copy).then(() => { c.textContent = "복사됨"; setTimeout(() => { c.textContent = "복사"; }, 1200); });
+});
+document.addEventListener("toggle", e => {
+  if (!e.target.matches?.("details.sub")) return;
+  openState[e.target.id] = e.target.open;
+  if (e.target.open && e.target.querySelector("canvas.v3d")) init3D(); // 접혀 있던 3D 보기를 펼치면 다시 그린다
+}, true);
+window.addEventListener("hashchange", () => {
+  const prevTab = view.tab, prevPlace = view.place;
+  readHash(); render();
+  if (prevTab !== view.tab || prevPlace !== view.place) window.scrollTo(0, 0);
+});
+$("dlg3d").addEventListener("close", close3DViewers);
+$("q").oninput = render; $("onlyChanged").onchange = render; $("only3d").onchange = render;
+readHash();
 render();
 </script>
 </body>
 </html>
 `;
 fs.writeFileSync("devpage.html", html);
+// 페이지 스크립트 문법 검사: 템플릿 문자열 안의 \" 같은 실수로 페이지가 통째로 비는 것을 바로 알린다
+try { new Function(html.split("<script>").pop().split("</script>")[0]); }
+catch (e) { console.error("devpage.html 스크립트 문법 오류: " + e.message); process.exitCode = 1; }
 console.log(`devpage.html 생성 (문구 ${langRows.filter(r => r.changed).length}개 변경, 텍스처 ${pngs.filter(p => p.status !== "same").length}개 변경·추가)`);

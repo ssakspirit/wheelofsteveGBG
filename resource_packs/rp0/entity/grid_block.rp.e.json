@@ -11,13 +11,13 @@
 				"default": "geometry.rwm.grid_block"
 			},
 			"textures": {
-				"default" : "textures/blocks/concrete_lime",
-                "lime" : "textures/blocks/concrete_lime",
-                "blue" : "textures/blocks/concrete_blue",
-                "yellow" : "textures/blocks/concrete_yellow",
-                "red" : "textures/blocks/concrete_red",
-                "magenta" : "textures/blocks/concrete_magenta",
-                "null" : "textures/blocks/barrier"	
+				"default" : "textures/rwm/entity/grid/grid_block_lime",
+                "lime" : "textures/rwm/entity/grid/grid_block_lime",
+                "blue" : "textures/rwm/entity/grid/grid_block_blue",
+                "yellow" : "textures/rwm/entity/grid/grid_block_yellow",
+                "red" : "textures/rwm/entity/grid/grid_block_red",
+                "magenta" : "textures/rwm/entity/grid/grid_block_magenta",
+                "null" : "textures/rwm/entity/grid/grid_block_empty"
 			},
 			"render_controllers": [
 				"controller.render.grid_block"

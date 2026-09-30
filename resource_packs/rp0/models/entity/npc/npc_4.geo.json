@@ -38,6 +38,32 @@
 				]
 			},
 			{
+				"name": "ikseon",
+				"parent": "head",
+				"pivot": [0, 22, 0],
+				"cubes": [
+					{"origin": [-4, 30, 0], "size": [8, 2, 4], "uv": [16, 55], "inflate": 0.5}
+				]
+			},
+			{
+				"name": "ikseon_wing_left",
+				"parent": "head",
+				"pivot": [2.5, 32, 4],
+				"rotation": [0, 0, 12],
+				"cubes": [
+					{"origin": [1.5, 32, 3.5], "size": [2, 3, 1], "uv": [40, 55]}
+				]
+			},
+			{
+				"name": "ikseon_wing_right",
+				"parent": "head",
+				"pivot": [-2.5, 32, 4],
+				"rotation": [0, 0, -12],
+				"cubes": [
+					{"origin": [-3.5, 32, 3.5], "size": [2, 3, 1], "uv": [40, 55]}
+				]
+			},
+			{
 				"name": "rightArm",
 				"parent": "body",
 				"pivot": [-5, 20, 0],

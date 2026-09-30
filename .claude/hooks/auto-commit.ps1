@@ -13,6 +13,12 @@ if ([Console]::IsInputRedirected) {
 $null = & git rev-parse --is-inside-work-tree 2>$null
 if ($LASTEXITCODE -ne 0) { exit 0 }
 
+# Keep the developer page (devpage.html, git-ignored) up to date every turn
+$genPage = Join-Path (& git rev-parse --show-toplevel).Trim() 'tools/gen-devpage.js'
+if ((Test-Path -LiteralPath $genPage) -and (Get-Command node -ErrorAction SilentlyContinue)) {
+    $null = & node $genPage 2>&1
+}
+
 $changes = & git status --porcelain
 if ([string]::IsNullOrWhiteSpace($changes)) { exit 0 }
 

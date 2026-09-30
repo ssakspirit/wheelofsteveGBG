@@ -6,3 +6,7 @@
 *.docx
 *.hwp
 *.hwpx
+
+# 생성물·임시 파일 (개발자 페이지는 node tools/gen-devpage.js로 다시 만든다)
+devpage.html
+.playwright-mcp/

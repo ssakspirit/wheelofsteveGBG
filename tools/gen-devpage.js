@@ -109,6 +109,10 @@ const wheel = {
   tex: `${RP}textures/rwm/entity/wheel_of_steve.png`,
   texStatus: status(`${RP}textures/rwm/entity/wheel_of_steve.png`),
   name: t("wheel.n"), nameBefore: langBase.get("wheel.n"), dialogue: t("wheel.d"), button: t("wheel.b1"),
+  geoStatus: status(`${RP}models/entity/wheel_of_steve.geo.json`),
+  model: loadGeometry(`${RP}models/entity/wheel_of_steve.geo.json`, "geometry.wheel_of_steve"),
+  texData: dataUri(`${RP}textures/rwm/entity/wheel_of_steve.png`),
+  frames: 2, // render controller의 uv_anim: 텍스처를 위아래 2장으로 나눠 번갈아 보여 줌
 };
 
 // ---------- 아이템 ----------
@@ -308,7 +312,7 @@ function tileHost(h, isWheel) {
   if (!match(h.name, h.nameBefore, h.id, h.game, h.dialogue)) return "";
   const flat = '<div class="img"><img class="px" src="'+esc(h.tex)+'" width="'+(isWheel?128:192)+'"></div>';
   const media = h.model && h.texData
-    ? '<div class="dual"><div>'+flat+'<div class="cap">평면(텍스처)</div></div><div><div class="v3d-wrap"><canvas class="v3d" data-host="'+esc(h.id)+'"></canvas><span class="hint">드래그해서 돌리기</span></div><div class="cap">3D(게임 모델)</div></div></div>'
+    ? '<div class="dual"><div>'+flat+'<div class="cap">평면(텍스처)</div></div><div><div class="v3d-wrap"><canvas class="v3d" data-host="'+esc(h.id)+'"></canvas><span class="hint">'+(isWheel ? "드래그: 둘러보기 · 클릭: 바퀴 돌리기" : "드래그해서 돌리기")+'</span></div><div class="cap">3D(게임 모델)</div></div></div>'
     : flat;
   return '<div class="tile">'+media
     + "<h3>"+mc(h.name)+"</h3>"
@@ -358,7 +362,7 @@ function render() {
 }
 
 // ---------- 3D 미리보기 (Bedrock geo.json → three.js) ----------
-// 좌표 변환: Bedrock 모델은 X축이 반대라 x를 뒤집고, 앞면(north)이 -Z를 보게 둔다 (Blockbench와 같은 방식)
+// 좌표 변환 (Blockbench와 같은 방식): X축을 뒤집고, 회전은 X·Y 부호를 바꾸고 Z는 유지, 앞면(north)은 -Z
 const V3D = [];
 function disposeViewers() {
   for (const v of V3D) { v.renderer.dispose(); v.renderer.forceContextLoss(); }
@@ -401,6 +405,7 @@ function cubeMesh(c, mat, W, H, boneMirror) {
 function buildModel(m, tex) {
   const mat = new THREE.MeshLambertMaterial({ map: tex, transparent: true, alphaTest: 0.1, side: THREE.DoubleSide });
   const root = new THREE.Group(), groups = {}, abs = {};
+  root.userData.groups = groups;
   const flip = p => [-p[0], p[1], p[2]];
   const deg = Math.PI / 180;
   for (const b of m.bones) { groups[b.name] = new THREE.Group(); abs[b.name] = flip(b.pivot); }
@@ -409,7 +414,7 @@ function buildModel(m, tex) {
     const par = b.parent && groups[b.parent] ? b.parent : null;
     const pp = par ? abs[par] : [0, 0, 0];
     g.position.set(piv[0] - pp[0], piv[1] - pp[1], piv[2] - pp[2]);
-    if (b.rotation) g.rotation.set(b.rotation[0] * deg, -b.rotation[1] * deg, -b.rotation[2] * deg, "ZYX");
+    if (b.rotation) g.rotation.set(-b.rotation[0] * deg, -b.rotation[1] * deg, b.rotation[2] * deg, "ZYX");
     (par ? groups[par] : root).add(g);
     for (const c of b.cubes) {
       const mesh = cubeMesh(c, mat, m.tw, m.th, b.mirror);
@@ -418,7 +423,7 @@ function buildModel(m, tex) {
         const cp = flip(c.pivot || b.pivot);
         const holder = new THREE.Group();
         holder.position.set(cp[0] - piv[0], cp[1] - piv[1], cp[2] - piv[2]);
-        holder.rotation.set(c.rotation[0] * deg, -c.rotation[1] * deg, -c.rotation[2] * deg, "ZYX");
+        holder.rotation.set(-c.rotation[0] * deg, -c.rotation[1] * deg, c.rotation[2] * deg, "ZYX");
         mesh.position.set(center[0] - cp[0], center[1] - cp[1], center[2] - cp[2]);
         holder.add(mesh); g.add(holder);
       } else {
@@ -437,8 +442,8 @@ function init3D() {
     return;
   }
   canvases.forEach(cv => {
-    const h = D.hosts.find(x => x.id === cv.dataset.host);
-    if (!h) return;
+    const h = cv.dataset.host === "wheel" ? D.wheel : D.hosts.find(x => x.id === cv.dataset.host);
+    if (!h || !h.model) return;
     const w = cv.clientWidth || 160, ht = cv.clientHeight || 220;
     const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio || 1);
@@ -448,24 +453,49 @@ function init3D() {
     scene.add(new THREE.AmbientLight(0xffffff, 0.8));
     const light = new THREE.DirectionalLight(0xffffff, 0.45);
     light.position.set(-20, 40, -30); scene.add(light);
-    const cam = new THREE.PerspectiveCamera(35, w / ht, 1, 500);
-    cam.position.set(0, 22, -64); cam.lookAt(0, 16, 0);
     const tex = new THREE.TextureLoader().load(h.texData);
     tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter;
     tex.generateMipmaps = false; tex.encoding = THREE.sRGBEncoding;
+    const frames = h.frames || 1;
+    if (frames > 1) { tex.repeat.set(1, 1 / frames); tex.offset.set(0, 1 - 1 / frames); }
+    const model = buildModel(h.model, tex);
+    // 모델 크기에 맞춰 가운데로 옮기고 카메라 거리를 정한다
+    model.updateMatrixWorld(true);
+    const box = new THREE.Box3().setFromObject(model);
+    const c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3());
+    model.position.set(-c.x, -c.y, -c.z);
     const holder = new THREE.Group();
-    holder.add(buildModel(h.model, tex));
+    holder.add(model);
     scene.add(holder);
-    const v = { renderer, scene, cam, holder, drag: false, lastX: 0, auto: true };
-    cv.onpointerdown = e => { v.drag = true; v.auto = false; v.lastX = e.clientX; cv.setPointerCapture(e.pointerId); };
-    cv.onpointermove = e => { if (v.drag) { holder.rotation.y += (e.clientX - v.lastX) * 0.012; v.lastX = e.clientX; } };
-    cv.onpointerup = () => { v.drag = false; };
+    const fov = 35, fit = Math.max(s.y, s.x * ht / w, s.z) / 2 / Math.tan(fov * Math.PI / 360) * 1.25;
+    const cam = new THREE.PerspectiveCamera(fov, w / ht, 1, fit * 4);
+    cam.position.set(0, s.y * 0.12, -fit); cam.lookAt(0, 0, 0);
+    const v = { renderer, scene, cam, holder, tex, frames, drag: false, moved: 0, lastX: 0, auto: true,
+      spinBone: model.userData.groups.wheel || null, spinStart: 0, spinFrom: 0 };
+    cv.onpointerdown = e => { v.drag = true; v.moved = 0; v.lastX = e.clientX; cv.setPointerCapture(e.pointerId); };
+    cv.onpointermove = e => { if (v.drag) { const dx = e.clientX - v.lastX; v.moved += Math.abs(dx); if (v.moved > 3) v.auto = false; holder.rotation.y += dx * 0.012; v.lastX = e.clientX; } };
+    cv.onpointerup = () => {
+      v.drag = false;
+      // 끌지 않고 클릭만 했으면 바퀴를 돌린다 (게임의 spin 애니메이션처럼 감속)
+      if (v.moved <= 3 && v.spinBone) { v.spinStart = performance.now(); v.spinFrom = v.spinBone.rotation.z; }
+    };
     cv.ondblclick = () => { v.auto = !v.auto; };
     V3D.push(v);
   });
 }
 function loop() {
-  for (const v of V3D) { if (v.auto) v.holder.rotation.y += 0.01; v.renderer.render(v.scene, v.cam); }
+  const now = performance.now();
+  for (const v of V3D) {
+    if (v.auto) v.holder.rotation.y += 0.01;
+    // uv_anim과 같게 초당 7번 프레임을 바꿔 조명이 깜빡이게 한다
+    if (v.frames > 1) v.tex.offset.y = 1 - (1 + Math.floor(now / 1000 * 7) % v.frames) / v.frames;
+    if (v.spinStart) {
+      const p = Math.min((now - v.spinStart) / 4000, 1);
+      v.spinBone.rotation.z = v.spinFrom - (1 - Math.pow(1 - p, 3)) * Math.PI * 2 * 4;
+      if (p >= 1) v.spinStart = 0;
+    }
+    v.renderer.render(v.scene, v.cam);
+  }
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);

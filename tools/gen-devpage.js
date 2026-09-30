@@ -65,6 +65,29 @@ for (const k of new Set([...langBase.keys(), ...langNow.keys()])) {
   langRows.push({ key: k, group: langGroup(k), before: a ?? null, after: b ?? null, changed: a !== b });
 }
 
+// ---------- 3D 미리보기용 모델 ----------
+// 두 형식(1.8~1.10의 "geometry.x" 키, 1.12+의 "minecraft:geometry" 배열)을 같은 모양으로 정리한다
+function loadGeometry(file, id) {
+  if (!exists(file)) return null;
+  const j = JSON.parse(read(file).replace(/^\s*\/\/.*$/gm, ""));
+  let g = null, tw = 64, th = 64;
+  if (j["minecraft:geometry"]) {
+    g = j["minecraft:geometry"].find(x => x.description.identifier === id) || j["minecraft:geometry"][0];
+    tw = g.description.texture_width; th = g.description.texture_height;
+  } else {
+    const key = Object.keys(j).find(k => k.split(":")[0] === id) || Object.keys(j).find(k => k.startsWith("geometry."));
+    g = j[key]; tw = g.texturewidth ?? 64; th = g.textureheight ?? 64;
+  }
+  return {
+    tw, th,
+    bones: (g.bones || []).map(b => ({
+      name: b.name, parent: b.parent || null, pivot: b.pivot || [0, 0, 0], rotation: b.rotation || null, mirror: !!b.mirror,
+      cubes: (b.cubes || []).map(c => ({ origin: c.origin, size: c.size, uv: c.uv, inflate: c.inflate || 0, mirror: c.mirror, rotation: c.rotation || null, pivot: c.pivot || null })),
+    })),
+  };
+}
+const dataUri = f => exists(f) ? "data:image/png;base64," + fs.readFileSync(f).toString("base64") : null;
+
 // ---------- 호스트(NPC) ----------
 const hosts = [
   { id: "npc_1", key: "steve", game: "orb" },
@@ -77,6 +100,7 @@ const hosts = [
   const geo = `${RP}models/entity/npc/${h.id}.geo.json`;
   return {
     ...h, tex, texStatus: status(tex), geoStatus: status(geo),
+    model: loadGeometry(geo, `geometry.rwm.${h.id}`), texData: dataUri(tex),
     name: t(`${h.key}.n`), nameBefore: langBase.get(`${h.key}.n`),
     button: t(`${h.key}.b1`), dialogue: t(`${h.key}.d`),
   };
@@ -200,6 +224,15 @@ pre{background:var(--code);padding:10px;border-radius:8px;white-space:pre-wrap;f
 .tabs button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer}
 .tabs button.on{background:var(--ink);color:var(--bg)}
 .hide{display:none!important}
+#hostGrid{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dual .img{min-height:220px}
+.v3d-wrap{position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(circle at 50% 35%,#4a5a6e,#1c2229)}
+canvas.v3d{display:block;width:100%;height:220px;cursor:grab;touch-action:none}
+canvas.v3d:active{cursor:grabbing}
+.v3d-wrap .hint{position:absolute;left:6px;bottom:4px;font-size:11px;color:#cfd8e3;pointer-events:none}
+.v3d-wrap .err{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-size:12px;color:#e9dcc9}
+.cap{font-size:11px;color:var(--muted);text-align:center;margin-top:2px}
 .warn{color:var(--chg)}
 @media (max-width:640px){td.key{width:auto}nav label{margin-left:0}}
 </style>
@@ -229,8 +262,9 @@ pre{background:var(--code);padding:10px;border-radius:8px;white-space:pre-wrap;f
     <table><thead><tr><th style="width:90px">상태</th><th>파일</th></tr></thead><tbody id="fileBody"></tbody></table>
     <h2 style="margin-top:18px;font-size:16px">규칙 보존 검사</h2><pre id="guard"></pre></section>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const D = ${JSON.stringify(data).replace(/</g, "\\u003c")};
+const D =${JSON.stringify(data).replace(/</g, "\\u003c")};
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const LABEL = {new:"새 파일",changed:"변경됨",same:"원본",deleted:"삭제됨",none:"아이콘 없음"};
@@ -272,7 +306,11 @@ function tileHost(h, isWheel) {
   const changed = h.texStatus !== "same" || h.nameBefore !== h.name || (h.geoStatus && h.geoStatus !== "same");
   if (only() && !changed) return "";
   if (!match(h.name, h.nameBefore, h.id, h.game, h.dialogue)) return "";
-  return '<div class="tile"><div class="img"><img class="px" src="'+esc(h.tex)+'" width="'+(isWheel?128:192)+'"></div>'
+  const flat = '<div class="img"><img class="px" src="'+esc(h.tex)+'" width="'+(isWheel?128:192)+'"></div>';
+  const media = h.model && h.texData
+    ? '<div class="dual"><div>'+flat+'<div class="cap">평면(텍스처)</div></div><div><div class="v3d-wrap"><canvas class="v3d" data-host="'+esc(h.id)+'"></canvas><span class="hint">드래그해서 돌리기</span></div><div class="cap">3D(게임 모델)</div></div></div>'
+    : flat;
+  return '<div class="tile">'+media
     + "<h3>"+mc(h.name)+"</h3>"
     + '<div class="small">원래 이름: '+mc(h.nameBefore)+"</div>"
     + '<div>텍스처 '+badge(h.texStatus)+(h.geoStatus ? " · 모델 "+badge(h.geoStatus) : "")+"</div>"
@@ -316,7 +354,122 @@ function render() {
   $("fileN").textContent = files.length + "개";
   $("fileBody").innerHTML = files.map(f => "<tr><td>"+badge(F[f.s] || "changed")+'</td><td class="small" style="color:var(--ink)">'+esc(f.f)+"</td></tr>").join("");
   $("guard").textContent = D.guard.text.trim();
+  init3D();
 }
+
+// ---------- 3D 미리보기 (Bedrock geo.json → three.js) ----------
+// 좌표 변환: Bedrock 모델은 X축이 반대라 x를 뒤집고, 앞면(north)이 -Z를 보게 둔다 (Blockbench와 같은 방식)
+const V3D = [];
+function disposeViewers() {
+  for (const v of V3D) { v.renderer.dispose(); v.renderer.forceContextLoss(); }
+  V3D.length = 0;
+}
+function faceRects(c) {
+  const u = c.uv[0], v = c.uv[1], w = c.size[0], h = c.size[1], d = c.size[2];
+  return { east: [u, v + d, d, h], north: [u + d, v + d, w, h], west: [u + d + w, v + d, d, h],
+    south: [u + d + w + d, v + d, w, h], up: [u + d, v, w, d], down: [u + d + w, v, w, d] };
+}
+function cubeMesh(c, mat, W, H, boneMirror) {
+  const inf = c.inflate || 0;
+  const geo = new THREE.BoxGeometry(Math.max(c.size[0] + inf * 2, 0.01), Math.max(c.size[1] + inf * 2, 0.01), Math.max(c.size[2] + inf * 2, 0.01));
+  const mirror = c.mirror === undefined ? boneMirror : c.mirror;
+  const box = Array.isArray(c.uv);
+  let R;
+  if (box) {
+    R = faceRects(c);
+    if (mirror) { const e = R.east; R.east = R.west; R.west = e; }
+  } else {
+    R = {};
+    for (const f of ["north", "south", "east", "west", "up", "down"]) {
+      const o = c.uv && c.uv[f];
+      R[f] = o ? [o.uv[0], o.uv[1], (o.uv_size || [0, 0])[0], (o.uv_size || [0, 0])[1]] : null;
+    }
+  }
+  const uv = geo.attributes.uv;
+  ["east", "west", "up", "down", "south", "north"].forEach((f, i) => {
+    const r = R[f];
+    let u0 = 0, v0 = 0, u1 = 0, v1 = 0;
+    if (r) { u0 = r[0]; v0 = r[1]; u1 = r[0] + r[2]; v1 = r[1] + r[3]; }
+    if (f === "up" || f === "down") { let t = u0; u0 = u1; u1 = t; t = v0; v0 = v1; v1 = t; }
+    if (mirror && box) { const t = u0; u0 = u1; u1 = t; }
+    const set = (k, uu, vv) => uv.setXY(i * 4 + k, uu / W, 1 - vv / H);
+    set(0, u0, v0); set(1, u1, v0); set(2, u0, v1); set(3, u1, v1);
+  });
+  uv.needsUpdate = true;
+  return new THREE.Mesh(geo, mat);
+}
+function buildModel(m, tex) {
+  const mat = new THREE.MeshLambertMaterial({ map: tex, transparent: true, alphaTest: 0.1, side: THREE.DoubleSide });
+  const root = new THREE.Group(), groups = {}, abs = {};
+  const flip = p => [-p[0], p[1], p[2]];
+  const deg = Math.PI / 180;
+  for (const b of m.bones) { groups[b.name] = new THREE.Group(); abs[b.name] = flip(b.pivot); }
+  for (const b of m.bones) {
+    const g = groups[b.name], piv = abs[b.name];
+    const par = b.parent && groups[b.parent] ? b.parent : null;
+    const pp = par ? abs[par] : [0, 0, 0];
+    g.position.set(piv[0] - pp[0], piv[1] - pp[1], piv[2] - pp[2]);
+    if (b.rotation) g.rotation.set(b.rotation[0] * deg, -b.rotation[1] * deg, -b.rotation[2] * deg, "ZYX");
+    (par ? groups[par] : root).add(g);
+    for (const c of b.cubes) {
+      const mesh = cubeMesh(c, mat, m.tw, m.th, b.mirror);
+      const center = [-(c.origin[0] + c.size[0]) + c.size[0] / 2, c.origin[1] + c.size[1] / 2, c.origin[2] + c.size[2] / 2];
+      if (c.rotation) {
+        const cp = flip(c.pivot || b.pivot);
+        const holder = new THREE.Group();
+        holder.position.set(cp[0] - piv[0], cp[1] - piv[1], cp[2] - piv[2]);
+        holder.rotation.set(c.rotation[0] * deg, -c.rotation[1] * deg, -c.rotation[2] * deg, "ZYX");
+        mesh.position.set(center[0] - cp[0], center[1] - cp[1], center[2] - cp[2]);
+        holder.add(mesh); g.add(holder);
+      } else {
+        mesh.position.set(center[0] - piv[0], center[1] - piv[1], center[2] - piv[2]);
+        g.add(mesh);
+      }
+    }
+  }
+  return root;
+}
+function init3D() {
+  disposeViewers();
+  const canvases = document.querySelectorAll("canvas.v3d");
+  if (!window.THREE) {
+    canvases.forEach(cv => cv.parentNode.insertAdjacentHTML("beforeend", '<div class="err">3D 보기는 인터넷 연결이 필요합니다<br>(three.js를 불러오지 못함)</div>'));
+    return;
+  }
+  canvases.forEach(cv => {
+    const h = D.hosts.find(x => x.id === cv.dataset.host);
+    if (!h) return;
+    const w = cv.clientWidth || 160, ht = cv.clientHeight || 220;
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setSize(w, ht, false);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    const scene = new THREE.Scene();
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const light = new THREE.DirectionalLight(0xffffff, 0.45);
+    light.position.set(-20, 40, -30); scene.add(light);
+    const cam = new THREE.PerspectiveCamera(35, w / ht, 1, 500);
+    cam.position.set(0, 22, -64); cam.lookAt(0, 16, 0);
+    const tex = new THREE.TextureLoader().load(h.texData);
+    tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter;
+    tex.generateMipmaps = false; tex.encoding = THREE.sRGBEncoding;
+    const holder = new THREE.Group();
+    holder.add(buildModel(h.model, tex));
+    scene.add(holder);
+    const v = { renderer, scene, cam, holder, drag: false, lastX: 0, auto: true };
+    cv.onpointerdown = e => { v.drag = true; v.auto = false; v.lastX = e.clientX; cv.setPointerCapture(e.pointerId); };
+    cv.onpointermove = e => { if (v.drag) { holder.rotation.y += (e.clientX - v.lastX) * 0.012; v.lastX = e.clientX; } };
+    cv.onpointerup = () => { v.drag = false; };
+    cv.ondblclick = () => { v.auto = !v.auto; };
+    V3D.push(v);
+  });
+}
+function loop() {
+  for (const v of V3D) { if (v.auto) v.holder.rotation.y += 0.01; v.renderer.render(v.scene, v.cam); }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
 $("q").oninput = render; $("onlyChanged").onchange = render;
 render();
 </script>

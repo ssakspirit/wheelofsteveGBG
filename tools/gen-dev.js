@@ -215,7 +215,7 @@ w("zones.mcfunction", [
   msg("@s", "§e자격루 §fX -24~24 Y 59~70 Z 2997~3047 §7(도면 대기 Y 91) 안개 240"),
   msg("@s", "§e꽃담 §fX -51~-16 Y 59~70 Z -109~-78 §7안개 240, 철 블록 금지"),
   msg("@s", "§e활쏘기 §fX -39~36 Y 59~73 Z 3963~4036 §7안개 90, 화살에 깨지는 블록 금지"),
-  msg("@s", "§e십자각 §fX -176~20 Y 58~210 Z 4992~5188 §7안개 260"),
+  msg("@s", "§e6진 망루 §fX -176~20 Y 58~210 Z 4992~5188 §7안개 260"),
   msg("@s", "§e백악산 §fX -8~15 Y 150~340 Z 6135~6250 §7/ 시상대 X -1~3 Y -62~-50 Z 5953~5976, 안개 180"),
   msg("@s", "§c공통 §f타이머 (0,90,1998) (0,90,3017) (-33,90,-97) (0,90,4000) 덮지 않기, 문·버튼 금지, 블록은 Y 319까지"),
 ]);
@@ -225,7 +225,7 @@ w("help.mcfunction", [
   msg("@s", "§6===== [dev] 개발 명령 ====="),
   msg("@s", "§e이동 §f/function dev/tp/<장소>"),
   msg("@s", "§7  lobby 로비 · hall 입장 홀 · npc 호스트 부스 · hq 테스트 HQ"),
-  msg("@s", "§7  orb 옥새 · craft 자격루 · grid 꽃담 · nock 활쏘기 · elytra 십자각 · finale 백악산 · podium 시상대"),
+  msg("@s", "§7  orb 옥새 · craft 자격루 · grid 꽃담 · nock 활쏘기 · elytra 6진 망루 · finale 백악산 · podium 시상대"),
   msg("@s", "§e시작 §f/function dev/start/<게임> §7orb craft grid nock elytra finale (연습 경기)"),
   msg("@s", "§e모드 §f/function dev/build §7건축 모드 · §f/function dev/play §7플레이 모드"),
   msg("@s", "§e기타 §f/function dev/status §7상태 · §fdev/zones §7장식 금지 구역 · §fdev/fog_off §7안개 끄기 · §fdev/host §7호스트 되기"),

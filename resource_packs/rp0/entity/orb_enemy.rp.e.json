@@ -8,10 +8,10 @@
                 "default": "entity_alphatest"
             },
             "textures": {
-                "default": "textures/entity/piglin/zombie_piglin"
+                "default": "textures/rwm/entity/orb_enemy"
             },
             "geometry": {
-                "default": "geometry.piglin"
+                "default": "geometry.rwm.orb_enemy"
             },
             "scripts": {
                 "animate": [
@@ -31,7 +31,7 @@
                 "look_at_target_swimming": "animation.humanoid.look_at_target.swimming"
             },
             "render_controllers": [
-                "controller.render.piglin"
+                "controller.render.orb_enemy"
             ],
             "enable_attachables": true,
             "spawn_egg": {

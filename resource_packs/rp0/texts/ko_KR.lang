@@ -35,7 +35,7 @@ board.singleplayer.1=                                                           
 board.multiplayer.1=                                                                                                §l§g경복궁 어전대회§r에                                        오신 것을 환영합니다                                                                                                                                                                                       §d§o더 많은 플레이어§r§d를 월드에 초대하고 싶나요?§r              §l일시정지 메뉴 -> ](얼굴 탭)§r         그 그 다음 참여 코드를 친구들과 §o공유§r하세요!             최대 8명과 즐길 수 있습니다.                                                                                                   §b게임을 시작하고 싶나요?§r                     우선 §c왼쪽 §r또는 §9오른쪽 §r구역으로 가서 팀을 고르세요.            그 다음 호스트 또는 월드 제작자가               여러분 뒤에 있는 확인 버튼과 §o상호작용§r해야 합니다.	#	###{StrContains="§l"}{StrContains="§r"}{StrContains="§l"}{StrContains="§d"}{StrContains="§b"}{StrContains="§o"}
 
 ## Actionbar Objective
-actionbar.objective.000.10000=§6Interact to Start	#	###{StrContains="§6"}
+actionbar.objective.000.10000=§6상호작용하여 시작하세요	#	###{StrContains="§6"}
 actionbar.objective.001.1=§6환영합니다!	#	###{StrContains="§6"}An introduction to the start of the map, the first word shown by its self, leading into the next message.
 actionbar.objective.001.2=§6월드의 호스트가 되었습니다.	#	###{StrContains="§6"}
 actionbar.objective.001.3=§6호스트는 플레이할 게임을 선택할 수 있습니다. %1다른 플레이어는 이 작업을 수행할 수 없습니다.	#	###{StrContains="§6"}{StrContains="%1"}
@@ -64,7 +64,7 @@ actionbar.objective.003.22=저는 장영실입니다. 팀워크를 발휘하고 
 
 actionbar.objective.003.23=어서 오시오! 나는 정도전이오. §l§6논리적 사고§r를 이용해서 §a§l교태전 꽃담 맞추기§r에서 이기시오.	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
 
-actionbar.objective.003.24=나는 장수 김종서다. 하나 된 §l§6커뮤니티§r가 되어 §a§l십자각 공성전§r에서 이겨라!	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+actionbar.objective.003.24=나는 장수 김종서다. 하나 된 §l§6커뮤니티§r가 되어 §a§l6진 망루 공성전§r에서 이겨라!	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
 actionbar.objective.101.1=§6옥새 쟁탈전에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, like capture the flag but with a glowing orb. 
 actionbar.objective.101.2=§6힘을 합쳐 옥새를 지키고 팀을 위해 점수를 획득하세요.	#	###{StrContains="§6"}
@@ -122,17 +122,17 @@ actionbar.objective.401.6=§6과녁을 쏘세요!	#	###{StrContains="§6"}Player
 
 
 
-actionbar.objective.501.1=§6십자각 공성전에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
-actionbar.objective.501.2=§6목표는 상대 십자각에 폭탄을 떨어뜨려 %1망루를 무너뜨리는 것입니다.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.1=§66진 망루 공성전에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, players fly elytra and drop tnt into volcanos. 
+actionbar.objective.501.2=§6목표는 상대 진의 망루에 비격진천뢰를 떨어뜨려 %1망루를 무너뜨리는 것입니다.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.501.3=§6떨어지는 동안 점프를 누르면 딱지날개를 펴고 활공할 수 있습니다.	#	###{StrContains="§6"}
 actionbar.objective.501.4=§6상호작용을 눌러 폭죽을 사용하여 속도를 높이세요.	#	###{StrContains="§6"}
-actionbar.objective.501.5=§6폭탄 옆에 가까이 날아가서 잡으세요.	#	###{StrContains="§6"}
-actionbar.objective.501.6=§6상대 십자각 위를 날아가면서 %1공격을 사용하여 폭탄을 떨어뜨리세요.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.501.5=§6비격진천뢰 옆에 가까이 날아가서 잡으세요.	#	###{StrContains="§6"}
+actionbar.objective.501.6=§6상대 망루 위를 날아가면서 %1공격을 사용하여 비격진천뢰를 떨어뜨리세요.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.501.7=§6최초로 10점을 득점하거나 타이머가 끝난 후 점수가 가장 많은 팀이 승리합니다.	#	###{StrContains="§6"}
 actionbar.objective.501.8=§6행운을 빌어요!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
 actionbar.objective.501.9=§6낙하 중 점프를 누르면 비행을 시작합니다.	#	###{StrContains="§6"}
-actionbar.objective.501.10=§6§9동십자각§6에 폭탄을 떨어뜨려 점수를 획득하세요.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
-actionbar.objective.501.11=§6§4서십자각§6에 폭탄을 떨어뜨려 점수를 획득하세요.	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
+actionbar.objective.501.10=§6§9청포대 망루§6에 비격진천뢰를 떨어뜨려 점수를 획득하세요. %1공격이나 웅크리기를 눌러 떨어뜨리세요.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
+actionbar.objective.501.11=§6§4홍포대 망루§6에 비격진천뢰를 떨어뜨려 점수를 획득하세요. %1공격이나 웅크리기를 눌러 떨어뜨리세요.	#	###{StrContains="§6"}{StrContains="§4"}{StrContains="%1"}
 
 
 actionbar.objective.601.1=§6백악산 엽전 달리기에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, the final showdown is the last mini game played. 
@@ -158,7 +158,7 @@ henry.d=나는 이 나라를 세운 태조 이성계다! 활쏘기라면 누구�
 
 garett.d=반갑습니다! 저는 장영실입니다. 스스로 시각을 알리는 물시계, 자격루도 여럿이 힘을 모았기에 만들 수 있었지요. 그런데 자격루의 장치들이 고장 났습니다! 팀워크와 §l§6협동§r으로 §a§l자격루 복원전§r에 도전해 볼까요? (부품 모양은 게임을 위해 단순하게 만들었어요.) 준비됐나요?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
-dawn.d=나는 북방을 지키는 장수 김종서다! 성을 지키려면 모두가 하나 된 §l§6커뮤니티§r가 되어야 하지. 경복궁 담장 모서리의 망루, 동십자각과 서십자각을 두고 겨루는 §a§l십자각 공성전§r을 준비했다! 하늘을 날아 상대 십자각에 폭탄을 떨어뜨려라. 해 보겠느냐?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
+dawn.d=나는 북방을 지키는 장수 김종서다! 성을 지키려면 모두가 하나 된 §l§6커뮤니티§r가 되어야 하지. 두만강 가에 세운 여섯 진, 6진의 망루를 두고 겨루는 §a§l6진 망루 공성전§r을 준비했다! 백두산 불길 위를 날아 상대 망루에 비격진천뢰를 떨어뜨려라. 해 보겠느냐?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
 natalie.d=어서 오시오. 나는 경복궁을 설계하고 전각마다 이름을 지은 정도전이오. 궁궐의 아름다운 무늬도 치밀한 §l§6비판적 사고§r에서 나온다오. 교태전 꽃담의 무늬를 누가 먼저 똑같이 만드는지 겨루는 §a§l교태전 꽃담 맞추기§r로 그대들의 생각하는 힘을 시험해 보겠소. 해 보시겠소?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
 
@@ -172,7 +172,7 @@ henry.b1=태조의 활쏘기 대회 시작	#	### Refers to playing the mini game
 henry.b2=됐어요.	#	### Player is saying “no I don't want to play the game now” 
 garett.b1=자격루 복원전 시작	#	### Refers to playing the mini game title
 garett.b2=됐어요.	#	### player is saying “no I don't want to play the game now” 
-dawn.b1=십자각 공성전 시작	#	### Refers to playing the mini game title 
+dawn.b1=6진 망루 공성전 시작	#	### Refers to playing the mini game title 
 dawn.b2=됐어요.	#	### player is saying “no I don't want to play the game now” 
 natalie.b1=교태전 꽃담 맞추기 시작	#	### Refers to playing the mini game title 
 natalie.b2=됐어요.	#	### player is saying “no I don't want to play the game now” 
@@ -233,6 +233,6 @@ grid_block_lime_obtain.interact=§a연두 대나무 전돌§r 획득	#	###{StrCo
 grid_block_blue_obtain.interact=§9파랑 거북등 전돌§r 획득	#	###{StrContains="§9"}{StrContains="§r"} Displayed when you hover over a Blue block you can take.
 grid_block_red_obtain.interact=§c빨강 모란 전돌§r 획득	#	###{StrContains="§c"}{StrContains="§r"} Displayed when you hover over a Red block you can take.
 grid_block_yellow_obtain.interact=§e노랑 국화 전돌§r 획득	#	###{StrContains="§e"}{StrContains="§r"} Displayed when you hover over a Yellow block you can take.
-orb.flag.ride.interact=상호작용하여 옥새를 획득하세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
-orb.flag.unride.interact=상호작용하여 옥새를 획득하세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.ride.interact=상호작용하여 옥새를 주우세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
+orb.flag.unride.interact=상호작용하여 옥새를 빼앗으세요.	#	### Displays when the player is near the orb and can interact with it, in Orb Ambush.
 

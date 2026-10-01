@@ -198,9 +198,29 @@ const sdPath = `${RP}sounds/sound_definitions.json`;
 const sdBase = JSON.parse(baseText(sdPath) || "{}").sound_definitions || {};
 const sdNow = JSON.parse(read(sdPath)).sound_definitions || {};
 const soundNames = d => (d?.sounds || []).map(s => (typeof s === "string" ? s : s.name)).join(", ");
+// 게임이 playsound로 트는 음높이(pitch): "playsound 이름 대상 x y z 음량 음높이" — 가장 많이 쓰는 값
+const soundPitch = {};
+for (const f of walk(`${BP}functions`).filter(f => f.endsWith(".mcfunction"))) {
+  for (const m of read(f).matchAll(/playsound\s+([a-z0-9_.]+)((?:[ \t]+\S+){6})/g)) {
+    const pitch = +m[2].trim().split(/\s+/)[5];
+    if (!isNaN(pitch)) (soundPitch[m[1]] ||= {})[pitch] = (soundPitch[m[1]][pitch] || 0) + 1;
+  }
+}
+const topPitch = k => { const c = soundPitch[k]; return c ? +Object.entries(c).sort((a, b) => b[1] - a[1])[0][0] : 1; };
+// 리소스팩에 직접 넣은 음원은 페이지에서 바로 재생한다 (devpage.html 위치 기준 경로)
+const playable = d => (d?.sounds || []).map(x => (typeof x === "string" ? x : x.name))
+  .flatMap(n => [".ogg", ".wav"].map(ext => `${RP}${n}${ext}`)).filter(exists);
+// OGG Vorbis 길이(초): 마지막 페이지의 granule position ÷ 샘플레이트 (브라우저는 서버에 따라 길이를 어림하므로 직접 잰다)
+function oggSeconds(f) {
+  try {
+    const b = fs.readFileSync(f), rate = b.readUInt32LE(b.indexOf("vorbis") + 11), last = b.lastIndexOf("OggS");
+    return Number(b.readBigUInt64LE(last + 6)) / rate;
+  } catch { return null; }
+}
 const sounds = [...new Set([...Object.keys(sdBase), ...Object.keys(sdNow)])].sort().map(k => ({
   event: k, before: soundNames(sdBase[k]) || null, after: soundNames(sdNow[k]) || null,
   changed: JSON.stringify(sdBase[k]) !== JSON.stringify(sdNow[k]),
+  files: playable(sdNow[k]).map(f => ({ f, sec: f.endsWith(".ogg") ? oggSeconds(f) : null })), pitch: topPitch(k),
 }));
 const soundFiles = walk(`${RP}sounds`).map(f => f.split(path.sep).join("/")).filter(f => /\.(ogg|wav|fsb)$/i.test(f));
 
@@ -231,7 +251,7 @@ for (const f of fs.readdirSync(`${BP}entities`)) {
 }
 for (const f of fs.readdirSync(`${RP}entity`)) {
   try {
-    const d = jsonc(read(`${RP}entity/${f}`))["minecraft:client_entity"].description;
+    const j = jsonc(read(`${RP}entity/${f}`)), d = (j["minecraft:client_entity"] || j["minecraft:attachable"]).description;
     const e = entities.get(d.identifier) || { id: d.identifier, bp: null, textures: [] };
     entities.set(d.identifier, { ...e, rp: f, textures: [...new Set(Object.values(d.textures || {}))].map(t => t.replace(/^textures\//, "") + ".png") });
   } catch {}
@@ -265,11 +285,15 @@ const uvAnimRCs = new Set(fs.readdirSync(`${RP}render_controllers`).flatMap(f =>
 function pairsOf(files) {
   const out = [];
   for (const text of files) {
-    let d; try { d = jsonc(text)["minecraft:client_entity"].description; } catch { continue; }
-    const geos = d.geometry || {}, frames = (d.render_controllers || []).some(rc => uvAnimRCs.has(typeof rc === "string" ? rc : Object.keys(rc)[0])) ? 2 : 1;
+    let d; try { const j = jsonc(text); d = (j["minecraft:client_entity"] || j["minecraft:attachable"]).description; } catch { continue; }
+    const geos = d.geometry || {}, rcs = d.render_controllers || [];
+    const frames = rcs.some(rc => uvAnimRCs.has(typeof rc === "string" ? rc : Object.keys(rc)[0])) ? 2 : 1;
+    // 렌더 컨트롤러가 여럿이면 텍스처 키가 없는 모델도 함께 겹쳐 그린다 (옥새의 반투명 서기처럼)
+    const texKeys = Object.keys(d.textures || {});
+    const extra = rcs.length > 1 ? Object.keys(geos).filter(k => k !== "default" && !texKeys.includes(k)).map(k => geos[k]) : [];
     for (const [key, t] of Object.entries(d.textures || {})) {
       const geo = geos[key] ?? geos.default ?? Object.values(geos)[0];
-      if (geo) out.push({ entity: d.identifier, key, tex: `${RP}${t}.png`, geo, frames });
+      if (geo) out.push({ entity: d.identifier, key, tex: `${RP}${t}.png`, geo: [geo, ...extra].join("+"), frames });
     }
   }
   return out;
@@ -279,6 +303,16 @@ const entFilesBase = [...BASE_RP.keys()].filter(f => f.startsWith(`${RP}entity/`
 const pairsNow = pairsOf(entFilesNow), pairsBase = pairsOf(entFilesBase);
 const geoDict = {}; // "now|id" / "base|id" → 모델. 원본과 같은 파일이면 now 하나만 싣는다
 function geoRef(which, id) {
+  if (id.includes("+")) { // 겹쳐 그리는 모델들: 뼈대 이름이 겹치지 않게 뒤 모델에 번호를 붙여 하나로 합친다
+    const keys = id.split("+").map(x => geoRef(which, x));
+    if (keys.some(k => !k)) return keys[0];
+    const key = (keys.every(k => k.startsWith("now|")) ? "now|" : which + "|") + id;
+    if (!(key in geoDict)) {
+      const parts = keys.map(k => geoDict[k]);
+      geoDict[key] = { tw: parts[0].tw, th: parts[0].th, bones: parts.flatMap((m, i) => m.bones.map(b => i ? { ...b, name: b.name + "#" + i, parent: b.parent && b.parent + "#" + i } : b)) };
+    }
+    return key;
+  }
   const now = nowGeo.get(id), base = baseGeo.get(id);
   const src = which === "base" ? (base || now) : (now || base);
   if (!src) return null;
@@ -300,7 +334,7 @@ for (const p of pngs) {
     const key = x.key.replace(new RegExp("^" + ent + "_"), "").replace(/^craft_part_/, "")
       .replace(/^(\d+)_broken$/, "$1번 고장").replace(/^(\d+)_fixed$/, "$1번 수리");
     models.push({
-      label: ent + (x.key !== "default" ? " · " + key : ""),
+      label: ent + (x.key !== "default" ? " · " + key : ""), key: x.key,
       after: p.status === "deleted" ? null : geoRef("now", (now || x).geo),
       before: p.status === "new" ? null : geoRef("base", (base || x).geo),
       frames: x.frames, unused: !now,
@@ -310,6 +344,54 @@ for (const p of pngs) {
   p.models = models;
   if (!p.data && p.status !== "deleted") p.data = dataUri(p.file);
   if (!p.beforeData && p.status === "deleted") p.beforeData = baseDataUri(p.file);
+}
+// ---------- 갑옷(팀 관복) 3D: 바닐라 사람 갑옷 모델(층1 = 머리·몸·팔·다리 +1, 층2 = 몸·다리 +0.5)을 직접 짜서 입힌다 ----------
+// 바닐라 모델은 리소스팩에 없어서, 같은 상자 배치(구형 64×32 UV)를 여기서 만든다
+function armorGeo(layer) {
+  const inf = layer === 1 ? 1 : 0.5, B = (name, pivot, origin, size, uv, mirror = false) => ({ name, parent: null, pivot, rotation: null, mirror, cubes: [{ origin, size, uv, inflate: inf, mirror, rotation: null, pivot: null }] });
+  const bones = [B("body", [0, 24, 0], [-4, 12, -2], [8, 12, 4], [16, 16]), B("rightLeg", [-1.9, 12, 0], [-3.9, 0, -2], [4, 12, 4], [0, 16]), B("leftLeg", [1.9, 12, 0], [-0.1, 0, -2], [4, 12, 4], [0, 16], true)];
+  if (layer === 1) bones.push(B("head", [0, 24, 0], [-4, 24, -4], [8, 8, 8], [0, 0]), B("rightArm", [-5, 22, 0], [-8, 12, -2], [4, 12, 4], [40, 16]), B("leftArm", [5, 22, 0], [4, 12, -2], [4, 12, 4], [40, 16], true));
+  return { tw: 64, th: 32, bones };
+}
+geoDict["now|armor.layer1"] = armorGeo(1); geoDict["now|armor.layer2"] = armorGeo(2);
+for (const p of pngs) {
+  const m = p.rel.match(/^textures\/models\/armor\/(iron|diamond)_([12])\.png$/);
+  if (!m) continue;
+  const g = "now|armor.layer" + m[2];
+  p.models = [{ label: "갑옷 층" + m[2] + (m[2] === "1" ? " (투구·흉갑·부츠)" : " (다리보호대)"), key: "default", after: g, before: g, frames: 1, unused: false }];
+  if (!p.data) p.data = dataUri(p.file);
+}
+// ---------- 바닐라 몹을 덮은 것: 원본 모델·텍스처가 리소스팩에 없으니 tools/skins/nock/ref의 바닐라 사본을 '원본'으로 쓴다 ----------
+const REF = "tools/skins/nock/ref/";
+const VANILLA_REFS = [
+  { rel: "textures/rwm/entity/wooden_cart.png", label: "minecart (일반 광차)", before: ["minecart.geo.json", "geometry.minecart", "minecart.png"] },
+  { rel: "textures/entity/bat.png", label: "bat", after: ["bat.geo.json", "geometry.bat"], before: ["bat.geo.json", "geometry.bat", "bat.png"] },
+];
+for (const r of VANILLA_REFS) {
+  const p = pngs.find(x => x.rel === r.rel);
+  if (!p || p.status === "deleted") continue;
+  const ref = (which, [f, id]) => { const k = which + "|ref:" + f; if (!(k in geoDict)) geoDict[k] = loadGeometry(REF + f, id); return k; };
+  const after = r.after ? ref("now", r.after) : p.models?.[0]?.after;
+  if (!after) continue;
+  p.models = [{ label: r.label, key: "default", after, before: ref("base", r.before), frames: 1, unused: false }];
+  if (!p.data) p.data = dataUri(p.file);
+  if (!p.beforeData || p.status === "new") p.beforeData = dataUri(REF + r.before[2]);
+}
+// ---------- 모델 이름 (tools/model-names.js, 없으면 같은 이름 아이템의 원본/현재 문구) ----------
+const MODEL_NAMES = require("./model-names");
+const noFmt = x => String(x ?? "").replace(/§./g, "");
+function namesOf(rel, key) {
+  const n = (key && MODEL_NAMES[rel + "|" + key]) || MODEL_NAMES[rel];
+  if (n) return { before: n[0], after: n[1] };
+  const host = hosts.find(h => rel === `rwm/entity/npc/${h.id}.png`);
+  if (host) return { before: noFmt(host.nameBefore), after: noFmt(host.name) };
+  const it = items.find(i => i.id === "rwm:" + path.basename(rel, ".png"));
+  return it && (it.name || it.nameBefore) ? { before: noFmt(it.nameBefore || it.name), after: noFmt(it.name || it.nameBefore) } : null;
+}
+for (const p of pngs) {
+  const rel = p.rel.replace(/^textures\//, "");
+  p.names = namesOf(rel, "");
+  for (const m of p.models || []) m.names = namesOf(rel, m.key) || p.names;
 }
 
 const sections = SECTIONS.map(s => {
@@ -343,6 +425,7 @@ const dirty = git(["status", "--porcelain", "--", ".", ":(exclude)db", ":(exclud
 const data = {
   generated: new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }),
   head, dirty, baseline: BASELINE, guard, wheel, drafts, hosts, sections, geo: geoDict, commands, items, armor, pngs, langRows, sounds, soundFiles, changedFiles,
+  changelog: require("./changelog"),
   world: t("pack.name"),
 };
 
@@ -407,6 +490,13 @@ pre{background:var(--code);padding:10px;border-radius:8px;white-space:pre-wrap;f
 .v3d-wrap{position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(circle at 50% 35%,#4a5a6e,#1c2229)}
 canvas.v3d{display:block;width:100%;height:220px;cursor:grab;touch-action:none}
 canvas.v3d:active{cursor:grabbing}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:12px}
+.mcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.mcard h3{margin:0;font-size:16px}
+.mcard canvas.v3d{height:250px}
+.v3d-wrap .lab{position:absolute;top:6px;font-size:12px;font-weight:700;color:#fff;background:rgba(0,0,0,.4);padding:2px 8px;border-radius:6px;pointer-events:none}
+.v3d-wrap .lab.l{left:6px}.v3d-wrap .lab.r{right:6px}
+.nm{font-weight:700;font-size:13px;color:var(--ink)}
 .v3d-wrap .hint{position:absolute;left:6px;bottom:4px;font-size:11px;color:#cfd8e3;pointer-events:none}
 .v3d-wrap .err{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-size:12px;color:#e9dcc9}
 .cap{font-size:11px;color:var(--muted);text-align:center;margin-top:2px}
@@ -438,6 +528,7 @@ canvas.v3d:active{cursor:grabbing}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
 .box h3,.sub h3{margin:0 0 8px;font-size:15px}
+.clog{margin-bottom:10px}.clog ul{margin:0;padding-left:18px}.clog li{margin:5px 0;line-height:1.6}
 .cmd{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px dashed var(--line)}
 .cmd:first-of-type{border-top:0}
 .cmd code{flex:1 1 auto;min-width:0;font-size:13px;background:var(--code);padding:3px 8px;border-radius:6px;overflow-wrap:anywhere}
@@ -457,6 +548,8 @@ canvas.v3d:active{cursor:grabbing}
 .sub h3 .n{font-size:12px;color:var(--muted);font-weight:500;margin-left:6px}
 .jump{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
 .list{display:flex;flex-wrap:wrap;gap:6px}
+.snd-play{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:6px}
+.snd-play audio{height:34px;max-width:100%}
 .list span{font-size:12px;background:var(--chip);border-radius:6px;padding:2px 8px}
 .empty{font-size:13px;color:var(--muted)}
 .place-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
@@ -500,6 +593,7 @@ canvas.v3d-dlg{display:block;width:100%;height:min(440px,56vh);cursor:grab;touch
 </div></nav>
 <main>
   <section class="panel" id="p-summary"><h2>요약</h2><div class="cards" id="cards"></div>
+    <h2 style="margin-top:26px">변경 기록 <span class="n">tools/changelog.js · 항목을 누르면 그 장소·탭으로</span></h2><div id="changelog"></div>
     <h2 style="margin-top:26px">장소·게임 <span class="n">눌러서 자세히 보기</span></h2><div class="place-grid" id="placeOverview"></div></section>
   <section class="panel" id="p-places"><div class="subtabs" id="placeTabs"></div><div id="placeBody"></div></section>
   <section class="panel" id="p-commands"><h2>명령어 <span class="n">게임 채팅창에 입력 · 복사 버튼으로 옮기기</span></h2>
@@ -515,6 +609,9 @@ canvas.v3d-dlg{display:block;width:100%;height:min(440px,56vh);cursor:grab;touch
     <h2 style="margin-top:22px;font-size:17px">게임별 진행 지점 <span class="n">치트가 건너뛰는 곳 (.seq, 20 = 1초)</span></h2>
     <table><thead><tr><th>게임</th><th>act</th><th>경기 시작</th><th>경기 끝</th><th>설명</th></tr></thead><tbody id="cmdSeqs"></tbody></table>
   </section>
+  <section class="panel" id="p-models"><h2>3D 모델 비교 <span class="n" id="modelN"></span></h2>
+    <p class="small" style="margin:-6px 0 10px">텍스처가 입혀지는 게임 모델을 변경 전(왼쪽)과 후(오른쪽)로 나란히 그립니다. 드래그하면 함께 돌고, 두 번 누르면 멈춥니다. 화면에 보이는 카드만 그립니다.</p>
+    <div id="modelGroups"></div></section>
   <section class="panel" id="p-hosts"><h2>호스트 NPC <span class="n">텍스처 64×64 · 원본 대비</span></h2><div class="grid" id="hostGrid"></div></section>
   <section class="panel" id="p-items"><h2>아이템 <span class="n">아이콘 · 이름</span></h2><div class="grid" id="itemGrid"></div></section>
   <section class="panel" id="p-lang"><h2>문구 (ko_KR) <span class="n" id="langN"></span></h2><div class="tabs" id="langTabs"></div>
@@ -573,6 +670,13 @@ function renderHeader() {
     ["바뀐 파일(월드 데이터 제외)", D.changedFiles.length, ""],
   ];
   $("cards").innerHTML = cards.map(([k, v, c]) => '<div class="card '+c+'"><b>'+esc(v)+"</b><span>"+esc(k)+"</span></div>").join("");
+  // 변경 기록: 항목마다 장소 칩(장소 페이지로)과 탭 칩(그 탭으로)
+  const TABNAME = Object.fromEntries(TABS);
+  $("changelog").innerHTML = (D.changelog || []).map(e => '<div class="box clog"><h3>'+esc(e.title)+' <span class="small">'+esc(e.date)+"</span></h3><ul>"
+    + e.items.map(it => "<li>"+esc(it.text)
+      + (it.place ? ' <button class="copy" data-go="places/'+esc(it.place)+'">'+esc((D.sections.find(s => s.id === it.place) || {}).title || it.place)+"</button>" : "")
+      + (it.tab ? ' <button class="copy" data-go="'+esc(it.tab)+'">'+esc(TABNAME[it.tab] || it.tab)+" 탭</button>" : "") + "</li>").join("")
+    + "</ul></div>").join("");
 }
 function tileHost(h, isWheel) {
   const changed = h.texStatus !== "same" || h.nameBefore !== h.name || (h.geoStatus && h.geoStatus !== "same");
@@ -621,11 +725,57 @@ function texTile(p) {
     ? '<div class="pair"><figure>'+img(p.beforeData, Math.round(w * 0.6))+'<figcaption>원본</figcaption></figure><figure>'+img(src, Math.round(w * 0.6))+"<figcaption>현재</figcaption></figure></div>"
     : img(src, w);
   const b3d = p.models ? '<button class="copy b3d" data-3d="'+esc(p.rel)+'" title="게임 모델에 씌워 보기'+(p.status !== "same" ? " (변경 전/후 비교)" : "")+'">3D</button>' : "";
-  return '<div class="tile"><div class="img">'+pic+'</div><div class="tile-foot">'+badge(p.status)+' <span class="small">'+p.w+"×"+p.h+"</span>"+b3d+'</div><div class="small">'+esc(p.rel)+"</div></div>";
+  return '<div class="tile"><div class="img">'+pic+'</div>'+(p.names ? '<div class="nm">'+esc(nameLine(p.names))+"</div>" : "")+'<div class="tile-foot">'+badge(p.status)+' <span class="small">'+p.w+"×"+p.h+"</span>"+b3d+'</div><div class="small">'+esc(p.rel)+"</div></div>";
+}
+// ---------- 3D 모델 비교 카드 ----------
+const nameLine = n => n.before && n.after && n.before !== n.after ? n.before + " → " + n.after : n.after || n.before || "";
+// 카드 하나 = 텍스처 한 장 × 그 텍스처를 쓰는 모델 하나. 원본과 다르면 변경 전/후를 한 캔버스에 나란히
+function pairParts(p, i) {
+  const m = p.models[i], out = [];
+  const differs = p.status !== "same" || m.before !== m.after;
+  const beforeTex = p.beforeData || (p.status === "same" ? p.data : null);
+  if (differs && m.before && D.geo[m.before] && beforeTex) out.push({ model: D.geo[m.before], texData: beforeTex, frames: m.frames, side: "before" });
+  if (m.after && D.geo[m.after] && p.data) out.push({ model: D.geo[m.after], texData: p.data, frames: m.frames, side: "after" });
+  return out;
+}
+let CARDS = null;
+function allCards() {
+  if (CARDS) return CARDS;
+  CARDS = [];
+  for (const p of D.pngs) (p.models || []).forEach((m, i) => {
+    const parts = pairParts(p, i);
+    if (parts.length) CARDS.push({ p, i, m, parts, changed: p.status !== "same" || m.before !== m.after });
+  });
+  return CARDS;
+}
+function modelCard(c) {
+  const { p, i, m, parts } = c, n = m.names || {};
+  const two = parts.length > 1, title = nameLine(n) || m.label;
+  const lab = (side, cls) => '<span class="lab '+cls+'">'+(side === "before" ? "변경 전" : p.status === "new" ? "새 모델" : c.changed ? "변경 후" : "현재")
+    + ((side === "before" ? n.before : n.after) ? " · " + esc(side === "before" ? n.before : n.after) : "")+"</span>";
+  return '<div class="mcard"><h3>'+esc(title)+'</h3><div class="small">'+esc(m.label)+" · "+esc(texRel(p))+"</div>"
+    + '<div class="v3d-wrap"><canvas class="v3d pair" data-tex="'+esc(p.rel)+'" data-idx="'+i+'"></canvas>'
+    + (two ? lab("before", "l") + lab("after", "r") : lab(parts[0].side, "l")) + '<span class="hint">드래그해서 돌리기</span></div>'
+    + '<div class="tile-foot">'+badge(p.status)+(m.before !== m.after ? ' <span class="badge b-changed">모델 변경</span>' : "")
+    + (m.unused ? ' <span class="badge b-same">지금 게임에서 안 씀</span>' : "")
+    + '<button class="copy b3d" data-3d="'+esc(p.rel)+'" data-3d-idx="'+i+'">크게 보기</button></div></div>';
+}
+const cardShown = c => (!only() || c.changed) && match(c.p.rel, c.m.label, c.m.names?.before, c.m.names?.after);
+function renderModels() {
+  const cards = allCards().filter(cardShown), used = new Set();
+  const groups = D.sections.map(s => {
+    const st = secTex(s), mine = cards.filter(c => !used.has(c) && st.includes(c.p));
+    mine.forEach(c => used.add(c));
+    return [s.title, mine];
+  });
+  groups.push(["기타", cards.filter(c => !used.has(c))]);
+  $("modelN").textContent = "표시 " + cards.length + " · 바뀐 " + allCards().filter(c => c.changed).length;
+  $("modelGroups").innerHTML = groups.filter(([, cs]) => cs.length).map(([t, cs]) => '<h2 style="margin-top:20px;font-size:17px">'+esc(t)+' <span class="n">'+cs.length+'</span></h2><div class="mgrid">'+cs.map(modelCard).join("")+"</div>").join("")
+    || '<div class="empty">없음</div>';
 }
 
 // ---------- 탭 ----------
-const TABS = [["summary", "요약"], ["places", "장소·게임"], ["commands", "명령어"], ["hosts", "호스트"], ["items", "아이템"], ["lang", "문구"], ["textures", "텍스처"], ["sounds", "사운드"], ["files", "파일"]];
+const TABS = [["summary", "요약"], ["places", "장소·게임"], ["commands", "명령어"], ["hosts", "호스트"], ["models", "3D 모델"], ["items", "아이템"], ["lang", "문구"], ["textures", "텍스처"], ["sounds", "사운드"], ["files", "파일"]];
 const view = { tab: "summary", place: D.sections[0].id };
 function readHash() {
   const [t, p] = decodeURIComponent(location.hash.slice(1)).split("/");
@@ -636,7 +786,7 @@ const go = (tab, place) => { location.hash = tab + (place ? "/" + place : ""); }
 function renderTabbar() {
   const n = {
     places: D.sections.length, commands: D.commands.groups.reduce((a, g) => a + g.items.length, 0), hosts: D.hosts.filter(h => h.texStatus !== "same").length,
-    items: D.items.filter(i => i.texStatus !== "same" || i.nameBefore !== i.name).length,
+    items: D.items.filter(i => i.texStatus !== "same" || i.nameBefore !== i.name).length, models: allCards().filter(c => c.changed).length,
     lang: D.langRows.filter(r => r.changed).length, textures: D.pngs.filter(p => p.status !== "same").length,
     sounds: D.sounds.filter(s => s.changed).length, files: D.changedFiles.length,
   };
@@ -694,12 +844,15 @@ function renderPlace() {
       + ' <span class="small">'+esc(f.color)+" · "+esc(f.end)+"칸"+(f.beforeColor && f.beforeColor !== f.color ? " (원본 "+esc(f.beforeColor)+")" : "")+"</span></span>").join("") + "</div></div></div>";
   let b = "";
   if (host) b += sub("host", s.host === "wheel" ? "혼천의 (세종대왕)" : "호스트 NPC", null, '<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(340px,1fr))">'+(tileHost(host, s.host === "wheel") || none)+"</div>");
+  const cards = allCards().filter(c => tex.includes(c.p) && cardShown(c));
+  if (cards.length) b += sub("models", "3D 모델 비교", cards.length, '<div class="mgrid">'+cards.map(modelCard).join("")+"</div>", cards.length);
   if (items.length) b += sub("items", "아이템", items.length, '<div class="grid">'+(items.map(tileItem).join("") || none)+"</div>", items.length);
   b += sub("tex", "텍스처", "표시 "+shownTex.length+" / "+tex.length+" · 바뀐 "+tex.filter(p => p.status !== "same").length, shownTex.length ? '<div class="tex-grid">'+shownTex.map(texTile).join("")+"</div>" : none, tex.length);
   b += sub("lang", "문구", "표시 "+shownLang.length+" / "+lang.length+" · 바뀐 "+lang.filter(r => r.changed).length,
     shownLang.length ? "<table><thead><tr><th>키</th><th>원본</th><th>현재</th></tr></thead><tbody>"+shownLang.map(langRow).join("")+"</tbody></table>" : none, lang.length);
   b += sub("ent", "엔티티", s.entities.length, s.entities.length ? '<div class="list">'+s.entities.map(e => "<span>"+esc(e.id)+(e.textures.length ? " · 텍스처 "+e.textures.length : "")+(e.rp ? "" : " · 보이지 않음")+"</span>").join("")+"</div>" : none);
-  b += sub("snd", "쓰는 소리", s.sounds.length, s.sounds.length ? '<div class="list">'+s.sounds.map(x => "<span>"+esc(x.name)+" ×"+x.n+(x.custom ? ' · <b class="'+(x.changed ? "warn" : "")+'">'+(x.changed ? "재정의 바뀜" : "재정의")+"</b>" : "")+"</span>").join("")+"</div>" : none);
+  b += sub("snd", "쓰는 소리", s.sounds.length, s.sounds.length ? '<div class="list">'+s.sounds.map(x => "<span>"+esc(x.name)+" ×"+x.n+(x.custom ? ' · <b class="'+(x.changed ? "warn" : "")+'">'+(x.changed ? "재정의 바뀜" : "재정의")+"</b>" : "")+"</span>").join("")+"</div>"+s.sounds.map(x => D.sounds.find(y => y.event === x.name)).filter(y => y && y.files.length)
+      .map(y => '<div class="small" style="margin-top:10px"><b>'+esc(y.event)+"</b> 듣기</div>"+player(y)).join("") : none);
   b += sub("func", "함수 폴더", null, '<div class="list">'+s.funcs.map(f => "<span>functions/"+esc(f.dir)+" · "+f.count+"개"+(f.entries.length ? " · "+esc(f.entries.map(e => e.split("/").pop().replace(".mcfunction", "")).join(", ")) : "")+"</span>").join("")+"</div>");
   $("placeBody").innerHTML = h + '<div class="jump">' + jumps.join("") + "</div>" + b;
 }
@@ -741,6 +894,7 @@ function render() {
   renderPlace();
   $("hostGrid").innerHTML = tileHost({ ...D.wheel, id: "wheel" }, true) + D.drafts.map(d => tileHost(d, true)).join("") + D.hosts.map(h => tileHost(h)).join("");
   $("itemGrid").innerHTML = D.items.concat(D.armor).map(tileItem).join("");
+  renderModels();
   const groups = ["전체", ...new Set(D.langRows.map(r => r.group))];
   tabs($("langTabs"), groups, langTab, v => langTab = v);
   const rows = D.langRows.filter(r => (langTab === "전체" || r.group === langTab) && (!only() || r.changed) && match(r.key, r.before, r.after));
@@ -753,9 +907,10 @@ function render() {
     && (!only() || p.status !== "same") && (!$("only3d").checked || p.models) && match(p.rel));
   $("texN").textContent = "표시 " + tex.length + "개 · 3D 모델 있는 텍스처 " + D.pngs.filter(p => p.models).length + "개";
   $("texGrid").innerHTML = tex.map(texTile).join("");
-  const snd = D.sounds.filter(s => (!only() || s.changed) && match(s.event, s.before, s.after));
+  const snd = D.sounds.filter(s => (!only() || s.changed) && match(s.event, s.before, s.after))
+    .sort((a, b) => (b.files.length > 0) - (a.files.length > 0)); // 재생할 수 있는 음원이 있는 것은 위로
   $("sndN").textContent = "정의 " + D.sounds.length + "개 · 바뀐 " + D.sounds.filter(s => s.changed).length + "개";
-  $("sndBody").innerHTML = snd.map(s => '<tr><td class="key">'+esc(s.event)+(s.changed?' <span class="badge b-changed">변경</span>':"")+'</td><td class="before">'+esc(s.before ?? "(없음)")+"</td><td>"+esc(s.after ?? "(없음)")+"</td></tr>").join("");
+  $("sndBody").innerHTML = snd.map(s => '<tr><td class="key">'+esc(s.event)+(s.changed?' <span class="badge b-changed">변경</span>':"")+'</td><td class="before">'+esc(s.before ?? "(없음)")+"</td><td>"+esc(s.after ?? "(없음)")+player(s)+"</td></tr>").join("");
   $("sndFiles").textContent = D.soundFiles.length ? "리소스팩 음원 파일: " + D.soundFiles.join(", ") : "리소스팩에 직접 넣은 음원 파일은 아직 없습니다 (바닐라 음원 사용).";
   const F = { A: "new", M: "changed", D: "deleted" };
   const files = D.changedFiles.filter(f => match(f.f));
@@ -839,15 +994,27 @@ const no3D = cv => cv.parentNode.insertAdjacentHTML("beforeend", '<div class="er
 function init3D() {
   // 사라졌거나 숨은 캔버스의 뷰어만 정리하고, 이미 그리는 캔버스는 그대로 둔다
   // (같은 캔버스를 다시 만들면 WebGL 문맥이 이미 버려진 상태라 그릴 수 없다). 3D 비교 창의 뷰어는 창이 따로 관리한다
+  // 모델 비교 카드(canvas.pair)는 수가 많아 화면 근처의 것만 그리고, 멀어지면 정리한다(브라우저의 WebGL 문맥 수 제한).
+  // 정리한 캔버스는 새 캔버스로 바꿔 끼워 두었다가 다시 가까워지면 새로 그린다
+  const near = (cv, m) => { const r = cv.getBoundingClientRect(); return r.bottom > -m && r.top < innerHeight + m; };
   for (const v of [...V3D]) {
     const cv = v.renderer.domElement;
-    if (!v.dialog && (!cv.isConnected || cv.offsetParent === null)) disposeViewer(v);
+    if (v.dialog) continue;
+    if (!cv.isConnected || cv.offsetParent === null) disposeViewer(v);
+    else if (v.lazy && !near(cv, 1500)) { disposeViewer(v); cv.replaceWith(cv.cloneNode()); }
   }
   const drawing = new Set(V3D.map(v => v.renderer.domElement));
   // 지금 보이는 캔버스만 새로 그린다 (숨은 탭은 크기가 0이고, WebGL 문맥도 아낀다)
-  const canvases = [...document.querySelectorAll("canvas.v3d")].filter(cv => cv.offsetParent !== null && !drawing.has(cv));
+  const canvases = [...document.querySelectorAll("canvas.v3d")].filter(cv => cv.offsetParent !== null && !drawing.has(cv)
+    && (!cv.classList.contains("pair") || near(cv, 400)));
   if (!window.THREE) return canvases.forEach(no3D);
   canvases.forEach(cv => {
+    if (cv.classList.contains("pair")) {
+      const p = D.pngs.find(x => x.rel === cv.dataset.tex), i = +cv.dataset.idx;
+      const parts = p && pairParts(p, i);
+      if (parts && parts.length) makeViewer(cv, { parts }, "pair:" + p.rel + "#" + i).lazy = true;
+      return;
+    }
     const cur = cv.dataset.host === "wheel" ? D.wheel : [...D.drafts, ...D.hosts].find(x => x.id === cv.dataset.host);
     if (!cur || !cur.model) return;
     const h = cv.dataset.ver === "before" && cur.before
@@ -868,32 +1035,48 @@ function makeViewer(cv, h, group, dialog = false) {
     scene.add(new THREE.AmbientLight(0xffffff, 0.8));
     const light = new THREE.DirectionalLight(0xffffff, 0.45);
     light.position.set(-20, 40, -30); scene.add(light);
-    const tex = new THREE.TextureLoader().load(h.texData);
-    tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter;
-    tex.generateMipmaps = false; tex.encoding = THREE.sRGBEncoding;
-    const frames = h.frames || 1;
-    if (frames > 1) { tex.repeat.set(1, 1 / frames); tex.offset.set(0, 1 - 1 / frames); }
-    const model = buildModel(h.model, tex);
-    // 모델 크기에 맞춰 가운데로 옮기고 카메라 거리를 정한다
-    model.updateMatrixWorld(true);
-    const box = new THREE.Box3().setFromObject(model);
-    const c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3());
-    model.position.set(-c.x, -c.y, -c.z);
-    const holder = new THREE.Group();
-    holder.add(model);
-    scene.add(holder);
-    const fov = 35, fit = Math.max(s.y, s.x * ht / w, s.z) / 2 / Math.tan(fov * Math.PI / 360) * 1.25;
-    const cam = new THREE.PerspectiveCamera(fov, w / ht, 1, fit * 4);
-    cam.position.set(0, s.y * 0.12, -fit); cam.lookAt(0, 0, 0);
-    const v = { host: group, dialog, renderer, scene, cam, holder, tex, frames, drag: false, moved: 0, lastX: 0, auto: true,
-      spinBone: model.userData.groups.wheel || null, spinStart: 0, spinFrom: 0 };
+    // parts: 한 캔버스에 나란히 그릴 모델들 (변경 전/후 비교 카드). 없으면 모델 하나
+    const parts = h.parts || [{ model: h.model, texData: h.texData, frames: h.frames }];
+    const holders = [], texs = [], sizes = [];
+    let first = null;
+    for (const part of parts) {
+      const tex = new THREE.TextureLoader().load(part.texData);
+      tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter;
+      tex.generateMipmaps = false; tex.encoding = THREE.sRGBEncoding;
+      const frames = part.frames || 1;
+      if (frames > 1) { tex.repeat.set(1, 1 / frames); tex.offset.set(0, 1 - 1 / frames); }
+      texs.push({ tex, frames });
+      const model = buildModel(part.model, tex);
+      first = first || model;
+      // 모델을 가로·앞뒤로는 가운데에, 높이는 바닥(y 최솟값)을 0에 맞춘다 — 나란히 놓으면 같은 땅에 선다
+      model.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(model);
+      const c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3());
+      model.position.set(-c.x, -box.min.y, -c.z);
+      const holder = new THREE.Group();
+      holder.add(model);
+      scene.add(holder);
+      holders.push(holder); sizes.push(s);
+    }
+    // 카메라는 -z에서 +z를 본다 → 화면 왼쪽이 +x. 첫 모델(변경 전)을 왼쪽에 둔다.
+    // 여럿이면 돌려도 옆 모델과 겹치지 않게 폭은 가로·세로 중 큰 값으로 잡는다
+    const widths = sizes.map(s => parts.length > 1 ? Math.max(s.x, s.z) : s.x), gap = parts.length > 1 ? Math.max(...widths) * 0.2 : 0;
+    const total = widths.reduce((a, b) => a + b, 0) + gap * (parts.length - 1);
+    let x = total / 2;
+    const sy = Math.max(...sizes.map(s => s.y)), sz = Math.max(...sizes.map(s => s.z));
+    holders.forEach((hd, i) => { hd.position.set(x - widths[i] / 2, -sy / 2, 0); x -= widths[i] + gap; });
+    const fov = 35, fit = Math.max(sy, total * ht / w, parts.length > 1 ? 0 : sz) / 2 / Math.tan(fov * Math.PI / 360) * 1.25;
+    const cam = new THREE.PerspectiveCamera(fov, w / ht, 1, fit * 4 + sz * 2);
+    cam.position.set(0, sy * 0.12, -fit); cam.lookAt(0, 0, 0);
+    const v = { host: group, dialog, renderer, scene, cam, holder: holders[0], holders, tex: texs[0].tex, frames: texs[0].frames, texs, drag: false, moved: 0, lastX: 0, auto: true,
+      spinBone: first.userData.groups.wheel || null, spinStart: 0, spinFrom: 0 };
     // 변경 전/후 뷰어는 같은 호스트끼리 함께 돌려 같은 각도에서 비교한다
     const peers = () => V3D.filter(x => x.host === v.host);
     cv.onpointerdown = e => { v.drag = true; v.moved = 0; v.lastX = e.clientX; cv.setPointerCapture(e.pointerId); };
     cv.onpointermove = e => {
       if (!v.drag) return;
       const dx = e.clientX - v.lastX; v.moved += Math.abs(dx); v.lastX = e.clientX;
-      for (const p of peers()) { if (v.moved > 3) p.auto = false; p.holder.rotation.y += dx * 0.012; }
+      for (const p of peers()) { if (v.moved > 3) p.auto = false; for (const hd of p.holders) hd.rotation.y += dx * 0.012; }
     };
     cv.onpointerup = () => {
       v.drag = false;
@@ -918,9 +1101,10 @@ function open3D(rel, idx = 0) {
   const beforeTex = p.beforeData || p.data, afterTex = p.data;
   const differs = p.status !== "same" || m.before !== m.after;
   const cols = [];
-  if (differs && beforeGeo && beforeTex) cols.push(["before", "변경 전", "원본(" + D.baseline + ")", beforeGeo, beforeTex]);
-  if (afterGeo && afterTex) cols.push(["after", p.status === "new" ? "새 파일" : differs ? "변경 후" : "현재", differs ? "현재" : "원본과 같음", afterGeo, afterTex]);
-  $("dlgTitle").textContent = p.rel;
+  const n = m.names || {};
+  if (differs && beforeGeo && beforeTex) cols.push(["before", "변경 전" + (n.before ? " · " + n.before : ""), "원본(" + D.baseline + ")", beforeGeo, beforeTex]);
+  if (afterGeo && afterTex) cols.push(["after", (p.status === "new" ? "새 파일" : differs ? "변경 후" : "현재") + (n.after ? " · " + n.after : ""), differs ? "현재" : "원본과 같음", afterGeo, afterTex]);
+  $("dlgTitle").textContent = (n.after ? nameLine(n) + " — " : "") + p.rel;
   $("dlgBadges").innerHTML = badge(p.status) + (m.before !== m.after ? ' <span class="badge b-changed">모델 변경</span>' : "")
     + (m.unused ? ' <span class="badge b-same">지금 게임에서 안 씀</span>' : "");
   $("dlgModels").innerHTML = p.models.length > 1 ? p.models.map((x, i) => '<button data-3d="'+esc(rel)+'" data-3d-idx="'+i+'" class="'+(i === idx ? "on" : "")+'">'+esc(x.label)+"</button>").join("") : '<span class="chip">'+esc(m.label)+"</span>";
@@ -938,9 +1122,9 @@ const close3DViewers = () => V3D.filter(v => v.dialog).forEach(disposeViewer);
 function loop() {
   const now = performance.now();
   for (const v of V3D) {
-    if (v.auto) v.holder.rotation.y += 0.01;
+    if (v.auto) for (const hd of v.holders) hd.rotation.y += 0.01;
     // uv_anim과 같게 초당 7번 프레임을 바꿔 조명이 깜빡이게 한다
-    if (v.frames > 1) v.tex.offset.y = 1 - (1 + Math.floor(now / 1000 * 7) % v.frames) / v.frames;
+    for (const t of v.texs) if (t.frames > 1) t.tex.offset.y = 1 - (1 + Math.floor(now / 1000 * 7) % t.frames) / t.frames;
     if (v.spinStart) {
       const p = Math.min((now - v.spinStart) / 4000, 1);
       v.spinBone.rotation.z = v.spinFrom - (1 - Math.pow(1 - p, 3)) * Math.PI * 2 * 4;
@@ -960,6 +1144,26 @@ function fallbackCopy(t) {
   a.remove();
 }
 const copyText = t => navigator.clipboard && window.isSecureContext ? navigator.clipboard.writeText(t).catch(() => fallbackCopy(t)) : Promise.resolve(fallbackCopy(t));
+// 음원 재생기. 게임이 음높이(pitch)를 바꿔 트는 소리는 '게임처럼'을 켜면 브라우저도 같은 배속·음높이로 튼다
+// (마인크래프트의 pitch는 재생 속도를 바꾸는 것이라 playbackRate와 같다)
+function player(s) {
+  if (!s.files || !s.files.length) return "";
+  const len = x => x.sec ? " · 파일 " + Math.round(x.sec) + "초" + (s.pitch !== 1 ? ", 게임에서 " + Math.round(x.sec / s.pitch) + "초" : "") : "";
+  return s.files.map(x => '<div class="snd-play"><audio controls preload="metadata" src="'+esc(x.f)+'" data-rate="'+s.pitch+'"></audio>'
+    + (s.pitch !== 1 ? '<label class="small"><input type="checkbox" class="snd-game" checked> 게임처럼 (pitch '+s.pitch+' = '+s.pitch+'배속)</label>' : "")
+    + '<span class="small">'+esc(x.f.split("/").pop()+len(x))+"</span></div>").join("");
+}
+const applyRate = a => {
+  const cb = a.parentNode.querySelector(".snd-game");
+  a.preservesPitch = false; a.mozPreservesPitch = false; a.webkitPreservesPitch = false;
+  a.playbackRate = cb && cb.checked ? +a.dataset.rate : 1;
+};
+document.addEventListener("play", e => {
+  if (e.target.tagName !== "AUDIO") return;
+  document.querySelectorAll("audio").forEach(a => { if (a !== e.target) a.pause(); }); // 한 번에 하나만
+  applyRate(e.target);
+}, true);
+document.addEventListener("change", e => { if (e.target.matches?.(".snd-game")) applyRate(e.target.closest(".snd-play").querySelector("audio")); });
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-tab]");
   if (t) return go(t.dataset.tab, t.dataset.tab === "places" ? view.place : "");
@@ -980,6 +1184,8 @@ document.addEventListener("toggle", e => {
   openState[e.target.id] = e.target.open;
   if (e.target.open && e.target.querySelector("canvas.v3d")) init3D(); // 접혀 있던 3D 보기를 펼치면 다시 그린다
 }, true);
+let scrollPending = 0;
+window.addEventListener("scroll", () => { if (!scrollPending) scrollPending = requestAnimationFrame(() => { scrollPending = 0; init3D(); }); }, { passive: true });
 window.addEventListener("hashchange", () => {
   const prevTab = view.tab, prevPlace = view.place;
   readHash(); render();

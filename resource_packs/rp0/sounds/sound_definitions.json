@@ -72,7 +72,7 @@
          "category" : "ui",
          "sounds" : [
             {
-               "name" : "sounds/music/game/records/creator",
+               "name" : "sounds/rwm/grid_bgm",
                "stream" : true,
                "volume" : 0.50
             }
@@ -126,7 +126,7 @@
          "sounds" : [
             {
                "load_on_low_memory" : true,
-               "name" : "sounds/music/game/records/otherside",
+               "name" : "sounds/rwm/elytra_bgm",
                "stream" : true,
                "volume" : 0.50
             }
@@ -137,7 +137,7 @@
          "sounds" : [
             {
                "load_on_low_memory" : true,
-               "name" : "sounds/music/game/records/pigstep_master",
+               "name" : "sounds/rwm/orb_bgm",
                "stream" : true,
                "volume" : 0.50
             }
@@ -147,7 +147,7 @@
          "category" : "ui",
          "sounds" : [
             {
-               "name" : "sounds/music/game/records/precipice",
+               "name" : "sounds/rwm/finale_bgm",
                "stream" : true,
                "volume" : 0.50
             }
@@ -169,7 +169,7 @@
          "sounds" : [
             {
                "load_on_low_memory" : true,
-               "name" : "sounds/music/game/records/stal",
+               "name" : "sounds/rwm/craft_bgm",
                "stream" : true,
                "volume" : 0.50
             }
@@ -191,7 +191,7 @@
          "sounds" : [
             {
                "load_on_low_memory" : true,
-               "name" : "sounds/music/game/records/wait",
+               "name" : "sounds/rwm/nock_bgm",
                "stream" : true,
                "volume" : 0.50
             }

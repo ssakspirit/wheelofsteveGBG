@@ -66,14 +66,14 @@
                 "idle_goat": "animation.target_goat.idle",
                 "idle_llama": "animation.target_llama.idle",
                 "idle_pig": "animation.target_pig.idle",
-                "idle_polarbear": "animation.target_polarbear.idle",
+                "idle_polarbear": "animation.minhwa_tiger.idle",
                 "idle_rabbit_desert": "animation.target_rabbit.idle",
                 "idle_rabbit_plains": "animation.target_rabbit.idle",
                 "idle_sheep": "animation.target_sheep.idle",
                 "idle_sniffer": "animation.target_sniffer.idle",
                 "idle_snowgolem": "animation.target_snowgolem.idle",
                 "idle_spider": "animation.target_spider.idle",
-                "idle_wolf": "animation.target_wolf.idle",
+                "idle_wolf": "animation.minhwa_tiger.idle",
                 "reward_armadillo": "animation.target_armadillo.reward",
                 "reward_bee": "animation.target_bee.reward",
                 "reward_camel": "animation.target_camel.reward",
@@ -84,14 +84,14 @@
                 "reward_goat": "animation.target_goat.reward",
                 "reward_llama": "animation.target_llama.reward",
                 "reward_pig": "animation.target_pig.reward",
-                "reward_polarbear": "animation.target_polarbear.reward",
+                "reward_polarbear": "animation.minhwa_tiger.reward",
                 "reward_rabbit_desert": "animation.target_rabbit.reward",
                 "reward_rabbit_plains": "animation.target_rabbit.reward",
                 "reward_sheep": "animation.target_sheep.reward",
                 "reward_sniffer": "animation.target_sniffer.reward",
                 "reward_snowgolem": "animation.target_snowgolem.reward",
                 "reward_spider": "animation.target_spider.reward",
-                "reward_wolf": "animation.target_wolf.reward"
+                "reward_wolf": "animation.minhwa_tiger.reward"
 			},
 			"scripts": {
 				"animate": [

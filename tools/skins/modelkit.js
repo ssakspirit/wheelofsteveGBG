@@ -40,8 +40,10 @@ function kit({ width, height, maxRegion = 32, pad = 0 }) {
   function model(identifier, description = {}, { shift = [0, 0, 0] } = {}) {
     const bones = [], mv = p => p.map((v, i) => Math.round((v + shift[i]) * 1000) / 1000);
     const api = {
-      bone(name, { parent = null, pivot = [0, 0, 0], rotation = null } = {}) {
-        bones.push({ name, ...(parent ? { parent } : {}), pivot: mv(pivot), ...(rotation ? { rotation } : {}), cubes: [] });
+      // locators: { 이름: [x, y, z] } — 파티클 등이 붙는 위치표
+      bone(name, { parent = null, pivot = [0, 0, 0], rotation = null, locators = null } = {}) {
+        const loc = locators && Object.fromEntries(Object.entries(locators).map(([k, p]) => [k, mv(p)]));
+        bones.push({ name, ...(parent ? { parent } : {}), pivot: mv(pivot), ...(rotation ? { rotation } : {}), cubes: [], ...(loc ? { locators: loc } : {}) });
         return api;
       },
       // mats: '재질' (모든 면) 또는 { all, north, south, east, west, up, down } — 'none'은 그 면을 뺀다

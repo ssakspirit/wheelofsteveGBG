@@ -35,7 +35,8 @@ const sections = [
     notes: ["시작 방(X −5..5, Y 20..35, Z −5..5)으로 순간이동하면 호스트 판정·점수 초기화가 일어난다"],
     lang: ["^actionbar\\.objective\\.00[0-3]\\.", "^subtitle\\.objective\\.1000\\.", "^subtitle\\.title$", "^(chat|board|wheel|npc|map|pack|lang)\\.", "^interact\\.(wheel_of_steve|npc_1|marker)", "^item\\.(iron|diamond)_"],
     tex: ["^rwm/entity/(wheel_of_steve|honcheonui)\\.png$", "^particle/(marketing|common)/", "^pack_icon\\.png$", "^models/armor/", "^items/(iron|diamond)_",
-      "^blocks/(obsidian|portal|cobblestone|stone_slab_(top|side)|hardened_clay_stained_white|stripped_oak_log(_top)?|stonebrick)\\.png$", "^blocks/rwm/(giwa|changho|changho_edge|hoebyeok)\\.png$"],
+      "^blocks/(obsidian|portal|cobblestone|stone_slab_(top|side)|hardened_clay_stained_white|stripped_oak_log(_top)?|stonebrick|lantern|door_wood_(lower|upper)|bookshelf)\\.png$", "^blocks/rwm/(giwa|changho|changho_edge|hoebyeok)\\.png$", "^items/door_wood\\.png$",
+      "^blocks/(barrel_\\w+|furnace_\\w+)\\.png$", "^entity/(sign|sign_jungle|oak_hanging_sign)\\.png$", "^entity/chest/normal\\.png$", "^entity/bed/", "^environment/(sun|moon_phases)\\.png$"],
     items: null, entities: ["^(wheel_of_steve|npc_\\d|marker|timer|fog_wall)$"],
     funcs: ["seq/act0", "utility/lobby", "utility/wheel", "utility/teams", "utility/wins"],
   },
@@ -63,7 +64,7 @@ const sections = [
     zone: "X -51~-16 · Y 59~70 · Z -109~-78", fogs: ["g3_fog"], timer: "-33 90 -97", notes: ["철 블록 장식 금지"],
     lang: ["^actionbar\\.objective\\.301\\.", "^grid_block", "^natalie\\."],
     tex: ["^particle/grid_wars\\.png$", "^blocks/concrete_(lime|blue|yellow|red|magenta)\\.png$", "^rwm/entity/grid/",
-      "^blocks/(concrete_silver|stripped_jungle_log(_top)?|stonebrick)\\.png$", "^blocks/rwm/daenamu\\.png$"],
+      "^blocks/(concrete_silver|stonebrick(_cracked|_carved)?)\\.png$", "^blocks/rwm/daenamu\\.png$"],
     items: null, entities: ["^grid_"], funcs: ["seq/act3", "utility/games/grid"],
   },
   {
@@ -72,7 +73,7 @@ const sections = [
     zone: "X -39~36 · Y 59~73 · Z 3963~4036", fogs: ["g4_fog", "g4a_fog", "g4b_fog", "g4c_fog", "g4d_fog", "g4e_fog", "g4f_fog", "g4g_fog"], timer: "0 90 4000",
     notes: ["화살에 깨지는 블록 장식 금지"],
     lang: ["^actionbar\\.objective\\.401\\.", "^henry\\."],
-    tex: ["^rwm/entity/nock_", "^rwm/entity/target_mobs/", "^entity/bat\\.png$", "^rwm/entity/wooden_cart\\.png$","^particle/(nock_it_off|arrow|rainbow)\\.png$"],
+    tex: ["^rwm/entity/nock_", "^rwm/entity/target_mobs/", "^entity/bat\\.png$", "^rwm/entity/wooden_cart\\.png$", "^items/bow_(standby|pulling_[0-2])\\.png$","^particle/(nock_it_off|arrow|rainbow)\\.png$"],
     items: null, entities: ["^nock_"], funcs: ["seq/act4", "utility/games/nock"],
   },
   {
@@ -80,7 +81,7 @@ const sections = [
     desc: "김종서가 개척한 북방 6진의 하늘 공성전. 백두산 용암 위를 날아 상대 망루(홍포대 망루 · 청포대 망루)에 비격진천뢰를 떨어뜨린다. 주제 역량: 커뮤니티.",
     zone: "X -176~20 · Y 58~210 · Z 4992~5188", fogs: ["g5_fog"], timer: null, notes: [],
     lang: ["^actionbar\\.objective\\.501\\.", "^dawn\\."],
-    tex: ["^rwm/entity/tnt_", "^particle/elytra_rumble\\.png$", "^blocks/(mangrove_(planks|log_side|log_top)|warped_planks|cobblestone)\\.png$"],
+    tex: ["^rwm/entity/tnt_", "^particle/elytra_rumble\\.png$", "^blocks/(mangrove_(planks|log_side|log_top)|warped_planks|cobblestone)\\.png$", "^items/(fireworks|elytra|broken_elytra)\\.png$", "^models/armor/elytra\\.png$"],
     items: null, entities: ["^elytra_"], funcs: ["seq/act5", "utility/games/elytra"],
   },
   {

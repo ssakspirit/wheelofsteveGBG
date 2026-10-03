@@ -11,8 +11,9 @@
 //            참나무 판자 (2차, 대부분 건물 벽)               → 같은 결의 회벽 (blocks.json 연결 — 울타리·누름판은 판자 그림을 같이 써서)
 //   붉은 기둥 벗긴 참나무 원목                             → 주칠 기둥
 //   망루 목재 맹그로브 원목·판자(계단·반 블록 포함)          → 홍포대 망루의 검붉은 옻칠 목재 / 뒤틀린 판자(·계단) → 청포대 망루의 검푸른 목재
-//   3차 (교태전 정원 세트 등) 회백색 콘크리트 → 회색 전돌(꽃담 바탕), 껍질 벗긴 정글나무 → 붉은 기둥, 정글나무 반 블록 → 장대석(교태전 가운데 길·담 덮개),
+//   3차 (교태전 정원 세트 등) 회백색 콘크리트 → 회색 전돌(꽃담 바탕), 정글나무 반 블록 → 장대석(교태전 가운데 길·담 덮개),
 //            정글나무 울타리 → 대나무 살, TNT → 화약궤, 참나무 울타리 → 짙은 고동색 난간
+//   4차      금 간·조각된 석재 벽돌 → 금 간·연꽃 새긴 장대석, 가문비 울타리 → 고동색 난간, 참나무 문 → 띠살문, 책장 → 책가도
 // 텍스처를 다른 블록과 같이 쓰지 않는 것은 바닐라 경로의 파일을 덮어쓰고, 같이 쓰는 것은 textures/blocks/rwm/에 새로 그려 연결한다.
 const fs = require("fs"), path = require("path");
 const PNG = require("./png");
@@ -88,6 +89,69 @@ function jangdaeseok() {
     if (ly === 0) c = lighten(c, 0.12); else if (ly === 6) c = darken(c, 0.12); // 돌마다 윗모서리 밝게, 아래 어둡게
     const s = hash(x, y, 24);
     return s < 0.1 ? darken(c, 0.16) : s > 0.94 ? lighten(c, 0.15) : c;       // 화강암 반점
+  });
+}
+
+// 금 간 장대석 · 무늬 새긴 장대석 (금 간·조각된 석재 벽돌 — 교태전 바닥 등에 장대석과 섞여 깔려 있다)
+function jangdaeCracked() {
+  const base = jangdaeseok(), crack = new Set(["3,1", "4,2", "4,3", "5,4", "6,4", "6,5", "11,9", "12,10", "12,11", "13,12", "10,10", "9,11"]);
+  return tex(16, 16, (x, y) => crack.has(x + "," + y) ? "#5e5a53" : rgbHex(PNG.get(base, x, y)));
+}
+function jangdaeCarved() {   // 테두리를 깎고 가운데에 연꽃 무늬를 도드라지게 새긴 돌
+  return tex(16, 16, (x, y) => {
+    const e = Math.min(x, y, 15 - x, 15 - y);
+    if (e === 0) return "#7b766d";
+    if (e === 1) return x === 1 || y === 1 ? "#d0cbc1" : "#9a958b";       // 빗각 모서리
+    const r = Math.hypot(x - 7.5, y - 7.5), a = Math.atan2(y - 7.5, x - 7.5);
+    const petal = r < 5.6 && r > 1.6 && Math.cos(a * 8) > 0.15;
+    if (r <= 1.6) return "#cfc8b8";                                       // 꽃술
+    if (petal) return r > 4.2 ? "#a29d93" : "#d3cec4";                    // 꽃잎 (바깥은 그늘)
+    return grain("#bab5ab", x, y, 30, 0.06);
+  });
+}
+const rgbHex = p => "#" + p.slice(0, 3).map(v => v.toString(16).padStart(2, "0")).join("");
+
+// ---------- 띠살문 (참나무 문): 촘촘한 세로 살에 가로 띠, 아래는 나무 궁판 ----------
+const FRAME = "#4a3220", SAL = "#6b4a2f", PAPER = "#efe6cf";
+function ttisal(part) {
+  return tex(16, 16, (x, y) => {
+    if (x === 0 || x === 15 || (part === "upper" && y === 0) || (part === "lower" && y === 15)) return FRAME;
+    if (part === "lower") {
+      if (y === 8) return FRAME;                                            // 궁판 위 가로대
+      if (y >= 9) return (x === 2 || x === 13 || y === 10 || y === 14) ? "#7d5835" : grain("#8e663d", x, y, 31, 0.05); // 궁판
+      if (y === 3 || y === 4) return SAL;                                   // 가운데 띠
+    } else if (y === 2 || y === 3 || y === 13 || y === 14) return SAL;     // 위·아래 띠
+    return x % 2 ? SAL : (hash(x, y, 32) < 0.12 ? "#e4dbc3" : PAPER);       // 세로 살 + 창호지
+  });
+}
+function ttisalIcon() {   // 아이템 아이콘: 가운데 8칸 너비의 문
+  return tex(16, 16, (x, y) => {
+    if (x < 4 || x > 11) return null;
+    if (x === 4 || x === 11 || y === 0 || y === 15 || y === 10) return FRAME;
+    if (y >= 11) return "#8e663d";
+    if (y === 2 || y === 7) return SAL;
+    return x % 2 ? SAL : PAPER;
+  });
+}
+
+// ---------- 책가도 (책장): 책을 눕혀 쌓은 칸과 청자 병·두루마리 ----------
+function chaekgado() {
+  const covers = ["#2b4f86", "#c9a45a", "#2e6f58", "#a3322a", "#2b4f86", "#5b3d6e"];
+  return tex(16, 16, (x, y) => {
+    if (x === 0 || x === 15 || y === 0 || y === 15) return "#3d2a1c";
+    if (y === 7 || y === 8) return y === 7 ? "#6b4a2f" : "#4f3522";          // 가운데 선반
+    const top = y < 7, ly = top ? y - 1 : y - 9;                              // 칸 안 줄 (0~5)
+    if (x >= 2 && x <= 7) {                                                   // 눕혀 쌓은 책
+      const book = top ? ly : ly + 2;
+      if (top && ly < 1) return "#5a3d27";
+      return x === 7 ? "#efe6cf" : covers[book % covers.length];             // 오른쪽 끝은 책장 단면(흰 종이)
+    }
+    if (top && x >= 10 && x <= 12) {                                         // 청자 병
+      const w = ly < 1 ? 0 : ly < 2 ? 0.5 : 1.5;
+      if (Math.abs(x - 11) <= w && ly >= 0) return ly === 5 ? "#6f9a86" : "#8fb8a4";
+    }
+    if (!top && ly >= 3 && x >= 9 && x <= 13) return x === 11 ? "#a3322a" : "#e9e2c9"; // 두루마리
+    return "#5a3d27";                                                         // 칸 안쪽 그늘
   });
 }
 
@@ -249,10 +313,15 @@ const OUT = {
   "mangrove_planks": tower("planks"), "mangrove_log_side": tower("side"), "mangrove_log_top": tower("top"),
   "warped_planks": tower("planks", "blue"),
   // 3차: 교태전 정원 세트 · 화약궤 · 난간
-  "concrete_silver": jeondol(), "stripped_jungle_log": pillar(false), "stripped_jungle_log_top": pillar(true),
+  "concrete_silver": jeondol(),   // 껍질 벗긴 정글나무(교태전 기둥)는 원래 그림 그대로 — 붉게 하면 홍포대·모란 무늬 빨강과 겹친다
   "rwm/daenamu": bamboo(), "rwm/mokjae": mokjae(),
   "tnt_side": gunpowder("side"), "tnt_top": gunpowder("top"), "tnt_bottom": gunpowder("bottom"),
+  // 4차: 장대석 변형 · 띠살문 · 책가도 (청사초롱·각궁·신기전·학 날개는 tools/skins/hanok-items.py)
+  "stonebrick_cracked": jangdaeCracked(), "stonebrick_carved": jangdaeCarved(),
+  "door_wood_lower": ttisal("lower"), "door_wood_upper": ttisal("upper"), "bookshelf": chaekgado(),
 };
+// 아이템 그림(문 아이콘)은 textures/items/에
+fs.writeFileSync(path.join(RP, "textures/items/door_wood.png"), PNG.encode(ttisalIcon()));
 for (const [name, img] of Object.entries(OUT)) {
   const f = path.join(BL, name + ".png");
   fs.mkdirSync(path.dirname(f), { recursive: true });
@@ -270,7 +339,8 @@ for (const b of ["oak_stairs", "oak_slab", "oak_double_slab"]) bj[b] = { texture
 bj.oak_planks = { textures: "rwm_hoebyeok", sound: "wood" };
 for (const b of ["jungle_slab", "jungle_double_slab"]) bj[b] = { textures: "rwm_jangdae", sound: "stone" };  // 3차: 교태전 가운데 길·담 위 덮개 → 장대석 (길에도 쓰여 기와는 안 맞음)
 bj.jungle_fence = { textures: "rwm_daenamu", sound: "wood" };                                         // 교태전 격자 울타리 → 대나무 살
-bj.oak_fence = { textures: "rwm_mokjae", sound: "wood" };                                             // 참나무 울타리 → 짙은 고동색 난간   // 2차: 벽으로 주로 쓰인 참나무 판자 → 회벽 (울타리 등은 판자 그림 그대로)
+bj.oak_fence = { textures: "rwm_mokjae", sound: "wood" };
+bj.spruce_fence = { textures: "rwm_mokjae", sound: "wood" };                                          // 4차: 자격루 공방의 가문비 울타리도 같은 난간 색으로                                             // 참나무 울타리 → 짙은 고동색 난간   // 2차: 벽으로 주로 쓰인 참나무 판자 → 회벽 (울타리 등은 판자 그림 그대로)
 bj.glass_pane = { textures: { up: "rwm_changho", down: "rwm_changho", north: "rwm_changho", south: "rwm_changho", west: "rwm_changho", east: "rwm_changho_edge" }, sound: "glass" };
 fs.writeFileSync(bjf, JSON.stringify(bj, null, 2) + "\n");
 

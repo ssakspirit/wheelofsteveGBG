@@ -65,5 +65,9 @@
   "oak_fence": {
     "textures": "rwm_mokjae",
     "sound": "wood"
+  },
+  "spruce_fence": {
+    "textures": "rwm_mokjae",
+    "sound": "wood"
   }
 }

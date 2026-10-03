@@ -2,9 +2,25 @@
 // place: tools/places.js의 장소 id (누르면 그 장소 페이지로), tab: 바로 볼 탭(models · sounds · items · textures …)
 module.exports = [
   {
+    date: "2026-10-04", title: "한옥 5차 — 한국어 표지판 · 하늘 · 소품",
+    items: [
+      { text: "영어로 남아 있던 표지판 26개(로비 팀 홀·시작 버튼, 교태전 '보드 지우기', 지하 관리실)를 한국어로 — 구조물 + /function hanok/signs_ko (게임 안에서 한 번 실행)", place: "lobby" },
+      { text: "교태전 정원 기둥(껍질 벗긴 정글나무)은 원래 그림으로 되돌림 — 붉은 기둥이 홍포대 쪽으로 기운 느낌을 주고 꽃담의 모란(빨강) 무늬 색과도 겹쳐서. 로비의 붉은 기둥은 그대로", place: "grid", tab: "textures" },
+      { text: "표지판 → 현판, 해·달 → 일월오봉도의 붉은 해·흰 달, 상자 → 반닫이, 통 → 뒤주, 화로 → 아궁이 화덕, 침대 → 이부자리 — tools/skins/hanok-props.py", place: "lobby", tab: "textures" },
+    ],
+  },
+  {
+    date: "2026-10-03", title: "한옥 4차 — 손에 드는 물건과 소품",
+    items: [
+      { text: "활 → 각궁(검은 물소뿔 활대, 붉은 줌통, 누런 끝), 폭죽 로켓 → 신기전(약통 단 화살), 겉날개 → 학 날개(흰 깃·검은 끝깃) — tools/skins/hanok-items.py", tab: "textures" },
+      { text: "랜턴 → 청사초롱(위 붉은 비단·아래 푸른 비단), 참나무 문 → 띠살문, 책장 → 책가도", place: "lobby", tab: "textures" },
+      { text: "금 간·조각된 석재 벽돌 → 금 간·연꽃 새긴 장대석(교태전 바닥 얼룩 정리), 가문비 울타리 → 고동색 난간(자격루 공방 색 통일)", place: "grid", tab: "textures" },
+    ],
+  },
+  {
     date: "2026-10-03", title: "한옥 궁궐 블록 3차 — 교태전 정원 · 화약궤 · 난간 · 망루 팀 색",
     items: [
-      { text: "교태전 정원 세트: 회백색 콘크리트 → 회색 전돌(꽃담 판 둘레), 껍질 벗긴 정글나무 → 붉은 기둥, 정글나무 반 블록 → 장대석(가운데 길·담 덮개), 정글나무 울타리 → 대나무 살", place: "grid", tab: "textures" },
+      { text: "교태전 정원 세트: 회백색 콘크리트 → 회색 전돌(꽃담 판 둘레), 정글나무 반 블록 → 장대석(가운데 길·담 덮개), 정글나무 울타리 → 대나무 살", place: "grid", tab: "textures" },
       { text: "TNT → 화약궤('火' 붉은 종이를 붙인 나무 궤짝, 자격루 공방·로비 장식), 참나무 울타리 → 원목 기둥과 같은 짙은 고동색 난간", place: "craft", tab: "textures" },
       { text: "6진 망루 목재를 팀 색으로: 홍포대 망루(맹그로브) 검붉은 옻칠 목재, 청포대 망루(뒤틀린 판자) 검푸른 옻칠 목재", place: "elytra", tab: "textures" },
     ],

@@ -68,6 +68,24 @@ for k, f in {"b_giwa": "blocks/rwm/giwa", "b_dancheong": "blocks/obsidian", "b_w
              "b_changho": "blocks/rwm/changho", "b_hoebyeok": "blocks/rwm/hoebyeok", "b_jangdae": "blocks/stonebrick", "b_jeondol": "blocks/concrete_silver", "b_bamboo": "blocks/rwm/daenamu", "b_mokjae": "blocks/rwm/mokjae", "b_gunpowder": "blocks/tnt_side", "b_pillar": "blocks/stripped_oak_log", "b_portal": "blocks/portal"}.items():
     IMG[k] = icon(os.path.join(RP, f + ".png"))
 
+IMG["i_bow"] = icon(os.path.join(RP, "items", "bow_standby.png"))
+IMG["i_rocket"] = icon(os.path.join(RP, "items", "fireworks.png"))
+IMG["i_wing"] = icon(os.path.join(RP, "items", "elytra.png"))
+IMG["b_door"] = icon(os.path.join(RP, "items", "door_wood.png"))
+IMG["b_bookshelf"] = icon(os.path.join(RP, "blocks", "bookshelf.png"))
+_lan = Image.open(os.path.join(RP, "blocks", "lantern.png")).convert("RGBA").crop((0, 2, 6, 9))   # 청사초롱 옆면(6×7)
+IMG["b_lantern"] = png_uri(_lan.resize((_lan.width * 12, _lan.height * 12), Image.NEAREST))
+
+def crop_icon(rel, box, k=6):
+    im = Image.open(os.path.join(RP, rel + ".png")).convert("RGBA").crop(box)
+    return png_uri(im.resize((im.width * k, im.height * k), Image.NEAREST))
+IMG["p_sign"] = crop_icon("entity/sign", (2, 2, 26, 14), 4)
+IMG["p_chest"] = crop_icon("entity/chest/normal", (14, 0, 28, 14), 6)
+IMG["p_dwiju"] = icon(os.path.join(RP, "blocks", "barrel_top.png"))
+IMG["p_hwadeok"] = icon(os.path.join(RP, "blocks", "furnace_front_on.png"))
+IMG["p_bed"] = crop_icon("entity/bed/white", (6, 6, 22, 28), 4)
+IMG["p_sun"] = crop_icon("environment/sun", (4, 4, 28, 28), 4)
+
 # 음악 미리듣기
 SRC = os.path.normpath(os.path.join(ROOT, "..", "_경복궁어전대회_원본", "음원_FlowMusic"))
 TRACKS = {"orb": ("Imperial-Vanguard.wav", 28.68), "craft": ("Jagyeokru-Workshop.wav", 21.85), "grid": ("Gyotaejeon-Garden-Flow.wav", 0),

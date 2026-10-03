@@ -177,6 +177,22 @@ const armor = ["iron", "diamond"].flatMap(m => ["helmet", "chestplate", "legging
   return { id: `minecraft:${m}_${p}`, tex, texStatus: status(tex), name: t(`item.${m}_${p}.name`), nameBefore: langBase.get(`item.${m}_${p}.name`) };
 }));
 
+// ---------- 바닐라 원본: 리소스팩이 바닐라 경로의 그림을 새로 덮어쓴 경우(한옥 블록 등) '원본'으로 보여 준다 ----------
+// 기본 팩(vanilla) 위에 버전별 팩(vanilla_1.xx)이 덮이므로 가장 새 버전에서 찾는다
+const VANS = (() => {
+  const base = "C:/Program Files/WindowsApps";
+  let root = null;
+  try {   // WindowsApps 목록은 권한 때문에 못 읽을 수 있다 → 아래 알려진 경로로
+    const d = fs.readdirSync(base).find(n => n.startsWith("Microsoft.MinecraftEducationEdition_") && n.includes("x64") && fs.existsSync(`${base}/${n}/data/resource_packs/vanilla`));
+    if (d) root = `${base}/${d}/data/resource_packs`;
+  } catch {}
+  root = root || [`${base}/Microsoft.MinecraftEducationEdition_1.26.3200.0_x64__8wekyb3d8bbwe/data/resource_packs`].find(r => fs.existsSync(r + "/vanilla"));
+  if (!root) return [];
+  return fs.readdirSync(root).filter(n => n === "vanilla" || /^vanilla_\d/.test(n))
+    .sort((a, b) => b.localeCompare(a, "en", { numeric: true })).map(n => `${root}/${n}/`);
+})();
+const vanillaUri = rel => { const v = VANS.find(d => exists(d + rel)); return v ? dataUri(v + rel) : null; };
+
 // ---------- 텍스처 전체 ----------
 function walk(d) {
   return fs.readdirSync(d, { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]);
@@ -188,8 +204,10 @@ const pngs = [...new Set([...walk(RP).map(f => f.split(path.sep).join("/")), ...
     if (exists(f)) { const b = fs.readFileSync(f); w = b.readUInt32BE(16); h = b.readUInt32BE(20); }
     const st = status(f);
     // 바뀐 그림은 내장 데이터로 싣는다: 원본과 나란히 보여 주고, 브라우저 캐시에 옛 그림이 남지 않게
-    return { file: f, rel: f.slice(RP.length), status: st, w, h,
-      data: st === "changed" || st === "new" ? dataUri(f) : null, beforeData: st === "changed" ? baseDataUri(f) : null };
+    const rel = f.slice(RP.length);
+    return { file: f, rel, status: st, w, h,
+      data: st === "changed" || st === "new" ? dataUri(f) : null,
+      beforeData: st === "changed" ? baseDataUri(f) : st === "new" ? vanillaUri(rel) : null };
   })
   .sort((a, b) => a.rel.localeCompare(b.rel, "en", { numeric: true }));
 

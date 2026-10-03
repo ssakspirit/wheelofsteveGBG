@@ -18,6 +18,15 @@
     },
     "ct_side_top": {
       "textures": "textures/blocks/ct_side_top"
+    },
+    "rwm_giwa": {
+      "textures": "textures/blocks/rwm/giwa"
+    },
+    "rwm_changho": {
+      "textures": "textures/blocks/rwm/changho"
+    },
+    "rwm_changho_edge": {
+      "textures": "textures/blocks/rwm/changho_edge"
     }
   }
 }

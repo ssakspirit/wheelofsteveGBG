@@ -2,6 +2,24 @@
 // place: tools/places.js의 장소 id (누르면 그 장소 페이지로), tab: 바로 볼 탭(models · sounds · items · textures …)
 module.exports = [
   {
+    date: "2026-10-03", title: "한옥 궁궐 블록 1차 (월드 전체 블록 텍스처)",
+    items: [
+      { text: "사용처 조사(tools/scan-blocks.py)로 고른 바닐라 블록 8가지의 그림을 리소스팩에서 바꿈 — 월드 데이터는 그대로, 같은 블록이 월드 전체에서 바뀜 (tools/skins/hanok-blocks.js)", tab: "textures" },
+      { text: "궐문: 로비 게임 선택 문의 흑요석 → 단청 문틀, 보라 포털 → 금빛 구름이 흐르는 문 안쪽", place: "lobby", tab: "textures" },
+      { text: "기와: 참나무 계단·반 블록 → 검은 기와 (로비 마을·옥새·자격루 지붕). 판자와 그림을 공유해서 blocks.json에서 새 그림으로 연결", place: "orb", tab: "textures" },
+      { text: "담장돌·박석: 조약돌(이끼 포함) → 화강암 마름돌 담장, 매끄러운 돌 → 박석 마당", place: "orb", tab: "textures" },
+      { text: "창호·회벽·붉은 기둥: 유리 → 나무 창살 진열장, 판유리 → 띠살 창호지, 흰 테라코타 → 회벽, 벗긴 참나무 원목 → 주칠 기둥", place: "lobby", tab: "textures" },
+      { text: "망루 목재: 맹그로브 원목·판자·계단 → 6진 망루의 검게 그을린 목재", place: "elytra", tab: "textures" },
+    ],
+  },
+  {
+    date: "2026-10-03", title: "로비 로고 크기 · 꽃전돌 깜박임",
+    items: [
+      { text: "옥새 쟁탈전 로고만 두 배로 크게 보이던 것 → 다른 로고와 같은 크기 (원작은 7×7 작은 그림을 1.5배로 키웠고, 새 로고는 16×16을 꽉 채우므로 0.75)", place: "lobby" },
+      { text: "교태전 정원 블록이 돌 때 네 옆면 중 동·서 두 면의 무늬가 깜박이며 겹쳐 보이던 것 수정 — Bedrock은 X축이 뒤집혀 east/west 면이 반대쪽에 그려지므로, 무늬판이 몸통 면과 같은 자리에 놓였었다 (tools/skins/grid.js)", place: "grid", tab: "models" },
+    ],
+  },
+  {
     date: "2026-10-01", title: "활쏘기 철길 — 나무 수레",
     items: [
       { text: "과녁을 싣고 철길을 도는 바닐라 광차 → 쇠테 바퀴·철띠 기둥·끌채가 달린 나무 수레 (Blockbench, tools/skins/nock/minecart.js). 월드의 모든 일반 광차가 바뀌고 상자·TNT·호퍼 광차는 그대로", place: "nock", tab: "models" },

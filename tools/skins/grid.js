@@ -61,8 +61,10 @@ function geometry() {
           { origin: [-6.5, 0, -6.5], size: [13, 13, 13], uv: { north: side, east: side, south: side, west: side, up: top, down: top } },
           { origin: [-5.5, 1, -7], size: [11, 11, 0.5], uv: { north: plate } },
           { origin: [-5.5, 1, 6.5], size: [11, 11, 0.5], uv: { south: plate } },
-          { origin: [6.5, 1, -5.5], size: [0.5, 11, 11], uv: { east: plate } },
-          { origin: [-7, 1, -5.5], size: [0.5, 11, 11], uv: { west: plate } },
+          // Bedrock은 X축이 뒤집혀 있어 'east' 면이 상자의 작은 x 쪽에 그려진다 → +x 판은 west, -x 판은 east 면을 써야 바깥쪽이 된다
+          // (반대로 쓰면 무늬가 몸통 옆면과 같은 자리에 겹쳐 돌 때 깜박인다)
+          { origin: [6.5, 1, -5.5], size: [0.5, 11, 11], uv: { west: plate } },
+          { origin: [-7, 1, -5.5], size: [0.5, 11, 11], uv: { east: plate } },
         ],
       }],
     }],

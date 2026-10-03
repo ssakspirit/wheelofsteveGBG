@@ -34,7 +34,8 @@ const sections = [
     zone: "X -50~21 · Y 59~72 · Z 1000~1044 (+인트로 카메라 0,109,1092)", fogs: ["lobby_fog"], timer: null,
     notes: ["시작 방(X −5..5, Y 20..35, Z −5..5)으로 순간이동하면 호스트 판정·점수 초기화가 일어난다"],
     lang: ["^actionbar\\.objective\\.00[0-3]\\.", "^subtitle\\.objective\\.1000\\.", "^subtitle\\.title$", "^(chat|board|wheel|npc|map|pack|lang)\\.", "^interact\\.(wheel_of_steve|npc_1|marker)", "^item\\.(iron|diamond)_"],
-    tex: ["^rwm/entity/(wheel_of_steve|honcheonui)\\.png$", "^particle/(marketing|common)/", "^pack_icon\\.png$", "^models/armor/", "^items/(iron|diamond)_"],
+    tex: ["^rwm/entity/(wheel_of_steve|honcheonui)\\.png$", "^particle/(marketing|common)/", "^pack_icon\\.png$", "^models/armor/", "^items/(iron|diamond)_",
+      "^blocks/(obsidian|portal|cobblestone|stone_slab_(top|side)|hardened_clay_stained_white|stripped_oak_log(_top)?)\\.png$", "^blocks/rwm/(giwa|changho|changho_edge)\\.png$"],
     items: null, entities: ["^(wheel_of_steve|npc_\\d|marker|timer|fog_wall)$"],
     funcs: ["seq/act0", "utility/lobby", "utility/wheel", "utility/teams", "utility/wins"],
   },
@@ -43,7 +44,8 @@ const sections = [
     desc: "영의정 황희가 여는 대결. 나라의 도장인 옥새를 두고 겨룬다. 주제 역량: 의사소통.",
     zone: "X -14~14 · Y 61~70 · Z 1974~2022", fogs: ["g1_fog"], timer: "0 90 1998", notes: [],
     lang: ["^actionbar\\.objective\\.101\\.", "^subtitle\\.objective\\.101\\.", "^orb\\.", "^steve\\.", "^item\\.rwm:orb$"],
-    tex: ["^rwm/(entity|items)/orb\\.png$", "^rwm/entity/orb_enemy\\.png$", "^particle/(orb_ambush|rainbow)\\.png$"],
+    tex: ["^rwm/(entity|items)/orb\\.png$", "^rwm/entity/orb_enemy\\.png$", "^particle/(orb_ambush|rainbow)\\.png$",
+      "^blocks/(cobblestone(_mossy)?|stone_slab_(top|side)|glass)\\.png$", "^blocks/rwm/giwa\\.png$"],
     items: "^rwm:orb$", entities: ["^orb_"], funcs: ["seq/act1", "utility/games/orb"],
   },
   {
@@ -77,7 +79,7 @@ const sections = [
     desc: "김종서가 개척한 북방 6진의 하늘 공성전. 백두산 용암 위를 날아 상대 망루(홍포대 망루 · 청포대 망루)에 비격진천뢰를 떨어뜨린다. 주제 역량: 커뮤니티.",
     zone: "X -176~20 · Y 58~210 · Z 4992~5188", fogs: ["g5_fog"], timer: null, notes: [],
     lang: ["^actionbar\\.objective\\.501\\.", "^dawn\\."],
-    tex: ["^rwm/entity/tnt_", "^particle/elytra_rumble\\.png$"],
+    tex: ["^rwm/entity/tnt_", "^particle/elytra_rumble\\.png$", "^blocks/(mangrove_(planks|log_side|log_top)|cobblestone)\\.png$"],
     items: null, entities: ["^elytra_"], funcs: ["seq/act5", "utility/games/elytra"],
   },
   {

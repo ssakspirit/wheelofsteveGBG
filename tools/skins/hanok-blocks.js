@@ -5,10 +5,14 @@
 //   기와     참나무 계단·반 블록                           → 검은 기와 (blocks.json에서 새 텍스처로 연결 — 판자와 그림을 공유하므로)
 //   담장돌   조약돌·이끼 낀 조약돌                         → 화강암 마름돌 담장
 //   박석     매끄러운 돌·매끄러운 돌 반 블록                → 박석 마당
+//   장대석   석재 벽돌·그 계단·반 블록·담장 (2차)           → 길게 다듬은 화강암 기단 (그림 파일을 덮어씀 — 이끼·금 간·조각 석재 벽돌은 그대로)
 //   창호     유리(옥새 진열장) → 나무 창살 + 맑은 유리 / 판유리(로비 창문) → 띠살 창호지 (blocks.json 연결)
 //   회벽     흰 테라코타                                   → 흰 회벽
+//            참나무 판자 (2차, 대부분 건물 벽)               → 같은 결의 회벽 (blocks.json 연결 — 울타리·누름판은 판자 그림을 같이 써서)
 //   붉은 기둥 벗긴 참나무 원목                             → 주칠 기둥
-//   망루 목재 맹그로브 원목·판자(계단·반 블록 포함)          → 6진 망루의 검게 그을린 목재
+//   망루 목재 맹그로브 원목·판자(계단·반 블록 포함)          → 홍포대 망루의 검붉은 옻칠 목재 / 뒤틀린 판자(·계단) → 청포대 망루의 검푸른 목재
+//   3차 (교태전 정원 세트 등) 회백색 콘크리트 → 회색 전돌(꽃담 바탕), 껍질 벗긴 정글나무 → 붉은 기둥, 정글나무 반 블록 → 장대석(교태전 가운데 길·담 덮개),
+//            정글나무 울타리 → 대나무 살, TNT → 화약궤, 참나무 울타리 → 짙은 고동색 난간
 // 텍스처를 다른 블록과 같이 쓰지 않는 것은 바닐라 경로의 파일을 덮어쓰고, 같이 쓰는 것은 textures/blocks/rwm/에 새로 그려 연결한다.
 const fs = require("fs"), path = require("path");
 const PNG = require("./png");
@@ -73,8 +77,22 @@ function flagstone(side) {
   });
 }
 
+// ---------- 장대석: 길게 다듬은 화강암을 두 줄로 엇갈려 쌓은 기단·월대 (석재 벽돌 · 그 계단·반 블록·담장) ----------
+function jangdaeseok() {
+  const joint = "#7b766d", tones = ["#bdb8ae", "#b3aea3", "#c4bfb5"];
+  return tex(16, 16, (x, y) => {
+    const row = y >> 3, ly = y & 7;
+    if (ly === 7 || x === (row ? 7 : 15)) return joint;                       // 가로 줄눈 · 줄마다 엇갈린 세로 줄눈
+    const k = row ? (x < 7 ? 1 : 2) : 0;
+    let c = tones[k];
+    if (ly === 0) c = lighten(c, 0.12); else if (ly === 6) c = darken(c, 0.12); // 돌마다 윗모서리 밝게, 아래 어둡게
+    const s = hash(x, y, 24);
+    return s < 0.1 ? darken(c, 0.16) : s > 0.94 ? lighten(c, 0.15) : c;       // 화강암 반점
+  });
+}
+
 // ---------- 회벽 ----------
-const plaster = () => tex(16, 16, (x, y) => { const s = hash(x, y, 11); return s < 0.14 ? "#e0d9ca" : s > 0.93 ? "#f2ede2" : "#e9e3d6"; });
+const plaster = (seed = 11) => tex(16, 16, (x, y) => { const s = hash(x, y, seed); return s < 0.14 ? "#e0d9ca" : s > 0.93 ? "#f2ede2" : "#e9e3d6"; });
 
 // ---------- 붉은 기둥: 주칠한 나뭇결, 위는 나무 마구리에 붉은 테 ----------
 function pillar(top) {
@@ -91,29 +109,90 @@ function pillar(top) {
   });
 }
 
-// ---------- 망루 목재: 북방 망루의 검게 그을린 소나무 판재·통나무 ----------
-function tower(kind) {
+// ---------- 망루 목재: 북방 망루의 옻칠한 판재·통나무 — 팀 색으로 (홍포대 망루 = 맹그로브, 청포대 망루 = 뒤틀린 판자) ----------
+const TOWER = {
+  red: { boards: ["#5a2a22", "#542620", "#612e25", "#4e231d"], seam: "#2a110d", side: ["#4a201a", "#521f19"], crack: "#2a100c", hi: "#6a3428", ring: ["#5e2c22", "#70362a"], rim: "#33160f" },
+  blue: { boards: ["#24364a", "#213245", "#283c52", "#1f2f40"], seam: "#0f1824" },
+};
+function tower(kind, team = "red") {
+  const P = TOWER[team];
   if (kind === "planks") {
-    const boards = ["#4f3727", "#4a3324", "#553b2a", "#47311f"];
     return tex(16, 16, (x, y) => {
       const b = y >> 2, ly = y & 3;
-      if (ly === 3) return "#24180f";                                    // 판자 사이
+      if (ly === 3) return P.seam;                                       // 판자 사이
       if ((b % 2 ? x === 14 : x === 1) && ly === 1) return "#2c2c30";     // 쇠못
-      let c = boards[b];
+      let c = P.boards[b];
       if (hash(x >> 1, y, 16 + b) < 0.2) c = darken(c, 0.14);
       return grain(c, x, y, 17, 0.06);
     });
   }
   if (kind === "top") return tex(16, 16, (x, y) => {
     const r = Math.hypot(x - 7.5, y - 7.5);
-    if (r > 6.9) return "#2e2017";
-    return grain(Math.floor(r) % 2 ? "#4a3426" : "#5c4231", x, y, 18, 0.05);
+    if (r > 6.9) return P.rim;
+    return grain(P.ring[Math.floor(r) % 2], x, y, 18, 0.05);
   });
   return tex(16, 16, (x, y) => {                                         // 통나무 옆
-    let c = hash(x, 0, 19) < 0.5 ? "#3f2c1f" : "#46311f";
-    if (hash(x, y >> 1, 20) < 0.1) c = "#281b12";                        // 갈라진 틈
-    else if (hash(x, y, 21) > 0.9) c = "#55402e";
+    let c = P.side[hash(x, 0, 19) < 0.5 ? 0 : 1];
+    if (hash(x, y >> 1, 20) < 0.1) c = P.crack;                          // 갈라진 틈
+    else if (hash(x, y, 21) > 0.9) c = P.hi;
     return c;
+  });
+}
+
+// ---------- 교태전 정원 세트: 회색 전돌(꽃담 바탕) · 대나무 살 울타리 ----------
+function jeondol() {   // 회백색 콘크리트 → 회색 전돌을 흰 줄눈으로 쌓은 꽃담 바탕 (벽돌 높이 4칸, 엇갈려 쌓기)
+  const mortar = "#d2ccbf", tones = ["#6c6f71", "#75787a", "#666a6c", "#7e8183"];
+  return tex(16, 16, (x, y) => {
+    const row = y >> 2, ly = y & 3, off = row % 2 ? 4 : 0;
+    if (ly === 3 || ((x + off) & 7) === 7) return mortar;
+    const k = (row * 3 + (((x + off) >> 3) & 1)) % tones.length;
+    let c = tones[k];
+    if (ly === 0) c = lighten(c, 0.08);
+    return grain(c, x, y, 25, 0.07);
+  });
+}
+function bamboo() {    // 정글나무 울타리 → 대나무 살: 세로 대나무 네 줄, 마디가 어긋나게
+  const node = [3, 9, 6, 12];
+  return tex(16, 16, (x, y) => {
+    const k = x >> 2, lx = x & 3;
+    if (lx === 3) return "#5d6a2a";                                       // 대 사이 그늘
+    if (y === node[k] || y === (node[k] + 8) % 16) return "#7c8a36";       // 마디
+    const c = lx === 0 ? "#c9d27e" : lx === 1 ? "#aab95a" : "#8e9c44";      // 둥근 줄기 음영
+    return grain(c, x, y, 26 + k, 0.05);
+  });
+}
+
+// ---------- 화약궤: TNT → 화약을 담은 나무 궤짝 (붉은 종이에 '火') ----------
+const FIRE = ["...#...", ".#.#.#.", ".#.#.#.", "...#...", "..#.#..", ".#...#.", "#.....#"];  // 火 (7×7)
+function gunpowder(face) {
+  const wood = ["#7a5230", "#835a35", "#6f4a2a"];
+  return tex(16, 16, (x, y) => {
+    if (face === "side") {
+      if (y === 0 || y === 15 || x === 0 || x === 15) return "#3b3d42";   // 쇠 모서리
+      if (y === 2 || y === 13) return "#4a4c52";                           // 쇠띠
+      if (x >= 3 && x <= 12 && y >= 3 && y <= 12) {                       // 붉은 종이
+        const gx = x - 4, gy = y - 4;
+        if (gx >= 0 && gx < 7 && gy >= 0 && gy < 7 && FIRE[gy][gx] === "#") return "#1d1a19";
+        return x === 3 || x === 12 || y === 3 || y === 12 ? "#8e2a20" : "#b8392c";
+      }
+    } else {
+      if (y === 0 || y === 15 || x === 0 || x === 15) return "#3b3d42";
+      if (face === "top" && (x === 7 || x === 8 || y === 7 || y === 8)) return "#c9a45a"; // 묶은 새끼줄
+    }
+    const c = wood[(y >> 2) % wood.length];
+    return (y & 3) === 3 ? darken(c, 0.25) : grain(c, x, y, 27, 0.06);
+  });
+}
+
+// ---------- 짙은 고동색 목재: 참나무 울타리 → 원목 기둥과 같은 색의 난간 ----------
+function mokjae() {
+  const tones = ["#5a3f27", "#634529", "#523a24", "#5e4228"];
+  return tex(16, 16, (x, y) => {
+    const b = y >> 2;
+    if ((y & 3) === 3) return "#3a2716";
+    let c = tones[b];
+    if (hash(x >> 1, y, 28 + b) < 0.2) c = darken(c, 0.12);
+    return grain(c, x, y, 29, 0.05);
   });
 }
 
@@ -163,11 +242,16 @@ const OUT = {
   "obsidian": dancheong(), "portal": portalFrames(),
   "rwm/giwa": giwa(),
   "cobblestone": wallStone(false), "cobblestone_mossy": wallStone(true),
-  "stone_slab_top": flagstone(false), "stone_slab_side": flagstone(true),
+  "stone_slab_top": flagstone(false), "stone_slab_side": flagstone(true), "stonebrick": jangdaeseok(),
   "glass": lattice(), "rwm/changho": changho(), "rwm/changho_edge": tex(16, 16, () => "#5b3d26"),
-  "hardened_clay_stained_white": plaster(),
+  "hardened_clay_stained_white": plaster(), "rwm/hoebyeok": plaster(31),
   "stripped_oak_log": pillar(false), "stripped_oak_log_top": pillar(true),
   "mangrove_planks": tower("planks"), "mangrove_log_side": tower("side"), "mangrove_log_top": tower("top"),
+  "warped_planks": tower("planks", "blue"),
+  // 3차: 교태전 정원 세트 · 화약궤 · 난간
+  "concrete_silver": jeondol(), "stripped_jungle_log": pillar(false), "stripped_jungle_log_top": pillar(true),
+  "rwm/daenamu": bamboo(), "rwm/mokjae": mokjae(),
+  "tnt_side": gunpowder("side"), "tnt_top": gunpowder("top"), "tnt_bottom": gunpowder("bottom"),
 };
 for (const [name, img] of Object.entries(OUT)) {
   const f = path.join(BL, name + ".png");
@@ -178,10 +262,15 @@ for (const [name, img] of Object.entries(OUT)) {
 // 새로 그린 텍스처를 atlas 키로 등록하고, 판자·유리와 그림을 공유하는 블록만 새 키로 연결한다
 const jsonc = f => JSON.parse(fs.readFileSync(f, "utf8").replace(/^﻿/, ""));
 const ttf = path.join(RP, "textures/terrain_texture.json"), tt = jsonc(ttf);
-for (const k of ["giwa", "changho", "changho_edge"]) tt.texture_data["rwm_" + k] = { textures: "textures/blocks/rwm/" + k };
+for (const k of ["giwa", "changho", "changho_edge", "hoebyeok", "daenamu", "mokjae"]) tt.texture_data["rwm_" + k] = { textures: "textures/blocks/rwm/" + k };
+tt.texture_data.rwm_jangdae = { textures: "textures/blocks/stonebrick" };   // 장대석(석재 벽돌 그림)을 다른 블록에도 연결하려고
 fs.writeFileSync(ttf, JSON.stringify(tt, null, 2) + "\n");
 const bjf = path.join(RP, "blocks.json"), bj = jsonc(bjf);
 for (const b of ["oak_stairs", "oak_slab", "oak_double_slab"]) bj[b] = { textures: "rwm_giwa", sound: "wood" };
+bj.oak_planks = { textures: "rwm_hoebyeok", sound: "wood" };
+for (const b of ["jungle_slab", "jungle_double_slab"]) bj[b] = { textures: "rwm_jangdae", sound: "stone" };  // 3차: 교태전 가운데 길·담 위 덮개 → 장대석 (길에도 쓰여 기와는 안 맞음)
+bj.jungle_fence = { textures: "rwm_daenamu", sound: "wood" };                                         // 교태전 격자 울타리 → 대나무 살
+bj.oak_fence = { textures: "rwm_mokjae", sound: "wood" };                                             // 참나무 울타리 → 짙은 고동색 난간   // 2차: 벽으로 주로 쓰인 참나무 판자 → 회벽 (울타리 등은 판자 그림 그대로)
 bj.glass_pane = { textures: { up: "rwm_changho", down: "rwm_changho", north: "rwm_changho", south: "rwm_changho", west: "rwm_changho", east: "rwm_changho_edge" }, sound: "glass" };
 fs.writeFileSync(bjf, JSON.stringify(bj, null, 2) + "\n");
 

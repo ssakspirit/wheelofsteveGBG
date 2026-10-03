@@ -87,7 +87,7 @@ actionbar.objective.201.9=§6행운을 빌어요!	#	###{StrContains="§6"}Ending
 actionbar.objective.202.1=§6자격루 복원전에 오신 것을 환영합니다.	#	###{StrContains="§6"} Mini game title, a contraption is a Rube Goldberg style machine that players must fix. 
 actionbar.objective.202.2=§6승리하려면 팀과 협력해야 합니다.	#	###{StrContains="§6"}
 actionbar.objective.202.3=§6망가진 장치 3개를 고치는 것이 목표입니다.%1이렇게 하려면 아이템을 좀 만들어야 할 거예요.	#	###{StrContains="§6"}{StrContains="%1"}
-actionbar.objective.202.4=§6플레이어 한 명은 창고에 있습니다. 이 플레이어는 팀을 위해 제작법을 보여주는 %1설계도을 찾아야 합니다.	#	###{StrContains="§6"}{StrContains="%1"}
+actionbar.objective.202.4=§6플레이어 한 명은 창고에 있습니다. 이 플레이어는 팀을 위해 제작법을 보여주는 %1설계도를 찾아야 합니다.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.202.5=§6일단 설계도와 상호작용하면 보드에 붙일 수 있습니다.	#	###{StrContains="§6"}
 actionbar.objective.202.6=§6보드와 상호작용하면 팀에 제작법이 표시됩니다.	#	###{StrContains="§6"}
 actionbar.objective.202.7=§6나머지 팀원들은 힘을 합쳐서 제작 구역에 표시된 %1패턴을 그대로 베껴야 합니다.	#	###{StrContains="§6"}{StrContains="%1"}
@@ -128,7 +128,7 @@ actionbar.objective.501.3=§6떨어지는 동안 점프를 누르면 딱지날�
 actionbar.objective.501.4=§6상호작용을 눌러 폭죽을 사용하여 속도를 높이세요.	#	###{StrContains="§6"}
 actionbar.objective.501.5=§6비격진천뢰 옆에 가까이 날아가서 잡으세요.	#	###{StrContains="§6"}
 actionbar.objective.501.6=§6상대 망루 위를 날아가면서 %1공격을 사용하여 비격진천뢰를 떨어뜨리세요.	#	###{StrContains="§6"}{StrContains="%1"}
-actionbar.objective.501.7=§6최초로 10점을 득점하거나 타이머가 끝난 후 점수가 가장 많은 팀이 승리합니다.	#	###{StrContains="§6"}
+actionbar.objective.501.7=§6먼저 50점을 득점하거나 타이머가 끝난 후 점수가 가장 많은 팀이 승리합니다.	#	###{StrContains="§6"}
 actionbar.objective.501.8=§6행운을 빌어요!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
 actionbar.objective.501.9=§6낙하 중 점프를 누르면 비행을 시작합니다.	#	###{StrContains="§6"}
 actionbar.objective.501.10=§6§9청포대 망루§6에 비격진천뢰를 떨어뜨려 점수를 획득하세요. %1공격이나 웅크리기를 눌러 떨어뜨리세요.	#	###{StrContains="§6"}{StrContains="§9"}{StrContains="%1"}
@@ -139,8 +139,8 @@ actionbar.objective.601.1=§6백악산 엽전 달리기에 오신 것을 환영�
 actionbar.objective.601.2=§6경복궁 어전대회의 최종 승자를 결정할 시간입니다.	#	###{StrContains="§6"} Refers to name of the game world, Wheel of Steve
 actionbar.objective.601.3=§6백악산 비탈을 내려가 %1최대한 많은 엽전을 모아야 합니다.	#	###{StrContains="§6"}{StrContains="%1"}
 actionbar.objective.601.4=§6가장 많은 엽전을 얻은 플레이어가 승리합니다.	#	###{StrContains="§6"}
-actionbar.objective.601.5=§6낭떠러지에서 떨어지면 탈락하게 되니 조심하세요.	#	###{StrContains="§6"}
-actionbar.objective.601.6=§6뒤처지거나 너무 앞서 나가면 탈락하게 될 수 있습니다.	#	###{StrContains="§6"}
+actionbar.objective.601.5=§6낭떠러지에서 떨어지면 엽전을 더 주울 수 없으니 조심하세요.	#	###{StrContains="§6"}
+actionbar.objective.601.6=§6너무 뒤처지거나 앞서 나가면 밀려나게 됩니다.	#	###{StrContains="§6"}
 actionbar.objective.601.7=§6행운을 빌어요!	#	###{StrContains="§6"}Ending a series of dialogue, wishing the player good luck at the game.
 actionbar.objective.601.8=§6엽전을 모으고 카메라 시야를 확보하세요!	#	###{StrContains="§6"}
 
@@ -160,7 +160,7 @@ garett.d=반갑습니다! 저는 장영실입니다. 스스로 시각을 알리�
 
 dawn.d=나는 북방을 지키는 장수 김종서다! 성을 지키려면 모두가 하나 된 §l§6커뮤니티§r가 되어야 하지. 두만강 가에 세운 여섯 진, 6진의 망루를 두고 겨루는 §a§l6진 망루 공성전§r을 준비했다! 백두산 불길 위를 날아 상대 망루에 비격진천뢰를 떨어뜨려라. 해 보겠느냐?	#	###{StrContains="§6"}{StrContains="§l"}{StrContains="§r"}{StrContains="§a"}
 
-natalie.d=어서 오시오. 나는 경복궁을 설계하고 전각마다 이름을 지은 정도전이오. 궁궐의 아름다운 무늬도 치밀한 §l§6비판적 사고§r에서 나온다오. 교태전 꽃담의 무늬를 누가 먼저 똑같이 만드는지 겨루는 §a§l교태전 꽃담 맞추기§r로 그대들의 생각하는 힘을 시험해 보겠소. 해 보시겠소?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
+natalie.d=어서 오시오. 나는 도읍 한양을 계획하고 경복궁과 전각마다 이름을 지은 정도전이오. 궁궐의 아름다운 무늬도 치밀한 §l§6비판적 사고§r에서 나온다오. 교태전 꽃담의 무늬를 누가 먼저 똑같이 만드는지 겨루는 §a§l교태전 꽃담 맞추기§r로 그대들의 생각하는 힘을 시험해 보겠소. 해 보시겠소?	#	###{StrContains="§6"}{StrContains="§a"}{StrContains="§l"}{StrContains="§r"}
 
 npc.nothost.d=죄송합니다. 플레이어님은 호스트가 아닙니다. 호스트만 게임을 시작할 수 있습니다.	#	###
 

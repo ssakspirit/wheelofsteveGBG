@@ -35,7 +35,7 @@ const sections = [
     notes: ["시작 방(X −5..5, Y 20..35, Z −5..5)으로 순간이동하면 호스트 판정·점수 초기화가 일어난다"],
     lang: ["^actionbar\\.objective\\.00[0-3]\\.", "^subtitle\\.objective\\.1000\\.", "^subtitle\\.title$", "^(chat|board|wheel|npc|map|pack|lang)\\.", "^interact\\.(wheel_of_steve|npc_1|marker)", "^item\\.(iron|diamond)_"],
     tex: ["^rwm/entity/(wheel_of_steve|honcheonui)\\.png$", "^particle/(marketing|common)/", "^pack_icon\\.png$", "^models/armor/", "^items/(iron|diamond)_",
-      "^blocks/(obsidian|portal|cobblestone|stone_slab_(top|side)|hardened_clay_stained_white|stripped_oak_log(_top)?)\\.png$", "^blocks/rwm/(giwa|changho|changho_edge)\\.png$"],
+      "^blocks/(obsidian|portal|cobblestone|stone_slab_(top|side)|hardened_clay_stained_white|stripped_oak_log(_top)?|stonebrick)\\.png$", "^blocks/rwm/(giwa|changho|changho_edge|hoebyeok)\\.png$"],
     items: null, entities: ["^(wheel_of_steve|npc_\\d|marker|timer|fog_wall)$"],
     funcs: ["seq/act0", "utility/lobby", "utility/wheel", "utility/teams", "utility/wins"],
   },
@@ -54,7 +54,7 @@ const sections = [
     zone: "X -24~24 · Y 59~70 · Z 2997~3047 (도면 대기 Y 91)", fogs: ["g2_fog"], timer: "0 90 3017",
     notes: ["부품 아이콘 ↔ 도면 ↔ 부품·장치 모델은 함께 바꿔야 한다"],
     lang: ["^actionbar\\.objective\\.20[12]\\.", "^interact\\.craft", "^item\\.rwm:craft", "^garett\\."],
-    tex: ["^rwm/(entity|items)/craft_", "^particle/contraption_craft_off\\.png$"],
+    tex: ["^rwm/(entity|items)/craft_", "^particle/contraption_craft_off\\.png$", "^blocks/tnt_(side|top|bottom)\\.png$", "^blocks/rwm/mokjae\\.png$"],
     items: "^rwm:craft", entities: ["^craft_"], funcs: ["seq/act2", "utility/games/craft"],
   },
   {
@@ -62,7 +62,8 @@ const sections = [
     desc: "교태전 꽃담의 무늬를 누가 먼저 똑같이 만드는지 겨룬다. 주제 역량: 비판적 사고.",
     zone: "X -51~-16 · Y 59~70 · Z -109~-78", fogs: ["g3_fog"], timer: "-33 90 -97", notes: ["철 블록 장식 금지"],
     lang: ["^actionbar\\.objective\\.301\\.", "^grid_block", "^natalie\\."],
-    tex: ["^particle/grid_wars\\.png$", "^blocks/concrete_(lime|blue|yellow|red|magenta)\\.png$", "^rwm/entity/grid/"],
+    tex: ["^particle/grid_wars\\.png$", "^blocks/concrete_(lime|blue|yellow|red|magenta)\\.png$", "^rwm/entity/grid/",
+      "^blocks/(concrete_silver|stripped_jungle_log(_top)?|stonebrick)\\.png$", "^blocks/rwm/daenamu\\.png$"],
     items: null, entities: ["^grid_"], funcs: ["seq/act3", "utility/games/grid"],
   },
   {
@@ -79,7 +80,7 @@ const sections = [
     desc: "김종서가 개척한 북방 6진의 하늘 공성전. 백두산 용암 위를 날아 상대 망루(홍포대 망루 · 청포대 망루)에 비격진천뢰를 떨어뜨린다. 주제 역량: 커뮤니티.",
     zone: "X -176~20 · Y 58~210 · Z 4992~5188", fogs: ["g5_fog"], timer: null, notes: [],
     lang: ["^actionbar\\.objective\\.501\\.", "^dawn\\."],
-    tex: ["^rwm/entity/tnt_", "^particle/elytra_rumble\\.png$", "^blocks/(mangrove_(planks|log_side|log_top)|cobblestone)\\.png$"],
+    tex: ["^rwm/entity/tnt_", "^particle/elytra_rumble\\.png$", "^blocks/(mangrove_(planks|log_side|log_top)|warped_planks|cobblestone)\\.png$"],
     items: null, entities: ["^elytra_"], funcs: ["seq/act5", "utility/games/elytra"],
   },
   {

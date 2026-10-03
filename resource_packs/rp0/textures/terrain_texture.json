@@ -27,6 +27,18 @@
     },
     "rwm_changho_edge": {
       "textures": "textures/blocks/rwm/changho_edge"
+    },
+    "rwm_hoebyeok": {
+      "textures": "textures/blocks/rwm/hoebyeok"
+    },
+    "rwm_daenamu": {
+      "textures": "textures/blocks/rwm/daenamu"
+    },
+    "rwm_mokjae": {
+      "textures": "textures/blocks/rwm/mokjae"
+    },
+    "rwm_jangdae": {
+      "textures": "textures/blocks/stonebrick"
     }
   }
 }

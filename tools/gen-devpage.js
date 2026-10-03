@@ -440,9 +440,22 @@ catch (e) { guard = { ok: false, text: (e.stdout || "") + (e.stderr || "") }; }
 const head = (() => { try { return git(["log", "-1", "--format=%h %s"]).trim(); } catch { return ""; } })();
 const dirty = git(["status", "--porcelain", "--", ".", ":(exclude)db", ":(exclude)level.dat", ":(exclude)level.dat_old", ":(exclude)devpage.html"]).trim().length > 0;
 
+// ---------- 구역 3D: python tools/export-areas.py가 만든 devpage-areas/<id>.js (블록 격자). 페이지는 누를 때 불러온다 ----------
+const AREA_DIR = "devpage-areas";
+const areas = (exists(`${AREA_DIR}/blocks.js`) ? fs.readdirSync(AREA_DIR) : []).filter(f => f.endsWith(".js") && f !== "blocks.js").map(f => {
+  const headTxt = fs.readFileSync(`${AREA_DIR}/${f}`, "utf8").slice(0, 400);
+  const m = headTxt.match(/"title": "([^"]*)", "box": (\[[^\]]*\]), "size": (\[[^\]]*\])/);
+  if (!m) return null;
+  const id = f.replace(/\.js$/, "");
+  // 장소 id와 같거나 '장소id_…'이면 그 장소에 붙인다 (시작 방은 로비에)
+  const place = sections.find(s => id === s.id || id.startsWith(s.id + "_"))?.id || (id === "start" ? "lobby" : null);
+  return { id, place, title: m[1], box: JSON.parse(m[2]), size: JSON.parse(m[3]), kb: Math.round(fs.statSync(`${AREA_DIR}/${f}`).size / 1024),
+    when: fs.statSync(`${AREA_DIR}/${f}`).mtime.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }) };
+}).filter(Boolean);
+
 const data = {
   generated: new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }),
-  head, dirty, baseline: BASELINE, guard, wheel, drafts, hosts, sections, geo: geoDict, commands, items, armor, pngs, langRows, sounds, soundFiles, changedFiles,
+  head, dirty, baseline: BASELINE, guard, wheel, drafts, hosts, sections, geo: geoDict, commands, items, armor, pngs, langRows, sounds, soundFiles, changedFiles, areas,
   changelog: require("./changelog"),
   world: t("pack.name"),
 };
@@ -509,6 +522,12 @@ pre{background:var(--code);padding:10px;border-radius:8px;white-space:pre-wrap;f
 canvas.v3d{display:block;width:100%;height:220px;cursor:grab;touch-action:none}
 canvas.v3d:active{cursor:grabbing}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:12px}
+.a3-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.a3-bar .copy.on{background:var(--ink);color:#fff}
+.a3-view{position:relative;height:600px;border-radius:12px;overflow:hidden;background:linear-gradient(#bcd8f5,#e8f1f8)}
+.a3-view canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.a3-status{position:absolute;left:12px;bottom:10px;background:rgba(255,255,255,.85);padding:4px 10px;border-radius:8px}
+.a3-y{vertical-align:middle;width:180px}
 .mcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
 .mcard h3{margin:0;font-size:16px}
 .mcard canvas.v3d{height:250px}
@@ -745,6 +764,255 @@ function texTile(p) {
   const b3d = p.models ? '<button class="copy b3d" data-3d="'+esc(p.rel)+'" title="게임 모델에 씌워 보기'+(p.status !== "same" ? " (변경 전/후 비교)" : "")+'">3D</button>' : "";
   return '<div class="tile"><div class="img">'+pic+'</div>'+(p.names ? '<div class="nm">'+esc(nameLine(p.names))+"</div>" : "")+'<div class="tile-foot">'+badge(p.status)+' <span class="small">'+p.w+"×"+p.h+"</span>"+b3d+'</div><div class="small">'+esc(p.rel)+"</div></div>";
 }
+// ---------- 구역 3D: devpage-areas/<id>.js의 블록 격자를 브라우저에서 입체로 만든다 ----------
+// 보기는 한 번에 하나(WebGL 맥락 하나). 장소 화면을 다시 그리면 닫는다.
+const AV = { r: null };
+function areaPanel(ar) {
+  if (!ar.length) return '<div class="empty">아직 없음 — <code>python tools/export-areas.py</code>를 실행하면 생깁니다</div>';
+  return '<div class="a3-bar">' + ar.map(a => '<button class="copy" data-area="'+esc(a.id)+'">'+esc(a.title)+' <span class="small">'+a.size.join("×")+" · "+a.kb+"KB</span></button>").join("")
+    + '<span style="flex:1"></span><button class="copy on" data-a3which="now">현재 텍스처</button><button class="copy" data-a3which="van">원본 텍스처</button>'
+    + '<label class="small">높이 <input type="range" class="a3-y" min="0" max="0" value="0" disabled> <span class="a3-yv"></span></label>'
+    + '<button class="copy" data-a3reset="1">시점 처음으로</button></div>'
+    + '<div class="a3-view"><canvas class="a3"></canvas><div class="a3-status small">구역을 누르면 불러옵니다 · 뽑은 때: '+esc(ar[0].when)+'</div></div>'
+    + '<div class="small" style="margin-top:6px">왼쪽 끌기: 돌리기 · 오른쪽 끌기 또는 Shift+끌기: 옮기기 · 휠: 확대·축소 · 높이: 그 위를 잘라 숲·동굴 안을 보기 · 원본 텍스처: 바닐라 그림으로 (리소스팩 리테마 전 모습)'
+    + ' · 월드 저장 상태 기준이라 건축을 바꾼 뒤에는 <code>python tools/export-areas.py</code>를 다시 실행</div>';
+}
+function loadScriptOnce(src) {
+  return new Promise((ok, no) => {
+    if (document.querySelector('script[data-src="' + src + '"]')) return ok();
+    const s = document.createElement("script");
+    s.src = src; s.dataset.src = src; s.onload = () => ok(); s.onerror = () => no(new Error(src + " 를 불러오지 못함"));
+    document.head.appendChild(s);
+  });
+}
+async function areaGrid(A) {
+  if (A.grid) return A.grid;
+  const bin = atob(A.data), u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  const buf = await new Response(new Blob([u8]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer();
+  A.grid = new Uint16Array(buf);
+  return A.grid;
+}
+// 면: +x −x +y −y +z −z. 네 모서리와 텍스처 좌표(u, v: 아래가 0)를 상자 범위로 만든다
+const A3FACE = [
+  (b) => [[b[3],b[1],b[5], 1-b[5],b[1]], [b[3],b[1],b[2], 1-b[2],b[1]], [b[3],b[4],b[2], 1-b[2],b[4]], [b[3],b[4],b[5], 1-b[5],b[4]]],
+  (b) => [[b[0],b[1],b[2], b[2],b[1]], [b[0],b[1],b[5], b[5],b[1]], [b[0],b[4],b[5], b[5],b[4]], [b[0],b[4],b[2], b[2],b[4]]],
+  (b) => [[b[0],b[4],b[5], b[0],1-b[5]], [b[3],b[4],b[5], b[3],1-b[5]], [b[3],b[4],b[2], b[3],1-b[2]], [b[0],b[4],b[2], b[0],1-b[2]]],
+  (b) => [[b[0],b[1],b[2], b[0],b[2]], [b[3],b[1],b[2], b[3],b[2]], [b[3],b[1],b[5], b[3],b[5]], [b[0],b[1],b[5], b[0],b[5]]],
+  (b) => [[b[0],b[1],b[5], b[0],b[1]], [b[3],b[1],b[5], b[3],b[1]], [b[3],b[4],b[5], b[3],b[4]], [b[0],b[4],b[5], b[0],b[4]]],
+  (b) => [[b[3],b[1],b[2], 1-b[3],b[1]], [b[0],b[1],b[2], 1-b[0],b[1]], [b[0],b[4],b[2], 1-b[0],b[4]], [b[3],b[4],b[2], 1-b[3],b[4]]],
+];
+const A3SHADE = [0.8, 0.7, 1, 0.5, 0.88, 0.62], A3DIR = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
+function areaMesh(A, grid, yMax) {
+  const B = window.AREA_BLOCKS, T = B.types, sx = A.size[0], sz = A.size[2], cols = B.cols, rows = B.rows;
+  const full = new Uint8Array(T.length), conn = new Uint8Array(T.length), water = new Uint8Array(T.length);
+  T.forEach((t, i) => { full[i] = t.s === "cube" && !t.t ? 1 : 0; conn[i] = full[i] || t.s === "fence" || t.s === "wall" || t.s === "pane" ? 1 : 0; water[i] = t.s === "water" ? 1 : 0; });
+  const at = (x, y, z) => (x < 0 || y < 0 || z < 0 || x >= sx || z >= sz || y > yMax) ? 0 : grid[(y * sz + z) * sx + x];
+  const mk = () => ({ p: [], n: [], v: [], c: [], i: [] });
+  const G = { s: mk(), w: mk() };
+  const uv = (tile, u, v, out) => {
+    const col = tile % cols, row = Math.floor(tile / cols);
+    out.push((col + 0.002 + u * 0.996) / cols, 1 - (row + 1 - 0.002 - v * 0.996) / rows);
+  };
+  function quad(g, X, Y, Z, pts, tn, tv, shade) {
+    if (tn < 0 && tv < 0) return;
+    const base = g.p.length / 3;
+    for (const q of pts) {
+      g.p.push(X + q[0], Y + q[1], Z + q[2]);
+      uv(tn < 0 ? tv : tn, q[3], q[4], g.n); uv(tv < 0 ? tn : tv, q[3], q[4], g.v);
+      g.c.push(shade, shade, shade);
+    }
+    g.i.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  // 상자 하나: 블록 경계에 닿은 면은 옆이 꽉 찬 블록이면 그리지 않는다 (같은 종류의 투명 블록끼리도)
+  function box(g, X, Y, Z, id, b, t) {
+    for (let f = 0; f < 6; f++) {
+      const edge = [b[3] === 1, b[0] === 0, b[4] === 1, b[1] === 0, b[5] === 1, b[2] === 0][f];
+      if (edge) { const d = A3DIR[f], nb = at(X + d[0], Y + d[1], Z + d[2]); if (full[nb] || (nb === id && T[id].s === "cube")) continue; }
+      quad(g, X, Y, Z, A3FACE[f](b), t.now[f], t.van[f], A3SHADE[f]);
+    }
+  }
+  const ys = Math.min(yMax, A.size[1] - 1);
+  for (let y = 0; y <= ys; y++) for (let z = 0; z < sz; z++) for (let x = 0; x < sx; x++) {
+    const id = grid[(y * sz + z) * sx + x];
+    if (!id) continue;
+    const t = T[id], s = t.s, g = G.s;
+    if (s === "none") continue;
+    if (s === "cube" || s === "lava") { box(g, x, y, z, id, [0,0,0,1,1,1], t); continue; }
+    if (s === "slab") { box(g, x, y, z, id, t.top ? [0,.5,0,1,1,1] : [0,0,0,1,.5,1], t); continue; }
+    if (s === "stairs") {
+      box(g, x, y, z, id, t.up ? [0,.5,0,1,1,1] : [0,0,0,1,.5,1], t);
+      const y0 = t.up ? 0 : .5, y1 = t.up ? .5 : 1;
+      box(g, x, y, z, id, [[.5,y0,0,1,y1,1], [0,y0,0,.5,y1,1], [0,y0,.5,1,y1,1], [0,y0,0,1,y1,.5]][t.dir & 3], t);
+      continue;
+    }
+    if (s === "fence" || s === "wall" || s === "pane") {
+      const w = s === "wall" ? .25 : s === "fence" ? .125 : .0625, h = s === "wall" ? .8125 : s === "fence" ? .9375 : 1, lo = s === "fence" ? .375 : 0;
+      const e = conn[at(x + 1, y, z)], ww = conn[at(x - 1, y, z)], so = conn[at(x, y, z + 1)], no = conn[at(x, y, z - 1)];
+      if (s !== "pane") box(g, x, y, z, id, [.5 - w, 0, .5 - w, .5 + w, s === "wall" ? 1 : 1, .5 + w], t);
+      const a = s === "pane" ? .0625 : s === "fence" ? .0625 : .1875;
+      const none = !e && !ww && !so && !no && s === "pane";
+      if (e || none) box(g, x, y, z, id, [.5, lo, .5 - a, 1, h, .5 + a], t);
+      if (ww || none) box(g, x, y, z, id, [0, lo, .5 - a, .5, h, .5 + a], t);
+      if (so || none) box(g, x, y, z, id, [.5 - a, lo, .5, .5 + a, h, 1], t);
+      if (no || none) box(g, x, y, z, id, [.5 - a, lo, 0, .5 + a, h, .5], t);
+      continue;
+    }
+    if (s === "door") { const o = (t.dir + (t.open ? 1 : 0)) & 1; box(g, x, y, z, id, o ? [0,0,0,1,1,.1875] : [0,0,0,.1875,1,1], t); continue; }
+    if (s === "trapdoor") { box(g, x, y, z, id, t.open ? ((t.dir & 2) ? [0,0,0,1,1,.1875] : [0,0,0,.1875,1,1]) : t.up ? [0,.8125,0,1,1,1] : [0,0,0,1,.1875,1], t); continue; }
+    if (s === "flat") { box(g, x, y, z, id, [0,0,0,1,Math.max(1, t.h) / 16,1], t); continue; }
+    if (s === "small") { box(g, x, y, z, id, [.4375,0,.4375,.5625,.625,.5625], t); continue; }
+    if (s === "vine") {
+      const k = t.bits, d = .03;
+      if (k & 1) box(g, x, y, z, id, [0,0,1-d,1,1,1], t); if (k & 2) box(g, x, y, z, id, [0,0,0,d,1,1], t);
+      if (k & 4) box(g, x, y, z, id, [0,0,0,1,1,d], t); if (k & 8) box(g, x, y, z, id, [1-d,0,0,1,1,1], t);
+      continue;
+    }
+    if (s === "cross") {
+      quad(g, x, y, z, [[0,0,0,0,0],[1,0,1,1,0],[1,1,1,1,1],[0,1,0,0,1]], t.now[5], t.van[5], 0.9);
+      quad(g, x, y, z, [[1,0,0,0,0],[0,0,1,1,0],[0,1,1,1,1],[1,1,0,0,1]], t.now[5], t.van[5], 0.9);
+      continue;
+    }
+    if (s === "water") {
+      const top = water[at(x, y + 1, z)] ? 1 : .875;
+      for (let f = 0; f < 6; f++) {
+        const d = A3DIR[f], nb = at(x + d[0], y + d[1], z + d[2]);
+        if (water[nb] || full[nb] || (f === 3)) continue;
+        quad(G.w, x, y, z, A3FACE[f]([0,0,0,1,top,1]), t.now[f], t.van[f], A3SHADE[f]);
+      }
+    }
+  }
+  return G;
+}
+function a3Geometry(g) {
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(g.p, 3));
+  geo.setAttribute("color", new THREE.Float32BufferAttribute(g.c, 3));
+  geo.userData.uvNow = new THREE.Float32BufferAttribute(g.n, 2);
+  geo.userData.uvVan = new THREE.Float32BufferAttribute(g.v, 2);
+  geo.setAttribute("uv", geo.userData.uvNow);
+  geo.setIndex(g.p.length / 3 > 65535 ? new THREE.Uint32BufferAttribute(g.i, 1) : new THREE.Uint16BufferAttribute(g.i, 1));
+  return geo;
+}
+function closeArea() {
+  if (!AV.r) return;
+  AV.r.dispose(); AV.r.forceContextLoss(); AV.r = null; AV.id = null; AV.scene = null;
+}
+function a3Status(msg) { const s = document.querySelector(".a3-status"); if (s) s.textContent = msg; }
+async function openArea(id) {
+  if (typeof THREE === "undefined") return a3Status("3D 보기는 인터넷 연결이 필요합니다 (three.js를 불러오지 못함)");
+  if (typeof DecompressionStream === "undefined") return a3Status("이 브라우저는 압축 풀기(DecompressionStream)를 지원하지 않습니다 — 최신 Chrome·Edge에서 여세요");
+  document.querySelectorAll("[data-area]").forEach(b => b.classList.toggle("on", b.dataset.area === id));
+  a3Status("불러오는 중…");
+  try { await loadScriptOnce("devpage-areas/blocks.js"); await loadScriptOnce("devpage-areas/" + id + ".js"); }
+  catch (e) { return a3Status(e.message + " — devpage.html과 같은 폴더의 devpage-areas/가 필요합니다"); }
+  const A = window.AREAS[id], grid = await areaGrid(A);
+  const cv = document.querySelector("canvas.a3");
+  if (!cv) return;
+  closeArea();
+  const r = AV.r = new THREE.WebGLRenderer({ canvas: cv, antialias: true });
+  r.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  r.outputEncoding = THREE.sRGBEncoding;
+  const scene = AV.scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xc9e0f5);
+  const cam = AV.cam = new THREE.PerspectiveCamera(50, 1, 0.5, 4000);
+  if (!AV.atlas) {
+    AV.atlas = new THREE.TextureLoader().load(window.AREA_BLOCKS.atlas, () => a3Draw());
+    AV.atlas.magFilter = THREE.NearestFilter; AV.atlas.minFilter = THREE.NearestFilter; AV.atlas.generateMipmaps = false; AV.atlas.encoding = THREE.sRGBEncoding;
+  }
+  AV.matS = new THREE.MeshBasicMaterial({ map: AV.atlas, vertexColors: true, alphaTest: 0.5, side: THREE.DoubleSide });
+  AV.matW = new THREE.MeshBasicMaterial({ map: AV.atlas, vertexColors: true, transparent: true, opacity: 0.75, side: THREE.DoubleSide, depthWrite: false });
+  AV.id = id; AV.A = A; AV.grid = grid;
+  // 처음 높이: 동굴·숲처럼 위를 잘라야 보이는 구역은 내보낼 때 정한 높이(view.yMax, 월드 Y)부터
+  AV.yMax = A.view && A.view.yMax != null ? Math.max(0, Math.min(A.size[1] - 1, A.view.yMax - A.box[4])) : A.size[1] - 1;
+  const sl = document.querySelector(".a3-y");
+  if (sl) { sl.max = A.size[1] - 1; sl.value = AV.yMax; sl.disabled = false; }
+  a3Build(); a3Reset();
+}
+function a3Build() {
+  if (!AV.r) return;
+  const t0 = performance.now();
+  if (AV.group) { AV.scene.remove(AV.group); AV.group.children.forEach(m => m.geometry.dispose()); }
+  const G = areaMesh(AV.A, AV.grid, AV.yMax);
+  const grp = AV.group = new THREE.Group();
+  grp.add(new THREE.Mesh(a3Geometry(G.s), AV.matS));
+  if (G.w.p.length) { const w = new THREE.Mesh(a3Geometry(G.w), AV.matW); w.renderOrder = 1; grp.add(w); }
+  grp.position.set(-AV.A.size[0] / 2, 0, -AV.A.size[2] / 2);
+  AV.scene.add(grp);
+  a3Which(AV.which || "now");
+  const faces = (G.s.i.length + G.w.i.length) / 6, b = AV.A.box, yv = document.querySelector(".a3-yv");
+  if (yv) yv.textContent = "Y ≤ " + (b[4] + AV.yMax);
+  a3Status(AV.A.title + " · X " + b[0] + "~" + b[2] + " · Z " + b[1] + "~" + b[3] + " · Y " + b[4] + "~" + (b[4] + AV.yMax)
+    + " · 면 " + faces.toLocaleString() + "개 · " + Math.round(performance.now() - t0) + "ms");
+  a3Draw();
+}
+function a3Which(w) {
+  AV.which = w;
+  document.querySelectorAll("[data-a3which]").forEach(b => b.classList.toggle("on", b.dataset.a3which === w));
+  if (!AV.group) return;
+  AV.group.children.forEach(m => m.geometry.setAttribute("uv", w === "van" ? m.geometry.userData.uvVan : m.geometry.userData.uvNow));
+  a3Draw();
+}
+function a3Reset() {
+  const s = AV.A.size, grid = AV.grid;
+  let top = 0;   // 가운데 기둥에서 가장 높은 블록 근처를 바라본다
+  for (let y = s[1] - 1; y >= 0 && !top; y--) for (let dz = -3; dz <= 3 && !top; dz++) for (let dx = -3; dx <= 3; dx++) {
+    const x = (s[0] >> 1) + dx, z = (s[2] >> 1) + dz;
+    if (grid[(y * s[2] + z) * s[0] + x]) { top = y; break; }
+  }
+  AV.tgt = new THREE.Vector3(0, Math.min(top, AV.yMax), 0);
+  AV.dist = Math.max(s[0], s[2]) * 1.05; AV.yaw = 0.7; AV.pitch = 0.55;
+  a3Draw();
+}
+function a3Draw() {
+  const r = AV.r;
+  if (!r || !AV.tgt) return;
+  const cv = r.domElement, w = cv.clientWidth, h = cv.clientHeight;
+  if (cv.width !== Math.round(w * r.getPixelRatio()) || cv.height !== Math.round(h * r.getPixelRatio())) r.setSize(w, h, false);
+  const cam = AV.cam, cp = Math.cos(AV.pitch);
+  cam.aspect = w / h; cam.updateProjectionMatrix();
+  cam.position.set(AV.tgt.x + AV.dist * cp * Math.sin(AV.yaw), AV.tgt.y + AV.dist * Math.sin(AV.pitch), AV.tgt.z + AV.dist * cp * Math.cos(AV.yaw));
+  cam.lookAt(AV.tgt);
+  r.render(AV.scene, cam);
+}
+// 끌기·휠
+(function () {
+  let drag = null;
+  document.addEventListener("pointerdown", e => {
+    if (!e.target.matches?.("canvas.a3") || !AV.r) return;
+    drag = { x: e.clientX, y: e.clientY, pan: e.button === 2 || e.shiftKey };
+    e.target.setPointerCapture(e.pointerId);
+  });
+  document.addEventListener("pointermove", e => {
+    if (!drag || !AV.r) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    drag.x = e.clientX; drag.y = e.clientY;
+    if (drag.pan) {
+      const k = AV.dist * 0.0016, sy = Math.sin(AV.yaw), cy = Math.cos(AV.yaw);
+      AV.tgt.x += (-dx * cy - dy * sy) * k; AV.tgt.z += (dx * sy - dy * cy) * k;
+    } else {
+      AV.yaw -= dx * 0.006; AV.pitch = Math.max(-0.2, Math.min(1.5, AV.pitch + dy * 0.006));
+    }
+    a3Draw();
+  });
+  document.addEventListener("pointerup", () => { drag = null; });
+  document.addEventListener("contextmenu", e => { if (e.target.matches?.("canvas.a3")) e.preventDefault(); });
+  document.addEventListener("wheel", e => {
+    if (!e.target.matches?.("canvas.a3") || !AV.r) return;
+    e.preventDefault();
+    AV.dist = Math.max(8, Math.min(3000, AV.dist * Math.exp(e.deltaY * 0.001)));
+    a3Draw();
+  }, { passive: false });
+  let yTimer = 0;
+  document.addEventListener("input", e => {
+    if (!e.target.matches?.(".a3-y") || !AV.r) return;
+    AV.yMax = +e.target.value;
+    const yv = document.querySelector(".a3-yv"); if (yv) yv.textContent = "Y ≤ " + (AV.A.box[4] + AV.yMax);
+    clearTimeout(yTimer); yTimer = setTimeout(a3Build, 120);
+  });
+  window.addEventListener("resize", () => a3Draw());
+})();
+
 // ---------- 3D 모델 비교 카드 ----------
 const nameLine = n => n.before && n.after && n.before !== n.after ? n.before + " → " + n.after : n.after || n.before || "";
 // 카드 하나 = 텍스처 한 장 × 그 텍스처를 쓰는 모델 하나. 원본과 다르면 변경 전/후를 한 캔버스에 나란히
@@ -832,6 +1100,7 @@ function renderPlaceTabs() {
     + esc(s.title) + (s.game ? ' <span class="gno">게임 '+s.game+"</span>" : "") + "</button>").join("");
 }
 function renderPlace() {
+  closeArea();
   const s = D.sections.find(x => x.id === view.place);
   const host = secHost(s), lang = secLang(s), tex = secTex(s), items = secItems(s);
   const shownLang = lang.filter(r => (!only() || r.changed) && match(r.key, r.before, r.after));
@@ -863,6 +1132,8 @@ function renderPlace() {
   let b = "";
   if (host) b += sub("host", s.host === "wheel" ? "혼천의 (세종대왕)" : "호스트 NPC", null, '<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(340px,1fr))">'+(tileHost(host, s.host === "wheel") || none)+"</div>");
   const cards = allCards().filter(c => tex.includes(c.p) && cardShown(c));
+  const ar = (D.areas || []).filter(a => a.place === s.id);
+  b += sub("area3d", "구역 3D (월드 블록)", ar.length || null, areaPanel(ar));
   if (cards.length) b += sub("models", "3D 모델 비교", cards.length, '<div class="mgrid">'+cards.map(modelCard).join("")+"</div>", cards.length);
   if (items.length) b += sub("items", "아이템", items.length, '<div class="grid">'+(items.map(tileItem).join("") || none)+"</div>", items.length);
   b += sub("tex", "텍스처", "표시 "+shownTex.length+" / "+tex.length+" · 바뀐 "+tex.filter(p => p.status !== "same").length, shownTex.length ? '<div class="tex-grid">'+shownTex.map(texTile).join("")+"</div>" : none, tex.length);
@@ -1189,6 +1460,11 @@ document.addEventListener("click", e => {
   if (p) return go("places", p.dataset.place);
   const g = e.target.closest("[data-go]");
   if (g) { location.hash = g.dataset.go; return; }
+  const ar = e.target.closest("[data-area]");
+  if (ar) return openArea(ar.dataset.area);
+  const aw = e.target.closest("[data-a3which]");
+  if (aw) return a3Which(aw.dataset.a3which);
+  if (e.target.closest("[data-a3reset]")) return AV.r && a3Reset();
   const b3 = e.target.closest("[data-3d]");
   if (b3) return open3D(b3.dataset["3d"], +(b3.dataset["3dIdx"] || 0));
   if (e.target.id === "dlgClose" || e.target === $("dlg3d")) return $("dlg3d").close(); // 닫기 버튼, 창 바깥 누르기

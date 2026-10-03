@@ -45,5 +45,25 @@
       "east": "rwm_changho_edge"
     },
     "sound": "glass"
+  },
+  "oak_planks": {
+    "textures": "rwm_hoebyeok",
+    "sound": "wood"
+  },
+  "jungle_slab": {
+    "textures": "rwm_jangdae",
+    "sound": "stone"
+  },
+  "jungle_double_slab": {
+    "textures": "rwm_jangdae",
+    "sound": "stone"
+  },
+  "jungle_fence": {
+    "textures": "rwm_daenamu",
+    "sound": "wood"
+  },
+  "oak_fence": {
+    "textures": "rwm_mokjae",
+    "sound": "wood"
   }
 }

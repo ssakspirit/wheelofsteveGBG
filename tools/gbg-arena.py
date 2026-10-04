@@ -23,6 +23,26 @@ CHECK = "--check" in sys.argv
 
 # ---------- 경기장별 설정 (상자는 x1 y1 z1 x2 y2 z2, 양 끝 포함) ----------
 ARENAS = {
+    "craft": dict(
+        title="자격루 복원전",
+        base="1d14bff",
+        center=(0, 3022),
+        # 바위 산 속 동굴 공방. 걸어 다닐 수 있는 곳 X −25~25 Z 2998~3048 (방벽 245개), 설계도·타이머가 Y 90~91에 떠 있고
+        # 가장 높은 카메라가 Y 79 — 지키는 상자는 Y 96까지만, 그 위 동굴 천장은 걷어 낸다
+        protect=(-27, 2995, 27, 3052), protect_top=96,
+        # 공방 지붕(Y 66) 위 참나무 기둥 8개와 레일 다리(Y 87~90)는 걷는다 — 블록을 쓰는 게임 명령이 없고,
+        # 그 위에 소환되는 타이머(0 90 3017)·설계도(Y 91)는 physics가 없어 받침 없이 그 자리에 떠 있다
+        strip=(-27, 67, 2995, 27, 96, 3052),
+        keep_now=("tnt",),                  # 놓은 뒤 사용자가 공방 둘레(Y 60)에 직접 놓은 화약궤 — 다시 놓을 때 지우지 않는다
+        ground=59,                          # 공방 바닥 높이 (바위 산 꼭대기가 아니라)
+        carve=(-37, 2986, 37, 3061),
+        land=(-100, 2925, 96, 3170),        # 바위 산 자리 → 경회루 남쪽 (보루각 자리, 수정전 일대) — 공방 너머 연못 위 경회루
+        gbg_center=(90, -885),              # 경회루 연못 남쪽 끝이 공방에서 20칸 떨어지게
+        band=70,
+        region=(-172, 30, 2855, 168, 150, 3240),
+        peaks={"+z": 62, "+x": 52, "-x": 34, "-z": 42},
+        cameras=[(-10, 62.0, 3047), (-10, 63.7, 3031.0), (-10.5, 62.9, 3008), (-12.5, 62.9, 3005), (-12.5, 63.3, 3030), (-12.5, 63.7, 3010), (-12.5, 63.9, 3030), (-12.9, 64.9, 3036), (-13.0, 61.6, 3004), (-13.3, 66, 3045), (-13.6, 64.1, 3036), (-15.5, 62.45, 3018), (-16, 63.6, 3030), (-17.0, 63.0, 3010.0), (-18.3, 64, 3043), (-22.5, 79.3, 3048), (-9.5, 62.3, 3021.5), (-9.5, 62.5, 3017), (-9.5, 63.3, 3021), (-9.5, 63.7, 3012.0), (10.5, 62.5, 3017), (10.5, 63.3, 3021), (11, 62.0, 3025), (11, 63.7, 3043.0), (11.5, 62.9, 3008), (12.5, 63.7, 3010.0), (13.0, 61.6, 3004), (13.5, 62.9, 3005), (13.5, 63.3, 3030), (13.5, 63.7, 3010), (13.5, 63.9, 3030), (13.6, 64.1, 3036), (13.9, 64.9, 3036), (14.3, 66, 3045), (16.5, 62.45, 3018), (17, 63.6, 3030), (17.0, 63.0, 3010.0), (18.3, 64, 3043), (23.5, 79.3, 3048), (9.5, 62.3, 3021.5), (9.5, 63.7, 3012.0)],
+    ),
     "orb": dict(
         title="옥새 쟁탈전",
         base="56414c8",                     # 배경을 바꾸기 전 월드 (git) — 늘 이것을 원본으로 계산하고, 지금 월드와는 비교만 한다
@@ -73,7 +93,7 @@ water_t = lambda: table("water", lambda b: name_of(b) in ("water", "flowing_wate
 soil0 = soil_t()[OLD]
 gtop = np.where(soil0.any(1), SH[1] - 1 - soil0[:, ::-1, :].argmax(1) + y1, -999)
 ring = land2 & ~prot2 & (gtop > -999)
-G = int(np.median(gtop[ring]))                             # 지금 숲 땅 높이 → 경복궁 지면이 여기에
+G = A.get("ground") or int(np.median(gtop[ring]))          # 지금 땅 높이 → 경복궁 지면이 여기에 (동굴처럼 위가 막힌 곳은 설정값)
 DY = G - 63
 print(f"  지금 숲 땅 높이 Y {G} (경복궁 지면 63 → {G})")
 GRASS = LR.pid(block("grass_block", {}, 18168865)); DIRT = LR.pid(block("dirt", {"dirt_type": S("normal")}, V_OLD))
@@ -97,15 +117,18 @@ lx = cx_ - GX; lz = cz_ - GZ                                # 경복궁 칸 → 
 c_ = A["carve"]
 incarve = ((lx[:, None] >= c_[0]) & (lx[:, None] <= c_[2]) & (lz[None, :] >= c_[1]) & (lz[None, :] <= c_[3]))
 seeds = np.broadcast_to(incarve[:, None, :], gbuilt.shape)
-dropped = 0
+dropped = 0; drop_log = []
 for c in components(gbuilt, seeds):                        # 경기장 자리에 걸리는 전각은 통째로 (행각 연결망처럼 큰 것은 자리만)
     span = c.max(0) - c.min(0)
-    if span[0] < 110 and span[2] < 110: GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1
+    if span[0] < 110 and span[2] < 110: GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1; drop_log.append(("자리", c))
 gbuilt = (gy > 63) & (GR.grid > 0) & ~gplant[GR.grid]
 edge = np.zeros(gbuilt.shape, bool); edge[0] = edge[-1] = True; edge[:, :, 0] = edge[:, :, -1] = True
 for c in components(gbuilt, edge):                          # 땅 가장자리(산 기슭)에서 잘리는 작은 전각도 통째로
     span = c.max(0) - c.min(0)
-    if span[0] < 64 and span[2] < 64: GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1
+    if span[0] < 64 and span[2] < 64: GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1; drop_log.append(("가장자리", c))
+if "--verbose" in sys.argv:
+    for why, c in drop_log:
+        print("    뺀 전각(%s) X %d~%d Z %d~%d Y %d~%d, %d칸" % (why, cx_ - GX[c[:, 0].max()], cx_ - GX[c[:, 0].min()], cz_ - GZ[c[:, 2].max()], cz_ - GZ[c[:, 2].min()], src[1] + c[:, 1].min() + DY, src[1] + c[:, 1].max() + DY, len(c)))
 GR.grid[np.broadcast_to(incarve[:, None, :], GR.grid.shape) & (np.arange(src[1], src[4] + 1)[None, :, None] > 63)] = 0   # 경기장 자리 위는 비운다
 conv = {}
 gid = np.zeros(len(GR.palette), np.int64)
@@ -134,6 +157,18 @@ for _ in range(40):
         ok = nb[~np.isin(nb, list(dirt_id)) & (nb != 0)]
         if len(ok):
             NEW[a, yg, cc] = collections.Counter(ok.tolist()).most_common(1)[0][0]; top_is_dirt[a, cc] = False; fixed += 1
+PT = A.get("protect_top")
+if PT is not None:                                          # 지키는 상자 위(동굴 천장 등)는 걷어 낸다
+    NEW[np.broadcast_to(prot2[:, None, :], SH) & (ys > PT)] = 0
+strip3 = np.zeros(SH, bool)
+if A.get("strip"):                                          # 지키는 상자 안이라도 걷어 낼 장식 (게임이 쓰지 않는 블록만)
+    s_ = A["strip"]
+    strip3[s_[0] - x1:s_[3] - x1 + 1, s_[1] - y1:s_[4] - y1 + 1, s_[2] - z1:s_[5] - z1 + 1] = True
+    sn = collections.Counter(name_of(pal[i]) for i in NEW[strip3] if i)
+    print("  지키는 상자 안에서 걷는 장식", dict(sn))
+    if any(n in sn for n in ("barrier", "structure_void", "command_block", "repeating_command_block", "chain_command_block")):
+        sys.exit("⚠ 걷는 상자에 게임 블록이 있음")
+    NEW[strip3] = 0
 print(f"  전각 {dropped}개를 빼고 땅 {n_pal:,}칸에 경복궁을 깖, 드러난 흙 {fixed:,}칸은 마당 바닥으로")
 
 # ---------- 1b. 궁장: 궁궐 땅 가장자리를 담으로 둘러 숲과 나눈다 (잘린 행각 끝도 담 속으로) ----------
@@ -239,10 +274,11 @@ for _ in range(4):
 
 # ---------- 4. 검사 ----------
 problems = []
-p3 = np.broadcast_to(prot2[:, None, :], SH)
+p3 = np.broadcast_to(prot2[:, None, :], SH) & ((ys <= PT) if PT is not None else True) & ~strip3
 if (NEW != OLD)[p3].any(): problems.append("지키는 상자 안이 %d칸 바뀜" % int(((NEW != OLD) & p3).sum()))
 for cam in A["cameras"]:
-    if not prot2[int(np.floor(cam[0])) - x1, int(np.floor(cam[2])) - z1]: problems.append("연출 카메라 %s 가 지키는 상자 밖" % (cam,))
+    if not prot2[int(np.floor(cam[0])) - x1, int(np.floor(cam[2])) - z1] or (PT is not None and cam[1] + 2 > PT):
+        problems.append("연출 카메라 %s 가 지키는 상자 밖" % (cam,))
 print("검사:", "문제 없음" if not problems else "")
 for p in problems: print("  ⚠", p)
 if problems: sys.exit(1)
@@ -254,10 +290,23 @@ nid = {}
 def norm_ids(palette):
     return np.array([nid.setdefault(modern(b)[0], len(nid)) for b in palette], np.int32)
 diffc = (norm_ids(pal)[NEW] != norm_ids(CR.palette)[CR.grid]) & ~p3
+if A.get("keep_now"):                                       # 지금 월드에 사용자가 직접 놓은 블록은 그대로
+    diffc &= ~np.array([name_of(b) in A["keep_now"] for b in CR.palette])[CR.grid]
 print(f"  지금 월드와 다른 칸 {int(diffc.sum()):,}")
+if "--fix" in sys.argv:                                     # 보충: 땅속(지면−4 아래)으로 흘러든 물·용암은 빼고 (보이지 않고, 원천이 다시 채운다)
+    fl = np.array([name_of(b) in ("water", "flowing_water", "lava", "flowing_lava") for b in CR.palette])[CR.grid]
+    diffc &= ~(fl & (ys < G - 4))
+    print(f"  보충할 칸 {int(diffc.sum()):,}")
 if CHECK:
     nn = np.array([modern(b)[0] for b in pal]); cn = np.array([modern(b)[0] for b in CR.palette]); w = np.argwhere(diffc)
     print("  남은 차이 (지금 → 계획):", collections.Counter(zip(cn[CR.grid[w[:, 0], w[:, 1], w[:, 2]]].tolist(), nn[NEW[w[:, 0], w[:, 1], w[:, 2]]].tolist())).most_common(10))
+    if "--verbose" in sys.argv:                              # 다른 칸이 몰린 곳 (16칸 덩어리별, 높이 범위와 블록 쌍)
+        pairs = list(zip(cn[CR.grid[w[:, 0], w[:, 1], w[:, 2]]].tolist(), nn[NEW[w[:, 0], w[:, 1], w[:, 2]]].tolist()))
+        by = collections.defaultdict(list)
+        for (a, yy, cc), pr in zip(w.tolist(), pairs): by[((a + x1) >> 4, (cc + z1) >> 4)].append((yy + y1, pr))
+        for (cx, cz), v in sorted(by.items(), key=lambda kv: -len(kv[1]))[:25]:
+            yv = [t[0] for t in v]
+            print("    X %d~%d Z %d~%d  Y %d~%d  %d칸  %s" % (cx * 16, cx * 16 + 15, cz * 16, cz * 16 + 15, min(yv), max(yv), len(v), collections.Counter(t[1] for t in v).most_common(3)))
     sys.exit(0)
 sd = os.path.join(BP, "structures", NS); fd = os.path.join(BP, "functions", NS)
 os.makedirs(sd, exist_ok=True); os.makedirs(fd, exist_ok=True)
@@ -279,14 +328,16 @@ for tz in range(z1, z2 + 1, 64):
                 bn[(p[0] - o[0], p[1] - o[1], p[2] - o[2])] = be
         nm = "%d_%d" % ((tz - z1) // 64 + 1, (tx - x1) // 64 + 1)
         mcstruct.write_structure(os.path.join(sd, "%s_%s.mcstructure" % (RUN, nm)), NEW[sl], pal, o, bn)
-        tiles.append((nm, "structure load %s:%s_%s %d %d %d" % (NS, RUN, nm, *o)))
+        tiles.append((nm, "structure load %s:%s_%s %d %d %d" % (NS, RUN, nm, *o), bx_))
 groups = collections.OrderedDict()
-for nm, line in tiles:
+for nm, line, bx_ in tiles:
     nz, nx = (int(v) for v in nm.split("_"))
-    groups.setdefault(((nz - 1) // 2, (nx - 1) // 2), []).append(line)
+    groups.setdefault(((nz - 1) // 2, (nx - 1) // 2), []).append((line, bx_))
 N = len(groups)
-for n, ((gz2, gx2), lines) in enumerate(groups.items(), 1):
-    cx, cz = x1 + gx2 * 128 + 64, z1 + gz2 * 128 + 64
+for n, ((gz2, gx2), items) in enumerate(groups.items(), 1):
+    lines = [l for l, _ in items]                           # 하늘 지점 = 이 묶음 조각들이 실제로 덮는 곳의 가운데 (멀면 덩어리가 안 불러와진다)
+    cx = (min(b[0] for _, b in items) + max(b[3] for _, b in items)) // 2
+    cz = (min(b[2] for _, b in items) + max(b[5] for _, b in items)) // 2
     open(os.path.join(fd, "go_%d.mcfunction" % n), "w", encoding="utf8").write(
         "## [%s] 묶음 %d 하늘로\ntp @s %d 160 %d facing %d 60 %d\n" % (A["title"], n, cx, cz, cx, cz + 40) +
         'tellraw @s {"rawtext":[{"text":"§e[%s] 묶음 %d/%d — 땅이 다 보이면 다시 /function %s/next"}]}\n' % (A["title"], n, N, NS))

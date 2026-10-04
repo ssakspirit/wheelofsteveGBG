@@ -614,7 +614,15 @@ def norm_ids(palette):
         out.append(nid.setdefault(n, len(nid)))
     return np.array(out, np.int32)
 diffc = norm_ids(pal)[NEW] != norm_ids(CR.palette)[CR.grid]
+diffc &= ~crit0                                          # 게임이 쓰는 칸은 조각에 넣지 않는다 (이름 표기만 다른 조명 블록 등)
 print(f"  지금 월드와 다른 칸 {int(diffc.sum()):,}")
+if "--fix" in sys.argv:                                   # 메우기만: 지금 비어 있고 계획이 풀·꽃·횃불인 칸은 뺀다 (공허에 처음 놓을 때 떨어져 나가 다시 놓아도 또 빠지기 쉽다)
+    DECOR = {"short_grass", "tall_grass", "fern", "large_fern", "poppy", "dandelion", "blue_orchid", "allium", "azure_bluet", "red_tulip",
+             "orange_tulip", "white_tulip", "pink_tulip", "oxeye_daisy", "cornflower", "lily_of_the_valley", "sunflower", "lilac", "rose_bush",
+             "peony", "torch", "wall_torch"}
+    dec = np.array([modern(b)[0] in DECOR for b in pal])[NEW] & (CR.grid == 0)
+    diffc &= ~dec
+    print(f"  --fix: 풀·꽃·횃불 {int(dec.sum()):,}칸을 빼고 {int(diffc.sum()):,}칸만")
 if "--check" in sys.argv:                                  # 읽기만: 조각별로 지금 월드와 다른 칸 수 (게임이 켜져 있을 때 진행 확인용, 파일을 쓰지 않는다)
     import collections
     T64 = 64; done_n = 0; rows = []

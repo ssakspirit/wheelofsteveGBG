@@ -2,6 +2,12 @@
 // place: tools/places.js의 장소 id (누르면 그 장소 페이지로), tab: 바로 볼 탭(models · sounds · items · textures …)
 module.exports = [
   {
+    date: "2026-10-04", title: "README · 릴리스",
+    items: [
+      { text: "저장소 README(포스터, 월드 내려받기·플레이어 안내 페이지 링크, 설치, 대결·진행자·배경 표, 배경 그림, 선생님 진행 팁, 크레딧, 개발 안내), GitHub 릴리스 v1.0에 Gyeongbokgung-Royal-Tournament-v1.0.mcworld와 플레이어 안내 페이지 링크" },
+    ],
+  },
+  {
     date: "2026-10-04", title: "배포 준비",
     items: [
       { text: "월드 이름을 '경복궁 어전대회'로, 대표 사진은 포스터로 되돌림. 배포용 .mcworld(게임 파일만, 약 43MB)를 만드는 python tools/export-mcworld.py, GitHub 릴리스 v1.0" },

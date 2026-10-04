@@ -23,6 +23,28 @@ CHECK = "--check" in sys.argv
 
 # ---------- 경기장별 설정 (상자는 x1 y1 z1 x2 y2 z2, 양 끝 포함) ----------
 ARENAS = {
+    "nock": dict(
+        title="태조의 활쏘기 대회",
+        base="fa35c9a",
+        center=(0, 4000),
+        # 공허에 뜬 둥근 섬(반지름 40, 바닥 Y 55, 땅 Y 60~61, 가장자리 흰 콘크리트) 전체가 경기장 — 과녁·레일·풍경 구역·불꽃 모두 반지름 39.6 안,
+        # 카메라 4곳. 화살은 40틱 뒤 게임이 지우므로 바깥 땅에 꽂혀도 점수와 상관없다. 안개가 90칸에서 끝나므로 배경은 가까이.
+        # 지키는 원 41 (반지름 41~42 위로 뻗은 벚나무 잎은 둘레 풀밭이 위를 비우지 않아 그대로)
+        circle=(0, 4000, 41),
+        protect=(-41, 3959, 41, 4041),
+        carve=(-41, 3959, 41, 4041),
+        ground=60,
+        mountain_only=True,                 # 산속 활터 (인왕산 기슭 황학정 느낌): 전각·궁장 없이 소나무 언덕, +x 인왕산 바위
+        flat_r=46,                          # 섬 둘레 반지름 46까지 풀밭, 그 밖이 산
+        pavilion=(0, 4062),
+        keep_boxes=[(-6, 62, 4055, 6, 66, 4055)],   # 놓은 뒤 사용자가 정자 단 앞에 세운 장대석·기둥 난간                 # 섬 너머(+z) 언덕의 활터 정자 — 카메라가 섬 쪽을 볼 때 뒤로 보인다
+        land=(-46, 3954, 46, 4046),
+        gbg_center=(0, 0),
+        band=76,
+        region=(-122, 40, 3878, 122, 150, 4122),
+        peaks={"+z": 50, "+x": 58, "-x": 40, "-z": 42},
+        cameras=[(-12.2, 65.7, 3989), (-12.2, 68.7, 4012), (12.2, 66.7, 3989), (12.2, 67.7, 4012)],
+    ),
     "grid": dict(
         title="교태전 꽃담 맞추기",
         base="5736b88",
@@ -106,6 +128,8 @@ X = np.arange(x1, x2 + 1)[:, None]; Z = np.arange(z1, z2 + 1)[None, :]
 ys = np.arange(y1, y2 + 1)[None, :, None]
 def rect2(r): return (X >= r[0]) & (X <= r[2]) & (Z >= r[1]) & (Z <= r[3])
 prot2 = rect2(A["protect"]); land2 = rect2(A["land"])
+if A.get("circle"):                                         # 둥근 경기장: 지키는 곳은 원 (protect는 그 원을 감싸는 네모)
+    cc_ = A["circle"]; prot2 = (X - cc_[0]) ** 2 + (Z - cc_[1]) ** 2 <= cc_[2] ** 2
 tab = {}
 def table(name, test):
     t = tab.get(name)
@@ -127,59 +151,64 @@ DARK = LR.pid(block("planks", {"wood_type": S("dark_oak")}, V_OLD))
 placed = np.zeros(SH, bool)
 
 # ---------- 1. 숲 땅 → 경복궁 (180° 돌림: 경기장 x = cx − x, z = cz − z) ----------
-cx_, cz_ = A["gbg_center"][0] + A["center"][0], A["gbg_center"][1] + A["center"][1]
-L_ = A["land"]
-src = (cx_ - L_[2], 55, cz_ - L_[3], cx_ - L_[0], 100, cz_ - L_[1])
-print("경복궁 월드 읽는 중…", src)
-GR = mcstruct.read_region(copy_db(GBG), src)
-gplant = np.array([name_of(b) in PLANTS for b in GR.palette])
-gy = np.arange(src[1], src[4] + 1)[None, :, None]
-gbuilt = (gy > 63) & (GR.grid > 0) & ~gplant[GR.grid]
-GX = np.arange(src[0], src[3] + 1); GZ = np.arange(src[2], src[5] + 1)
-lx = cx_ - GX; lz = cz_ - GZ                                # 경복궁 칸 → 경기장 좌표
-c_ = A["carve"]
-incarve = ((lx[:, None] >= c_[0]) & (lx[:, None] <= c_[2]) & (lz[None, :] >= c_[1]) & (lz[None, :] <= c_[3]))
-seeds = np.broadcast_to(incarve[:, None, :], gbuilt.shape)
-dropped = 0; drop_log = []
-for c in components(gbuilt, seeds):                        # 경기장 자리에 걸리는 전각은 통째로 (행각 연결망처럼 큰 것은 자리만)
-    span = c.max(0) - c.min(0)
-    if span[0] < A.get("drop_span", 110) and span[2] < A.get("drop_span", 110): GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1; drop_log.append(("자리", c))
-gbuilt = (gy > 63) & (GR.grid > 0) & ~gplant[GR.grid]
-edge = np.zeros(gbuilt.shape, bool); edge[0] = edge[-1] = True; edge[:, :, 0] = edge[:, :, -1] = True
-for c in components(gbuilt, edge):                          # 땅 가장자리(산 기슭)에서 잘리는 작은 전각도 통째로
-    span = c.max(0) - c.min(0)
-    if span[0] < 64 and span[2] < 64: GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1; drop_log.append(("가장자리", c))
-if "--verbose" in sys.argv:
-    for why, c in drop_log:
-        print("    뺀 전각(%s) X %d~%d Z %d~%d Y %d~%d, %d칸" % (why, cx_ - GX[c[:, 0].max()], cx_ - GX[c[:, 0].min()], cz_ - GZ[c[:, 2].max()], cz_ - GZ[c[:, 2].min()], src[1] + c[:, 1].min() + DY, src[1] + c[:, 1].max() + DY, len(c)))
-GR.grid[np.broadcast_to(incarve[:, None, :], GR.grid.shape) & (np.arange(src[1], src[4] + 1)[None, :, None] > 63)] = 0   # 경기장 자리 위는 비운다
-conv = {}
-gid = np.zeros(len(GR.palette), np.int64)
-for j, b in enumerate(GR.palette):
-    if j: gid[j] = conv.setdefault(mcstruct.key_of(b), LR.pid(rot180(convert(b))))
-n_pal = 0
-for i, X_ in enumerate(lx):
-    if not x1 <= X_ <= x2: continue
-    for k, Z_ in enumerate(lz):
-        if not z1 <= Z_ <= z2: continue
-        a, cc = X_ - x1, Z_ - z1
-        if prot2[a, cc]: continue
-        ya, yb = src[1] + DY - y1, src[4] + DY - y1
-        NEW[a, ya:yb + 1, cc] = gid[GR.grid[i, :, k]]
-        NEW[a, yb + 1:, cc] = 0                              # 숲 나무는 걷는다
-        placed[a, ya:yb + 1, cc] = True; n_pal += 1
-# 통째로 뺀 전각(월대 등) 밑에 드러난 흙은 둘레 마당 바닥과 같은 블록으로
-dirt_id = {i for i, b in enumerate(pal) if name_of(b) == "dirt"}
-yg = G - y1
-top_is_dirt = np.isin(NEW[:, yg, :], list(dirt_id)) & (NEW[:, yg + 1, :] == 0) & land2 & ~prot2
-fixed = 0
-for _ in range(40):
-    if not top_is_dirt.any(): break
-    for a, cc in np.argwhere(top_is_dirt):
-        nb = NEW[max(a - 2, 0):a + 3, yg, max(cc - 2, 0):cc + 3].ravel()
-        ok = nb[~np.isin(nb, list(dirt_id)) & (nb != 0)]
-        if len(ok):
-            NEW[a, yg, cc] = collections.Counter(ok.tolist()).most_common(1)[0][0]; top_is_dirt[a, cc] = False; fixed += 1
+MO = A.get("mountain_only")                                # 산속: 경복궁 전각·궁장 없이 둘레를 산으로만
+dropped = n_pal = fixed = 0; drop_log = []
+if not MO:
+    cx_, cz_ = A["gbg_center"][0] + A["center"][0], A["gbg_center"][1] + A["center"][1]
+    L_ = A["land"]
+    src = (cx_ - L_[2], 55, cz_ - L_[3], cx_ - L_[0], 100, cz_ - L_[1])
+    print("경복궁 월드 읽는 중…", src)
+    GR = mcstruct.read_region(copy_db(GBG), src)
+    gplant = np.array([name_of(b) in PLANTS for b in GR.palette])
+    gy = np.arange(src[1], src[4] + 1)[None, :, None]
+    gbuilt = (gy > 63) & (GR.grid > 0) & ~gplant[GR.grid]
+    GX = np.arange(src[0], src[3] + 1); GZ = np.arange(src[2], src[5] + 1)
+    lx = cx_ - GX; lz = cz_ - GZ                                # 경복궁 칸 → 경기장 좌표
+    c_ = A["carve"]
+    incarve = ((lx[:, None] >= c_[0]) & (lx[:, None] <= c_[2]) & (lz[None, :] >= c_[1]) & (lz[None, :] <= c_[3]))
+    if A.get("circle"):                                         # 둥근 경기장은 원 + 여유
+        incarve = (lx[:, None] - A["circle"][0]) ** 2 + (lz[None, :] - A["circle"][1]) ** 2 <= (A["circle"][2] + A.get("carve_margin", 4)) ** 2
+    seeds = np.broadcast_to(incarve[:, None, :], gbuilt.shape)
+    dropped = 0; drop_log = []
+    for c in components(gbuilt, seeds):                        # 경기장 자리에 걸리는 전각은 통째로 (행각 연결망처럼 큰 것은 자리만)
+        span = c.max(0) - c.min(0)
+        if span[0] < A.get("drop_span", 110) and span[2] < A.get("drop_span", 110): GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1; drop_log.append(("자리", c))
+    gbuilt = (gy > 63) & (GR.grid > 0) & ~gplant[GR.grid]
+    edge = np.zeros(gbuilt.shape, bool); edge[0] = edge[-1] = True; edge[:, :, 0] = edge[:, :, -1] = True
+    for c in components(gbuilt, edge):                          # 땅 가장자리(산 기슭)에서 잘리는 작은 전각도 통째로
+        span = c.max(0) - c.min(0)
+        if span[0] < 64 and span[2] < 64: GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1; drop_log.append(("가장자리", c))
+    if "--verbose" in sys.argv:
+        for why, c in drop_log:
+            print("    뺀 전각(%s) X %d~%d Z %d~%d Y %d~%d, %d칸" % (why, cx_ - GX[c[:, 0].max()], cx_ - GX[c[:, 0].min()], cz_ - GZ[c[:, 2].max()], cz_ - GZ[c[:, 2].min()], src[1] + c[:, 1].min() + DY, src[1] + c[:, 1].max() + DY, len(c)))
+    GR.grid[np.broadcast_to(incarve[:, None, :], GR.grid.shape) & (np.arange(src[1], src[4] + 1)[None, :, None] > 63)] = 0   # 경기장 자리 위는 비운다
+    conv = {}
+    gid = np.zeros(len(GR.palette), np.int64)
+    for j, b in enumerate(GR.palette):
+        if j: gid[j] = conv.setdefault(mcstruct.key_of(b), LR.pid(rot180(convert(b))))
+    n_pal = 0
+    for i, X_ in enumerate(lx):
+        if not x1 <= X_ <= x2: continue
+        for k, Z_ in enumerate(lz):
+            if not z1 <= Z_ <= z2: continue
+            a, cc = X_ - x1, Z_ - z1
+            if prot2[a, cc]: continue
+            ya, yb = src[1] + DY - y1, src[4] + DY - y1
+            NEW[a, ya:yb + 1, cc] = gid[GR.grid[i, :, k]]
+            NEW[a, yb + 1:, cc] = 0                              # 숲 나무는 걷는다
+            placed[a, ya:yb + 1, cc] = True; n_pal += 1
+    # 통째로 뺀 전각(월대 등) 밑에 드러난 흙은 둘레 마당 바닥과 같은 블록으로
+    dirt_id = {i for i, b in enumerate(pal) if name_of(b) == "dirt"}
+    yg = G - y1
+    top_is_dirt = np.isin(NEW[:, yg, :], list(dirt_id)) & (NEW[:, yg + 1, :] == 0) & land2 & ~prot2
+    fixed = 0
+    for _ in range(40):
+        if not top_is_dirt.any(): break
+        for a, cc in np.argwhere(top_is_dirt):
+            nb = NEW[max(a - 2, 0):a + 3, yg, max(cc - 2, 0):cc + 3].ravel()
+            ok = nb[~np.isin(nb, list(dirt_id)) & (nb != 0)]
+            if len(ok):
+                NEW[a, yg, cc] = collections.Counter(ok.tolist()).most_common(1)[0][0]; top_is_dirt[a, cc] = False; fixed += 1
 PT = A.get("protect_top")
 if PT is not None:                                          # 지키는 상자 위(동굴 천장 등)는 걷어 낸다
     NEW[np.broadcast_to(prot2[:, None, :], SH) & (ys > PT)] = 0
@@ -200,7 +229,7 @@ if A.get("strip_names"):                                    # 지키는 상자 �
         if (sm & wm).any(): sys.exit("⚠ 걸어 다니는 곳에 걷을 블록이 %d칸 있음" % int((sm & wm).sum()))
     print("  지키는 상자 안에서 걷는 블록", dict(collections.Counter(name_of(pal[i]) for i in NEW[sm])))
     NEW[sm] = 0; strip3 |= sm
-print(f"  전각 {dropped}개를 빼고 땅 {n_pal:,}칸에 경복궁을 깖, 드러난 흙 {fixed:,}칸은 마당 바닥으로")
+if not MO: print(f"  전각 {dropped}개를 빼고 땅 {n_pal:,}칸에 경복궁을 깖, 드러난 흙 {fixed:,}칸은 마당 바닥으로")
 
 # ---------- 1b. 궁장: 궁궐 땅 가장자리를 담으로 둘러 숲과 나눈다 (잘린 행각 끝도 담 속으로) ----------
 # 단면 (두께 3칸, 땅 위 7칸): 아래 2줄 장대석(석재 벽돌) · 3줄 담장돌(조약돌) · 기와 지붕(가운데 겹 반 블록, 양쪽 계단, 용마루 반 블록)
@@ -226,12 +255,14 @@ def wall_cell(a, cc, inward):
         if u == 1: NEW[xa, yb + 7, za] = RIDGE
         NEW[xa, yb - 2:yb + 1, za] = BRICK                    # 기초
         placed[xa, yb - 2:yb + 8, za] = True; wall_n += 1
+L_ = A["land"]
 la, lb = L_[0] - x1, L_[2] - x1; lc, ld = L_[1] - z1, L_[3] - z1
-for a in range(la, lb + 1):
+if not MO:
+  for a in range(la, lb + 1):
     wall_cell(a, lc, "+z"); wall_cell(a, ld, "-z")          # 남쪽(−z)·북쪽(+z) 담: 바깥 칸이 땅 끝
-for cc in range(lc, ld + 1):
+  for cc in range(lc, ld + 1):
     wall_cell(la, cc, "+x"); wall_cell(lb, cc, "-x")
-print(f"궁장 {wall_n:,}칸 (땅 둘레 {2 * (lb - la + ld - lc)}칸 길이, 높이 7)")
+  print(f"궁장 {wall_n:,}칸 (땅 둘레 {2 * (lb - la + ld - lc)}칸 길이, 높이 7)")
 if A.get("arena_wall"):
     # 경기장 꽃담: 지키는 상자 바로 바깥 3칸 둘레, 땅 위 5칸 (장대석 · 붉은 전돌 · 전돌과 회벽 무늬 줄 · 기와, 용마루) — 카메라가 너머를 보도록 궁장보다 낮게
     BRK = LR.pid(block("brick_block", {}, 18168865)); HOE = LR.pid(block("stained_hardened_clay", {"color": S("white")}, V_OLD))
@@ -268,6 +299,9 @@ def value_noise(scale, octaves=4, seed=0):
     return out / tot
 dx_ = np.maximum(np.maximum(L_[0] - X, X - L_[2]), 0); dz_ = np.maximum(np.maximum(L_[1] - Z, Z - L_[3]), 0)
 dist = np.sqrt(dx_ ** 2 + dz_ ** 2)
+if MO:                                                      # 산속: 둥근 경기장 둘레 flat_r까지 풀밭, 그 밖이 산
+    rr = np.sqrt((X - A["circle"][0]) ** 2 + (Z - A["circle"][1]) ** 2)
+    dist = np.maximum(rr - A["flat_r"], 0)
 mband = (dist > 0) & (dist <= A["band"])
 ux = (X - A["center"][0]).astype(float); uz = (Z - A["center"][1]).astype(float); r_ = np.sqrt(ux ** 2 + uz ** 2) + 1e-6
 ux, uz = ux / r_, uz / r_
@@ -291,11 +325,41 @@ for a, cc in np.argwhere(mband):
         NEW[a, max(lo, h - 3):h, cc] = DIRT; NEW[a, h, cc] = GRASS
     NEW[a, h + 1:, cc] = 0
     placed[a, lo:h + 1, cc] = True; n_mt += 1
+taken = np.zeros(SH[::2], bool)
+if MO:
+    flat = ~prot2 & (rr <= A["flat_r"])                     # 경기장 둘레 풀밭 (위는 비우지 않는다 — 가장자리 위로 뻗은 경기장 잎)
+    lo = max(G - 4 - y1, 0)
+    for a, cc in np.argwhere(flat):
+        NEW[a, lo:G - y1, cc] = DIRT; NEW[a, G - y1, cc] = GRASS; placed[a, lo:G - y1 + 1, cc] = True
+    print(f"  경기장 둘레 풀밭 {int(flat.sum()):,}칸")
+if A.get("pavilion"):                                       # 활터 정자: 언덕을 깎은 단 위에 기단·붉은 기둥·네모 기와지붕
+    px, pz = A["pavilion"]; a0, c0 = px - x1, pz - z1
+    h0 = max(int(H[a0, c0]), G + 1) - y1
+    POST = LR.pid(block("stripped_oak_log", {"pillar_axis": S("y")}, 18168865))
+    for ox in range(-6, 7):
+        for oz in range(-6, 7):
+            a, cc = a0 + ox, c0 + oz
+            NEW[a, max(G - 4 - y1, 0):h0, cc] = STONE; NEW[a, h0 - 2:h0, cc] = DIRT; NEW[a, h0, cc] = GRASS; NEW[a, h0 + 1:, cc] = 0
+            placed[a, :h0 + 1, cc] = True; taken[a, cc] = True
+    for ox in range(-3, 4):
+        for oz in range(-3, 4): NEW[a0 + ox, h0 + 1, c0 + oz] = BRICK                    # 기단
+    for ox in (-3, 3):
+        for oz in (-3, 3): NEW[a0 + ox, h0 + 2:h0 + 6, c0 + oz] = POST                   # 기둥
+    for k, rad in enumerate((4, 3, 2)):                    # 지붕: 바깥에서 안으로 한 겹씩 올라간다
+        for ox in range(-rad, rad + 1):
+            for oz in range(-rad, rad + 1):
+                if max(abs(ox), abs(oz)) != rad: continue
+                inward = ("-x" if ox > 0 else "+x") if abs(ox) >= abs(oz) else ("-z" if oz > 0 else "+z")
+                NEW[a0 + ox, h0 + 5 + k, c0 + oz] = stair(UP[inward])
+    for ox in range(-1, 2):
+        for oz in range(-1, 2): NEW[a0 + ox, h0 + 8, c0 + oz] = TILE2
+    NEW[a0, h0 + 9, c0] = RIDGE
+    placed[a0 - 4:a0 + 5, h0:h0 + 10, c0 - 4:c0 + 5] = True
+    print(f"  활터 정자 ({px}, {h0 + y1 + 1}, {pz})")
 # 소나무: 완만한 풀밭에 듬성듬성 (붉은 줄기 대신 가문비 원목, 넓적한 짙은 잎 덩이)
 trees = 0
 cand = np.argwhere(mband & ~rocky & (slope < 1.1) & (H > G + 2))
 rng.shuffle(cand)
-taken = np.zeros(SH[::2], bool)
 for a, cc in cand[: len(cand) // 12]:
     if taken[max(a - 3, 0):a + 4, max(cc - 3, 0):cc + 4].any(): continue
     taken[a, cc] = True

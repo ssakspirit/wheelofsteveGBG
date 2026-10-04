@@ -650,7 +650,12 @@ canvas.v3d-dlg{display:block;width:100%;height:min(440px,56vh);cursor:grab;touch
   <input type="search" id="q" placeholder="검색 (이름, 키, 파일)">
 </div></nav>
 <main>
-  <section class="panel" id="p-summary"><h2>요약</h2><div class="cards" id="cards"></div>
+  <section class="panel" id="p-summary"><h2>요약</h2>
+    <div class="box" style="margin:10px 0 16px"><h3>플레이어 소개 페이지</h3>
+      <p><a href="https://claude.ai/artifact/5nyhB1La5NPcbzxpJeV8cL" target="_blank" rel="noopener">https://claude.ai/artifact/5nyhB1La5NPcbzxpJeV8cL</a></p>
+      <p class="small">초중등 학생과 선생님을 위한 소개 (claude.ai 아티팩트 · 처음엔 비공개, 그 페이지의 공유 메뉴로 나눠 준다) — 대회 방법 · 여섯 마당 · 배경이 된 경복궁(마당마다 경복궁의 어디를 옮겨 왔는지와 그 장소 설명) · 인물 · 물건과 동물 · 궁궐 블록 · 선생님께.
+      고칠 때: <code>tools/playerpage/page.html</code> → <code>python tools/playerpage/build.py</code> → Claude에게 같은 주소로 다시 올려 달라고 한다. 역사 내용은 백과사전과 맞춰 본다.</p></div>
+    <div class="cards" id="cards"></div>
     <h2 style="margin-top:26px">변경 기록 <span class="n">tools/changelog.js · 항목을 누르면 그 장소·탭으로</span></h2><div id="changelog"></div>
     <h2 style="margin-top:26px">장소·게임 <span class="n">눌러서 자세히 보기</span></h2><div class="place-grid" id="placeOverview"></div></section>
   <section class="panel" id="p-build"><div id="buildBody"></div></section>

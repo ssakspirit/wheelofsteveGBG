@@ -142,7 +142,9 @@ def decode(v):
         words = np.frombuffer(v, dtype="<u4", count=nw, offset=i); i += nw * 4
         sh = np.arange(bpw, dtype=np.uint32) * bits
         idx = ((words[:, None] >> sh[None, :]) & ((1 << bits) - 1)).ravel()[:4096].astype(np.int64)
-    npal = struct.unpack_from("<i", v, i)[0]; i += 4
+    # 한 종류 블록뿐인 덩어리(bits 0)는 새 게임이 팔레트 개수 없이 블록 하나(NBT, 0x0a로 시작)만 적는다
+    if bits == 0 and v[i] == 0x0a: npal = 1
+    else: npal = struct.unpack_from("<i", v, i)[0]; i += 4
     pal = []
     for _ in range(npal):
         c, i = _root(v, i)

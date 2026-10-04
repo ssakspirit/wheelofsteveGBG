@@ -99,6 +99,25 @@ ol.flow h3 { font-size: 19px; margin-bottom: 4px }
 .chips { display: flex; flex-wrap: wrap; gap: 6px }
 .chips span { background: var(--chip); border-radius: 999px; padding: 2px 10px; font-size: 14px }
 
+/* 배경이 된 경복궁 */
+.places { display: grid; gap: 18px }
+.place { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); min-width: 0 }
+.place .shots { display: grid; gap: 2px; background: var(--line) }
+.place .shots img { width: 100%; height: 100%; min-height: 180px; object-fit: cover; display: block }
+.place .txt { padding: 18px 20px; display: grid; gap: 12px; align-content: start; min-width: 0 }
+.place h3 { font-size: 23px }
+.place .tag { display: inline-block; background: var(--green); color: #fff; border-radius: 999px; padding: 1px 10px; font-size: 13px; margin-bottom: 4px }
+.place .txt > p { color: var(--muted) }
+.spots { display: grid; gap: 8px }
+.spot { border-left: 3px solid var(--gold); padding-left: 10px; font-size: 15px; line-height: 1.6 }
+.spot b { font-family: var(--f-display); font-size: 16px; color: var(--ink) }
+.motifs { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-top: 18px }
+.motif { background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--tone); border-radius: 12px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0 }
+.motif .g { font-size: 13px; color: var(--muted) }
+.motif b { font-family: var(--f-display); font-size: 18px }
+.motif p { font-size: 15px; color: var(--muted); line-height: 1.6 }
+.cap { font-size: 13px; color: var(--muted); margin-top: 10px }
+
 /* 인물 */
 .people { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px }
 .person { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: start; min-width: 0 }
@@ -133,6 +152,7 @@ footer .wrap { display: grid; gap: 4px }
   .game .side { grid-template-columns: auto 1fr; justify-items: start; text-align: left; align-items: center }
   .game .side img { height: 110px; grid-row: span 3 }
   .cols { grid-template-columns: 1fr }
+  .place { grid-template-columns: 1fr }
   .person { grid-template-columns: 72px 1fr }
   .person img { width: 72px; height: 100px }
 }
@@ -140,7 +160,7 @@ footer .wrap { display: grid; gap: 4px }
 </style>
 
 <nav class="top" aria-label="쪽 안내"><div class="wrap">
-  <a href="#how">대회 방법</a><a href="#games">여섯 마당</a><a href="#people">인물</a><a href="#things">물건과 동물</a><a href="#blocks">궁궐 블록</a><a href="#teacher">선생님께</a>
+  <a href="#how">대회 방법</a><a href="#games">여섯 마당</a><a href="#places">배경 장소</a><a href="#people">인물</a><a href="#things">물건과 동물</a><a href="#blocks">궁궐 블록</a><a href="#teacher">선생님께</a>
 </div></nav>
 
 <header class="hero">
@@ -268,6 +288,49 @@ footer .wrap { display: grid; gap: 4px }
       </div>
     </article>
   </div>
+</div></section>
+
+<section class="sec" id="places"><div class="wrap">
+  <p class="eyebrow">PALACE SETTING</p>
+  <h2>배경이 된 경복궁</h2>
+  <p class="intro">대회장 곳곳은 실제 경복궁을 블록으로 지은 다른 월드에서 건물을 옮겨 와 꾸몄어요. 어느 마당이 경복궁의 어디를 옮겨 왔는지, 또 어떤 장소를 떠올리며 만들었는지 알아봐요.</p>
+  <div class="places">
+    <article class="place">
+      <div class="shots"><img src="{{img:scene_gwanghwamun}}" alt="로비의 광화문"><img src="{{img:scene_geunjeongjeon}}" alt="대결 문 뒤의 근정전"></div>
+      <div class="txt">
+        <div><span class="tag">옮겨 온 곳</span><h3>로비 · 광화문에서 근정전까지</h3></div>
+        <p>로비에 들어서면 광화문 가운데 문 안에 서 있어요. 문을 나서면 대결 문이 늘어선 마당이 있고, 그 뒤로 근정전이 보여요. 둘레에는 경회루, 사정전, 강녕전, 교태전, 향원정, 동궁이 실제 경복궁과 같은 자리에 있어요. 다만 광화문과 근정전 사이는 대결 마당을 두려고 줄였어요.</p>
+        <div class="spots">
+          <p class="spot"><b>광화문</b> · 경복궁의 남쪽 정문이에요. 세종 때 집현전 학자들이 '광화문'이라는 이름을 지었어요. 임진왜란 때 불탔다가 고종 때 경복궁을 다시 지으며 새로 세웠어요. 문 세 개 가운데 가운데 문은 임금이 드나들던 문이에요.</p>
+          <p class="spot"><b>근정전</b> · 임금의 즉위식, 신하들의 조회, 외국 사신 맞이 같은 나라의 큰 의식을 치르던 경복궁의 으뜸 건물이에요. 정도전이 '부지런히 정치하라'는 뜻을 담아 이름을 지었어요. 지금 건물은 고종 때(1867년) 다시 지은 것이고 국보예요.</p>
+          <p class="spot"><b>경회루</b> · 연못 위에 세운 큰 누각이에요. 나라에 경사가 있거나 외국 사신이 왔을 때 잔치를 열었어요. 태종 때(1412년) 연못을 넓히며 크게 지었고 국보예요.</p>
+          <p class="spot"><b>향원정</b> · 북쪽 연못 가운데 섬에 지은 육각 정자예요. 고종 때 지었어요.</p>
+          <p class="spot"><b>동궁</b> · 다음 임금이 될 세자가 머물며 공부하던 곳이에요.</p>
+        </div>
+      </div>
+    </article>
+    <article class="place">
+      <div class="shots"><img src="{{img:scene_orb}}" alt="옥새 쟁탈전 마당에서 본 전각과 산"><img src="{{img:scene_orb_over}}" alt="옥새 쟁탈전 마당을 둘러싼 궁궐과 산"></div>
+      <div class="txt">
+        <div><span class="tag">옮겨 온 곳</span><h3>옥새 쟁탈전 · 강녕전 자리</h3></div>
+        <p>옥새 쟁탈전 마당은 임금이 지내던 강녕전이 있던 자리에 놓았어요. 마당을 행각(긴 복도 건물)이 둘러싸고, 그 뒤로 왕비가 지내던 교태전이 이어져요. 궁궐 담장 너머로는 한양을 둘러싼 산들이 보여요.</p>
+        <div class="spots">
+          <p class="spot"><b>강녕전</b> · 임금이 잠자고 생활하던 침전이에요. '강녕'은 몸과 마음이 건강하고 편안하다는 뜻으로, 사람이 바라는 다섯 가지 복(오복) 가운데 하나예요.</p>
+          <p class="spot"><b>사정전</b> · 임금이 신하들과 나랏일을 의논하던 편전이에요. '깊이 생각하며 정치하라'는 뜻이 담겨 있어요.</p>
+          <p class="spot"><b>교태전</b> · 왕비가 지내던 침전이에요. 뒤뜰 아미산의 육각 굴뚝에는 학, 박쥐, 소나무, 매화 같은 무늬를 구운 벽돌로 새겨 넣었고, 보물로 정해졌어요.</p>
+          <p class="spot"><b>북악산 · 인왕산 · 낙산 · 남산</b> · 한양 도성을 둘러싼 네 산이에요. 경복궁은 북악산(백악산)을 등지고 남쪽을 바라보도록 지었어요.</p>
+        </div>
+      </div>
+    </article>
+  </div>
+  <div class="motifs">
+    <div class="motif g-craft"><span class="g">자격루 복원전</span><b>보루각</b><p>세종 때(1434년) 경회루 남쪽에 보루각을 짓고 자격루를 두어 나라의 표준 시계로 썼어요. 마당은 고장 난 자격루를 고치는 공방을 떠올리며 꾸몄어요.</p></div>
+    <div class="motif g-grid"><span class="g">교태전 꽃담 맞추기</span><b>교태전 뒤뜰</b><p>교태전 아미산 굴뚝처럼 무늬 벽돌로 그림을 만드는 꽃담을 떠올리며, 색 블록으로 무늬를 맞춰요.</p></div>
+    <div class="motif g-nock"><span class="g">태조의 활쏘기 대회</span><b>경복궁 밖 · 성균관</b><p>임금과 신하가 함께 활을 쏘는 의식인 대사례는 성균관에서 열렸어요. 경복궁 안이 아닌 이야기 속 무대예요.</p></div>
+    <div class="motif g-elytra"><span class="g">6진 망루 공성전</span><b>경복궁 밖 · 북쪽 국경 6진</b><p>세종 때 김종서가 두만강 가에 세운 여섯 진의 망루를 떠올려요.</p></div>
+    <div class="motif g-finale"><span class="g">백악산 엽전 달리기</span><b>경복궁 뒤 백악산</b><p>경복궁이 등지고 선 산이에요. 지금은 북악산이라고 더 많이 불러요.</p></div>
+  </div>
+  <p class="cap">그림은 개발자용 3D 미리보기에서 찍은 장면이에요. 게임 안에서는 빛과 안개 때문에 조금 다르게 보여요.</p>
 </div></section>
 
 <section class="sec" id="people"><div class="wrap">

@@ -84,6 +84,7 @@ class Region:
         self.grid = np.zeros((self.x2 - self.x1 + 1, self.y2 - self.y1 + 1, self.z2 - self.z1 + 1), np.int32)
         self.palette, self._ids = [AIR], {key_of(AIR): 0}
         self.bents = {}
+        self.bad_bents = 0
     def pid(self, b):
         k = key_of(b)
         if k not in self._ids: self._ids[k] = len(self.palette); self.palette.append(b)
@@ -117,10 +118,13 @@ def read_region(db, box):
         cx, cz = struct.unpack_from("<ii", k, 0)
         if k[8] == 49:                                            # 블록 엔티티 여러 개가 이어 붙어 있다
             i = 0
-            while i < len(v):
-                c, i = rd_root(v, i)
-                p = (c["x"][1], c["y"][1], c["z"][1])
-                if R.x1 <= p[0] <= R.x2 and R.y1 <= p[1] <= R.y2 and R.z1 <= p[2] <= R.z2: R.bents[p] = c
+            try:
+                while i < len(v):
+                    c, i = rd_root(v, i)
+                    p = (c["x"][1], c["y"][1], c["z"][1])
+                    if R.x1 <= p[0] <= R.x2 and R.y1 <= p[1] <= R.y2 and R.z1 <= p[2] <= R.z2: R.bents[p] = c
+            except (struct.error, KeyError, IndexError, ValueError):
+                R.bad_bents += 1                                   # 읽을 수 없는 블록 엔티티 묶음은 건너뛴다 (블록 자체는 하위 청크에서 읽는다)
             continue
         sy = struct.unpack_from("<b", k, 9)[0]
         if v[0] not in (8, 9): continue
@@ -133,7 +137,9 @@ def read_region(db, box):
             idx = ((words[:, None] >> sh[None, :]) & ((1 << bits) - 1)).ravel()[:4096].astype(np.int64)
         else:
             idx = np.zeros(4096, np.int64)
-        npal = struct.unpack_from("<i", v, i)[0]; i += 4
+        # 한 종류 블록뿐인 덩어리(bits 0)는 새 게임이 팔레트 개수 없이 블록 하나(NBT, 0x0a로 시작)만 적는다
+        if bits == 0 and v[i] == 0x0a: npal = 1
+        else: npal = struct.unpack_from("<i", v, i)[0]; i += 4
         ids = []
         for _ in range(npal):
             c, i = rd_root(v, i)

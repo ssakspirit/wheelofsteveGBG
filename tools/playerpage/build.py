@@ -50,6 +50,10 @@ for i, k in enumerate(SHEET):
     cell = sheet.crop(((i % 8) * 256, (i // 8) * 256, (i % 8) * 256 + 256, (i // 8) * 256 + 256))
     IMG[k] = png_uri(fit(trim(cell), 200))
 IMG["bomb"] = png_uri(fit(trim(Image.open(os.path.join(HERE, "render", "bomb.png")).convert("RGBA")), 200))
+# 배경이 된 경복궁: 개발자 페이지 구역 3D(계획 미리보기)에서 찍은 장면 — render/scene_*.png
+for k in ("scene_gwanghwamun", "scene_geunjeongjeon", "scene_lobby", "scene_orb", "scene_orb_over"):
+    im = Image.open(os.path.join(HERE, "render", k + ".png")).convert("RGB")
+    IMG[k] = jpg_uri(im.resize((900, round(im.height * 900 / im.width)), Image.LANCZOS), 78)
 # 아이템 아이콘 (16×16 → 8배)
 def icon(path):
     im = Image.open(path).convert("RGBA")

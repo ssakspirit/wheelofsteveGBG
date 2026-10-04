@@ -2,8 +2,16 @@
 // place: tools/places.js의 장소 id (누르면 그 장소 페이지로), tab: 바로 볼 탭(models · sounds · items · textures …)
 module.exports = [
   {
-    date: "2026-10-04", title: "팀 선택 홀 포스터 액자",
+    date: "2026-10-04", title: "로비 경복궁 확장",
     items: [
+      { text: "섬 밖 공허까지 경복궁 전체(동·서·북 궁장, 경회루 연못 전체, 강녕전·교태전·향원정 쪽)를 옮기고 궁장 바깥 잔디밭도 넓힘 — 땅 가장자리에 보이지 않는 방벽, 원작의 초록 팀 초기화 발판은 그대로 두고 장대석 기단 위에(걸어서 못 오름). 지난번에 덜 놓인 섬 남쪽 끝도 이번에 함께", tab: "build" },
+      { text: "gbg-lobby.py 는 git의 놓기 전 db(c759d1d)로 계산하고 지금 월드와 다른 곳만 조각으로 — /function gbg/go_1~go_12 에서 각각 /function gbg/lobby_build", tab: "build" },
+    ],
+  },
+  {
+    date: "2026-10-04", title: "포스터 액자 · 한글 현판",
+    items: [
+      { text: "근정전·광화문의 양털 현판 앞에 한글 현판(검은 바탕 · 금빛 궁서체 · 단청 테두리) — 장식 엔티티, python tools/skins/hyeonpan.py → 게임에서 /function gbg/hyeonpan", place: "lobby", tab: "models" },
       { text: "시작 버튼(금 블록) 위에 어전대회 포스터를 단청 액자로 — 장식 엔티티 gbg:poster (폭 6칸, 부서지거나 밀리지 않음). python tools/skins/poster-frame.py → 게임에서 /function gbg/poster", place: "lobby", tab: "models" },
     ],
   },

@@ -1,2 +1,2 @@
-## [경복궁] 섬 귀퉁이 2 하늘로 — 여기서 /function gbg/lobby_build
-tp @s 96 120 952 facing 96 60 1050
+## [경복궁] 놓을 자리 2 하늘로 — 여기서 /function gbg/lobby_build
+tp @s 0 130 945 facing 0 60 985

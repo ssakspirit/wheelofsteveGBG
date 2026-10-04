@@ -31,33 +31,41 @@ GBG = os.path.join(WORLDS, "n1lV7gB3Eyo=")
 RESTORE = "--restore" in sys.argv
 
 # ---------- 설정 (로비 좌표, 상자는 x1 y1 z1 x2 y2 z2 양 끝 포함) ----------
-REGION = (-192, 40, 856, 191, 130, 1247)                 # 로비 섬 전체 (이 바깥은 월드가 만들어지지 않은 곳)
+REGION = (-260, 40, 850, 255, 130, 1630)                 # 로비 섬(X −194~191, Z 856~1247) + 둘레 공허 — 경복궁 궁장 전체가 들어간다
 # 180° 돌림: 로비 x = cx − x, z = cz − z, y = y + dy
 PAL_T = (198, 226, 1)                                     # 궁궐(근정전 기준) — 경복궁 지면 Y 63 → 로비 Y 64
 GATE_T = (198, 432, -4)                                   # 광화문 — 지면 Y 63 → 로비 광장 Y 59
-PALACE_SRC = (7, 58, -1021, 390, 95, -778)                # → 로비 X −192~191, Z 1004~1247
+PALACE_SRC = (-57, 58, -1404, 458, 95, -778)              # → 로비 X −260~255, Z 1004~1630 (북쪽 궁장·동서 궁장 바깥 몇 칸까지)
 CLEAR_UP = 130                                            # 궁궐 자리 위(아치·언덕·나무)는 여기까지 비운다
 STRIP = (-50, 1004, 50, 1047)                             # 광장 x1 z1 x2 z2 — 궁궐을 붙이지 않고 박석으로 포장
 STRIP_TOP = 64                                            # 광장 땅이 이보다 높으면 깎는다 (회랑 바닥 높이)
-GATE_SRC = (7, 63, -577, 390, 92, -563)
+GATE_SRC = (-57, 63, -577, 458, 92, -563)
 GATE_FULL = (177, 63, -576, 213, 92, -564)                # 홍예문 상자: 공기까지 그대로 (옛 도착 건물 자리를 비운다)
-GATE_BUILT = [(7, 64, -575, 390, 92, -563), (177, 64, -577, 213, 92, -576)]   # 궁장 몸체 + 문루 처마
+GATE_BUILT = [(-15, 64, -575, 415, 92, -563), (177, 64, -577, 213, 92, -576)]   # 궁장 몸체 + 문루 처마
 GROUND_GBG = 63
 # 지키는 곳: 이 상자에 닿은 놓은 블록 덩어리는 지우지 않고, 상자 안 놓은 블록은 바꾸지 않는다 (광장 상자 안 잔디·흙만 박석으로)
 KEEP = [("팀 선택 홀·시작 버튼·안내판·팀 발판", (-46, 55, 1008, -23, 90, 1028)),
         ("포털·받침대·방벽·호스트 NPC 자리", (-28, 55, 1032, 29, 90, 1046)),
-        ("혼천의 자리", (-3, 55, 1019, 5, 70, 1025))]
+        ("혼천의 자리", (-3, 55, 1019, 5, 70, 1025)),
+        ("팀 초기화 발판 (원작, 섬 서쪽 공중)", (-203, 64, 1055, -195, 75, 1063))]
 HARD = [(-46, 55, 1008, -23, 90, 1028)]                   # 팀 선택 홀: 궁궐·광장 단계는 손대지 않고, 아래 '홀 단장' 단계만 고친다
 # 게임이 실제로 쓰는 칸 — 홀 단장도 바꾸지 않는다 (bp0 functions에서 찾은 좌표)
 CRIT = [(-31, 64, 1012, -26, 69, 1017), (-31, 64, 1020, -26, 69, 1025),   # 홍포대·청포대 발판 + 감지 공간 (보내는 자리 -29 65 1014/1022 포함)
         (-43, 65, 1018, -43, 67, 1018),                                     # 홀 도착 자리 (-43 65 1018) — 발밑 바닥은 단단하기만 하면 된다
         (-45, 65, 1018, -44, 67, 1018),                                     # 금 블록 · 시작 버튼 · 표지판 (표지판은 -45 65 1018 돌에 붙어 있다)
         (-34, 65, 1017, -33, 69, 1019),                                     # 안내판 (게임이 구조물로 덮어씀)
-        (-33, 68, 1011, -33, 68, 1011), (-33, 68, 1017, -33, 68, 1017), (-33, 68, 1019, -33, 68, 1019), (-33, 68, 1025, -33, 68, 1025)]  # 한국어 걸이 표지판
+        (-33, 68, 1011, -33, 68, 1011), (-33, 68, 1017, -33, 68, 1017), (-33, 68, 1019, -33, 68, 1019), (-33, 68, 1025, -33, 68, 1025),
+        (-203, 67, 1055, -195, 75, 1063)]                                  # 팀 초기화 상자 (utility/score_reset: 여기 선 플레이어는 팀 0) — 초록 발판과 그 위  # 한국어 걸이 표지판
 CLEAR = [(-30, 60, 997, 34, 80, 1009)]                    # 옛 도착 건물·울타리·초롱 줄 (길과 이어져 있어 따로 지운다)
 SPAWN = (1, 60, 1000)
 CAMERAS = [((0, 109, 1092), (0, 66.8, 1014)), ((1, 62.3, 1004), (1, 62.8, 1015))]
-GO = [(-96, 120, 952), (96, 120, 952), (-96, 120, 1150), (96, 120, 1150)]   # 조각을 불러올 때 설 곳 (섬 네 귀퉁이 하늘)
+GO = [(x, 130, z) for z in (945, 1140, 1335, 1530) for x in (-172, 0, 172)]   # 12곳, 서로 약 190칸 간격
+BASE_COMMIT = "c759d1d"                                  # 경복궁을 놓기 전 로비 (옛 마을·아치가 있던 모습) — 이것을 원본으로 계산한다
+PAD = (-203, 1055, -195, 1063, 67)                       # 초록 발판 x1 z1 x2 z2 y: 아래를 장대석 기단으로 받치고 둘레 PAD_MARGIN칸은 궁궐 블록을 비운다
+PAD_MARGIN = 4
+LAWN = (-260, 856, 255)                                  # 궁장 바깥 잔디밭: 공허였던 곳도 이 x 범위 · z 856부터 땅을 깐다
+BARRIER_H = 3                                            # 땅 가장자리 둘레에 보이지 않는 방벽 높이 (공허로 떨어지지 않게)
+#   # 조각을 불러올 때 설 곳 (섬 네 귀퉁이 하늘)
 OUT_Z, FLAT_Y = 1003, 59                                  # 궁장 바깥(이 Z까지)을 광화문 바닥 높이로 고른다
 GATE_FRONT = (-40, 960, 42, 998)                          # 광화문 앞 마당 x1 z1 x2 z2: 나무를 모두 걷어 정문이 트이게
 PULL_IN = 16                                              # 궁장 선에 걸친 전각: 이만큼 안에서 끝나면 궁장 안으로 밀어 넣는다
@@ -125,7 +133,7 @@ def convert(b):
 def modern(b):
     """미리보기용 지금 이름 (리소스팩이 바꾼 그림을 고르려면 새 이름이어야 한다)."""
     n, st = name_of(b), states_of(b)
-    w = st.get("wood_type")
+    w = st.get("wood_type") or "oak"
     half = lambda: {"minecraft:vertical_half": "top" if st.get("top_slot_bit") else "bottom"}
     if n == "planks": return w + "_planks", {}
     if n == "wooden_slab": return w + "_slab", half()
@@ -176,8 +184,14 @@ def dilate(m, n, horizontal=False):
     return m
 
 # ---------- 읽기 ----------
-print("로비 섬 읽는 중…")
-LR = mcstruct.read_region(copy_db(ROOT), REGION)
+def base_db():                                          # git에 저장된 경복궁 놓기 전 db
+    import subprocess, tarfile, io
+    out = subprocess.run(["git", "-C", ROOT, "archive", BASE_COMMIT, "db"], capture_output=True, check=True).stdout
+    dst = tempfile.mkdtemp(prefix="gbg-base-")
+    tarfile.open(fileobj=io.BytesIO(out)).extractall(dst)
+    return os.path.join(dst, "db")
+print("로비 읽는 중… (원본 %s)" % BASE_COMMIT)
+LR = mcstruct.read_region(base_db(), REGION)
 x1, y1, z1, x2, y2, z2 = REGION
 pal = LR.palette                                          # 로비 팔레트에 경복궁 블록도 더해 하나로 쓴다
 OLD = LR.grid
@@ -284,6 +298,13 @@ for a, c_ in np.argwhere(land):
         col[j59 + 1:b0 - y1] = col[b0 - y1]
     NEW[a, :, c_] = col; removed[a, j59:, c_] |= OLD[a, j59:, c_] != col[j59:]; flat_n += 1
 print(f"궁장 바깥 {flat_n:,}칸 → Y {FLAT_Y} 잔디밭")
+# 공허였던 궁장 바깥(섬 동·서 너머)에도 잔디밭을 깐다
+lawn_n = 0
+for a, c_ in np.argwhere(~soil_t()[NEW].any(1)):
+    X_, Z_ = a + x1, c_ + z1
+    if LAWN[0] <= X_ <= LAWN[2] and LAWN[1] <= Z_ <= OUT_Z and not keep_box[a, :, c_].any():
+        NEW[a, 55 - y1:FLAT_Y - y1, c_] = DIRT; NEW[a, FLAT_Y - y1, c_] = GRASS; lawn_n += 1
+print(f"  공허 위에 새로 깐 잔디밭 {lawn_n:,}칸")
 print(f"옛 마을 집·밭·소품 {n_houses}덩어리 걷어 냄" + (f" (너무 커서 둔 덩어리 {len(kept_big)}개: {kept_big[:3]})" if kept_big else ""))
 
 # ---------- 경복궁 블록 가져오기 ----------
@@ -359,7 +380,7 @@ for i, X_ in enumerate(lx):
     for k, Z_ in enumerate(lz):
         if k > kc or not z1 <= Z_ <= z2: continue
         a, c_ = X_ - x1, Z_ - z1
-        if strip2[a, c_] or hard[a, :, c_].any(): continue
+        if strip2[a, c_] or hard[a, :, c_].any() or keep_box[a, :, c_].any(): continue   # 광장·팀 선택 홀·초록 발판 열은 건너뛴다
         ya, yb = s[1] + PAL_T[2] - y1, s[4] + PAL_T[2] - y1
         NEW[a, ya:yb + 1, c_] = gid[GR.grid[i, :, k]]
         NEW[a, yb + 1:CLEAR_UP - y1 + 1, c_] = 0
@@ -430,6 +451,15 @@ take_bents(GR, GATE_T, okm)
 print(f"  광화문·궁장: {n_wall:,}칸 붙임 (궁장 X {x1}~{x2})")
 del GR, gx, gyy, gz, infull, gbuilt, inb
 
+# ---------- 3b. 초록 발판(팀 초기화 상자) — 궁궐 안에 들어오므로 둘레를 비우고 아래를 기단으로 ----------
+crit0 = np.zeros(SH, bool)
+for bx in CRIT: crit0 |= boxmask(bx)
+mx = boxmask((PAD[0] - PAD_MARGIN, PAD[4] - 2, PAD[1] - PAD_MARGIN, PAD[2] + PAD_MARGIN, CLEAR_UP, PAD[3] + PAD_MARGIN)) & ~crit0
+NEW[mx] = 0; placed[mx] = False
+base = boxmask((PAD[0], PAD[4] - 3, PAD[1], PAD[2], PAD[4] - 1, PAD[3]))
+NEW[base] = RISER; placed[base] = True
+print("초록 발판: 둘레 %d칸을 비우고 아래 3칸을 장대석 기단으로 (땅에서 발판 위까지 3칸 — 걸어서 못 오른다)" % PAD_MARGIN)
+
 # ---------- 4. 지붕 둘레 판자 → 짙은 참나무 ----------
 giwa = table("giwa", lambda b: name_of(b) in GIWA or (name_of(b) in ("wooden_slab", "double_wooden_slab") and states_of(b).get("wood_type") == "oak"))
 oakp = table("oakp", lambda b: name_of(b) == "oak_planks" or (name_of(b) == "planks" and states_of(b).get("wood_type") == "oak"))
@@ -491,6 +521,19 @@ orphan = leaf_t()[NEW] & ~near & zone[:, None, :] & ~placed & ~keep_box
 NEW[orphan] = 0
 print(f"줄기를 잃은 잎 {int(orphan.sum()):,}칸 걷음")
 
+# ---------- 6b. 땅 가장자리 방벽 (공허로 떨어지면 시작 방에서 다시 태어나 호스트 판정이 다시 돈다) ----------
+BARRIER = LR.pid(block("barrier", {}, 18168865))
+solid = NEW > 0
+land2 = solid[:, 55 - y1:101 - y1].any(1)
+pl2 = np.pad(land2, 1)
+edge2 = land2 & ~(pl2[2:, 1:-1] & pl2[:-2, 1:-1] & pl2[1:-1, 2:] & pl2[1:-1, :-2])
+top2 = np.where(solid.any(1), SH[1] - 1 - solid[:, ::-1, :].argmax(1), -1)
+bar_n = 0
+for a, c_ in np.argwhere(edge2):
+    for j in range(top2[a, c_] + 1, min(top2[a, c_] + 1 + BARRIER_H, SH[1])):
+        if NEW[a, j, c_] == 0 and not crit0[a, j, c_] and not keep_box[a, j, c_]: NEW[a, j, c_] = BARRIER; bar_n += 1
+print(f"땅 가장자리 방벽 {bar_n:,}칸 (보이지 않음)")
+
 # ---------- 7. 검사 ----------
 diff = NEW != OLD
 problems = []
@@ -512,7 +555,28 @@ for a, b_ in CAMERAS:
 print("검사:", "문제 없음" if not problems else "")
 for p in problems: print("  ⚠", p)
 
-# ---------- 8. 구조물 · 함수 ----------
+# ---------- 8. 구조물 · 함수 — 지금 월드와 달라지는 곳만 ----------
+print("지금 월드 읽는 중…")
+CR = mcstruct.read_region(copy_db(ROOT), REGION)
+ALIASN = {"red_flower": "poppy", "yellow_flower": "dandelion", "flowing_water": "water"}
+nid = {}
+def norm_ids(palette):
+    out = []
+    for b in palette:
+        n = modern(b)[0]; n = ALIASN.get(n, n)
+        out.append(nid.setdefault(n, len(nid)))
+    return np.array(out, np.int32)
+diffc = norm_ids(pal)[NEW] != norm_ids(CR.palette)[CR.grid]
+print(f"  지금 월드와 다른 칸 {int(diffc.sum()):,}")
+isl = boxmask((-192, y1, 856, 191, y2, 1247))
+if (diffc & isl).any():                                   # 이미 놓인 섬 안에서 다른 칸: 무엇이 무엇으로 바뀌는지 (많으면 이름 맞추기 점검)
+    import collections
+    nn = np.array([modern(b)[0] for b in pal]); cn = np.array([modern(b)[0] for b in CR.palette])
+    w = np.argwhere(diffc & isl)
+    pairs = collections.Counter(zip(cn[CR.grid[w[:, 0], w[:, 1], w[:, 2]]], nn[NEW[w[:, 0], w[:, 1], w[:, 2]]]))
+    print(f"  그중 이미 놓인 섬 안 {len(w):,}칸 (지금 → 새로):", pairs.most_common(12))
+    tc = collections.Counter(((int(q[0]) + x1 + 192) // 64, (int(q[2]) + z1 - 856) // 64) for q in w)
+    print("  섬 안 64칸 조각별 (지난번 조각 기준 x열·z행: 칸 수):", sorted(((k[1] + 1, k[0] + 1), v) for k, v in tc.items()))
 sd = os.path.join(BP, "structures", "gbg"); fd = os.path.join(BP, "functions", "gbg")
 os.makedirs(sd, exist_ok=True); os.makedirs(fd, exist_ok=True)
 for fn in glob.glob(os.path.join(sd, "*.mcstructure")) + glob.glob(os.path.join(fd, "lobby_*.mcfunction")) + glob.glob(os.path.join(fd, "go_*.mcfunction")): os.remove(fn)   # 이 도구가 만든 것만 (gbg/poster 는 그대로)
@@ -521,37 +585,37 @@ T64 = 64
 for tz in range(z1, z2 + 1, T64):
     for tx in range(x1, x2 + 1, T64):
         a = (tx - x1, tz - z1); b_ = (min(tx + T64 - 1, x2) - x1, min(tz + T64 - 1, z2) - z1)
-        sub = diff[a[0]:b_[0] + 1, :, a[1]:b_[1] + 1]
+        sub = diffc[a[0]:b_[0] + 1, :, a[1]:b_[1] + 1]
         if not sub.any(): continue
         w = np.argwhere(sub); lo, hi = w.min(0), w.max(0)
         sl = (slice(a[0] + lo[0], a[0] + hi[0] + 1), slice(lo[1], hi[1] + 1), slice(a[1] + lo[2], a[1] + hi[2] + 1))
         o = (x1 + sl[0].start, y1 + sl[1].start, z1 + sl[2].start)
         bx_ = (o[0], o[1], o[2], x1 + sl[0].stop - 1, y1 + sl[1].stop - 1, z1 + sl[2].stop - 1)
         bo, bn = {}, {}
-        for p, be in LR.bents.items():                    # 로비의 블록 엔티티: 새 모습엔 안 바뀐 칸만, 되돌리기엔 모두
+        for p, be in CR.bents.items():                    # 로비의 블록 엔티티: 새 모습엔 안 바뀐 칸만, 되돌리기엔 모두
             if inbox(p, bx_):
                 g = (p[0] - o[0], p[1] - o[1], p[2] - o[2]); bo[g] = be
-                if not diff[L(*p)]: bn[g] = be
+                if not diffc[L(*p)]: bn[g] = be
         for p, be in bents_new.items():
             if inbox(p, bx_) and placed[L(*p)]: bn[(p[0] - o[0], p[1] - o[1], p[2] - o[2])] = be
         nm = "%d_%d" % ((tz - z1) // T64 + 1, (tx - x1) // T64 + 1)
         mcstruct.write_structure(os.path.join(sd, "new_" + nm + ".mcstructure"), NEW[sl], pal, o, bn)
         build.append("structure load gbg:new_%s %d %d %d" % (nm, *o))
         if RESTORE:
-            mcstruct.write_structure(os.path.join(sd, "old_" + nm + ".mcstructure"), OLD[sl], pal, o, bo)
+            mcstruct.write_structure(os.path.join(sd, "old_" + nm + ".mcstructure"), CR.grid[sl], CR.palette, o, bo)
             restore.append("structure load gbg:old_%s %d %d %d" % (nm, *o))
         tiles.append((nm, bx_, int(sub.sum())))
 head = ["## [경복궁] 로비 섬에 광화문·궁궐 놓기 — python tools/gbg-lobby.py 가 만든 파일 (손으로 고치지 않는다).",
-        "## 구조물은 그 자리가 불러와져 있을 때만 놓인다: /function gbg/go_1 ~ go_4 로 섬 네 귀퉁이 하늘에 가서 그때마다 이 함수를 실행한다.",
+        "## 구조물은 그 자리가 불러와져 있을 때만 놓인다: /function gbg/go_1 ~ go_%d 로 하늘에 가서 그때마다 이 함수를 실행한다." % len(GO),
         "## 여러 번 실행해도 같다. 되돌리기는 월드를 닫고 git의 db/ 로 (또는 --restore 로 만든 gbg/lobby_restore)."]
-done = 'tellraw @s {"rawtext":[{"text":"§a[경복궁] 조각 %d개를 불러왔습니다 — 이 둘레만 놓입니다. go_1~go_4 네 곳에서 한 번씩 실행하세요."}]}' % len(build)
+done = 'tellraw @s {"rawtext":[{"text":"§a[경복궁] 조각 %d개를 불러왔습니다 — 이 둘레만 놓입니다. go_1~go_%d 에서 한 번씩 실행하세요."}]}' % (len(build), len(GO))
 open(os.path.join(fd, "lobby_build.mcfunction"), "w", encoding="utf8").write("\n".join(head + build + [done]) + "\n")
 for n, (gx_, gy_, gz_) in enumerate(GO, 1):
     open(os.path.join(fd, "go_%d.mcfunction" % n), "w", encoding="utf8").write(
-        "## [경복궁] 섬 귀퉁이 %d 하늘로 — 여기서 /function gbg/lobby_build\ntp @s %d %d %d facing %d %d %d\n" % (n, gx_, gy_, gz_, gx_, 60, 1050))
+        "## [경복궁] 놓을 자리 %d 하늘로 — 여기서 /function gbg/lobby_build\ntp @s %d %d %d facing %d %d %d\n" % (n, gx_, gy_, gz_, gx_, 60, gz_ + 40))
 if RESTORE:
     open(os.path.join(fd, "lobby_restore.mcfunction"), "w", encoding="utf8").write("\n".join([
-        "## [경복궁] 로비 섬을 놓기 전 모습으로 — python tools/gbg-lobby.py --restore 가 만든 파일. go_1~go_4 네 곳에서 한 번씩."] + restore + [
+        "## [경복궁] 로비 섬을 놓기 전 모습으로 — python tools/gbg-lobby.py --restore 가 만든 파일. go_1~go_%d 에서 한 번씩." % len(GO)] + restore + [
         'tellraw @s {"rawtext":[{"text":"§e[경복궁] 옛 모습 조각 %d개를 불러왔습니다."}]}' % len(restore)]) + "\n")
 mb = sum(os.path.getsize(fn) for fn in glob.glob(os.path.join(sd, "*.mcstructure"))) / 1e6
 print(f"구조물 조각 {len(tiles)}개{' × 2' if RESTORE else ''} = {mb:.1f}MB → structures/gbg/ (git에 올리지 않음), functions/gbg/")

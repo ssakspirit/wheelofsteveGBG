@@ -1,2 +1,3 @@
-## [경복궁] 놓을 자리 4 하늘로 — 여기서 /function gbg/lobby_build
-tp @s -172 130 1140 facing -172 60 1180
+## [경복궁] 묶음 4 하늘로 — 여기서 /function gbg/build_4
+tp @s 188 130 914 facing 188 60 954
+tellraw @s {"rawtext":[{"text":"§e[경복궁] 묶음 4 — 4/34 — 땅이 다 보이면 다시 /function gbg/next"}]}

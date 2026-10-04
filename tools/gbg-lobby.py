@@ -130,6 +130,21 @@ def convert(b):
         return block("fence", {"wood_type": S(wood)}, V_OLD)
     return b
 
+import re
+SLAB_RE = re.compile(r"^(double_)?stone_(?:block_)?slab(\d?)$")
+SLAB_TYPES = {
+    "": {"smooth_stone": "smooth_stone", "sandstone": "sandstone", "wood": "oak", "cobblestone": "cobblestone", "brick": "brick",
+         "stone_brick": "stone_brick", "quartz": "quartz", "nether_brick": "nether_brick"},
+    "2": {"red_sandstone": "red_sandstone", "purpur": "purpur", "prismarine_rough": "prismarine", "prismarine_dark": "dark_prismarine",
+          "prismarine_brick": "prismarine_brick", "mossy_cobblestone": "mossy_cobblestone", "smooth_sandstone": "smooth_sandstone", "red_nether_brick": "red_nether_brick"},
+    "3": {"end_stone_brick": "end_stone_brick", "smooth_red_sandstone": "smooth_red_sandstone", "polished_andesite": "polished_andesite",
+          "andesite": "andesite", "diorite": "diorite", "polished_diorite": "polished_diorite", "granite": "granite", "polished_granite": "polished_granite"},
+    "4": {"mossy_stone_brick": "mossy_stone_brick", "smooth_quartz": "smooth_quartz", "stone": "normal_stone", "cut_sandstone": "cut_sandstone",
+          "cut_red_sandstone": "cut_red_sandstone"},
+}
+FLOWERS = {"poppy": "poppy", "orchid": "blue_orchid", "allium": "allium", "houstonia": "azure_bluet", "tulip_red": "red_tulip", "tulip_orange": "orange_tulip",
+           "tulip_white": "white_tulip", "tulip_pink": "pink_tulip", "oxeye": "oxeye_daisy", "cornflower": "cornflower", "lily_of_the_valley": "lily_of_the_valley"}
+PLANT2 = {"sunflower": "sunflower", "syringa": "lilac", "grass": "tall_grass", "fern": "large_fern", "rose": "rose_bush", "paeonia": "peony"}
 def modern(b):
     """미리보기용 지금 이름 (리소스팩이 바꾼 그림을 고르려면 새 이름이어야 한다)."""
     n, st = name_of(b), states_of(b)
@@ -142,14 +157,22 @@ def modern(b):
     if n == "log": return st.get("old_log_type", "oak") + "_log", {"pillar_axis": st.get("pillar_axis", "y")}
     if n == "log2": return st.get("new_log_type", "acacia") + "_log", {"pillar_axis": st.get("pillar_axis", "y")}
     if n == "stonebrick": return {"mossy": "mossy_stone_bricks", "cracked": "cracked_stone_bricks", "chiseled": "chiseled_stone_bricks"}.get(st.get("stone_brick_type"), "stone_bricks"), {}
-    if n in ("stone_block_slab", "double_stone_block_slab"):
-        t = {"smooth_stone": "smooth_stone", "cobblestone": "cobblestone", "quartz": "quartz", "stone_brick": "stone_brick", "brick": "brick",
-             "sandstone": "sandstone", "nether_brick": "nether_brick", "wood": "oak"}.get(st.get("stone_slab_type"), "smooth_stone")
-        return (t + "_slab", half()) if n == "stone_block_slab" else (t + "_double_slab", {})
+    m = SLAB_RE.match(n)
+    if m:                                                 # stone_slab·stone_block_slab(2~4) · double_… → 새 반 블록 이름
+        dbl, num = bool(m.group(1)), m.group(2) or ""
+        key = "stone_slab_type" + ("_" + num if num else "")
+        base = SLAB_TYPES[num].get(st.get(key), "smooth_stone")
+        return (base + "_double_slab", {}) if dbl else (base + "_slab", half())
     if n == "stone": return {"andesite_smooth": "polished_andesite", "granite": "granite", "granite_smooth": "polished_granite", "diorite": "diorite",
                              "diorite_smooth": "polished_diorite", "andesite": "andesite"}.get(st.get("stone_type"), "stone"), {}
     if n == "sandstone": return {"cut": "cut_sandstone", "smooth": "smooth_sandstone", "heiroglyphs": "chiseled_sandstone"}.get(st.get("sand_stone_type"), "sandstone"), {}
     if n in ("wool", "concrete"): return st.get("color", "white") + "_" + n, {}
+    if n == "leaves": return st.get("old_leaf_type", "oak") + "_leaves", {}
+    if n == "leaves2": return st.get("new_leaf_type", "acacia") + "_leaves", {}
+    if n == "red_flower": return FLOWERS.get(st.get("flower_type"), "poppy"), {}
+    if n == "yellow_flower": return "dandelion", {}
+    if n == "double_plant": return PLANT2.get(st.get("double_plant_type"), "tall_grass"), {}
+    if n == "tallgrass": return "fern" if st.get("tall_grass_type") == "fern" else "short_grass", {}
     if n == "grass": return "grass_block", {}
     if n == "tallgrass": return "short_grass", {}
     if n == "dirt": return "dirt", {}
@@ -393,6 +416,12 @@ take_bents(GR, PAL_T, okmask)
 print(f"  궁궐: {int(placed.sum()):,}칸 붙임, 가장자리에서 잘려 뺀 전각 {dropped}개")
 del GR
 
+# 궁궐 밑에 남은 옛 바다는 흙으로 (섬 가장자리가 이제 공허와 맞닿아 새어 나간다)
+wet_old = table("wetold", lambda b: name_of(b) in ("water", "flowing_water", "seagrass", "kelp", "tall_seagrass", "kelp_plant", "bubble_column"))
+under = placed.any(1)[:, None, :] & (ys < s[1] + PAL_T[2]) & wet_old[NEW]
+NEW[under] = DIRT
+print(f"  궁궐 밑 옛 바닷물 {int(under.sum()):,}칸 → 흙")
+
 # ---------- 3. 광화문 + 궁장 ----------
 print("경복궁 월드 읽는 중… (광화문)")
 s = GATE_SRC
@@ -521,6 +550,24 @@ orphan = leaf_t()[NEW] & ~near & zone[:, None, :] & ~placed & ~keep_box
 NEW[orphan] = 0
 print(f"줄기를 잃은 잎 {int(orphan.sum()):,}칸 걷음")
 
+# ---------- 6a. 물이 공허로 새지 않게 (물 아래가 비면 돌로 받치고, 옆이 낭떠러지인 물은 흙으로) ----------
+STONE = LR.pid(block("stone", {}, 18168865))
+leak_n = 0
+for _ in range(4):
+    w = water_t()[NEW]
+    fall_b = table("fall", lambda b: name_of(b) in ("sand", "gravel", "red_sand", "anvil") or name_of(b).endswith("concrete_powder"))[NEW] & placed
+    below_air = np.zeros(SH, bool); below_air[:, 1:] = NEW[:, :-1] == 0
+    fill = np.zeros(SH, bool); fill[:, :-1] = ((w | fall_b) & below_air)[:, 1:]   # 물·떨어지는 블록 바로 아래 빈칸
+    air_fall = (NEW == 0) & np.concatenate([np.ones((SH[0], 1, SH[2]), bool), NEW[:, :-1] == 0], 1)   # 빈칸이고 그 아래도 빈칸
+    side_fall = np.zeros(SH, bool)
+    side_fall[1:] |= air_fall[:-1]; side_fall[:-1] |= air_fall[1:]; side_fall[..., 1:] |= air_fall[..., :-1]; side_fall[..., :-1] |= air_fall[..., 1:]
+    side_fall[0] = side_fall[-1] = True; side_fall[..., 0] = side_fall[..., -1] = True     # 범위 끝 바깥은 공허
+    edge_w = w & side_fall
+    if not fill.any() and not edge_w.any(): break
+    NEW[fill & ~crit0] = STONE; NEW[edge_w & ~crit0] = DIRT
+    leak_n += int(fill.sum() + edge_w.sum())
+print(f"물이 새거나 블록이 떨어질 곳 {leak_n:,}칸 막음")
+
 # ---------- 6b. 땅 가장자리 방벽 (공허로 떨어지면 시작 방에서 다시 태어나 호스트 판정이 다시 돈다) ----------
 BARRIER = LR.pid(block("barrier", {}, 18168865))
 solid = NEW > 0
@@ -568,6 +615,47 @@ def norm_ids(palette):
     return np.array(out, np.int32)
 diffc = norm_ids(pal)[NEW] != norm_ids(CR.palette)[CR.grid]
 print(f"  지금 월드와 다른 칸 {int(diffc.sum()):,}")
+if "--check" in sys.argv:                                  # 읽기만: 조각별로 지금 월드와 다른 칸 수 (게임이 켜져 있을 때 진행 확인용, 파일을 쓰지 않는다)
+    import collections
+    T64 = 64; done_n = 0; rows = []
+    for tz in range(z1, z2 + 1, T64):
+        for tx in range(x1, x2 + 1, T64):
+            n = int(diffc[tx - x1:tx - x1 + T64, :, tz - z1:tz - z1 + T64].sum())
+            rows.append(("%d_%d" % ((tz - z1) // T64 + 1, (tx - x1) // T64 + 1), n))
+    print("  조각별 다른 칸 (1,000칸 넘는 것):", [r for r in rows if r[1] > 1000])
+    nn = np.array([modern(b)[0] for b in pal]); cn = np.array([modern(b)[0] for b in CR.palette])
+    w = np.argwhere(diffc)
+    print("  남은 차이 (지금 → 계획):", collections.Counter(zip(cn[CR.grid[w[:, 0], w[:, 1], w[:, 2]]].tolist(), nn[NEW[w[:, 0], w[:, 1], w[:, 2]]].tolist())).most_common(10))
+    ww = np.argwhere(diffc & (cn[CR.grid] == "water") & (nn[NEW] == "air"))
+    if len(ww):
+        print("  계획엔 없는 물: 높이", (int(ww[:, 1].min()) + y1, int(ww[:, 1].max()) + y1), " 8칸 묶음(x, z):",
+              collections.Counter(((int(q[0]) + x1) // 8 * 8, (int(q[2]) + z1) // 8 * 8) for q in ww).most_common(6))
+    sys.exit(0)
+if os.environ.get("GBG_DIFF"):                            # 남은 차이 분석: 바깥 확장 구역과 남쪽 끝 줄을 따로
+    import collections
+    nn = np.array([modern(b)[0] for b in pal]); cn = np.array([modern(b)[0] for b in CR.palette])
+    for label, bx in (("북쪽 확장 Z 1250~", (x1, y1, 1250, x2, y2, z2)), ("남쪽 끝 줄 Z 856~917", (x1, y1, 856, x2, y2, 917))):
+        w = np.argwhere(diffc & boxmask(bx))
+        pr = collections.Counter(zip(cn[CR.grid[w[:, 0], w[:, 1], w[:, 2]]], nn[NEW[w[:, 0], w[:, 1], w[:, 2]]]))
+        ys_ = collections.Counter((w[:, 1] + y1).tolist())
+        print("  [%s] %d칸:" % (label, len(w)), pr.most_common(14), " 높이:", sorted(ys_.items())[:12], "…")
+if os.environ.get("GBG_DIFF"):
+    wf = np.argwhere(diffc & (cn[CR.grid] == "water") & (nn[NEW] == "air") & (np.arange(SH[1])[None, :, None] + y1 < 58))
+    cols = collections.Counter(((int(q[0]) + x1) // 8 * 8, (int(q[2]) + z1) // 8 * 8) for q in wf)
+    print("  [공허로 떨어지는 물] 8칸 묶음 (x, z): 칸 수", cols.most_common(12))
+    for nm_ in ("short_grass", "torch", "red_flower"):
+        wq = np.argwhere(diffc & (cn[CR.grid] == "air") & (nn[NEW] == nm_))
+        cc = collections.Counter(((int(q[0]) + x1) // 32 * 32, (int(q[2]) + z1) // 32 * 32) for q in wq)
+        print("  [빠진 %s] %d개, 32칸 묶음:" % (nm_, len(wq)), cc.most_common(10))
+    # 같은 묶음에서 남아 있는 비율
+    keep_t = np.argwhere((cn[CR.grid] == "torch") & (nn[NEW] == "torch"))
+    print("  남아 있는 torch", len(keep_t))
+    for (cx, cz) in ((220, 880), (-100, 880), (-230, 880), (90, 880)):
+        a, c_ = cx - x1, cz - z1
+        def col(G, names):
+            v = [(j + y1, names[G[a, j, c_]]) for j in range(SH[1]) if names[G[a, j, c_]] != "air"]
+            return v[:3] + ["…"] + v[-3:] if len(v) > 6 else v
+        print("  기둥 x %d z %d  계획:" % (cx, cz), col(NEW, nn), " 지금:", col(CR.grid, cn))
 isl = boxmask((-192, y1, 856, 191, y2, 1247))
 if (diffc & isl).any():                                   # 이미 놓인 섬 안에서 다른 칸: 무엇이 무엇으로 바뀌는지 (많으면 이름 맞추기 점검)
     import collections
@@ -579,8 +667,11 @@ if (diffc & isl).any():                                   # 이미 놓인 섬 �
     print("  섬 안 64칸 조각별 (지난번 조각 기준 x열·z행: 칸 수):", sorted(((k[1] + 1, k[0] + 1), v) for k, v in tc.items()))
 sd = os.path.join(BP, "structures", "gbg"); fd = os.path.join(BP, "functions", "gbg")
 os.makedirs(sd, exist_ok=True); os.makedirs(fd, exist_ok=True)
-for fn in glob.glob(os.path.join(sd, "*.mcstructure")) + glob.glob(os.path.join(fd, "lobby_*.mcfunction")) + glob.glob(os.path.join(fd, "go_*.mcfunction")): os.remove(fn)   # 이 도구가 만든 것만 (gbg/poster 는 그대로)
+for fn in glob.glob(os.path.join(sd, "*.mcstructure")) + glob.glob(os.path.join(fd, "lobby_*.mcfunction")) + glob.glob(os.path.join(fd, "go_*.mcfunction")) + glob.glob(os.path.join(fd, "build_*.mcfunction")): os.remove(fn)   # 이 도구가 만든 것만 (gbg/poster 는 그대로)
 build, restore, tiles = [], [], []
+# 조각 이름은 만들 때마다 새로: 게임은 켜져 있는 동안 같은 이름의 조각을 기억해 두고 써서, 이름이 같으면 옛 내용이 새 좌표에 놓인다 (11칸 어긋남 사고)
+import time
+RUN = "".join("0123456789abcdefghijklmnopqrstuvwxyz"[(int(time.time()) // 36 ** i) % 36] for i in range(4))[::-1]
 T64 = 64
 for tz in range(z1, z2 + 1, T64):
     for tx in range(x1, x2 + 1, T64):
@@ -599,26 +690,63 @@ for tz in range(z1, z2 + 1, T64):
         for p, be in bents_new.items():
             if inbox(p, bx_) and placed[L(*p)]: bn[(p[0] - o[0], p[1] - o[1], p[2] - o[2])] = be
         nm = "%d_%d" % ((tz - z1) // T64 + 1, (tx - x1) // T64 + 1)
-        mcstruct.write_structure(os.path.join(sd, "new_" + nm + ".mcstructure"), NEW[sl], pal, o, bn)
-        build.append("structure load gbg:new_%s %d %d %d" % (nm, *o))
+        mcstruct.write_structure(os.path.join(sd, RUN + "_" + nm + ".mcstructure"), NEW[sl], pal, o, bn)
+        build.append("structure load gbg:%s_%s %d %d %d" % (RUN, nm, *o))
         if RESTORE:
-            mcstruct.write_structure(os.path.join(sd, "old_" + nm + ".mcstructure"), CR.grid[sl], CR.palette, o, bo)
-            restore.append("structure load gbg:old_%s %d %d %d" % (nm, *o))
+            mcstruct.write_structure(os.path.join(sd, RUN + "old_" + nm + ".mcstructure"), CR.grid[sl], CR.palette, o, bo)
+            restore.append("structure load gbg:%sold_%s %d %d %d" % (RUN, nm, *o))
         tiles.append((nm, bx_, int(sub.sum())))
 head = ["## [경복궁] 로비 섬에 광화문·궁궐 놓기 — python tools/gbg-lobby.py 가 만든 파일 (손으로 고치지 않는다).",
         "## 구조물은 그 자리가 불러와져 있을 때만 놓인다: /function gbg/go_1 ~ go_%d 로 하늘에 가서 그때마다 이 함수를 실행한다." % len(GO),
         "## 여러 번 실행해도 같다. 되돌리기는 월드를 닫고 git의 db/ 로 (또는 --restore 로 만든 gbg/lobby_restore)."]
 done = 'tellraw @s {"rawtext":[{"text":"§a[경복궁] 조각 %d개를 불러왔습니다 — 이 둘레만 놓입니다. go_1~go_%d 에서 한 번씩 실행하세요."}]}' % (len(build), len(GO))
 open(os.path.join(fd, "lobby_build.mcfunction"), "w", encoding="utf8").write("\n".join(head + build + [done]) + "\n")
-for n, (gx_, gy_, gz_) in enumerate(GO, 1):
+groups = {}
+for line, t in zip(build, tiles):
+    nz, nx = (int(v) for v in t[0].split("_"))
+    groups.setdefault(((nz - 1) // 2, (nx - 1) // 2), []).append(line)
+GO = []
+for n, ((gz2, gx2), lines) in enumerate(sorted(groups.items()), 1):
+    cx = x1 + gx2 * 128 + 64; cz = z1 + gz2 * 128 + 64
+    GO.append((cx, 130, cz))
     open(os.path.join(fd, "go_%d.mcfunction" % n), "w", encoding="utf8").write(
-        "## [경복궁] 놓을 자리 %d 하늘로 — 여기서 /function gbg/lobby_build\ntp @s %d %d %d facing %d %d %d\n" % (n, gx_, gy_, gz_, gx_, 60, gz_ + 40))
+        "## [경복궁] 묶음 %d 하늘로 — 여기서 /function gbg/build_%d\ntp @s %d 130 %d facing %d 60 %d\n"
+        'tellraw @s {"rawtext":[{"text":"§e[경복궁] 묶음 %d — 땅이 다 보이면 /function gbg/build_%d"}]}\n' % (n, n, cx, cz, cx, cz + 40, n, n))
+    open(os.path.join(fd, "build_%d.mcfunction" % n), "w", encoding="utf8").write(
+        "## [경복궁] 묶음 %d 의 조각 %d개 — /function gbg/go_%d 로 가서 실행한다\n" % (n, len(lines), n) + "\n".join(lines) +
+        '\ntellraw @s {"rawtext":[{"text":"§a[경복궁] 묶음 %d 조각 %d개를 놓았습니다. 다음: /function gbg/go_%d"}]}\n' % (n, len(lines), n + 1))
+print(f"놓을 자리 {len(GO)}곳 (go_1~go_{len(GO)} → build_1~build_{len(GO)})")
+# 같은 명령 하나를 되풀이: /function gbg/next — 지금 선 묶음의 조각을 놓고 다음 묶음 하늘로 간다 (진행 번호는 점수판 gbg_step)
+# (schedule on_area_loaded 는 교육용 에디션에서 쓸 수 없어 함수가 불러와지지 않았다)
+import shutil as _sh
+if os.path.isdir(os.path.join(fd, "auto")): _sh.rmtree(os.path.join(fd, "auto"))
+if os.path.exists(os.path.join(fd, "auto.mcfunction")): os.remove(os.path.join(fd, "auto.mcfunction"))
+N = len(GO)
+nx = ["## [경복궁] 되풀이 놓기 — 실행할 때마다 지금 묶음의 조각을 놓고 다음 묶음 하늘로 간다. 이동한 뒤 땅이 다 보이면 다시 실행한다 (%d번 + 처음 1번)." % N,
+      "## 처음부터 다시: /function gbg/next_reset. 묶음 하나만 다시: /function gbg/go_N → /function gbg/build_N",
+      "scoreboard objectives add gbg_step dummy",
+      "scoreboard players add .step gbg_step 0"]
+nx += ["execute if score .step gbg_step matches %d run function gbg/build_%d" % (n, n) for n in range(1, N + 1)]
+nx += ["scoreboard players add .step gbg_step 1"]
+nx += ["execute if score .step gbg_step matches %d run function gbg/go_%d" % (n, n) for n in range(1, N + 1)]
+nx += ['execute if score .step gbg_step matches %d.. run tellraw @s {"rawtext":[{"text":"§a[경복궁] 묶음 %d개를 모두 놓았습니다. 월드를 닫고 확인을 맡기세요."}]}' % (N + 1, N),
+       "execute if score .step gbg_step matches %d.. run scoreboard players set .step gbg_step 0" % (N + 1)]
+open(os.path.join(fd, "next.mcfunction"), "w", encoding="utf8").write("\n".join(nx) + "\n")
+open(os.path.join(fd, "next_reset.mcfunction"), "w", encoding="utf8").write(
+    "## [경복궁] 되풀이 놓기를 처음부터\nscoreboard objectives add gbg_step dummy\nscoreboard players set .step gbg_step 0\n"
+    'tellraw @s {"rawtext":[{"text":"§e[경복궁] 처음부터 — /function gbg/next"}]}\n')
+for n in range(1, N + 1):                                  # 묶음 안내를 '다음 명령' 에 맞춘다
+    p_ = os.path.join(fd, "go_%d.mcfunction" % n); t_ = open(p_, encoding="utf8").read()
+    t_ = t_.replace("땅이 다 보이면 /function gbg/build_%d" % n, "%d/%d — 땅이 다 보이면 다시 /function gbg/next" % (n, N))
+    open(p_, "w", encoding="utf8").write(t_)
+print(f"되풀이 놓기: /function gbg/next × {N + 1}번 (묶음 {N}개)")
 if RESTORE:
     open(os.path.join(fd, "lobby_restore.mcfunction"), "w", encoding="utf8").write("\n".join([
         "## [경복궁] 로비 섬을 놓기 전 모습으로 — python tools/gbg-lobby.py --restore 가 만든 파일. go_1~go_%d 에서 한 번씩." % len(GO)] + restore + [
         'tellraw @s {"rawtext":[{"text":"§e[경복궁] 옛 모습 조각 %d개를 불러왔습니다."}]}' % len(restore)]) + "\n")
 mb = sum(os.path.getsize(fn) for fn in glob.glob(os.path.join(sd, "*.mcstructure"))) / 1e6
-print(f"구조물 조각 {len(tiles)}개{' × 2' if RESTORE else ''} = {mb:.1f}MB → structures/gbg/ (git에 올리지 않음), functions/gbg/")
+for t in tiles: print("    조각 %-6s X %d~%d Z %d~%d  다른 칸 %s" % (t[0], t[1][0], t[1][3], t[1][2], t[1][5], f"{t[2]:,}"))
+print(f"조각 이름 앞머리 {RUN}_ · 구조물 조각 {len(tiles)}개{' × 2' if RESTORE else ''} = {mb:.1f}MB → structures/gbg/ (git에 올리지 않음), functions/gbg/")
 
 # ---------- 9. 개발자 페이지 미리보기 ----------
 pd = os.path.join(ROOT, "devpage-areas", "plans"); os.makedirs(pd, exist_ok=True)

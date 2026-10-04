@@ -1105,8 +1105,9 @@ function renderBuild() {
     + "<li><b>구조물 불러오기</b>: .mcstructure 파일을 <code>behavior_packs/bp0/structures/gbg/</code>에 <b>새 파일</b>로 넣고 월드를 다시 연 뒤, 놓을 자리 <b>근처에 서서</b>"
     + cmdRow("불러오기", "/structure load gbg:파일이름 x y z", "그 자리가 불러와져 있어야 놓인다 (멀리서 하면 조용히 실패)") + "</li>"
     + "<li><b>경복궁 로비 섬</b>(python tools/gbg-lobby.py 가 만든 조각 — 광화문·궁장·궁궐·광장 박석·마을 걷기): 아래 구역 3D의 '계획' 두 개로 지금/바꾼 뒤를 비교한 다음, "
-    + "섬 네 귀퉁이 하늘에서 한 번씩 (조각은 불러와진 곳에만 놓인다)"
-    + cmdRow("1. 귀퉁이로", "/function gbg/go_1", "go_1 ~ go_4") + cmdRow("2. 놓기", "/function gbg/lobby_build", "네 곳에서 한 번씩 — 여러 번 해도 같다")
+    + "같은 명령을 되풀이 (실행할 때마다 지금 묶음을 놓고 다음 묶음 하늘로 — 땅이 다 보이면 다시)"
+    + cmdRow("놓기", "/function gbg/next", "채팅의 N/전체 를 보며 끝날 때까지 — 처음부터는 /function gbg/next_reset")
+    + cmdRow("한 묶음만", "/function gbg/go_N → /function gbg/build_N", "덜 놓인 묶음만 다시")
     + "되돌리기는 월드를 닫고 git의 db/ 로 (먼저 db를 커밋해 둔다)</li>"
     + "<li>모자라는 곳은 직접 블록을 놓는다 (아래 '이 블록을 놓으면' 표 참고)</li>"
     + "<li><b>3D로 확인</b>: 터미널에서 <code>python tools/export-areas.py</code> (게임이 켜져 있어도 됨) → 아래 구역 3D의 [다시 불러오기]</li>"

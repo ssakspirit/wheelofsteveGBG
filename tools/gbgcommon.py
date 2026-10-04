@@ -102,6 +102,7 @@ def modern(b):
                              "diorite_smooth": "polished_diorite", "andesite": "andesite"}.get(st.get("stone_type"), "stone"), {}
     if n == "sandstone": return {"cut": "cut_sandstone", "smooth": "smooth_sandstone", "heiroglyphs": "chiseled_sandstone"}.get(st.get("sand_stone_type"), "sandstone"), {}
     if n in ("wool", "concrete"): return st.get("color", "white") + "_" + n, {}
+    if n == "stained_hardened_clay": return st.get("color", "white") + "_terracotta", {}
     if n == "leaves": return st.get("old_leaf_type", "oak") + "_leaves", {}
     if n == "leaves2": return st.get("new_leaf_type", "acacia") + "_leaves", {}
     if n == "red_flower": return FLOWERS.get(st.get("flower_type"), "poppy"), {}

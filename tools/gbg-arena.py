@@ -23,6 +23,29 @@ CHECK = "--check" in sys.argv
 
 # ---------- 경기장별 설정 (상자는 x1 y1 z1 x2 y2 z2, 양 끝 포함) ----------
 ARENAS = {
+    "grid": dict(
+        title="교태전 꽃담 맞추기",
+        base="5736b88",
+        center=(-33, -95),
+        # 정글 섬 가운데 돌 정원. 울타리 고리 X −55~−12 Z −114~−78 (방벽 264개), 무늬판·명령 블록 Z −79~−77, 카메라 13곳, 타이머 −33 90 −97.
+        # 섬 밖 공허의 시작 방(원점, Y 28 이하)·개발 HQ(Y 3 이하)·철 블록 무늬 벽(Z −217, Y 49 이하)은 게임이 쓴다 → region을 Y 50부터로
+        protect=(-58, -117, -9, -74),
+        ground=59,
+        carve=(-62, -121, -5, -70),
+        land=(-107, -202, 37, -17),         # 정글 섬 → 경복궁 교태전 일대 (경기장이 교태전 자리, 무늬판 너머로 아미산 화계·굴뚝)
+        gbg_center=(178, -1025),
+        # 놓은 뒤 사용자가 손으로 고친 곳: 서쪽 담 밖 흰 벽과 지붕, 남쪽 잘린 행각 지붕, 동쪽·남서 모서리 담 끝
+        keep_boxes=[(-63, 62, -88, -62, 72, -78), (-63, 65, -123, -8, 67, -114), (-5, 59, -78, -2, 63, -71), (-63, 60, -121, -63, 61, -119)],
+        arena_wall=True,                    # 경기장 둘레 꽃담
+        strip_names=("jungle_log", "jungle_leaves", "vine", "cocoa"),   # 정원의 높은 정글 나무·덩굴 (밑동은 모두 걷는 곳 밖, 안쪽은 머리 위 Y 65~ 가지뿐)
+        walk=(-54, 59, -113, -13, 64, -79),
+        drop_span=64,                       # 교태전 일대는 행각으로 107칸 덩어리 — 통째로 빼지 말고 경기장 자리만
+        band=70,
+        region=(-179, 50, -274, 109, 150, 55),
+        peaks={"+z": 62, "+x": 52, "-x": 34, "-z": 42},
+        cameras=[(-14.4, 62.6, -110.5), (-17.0, 66.6, -96.5), (-24.4, 63.1, -94.3), (-29.3, 61.3, -87.9), (-30.0, 66.6, -90.5), (-31.9, 66.7, -95.0), (-33.0, 65.6, -82.5),
+                 (-35.9, 66.7, -95.0), (-36.0, 66.6, -90.5), (-37.3, 61.3, -87.9), (-42.4, 63.1, -94.3), (-49.0, 66.6, -96.5), (-52.4, 62.6, -110.5)],
+    ),
     "craft": dict(
         title="자격루 복원전",
         base="1d14bff",
@@ -120,7 +143,7 @@ seeds = np.broadcast_to(incarve[:, None, :], gbuilt.shape)
 dropped = 0; drop_log = []
 for c in components(gbuilt, seeds):                        # 경기장 자리에 걸리는 전각은 통째로 (행각 연결망처럼 큰 것은 자리만)
     span = c.max(0) - c.min(0)
-    if span[0] < 110 and span[2] < 110: GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1; drop_log.append(("자리", c))
+    if span[0] < A.get("drop_span", 110) and span[2] < A.get("drop_span", 110): GR.grid[c[:, 0], c[:, 1], c[:, 2]] = 0; dropped += 1; drop_log.append(("자리", c))
 gbuilt = (gy > 63) & (GR.grid > 0) & ~gplant[GR.grid]
 edge = np.zeros(gbuilt.shape, bool); edge[0] = edge[-1] = True; edge[:, :, 0] = edge[:, :, -1] = True
 for c in components(gbuilt, edge):                          # 땅 가장자리(산 기슭)에서 잘리는 작은 전각도 통째로
@@ -169,6 +192,14 @@ if A.get("strip"):                                          # 지키는 상자 �
     if any(n in sn for n in ("barrier", "structure_void", "command_block", "repeating_command_block", "chain_command_block")):
         sys.exit("⚠ 걷는 상자에 게임 블록이 있음")
     NEW[strip3] = 0
+if A.get("strip_names"):                                    # 지키는 상자 안의 이 블록(경기장 정원의 높은 나무·덩굴 등)은 걷는다
+    sm = np.isin(NEW, [i for i, b in enumerate(pal) if name_of(b) in A["strip_names"]]) & np.broadcast_to(prot2[:, None, :], SH)
+    if A.get("walk"):                                       # 걸어 다니는 곳(발·머리가 닿는 높이)의 칸은 걷지 않는다 — 있으면 멈춘다
+        w_ = A["walk"]; wm = np.zeros(SH, bool)
+        wm[w_[0] - x1:w_[3] - x1 + 1, w_[1] - y1:w_[4] - y1 + 1, w_[2] - z1:w_[5] - z1 + 1] = True
+        if (sm & wm).any(): sys.exit("⚠ 걸어 다니는 곳에 걷을 블록이 %d칸 있음" % int((sm & wm).sum()))
+    print("  지키는 상자 안에서 걷는 블록", dict(collections.Counter(name_of(pal[i]) for i in NEW[sm])))
+    NEW[sm] = 0; strip3 |= sm
 print(f"  전각 {dropped}개를 빼고 땅 {n_pal:,}칸에 경복궁을 깖, 드러난 흙 {fixed:,}칸은 마당 바닥으로")
 
 # ---------- 1b. 궁장: 궁궐 땅 가장자리를 담으로 둘러 숲과 나눈다 (잘린 행각 끝도 담 속으로) ----------
@@ -201,6 +232,25 @@ for a in range(la, lb + 1):
 for cc in range(lc, ld + 1):
     wall_cell(la, cc, "+x"); wall_cell(lb, cc, "-x")
 print(f"궁장 {wall_n:,}칸 (땅 둘레 {2 * (lb - la + ld - lc)}칸 길이, 높이 7)")
+if A.get("arena_wall"):
+    # 경기장 꽃담: 지키는 상자 바로 바깥 3칸 둘레, 땅 위 5칸 (장대석 · 붉은 전돌 · 전돌과 회벽 무늬 줄 · 기와, 용마루) — 카메라가 너머를 보도록 궁장보다 낮게
+    BRK = LR.pid(block("brick_block", {}, 18168865)); HOE = LR.pid(block("stained_hardened_clay", {"color": S("white")}, V_OLD))
+    p_ = A["protect"]; yb = G - y1; aw = 0
+    for gx in range(p_[0] - 3, p_[2] + 4):
+        for gz in range(p_[1] - 3, p_[3] + 4):
+            ox = max(p_[0] - gx, gx - p_[2], 0); oz = max(p_[1] - gz, gz - p_[3], 0); d = max(ox, oz)
+            if d == 0: continue
+            a, cc = gx - x1, gz - z1
+            inward = ("+x" if gx < p_[0] else "-x") if ox >= oz else ("+z" if gz < p_[1] else "-z")
+            opp = {"+x": "-x", "-x": "+x", "+z": "-z", "-z": "+z"}[inward]
+            along = gz if inward in ("+x", "-x") else gx
+            NEW[a, yb + 1:, cc] = 0
+            NEW[a, yb - 2:yb + 2, cc] = BRICK; NEW[a, yb + 2, cc] = BRK
+            NEW[a, yb + 3, cc] = HOE if along % 4 in (1, 2) else BRK
+            NEW[a, yb + 4, cc] = TILE2 if d == 2 else stair(UP[inward] if d == 3 else UP[opp])
+            if d == 2: NEW[a, yb + 5, cc] = RIDGE
+            placed[a, yb - 2:yb + 6, cc] = True; aw += 1
+    print(f"경기장 꽃담 {aw:,}칸 (높이 5)")
 
 # ---------- 2. 산줄기 (땅 둘레 띠) ----------
 rng = np.random.default_rng(7)
@@ -290,6 +340,8 @@ nid = {}
 def norm_ids(palette):
     return np.array([nid.setdefault(modern(b)[0], len(nid)) for b in palette], np.int32)
 diffc = (norm_ids(pal)[NEW] != norm_ids(CR.palette)[CR.grid]) & ~p3
+for kb in A.get("keep_boxes", ()):                          # 사용자가 놓은 뒤 손으로 고친 곳 — 다시 놓을 때 덮지 않는다
+    diffc[kb[0] - x1:kb[3] - x1 + 1, kb[1] - y1:kb[4] - y1 + 1, kb[2] - z1:kb[5] - z1 + 1] = False
 if A.get("keep_now"):                                       # 지금 월드에 사용자가 직접 놓은 블록은 그대로
     diffc &= ~np.array([name_of(b) in A["keep_now"] for b in CR.palette])[CR.grid]
 print(f"  지금 월드와 다른 칸 {int(diffc.sum()):,}")
@@ -304,6 +356,16 @@ if CHECK:
         pairs = list(zip(cn[CR.grid[w[:, 0], w[:, 1], w[:, 2]]].tolist(), nn[NEW[w[:, 0], w[:, 1], w[:, 2]]].tolist()))
         by = collections.defaultdict(list)
         for (a, yy, cc), pr in zip(w.tolist(), pairs): by[((a + x1) >> 4, (cc + z1) >> 4)].append((yy + y1, pr))
+        if os.environ.get("GBG_BELOW"):                       # 이 계획 블록이 빠진 칸 아래에 지금 무엇이 있나
+            nb = os.environ["GBG_BELOW"].split(",")
+            print("    빠진", nb, "아래 (지금/계획):", collections.Counter((cn[CR.grid[a, yy - 1, cc]], nn[NEW[a, yy - 1, cc]]) for (a, yy, cc), pr in zip(w.tolist(), pairs) if pr[1] in nb and pr[0] == "air").most_common(8))
+        if os.environ.get("GBG_PAIRS"):                       # 이 블록 쌍(지금>계획)의 칸을 모두 찍는다
+            want = set(tuple(p.split(">")) for p in os.environ["GBG_PAIRS"].split(","))
+            hit = [((a + x1, yy + y1, cc + z1), pr) for (a, yy, cc), pr in zip(w.tolist(), pairs) if pr in want]
+            for pr in sorted(set(p for _, p in hit)):
+                pts = np.array([q for q, p in hit if p == pr])
+                print("    %s → %s %d칸  X %d~%d Y %d~%d Z %d~%d" % (pr[0], pr[1], len(pts), *[v for k in range(3) for v in (pts[:, k].min(), pts[:, k].max())]))
+                if len(pts) <= 70: print("      ", " ".join("%d,%d,%d" % tuple(q) for q in pts.tolist()))
         for (cx, cz), v in sorted(by.items(), key=lambda kv: -len(kv[1]))[:25]:
             yv = [t[0] for t in v]
             print("    X %d~%d Z %d~%d  Y %d~%d  %d칸  %s" % (cx * 16, cx * 16 + 15, cz * 16, cz * 16 + 15, min(yv), max(yv), len(v), collections.Counter(t[1] for t in v).most_common(3)))

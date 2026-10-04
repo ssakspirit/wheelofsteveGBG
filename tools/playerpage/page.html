@@ -99,24 +99,39 @@ ol.flow h3 { font-size: 19px; margin-bottom: 4px }
 .chips { display: flex; flex-wrap: wrap; gap: 6px }
 .chips span { background: var(--chip); border-radius: 999px; padding: 2px 10px; font-size: 14px }
 
-/* 배경이 된 경복궁 */
-.places { display: grid; gap: 18px }
-.place { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); min-width: 0 }
-.place .shots { display: grid; gap: 2px; background: var(--line) }
-.place .shots img { width: 100%; height: 100%; min-height: 180px; object-fit: cover; display: block }
+/* 배경이 된 경복궁: 마당 이름 탭 → 한 마당씩 */
+.g-lobby { --tone: #6d4b2f }
+.ptabs { display: flex; gap: 8px; overflow-x: auto; padding-block: 4px 10px; margin-bottom: 4px; scrollbar-width: thin }
+.ptab { flex: none; display: grid; gap: 0; text-align: left; font: inherit; cursor: pointer; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line); border-top: 4px solid var(--tone); border-radius: 10px; padding: 6px 14px 7px; min-width: 0 }
+.ptab b { font-family: var(--f-display); font-size: 17px; font-weight: 700; line-height: 1.35 }
+.ptab span { font-size: 13px; color: var(--muted); line-height: 1.35 }
+.ptab:hover { background: color-mix(in srgb, var(--tone) 10%, var(--paper)) }
+.ptab[aria-selected="true"] { background: var(--tone); border-color: var(--tone); color: #fff }
+.ptab[aria-selected="true"] span { color: rgba(255,255,255,.82) }
+.place { background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--tone); border-radius: var(--radius); overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); min-width: 0 }
+.place .shots { display: grid; gap: 2px; background: var(--line); align-content: start }
+.place .shots figure { margin: 0; position: relative }
+.place .shots img { width: 100%; aspect-ratio: 1161 / 555; max-width: 100%; object-fit: cover; display: block }
+.place .shots figcaption { position: absolute; left: 8px; bottom: 8px; background: rgba(20,24,26,.72); color: #fff; font-size: 13px; padding: 1px 9px; border-radius: 999px }
 .place .txt { padding: 18px 20px; display: grid; gap: 12px; align-content: start; min-width: 0 }
 .place h3 { font-size: 23px }
-.place .tag { display: inline-block; background: var(--green); color: #fff; border-radius: 999px; padding: 1px 10px; font-size: 13px; margin-bottom: 4px }
+.place .tag { display: inline-block; background: var(--tone); color: #fff; border-radius: 999px; padding: 1px 10px; font-size: 13px; margin-bottom: 4px }
 .place .txt > p { color: var(--muted) }
+.changed { display: grid; gap: 4px; background: color-mix(in srgb, var(--tone) 8%, var(--paper)); border-radius: 10px; padding: 10px 14px }
+.changed h4 { font-family: var(--f-body); font-size: 13px; letter-spacing: .06em; color: var(--muted); font-weight: 400 }
+.changed ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.6 }
 .spots { display: grid; gap: 8px }
 .spot { border-left: 3px solid var(--gold); padding-left: 10px; font-size: 15px; line-height: 1.6 }
 .spot b { font-family: var(--f-display); font-size: 16px; color: var(--ink) }
-.motifs { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-top: 18px }
-.motif { background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--tone); border-radius: 12px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0 }
-.motif .g { font-size: 13px; color: var(--muted) }
-.motif b { font-family: var(--f-display); font-size: 18px }
-.motif p { font-size: 15px; color: var(--muted); line-height: 1.6 }
 .cap { font-size: 13px; color: var(--muted); margin-top: 10px }
+
+.gpanel { display: grid; gap: 26px; margin-top: 6px }
+.gsub { display: grid; gap: 10px; min-width: 0 }
+.gsub > h4 { font-size: 20px; border-left: 4px solid var(--tone); padding-left: 10px; line-height: 1.2 }
+.people.one { grid-template-columns: minmax(0, 640px) }
+.gsub .group { display: grid; gap: 10px }
+.gsub .group > p { color: var(--muted); max-width: 46em; margin: 0 }
 
 /* 인물 */
 .people { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px }
@@ -160,7 +175,7 @@ footer .wrap { display: grid; gap: 4px }
 </style>
 
 <nav class="top" aria-label="쪽 안내"><div class="wrap">
-  <a href="#how">대회 방법</a><a href="#games">여섯 마당</a><a href="#places">배경 장소</a><a href="#people">인물</a><a href="#things">물건과 동물</a><a href="#blocks">궁궐 블록</a><a href="#teacher">선생님께</a>
+  <a href="#how">대회 방법</a><a href="#lobby">로비</a><a href="#orb">옥새 쟁탈전</a><a href="#craft">자격루 복원전</a><a href="#grid">교태전 꽃담</a><a href="#nock">활쏘기 대회</a><a href="#elytra">6진 망루</a><a href="#finale">백악산</a><a href="#blocks">궁궐 블록</a><a href="#teacher">선생님께</a>
 </div></nav>
 
 <header class="hero">
@@ -194,11 +209,53 @@ footer .wrap { display: grid; gap: 4px }
 </div></section>
 
 <section class="sec" id="games"><div class="wrap">
-  <p class="eyebrow">SIX GAMES</p>
-  <h2>여섯 마당</h2>
-  <p class="intro">마당마다 진행자와 겨루는 방법이 달라요. 진행자가 말한 힘(의사소통, 협동 같은)을 쓰면 이기기 쉬워요. ▶ 버튼으로 그 대결의 배경음악을 들어 보세요.</p>
-  <div class="games">
-    <article class="game g-orb" id="orb">
+  <p class="eyebrow">COURTYARD BY COURTYARD</p>
+  <h2>로비와 여섯 마당</h2>
+  <p class="intro">마당 이름을 누르면 그 마당의 놀이 방법, 진행자, 배경이 된 경복궁, 물건과 동물을 한눈에 볼 수 있어요. 진행자가 말한 힘(의사소통, 협동 같은)을 쓰면 이기기 쉬워요. 진행자들은 모두 조선 초기에 실제로 살았던 사람들인데, 살았던 때는 조금씩 달라요. 물건 이름 아래 작은 글씨는 원래 마인크래프트에서 무엇이었는지예요.</p>
+  <div class="ptabs" role="tablist" aria-label="마당 고르기"><button class="ptab g-lobby" role="tab" id="gt-lobby" aria-controls="lobby" aria-selected="true" tabindex="0" type="button"><b>로비</b><span>세종대왕 · 혼천의</span></button><button class="ptab g-orb" role="tab" id="gt-orb" aria-controls="orb" aria-selected="false" tabindex="-1" type="button"><b>옥새 쟁탈전</b><span>첫째 마당 · 황희</span></button><button class="ptab g-craft" role="tab" id="gt-craft" aria-controls="craft" aria-selected="false" tabindex="-1" type="button"><b>자격루 복원전</b><span>둘째 마당 · 장영실</span></button><button class="ptab g-grid" role="tab" id="gt-grid" aria-controls="grid" aria-selected="false" tabindex="-1" type="button"><b>교태전 꽃담</b><span>셋째 마당 · 정도전</span></button><button class="ptab g-nock" role="tab" id="gt-nock" aria-controls="nock" aria-selected="false" tabindex="-1" type="button"><b>활쏘기 대회</b><span>넷째 마당 · 태조 이성계</span></button><button class="ptab g-elytra" role="tab" id="gt-elytra" aria-controls="elytra" aria-selected="false" tabindex="-1" type="button"><b>6진 망루</b><span>다섯째 마당 · 김종서</span></button><button class="ptab g-finale" role="tab" id="gt-finale" aria-controls="finale" aria-selected="false" tabindex="-1" type="button"><b>백악산</b><span>비밀 마당 · 세종대왕</span></button></div>
+    <div class="gpanel g-lobby" id="lobby" role="tabpanel" aria-labelledby="gt-lobby">
+      <div class="gsub"><h4>대회를 여는 곳</h4>
+    <article class="place g-lobby">
+      <div class="shots"><figure><img src="{{img:scene_gwanghwamun}}" alt="로비의 광화문"><figcaption>광화문</figcaption></figure><figure><img src="{{img:scene_geunjeongjeon}}" alt="대결 문 뒤의 근정전"><figcaption>근정전</figcaption></figure></div>
+      <div class="txt">
+        <div><span class="tag">옮겨 온 곳</span><h3>로비 · 광화문에서 근정전까지</h3></div>
+        <p>로비에 들어서면 광화문 가운데 문 안에 서 있어요. 문을 나서면 대결 문이 늘어선 마당이 있고, 그 뒤로 근정전이 보여요. 둘레에는 경회루, 사정전, 강녕전, 교태전, 향원정, 동궁이 실제 경복궁과 같은 자리에 있어요. 다만 광화문과 근정전 사이는 대결 마당을 두려고 줄였어요.</p>
+        <div class="changed"><h4>게임 속에서 바꾼 것</h4><ul><li>옛 마을을 걷고 광화문·근정전과 궁궐 전체를 옮겨 놓았어요</li><li>마당은 박석으로 깔고, 팀 고르는 곳은 기와지붕과 붉은 기둥으로</li><li>광화문 앞은 잔디밭, 섬 가장자리는 궁궐 담장</li></ul></div>
+        <div class="spots">
+          <p class="spot"><b>광화문</b> · 경복궁의 남쪽 정문이에요. 세종 때 집현전 학자들이 '광화문'이라는 이름을 지었어요. 임진왜란 때 불탔다가 고종 때 경복궁을 다시 지으며 새로 세웠어요. 문 세 개 가운데 가운데 문은 임금이 드나들던 문이에요.</p>
+          <p class="spot"><b>근정전</b> · 임금의 즉위식, 신하들의 조회, 외국 사신 맞이 같은 나라의 큰 의식을 치르던 경복궁의 으뜸 건물이에요. 정도전이 '부지런히 정치하라'는 뜻을 담아 이름을 지었어요. 지금 건물은 고종 때(1867년) 다시 지은 것이고 국보예요.</p>
+          <p class="spot"><b>경회루</b> · 연못 위에 세운 큰 누각이에요. 나라에 경사가 있거나 외국 사신이 왔을 때 잔치를 열었어요. 태종 때(1412년) 연못을 넓히며 크게 지었고 국보예요.</p>
+          <p class="spot"><b>향원정</b> · 북쪽 연못 가운데 섬에 지은 육각 정자예요. 고종 때 지었어요.</p>
+          <p class="spot"><b>동궁</b> · 다음 임금이 될 세자가 머물며 공부하던 곳이에요.</p>
+        </div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>진행자</h4>
+        <div class="people one">
+    <article class="person"><img src="{{img:wheel}}" alt="혼천의"><div><h3>세종대왕</h3><p class="years">1397 ~ 1450 · 조선의 네 번째 임금</p><p>훈민정음(한글)을 만들고, 학자와 기술자들에게 해·달·별의 움직임을 재는 <b>혼천의</b>(1433년), 물시계 <b>자격루</b> 같은 기구를 만들게 했어요. 이 대회에서는 혼천의를 돌려 대결을 정해요.</p></div></article>
+        </div>
+      </div>
+      <div class="gsub"><h4>팀 옷 (관복)</h4>
+        <div class="group">
+      <p>조선의 법전 『경국대전』은 관리가 의식 때 입는 옷(공복)의 색을 벼슬 높이에 따라 정했어요. 정3품까지는 붉은 옷(홍포), 종3품~6품은 푸른 옷(청포), 7품 아래는 초록 옷(녹포)이에요. 두 팀의 이름도 여기서 왔어요.</p>
+      <div class="tiles">
+        <div class="tile"><div class="pic"><img class="px" src="{{img:i_red_hat}}" alt=""></div><b>사모</b><span>관리가 관복과 함께 쓰던 검은 모자. 양옆에 날개가 달려 있어요.</span><p class="was">원래: 투구</p></div>
+        <div class="tile"><div class="pic"><img class="px" src="{{img:i_red_robe}}" alt=""></div><b>홍포대 관복</b><span>붉은 단령(둥근 깃의 관복)이에요.</span><p class="was">원래: 철 흉갑</p></div>
+        <div class="tile"><div class="pic"><img class="px" src="{{img:i_blue_robe}}" alt=""></div><b>청포대 관복</b><span>푸른 단령이에요.</span><p class="was">원래: 다이아몬드 흉갑</p></div>
+      </div></div>
+      </div>
+      <div class="gsub"><h4>하늘</h4>
+        <div class="group">
+      <p>임금 자리 뒤에 두던 그림 <b>일월오봉도</b>에는 붉은 해와 흰 달, 다섯 봉우리가 그려져 있어요. 이 월드의 하늘에도 붉은 해와 흰 달이 떠요.</p>
+      <div class="tiles">
+        <div class="tile"><div class="pic"><img class="px" src="{{img:p_sun}}" alt=""></div><b>붉은 해</b><span>일월오봉도의 해처럼 붉은 해예요.</span><p class="was">원래: 해</p></div>
+      </div></div>
+      </div>
+    </div>
+    <div class="gpanel g-orb" id="orb" role="tabpanel" aria-labelledby="gt-orb" hidden>
+      <div class="gsub"><h4>놀이 방법</h4>
+    <article class="game g-orb">
       <div class="side"><img src="{{img:hwanghui}}" alt="황희"><p class="no">첫째 마당</p><p class="host">영의정 황희</p><p class="skill">의사소통</p></div>
       <div class="main">
         <h3>옥새 쟁탈전</h3>
@@ -212,8 +269,39 @@ footer .wrap { display: grid; gap: 4px }
         <div class="music"><button type="button" data-music="orb" aria-pressed="false">▶ 배경음악</button><span class="small">Imperial Vanguard · 1분 미리듣기</span></div>
       </div>
     </article>
-
-    <article class="game g-craft" id="craft">
+      </div>
+      <div class="gsub"><h4>진행자</h4>
+        <div class="people one">
+    <article class="person"><img src="{{img:hwanghui}}" alt="황희"><div><h3>황희</h3><p class="years">1363 ~ 1452 · 영의정</p><p>세종 때인 1431년부터 1449년까지 18년 동안 가장 높은 벼슬인 영의정을 지냈어요. 조선에서 가장 오래 영의정을 지낸 사람이에요. 너그럽고 여러 사람의 말을 잘 들어 준 정승으로 이름났어요. 옥새 쟁탈전을 열어요.</p></div></article>
+        </div>
+      </div>
+      <div class="gsub"><h4>배경 장소</h4>
+    <article class="place g-orb">
+      <div class="shots"><figure><img src="{{img:scene_orb}}" alt="옥새 쟁탈전 마당에서 본 전각과 산"><figcaption>마당에서 본 전각</figcaption></figure><figure><img src="{{img:scene_orb_over}}" alt="옥새 쟁탈전 마당을 둘러싼 궁궐과 산"><figcaption>위에서 본 둘레</figcaption></figure></div>
+      <div class="txt">
+        <div><span class="tag">옮겨 온 곳</span><h3>옥새 쟁탈전 · 강녕전 자리</h3></div>
+        <p>옥새 쟁탈전 마당은 임금이 지내던 강녕전이 있던 자리에 놓았어요. 마당을 행각(긴 복도 건물)이 둘러싸고, 그 뒤로 왕비가 지내던 교태전이 이어져요. 궁궐 담장 너머로는 한양을 둘러싼 산들이 보여요.</p>
+        <div class="changed"><h4>게임 속에서 바꾼 것</h4><ul><li>경기장은 그대로, 둘레 숲을 강녕전·사정전 일대로</li><li>숲과 궁궐 사이에 궁궐 담장</li><li>땅 밖 낭떠러지는 소나무 산줄기로 가렸어요</li></ul></div>
+        <div class="spots">
+          <p class="spot"><b>강녕전</b> · 임금이 잠자고 생활하던 침전이에요. '강녕'은 몸과 마음이 건강하고 편안하다는 뜻으로, 사람이 바라는 다섯 가지 복(오복) 가운데 하나예요.</p>
+          <p class="spot"><b>사정전</b> · 임금이 신하들과 나랏일을 의논하던 편전이에요. '깊이 생각하며 정치하라'는 뜻이 담겨 있어요.</p>
+          <p class="spot"><b>교태전</b> · 왕비가 지내던 침전이에요. 뒤뜰 아미산의 육각 굴뚝에는 학, 박쥐, 소나무, 매화 같은 무늬를 구운 벽돌로 새겨 넣었고, 보물로 정해졌어요.</p>
+          <p class="spot"><b>북악산 · 인왕산 · 낙산 · 남산</b> · 한양 도성을 둘러싼 네 산이에요. 경복궁은 북악산(백악산)을 등지고 남쪽을 바라보도록 지었어요.</p>
+        </div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>물건과 동물</h4>
+        <div class="group">
+      <div class="tiles">
+        <div class="tile"><div class="pic"><img src="{{img:orb}}" alt=""></div><b>옥새</b><span>나라를 대표하는 도장(국새). 외교 문서나 나라의 중요한 문서에 찍었어요. 게임의 옥새는 손잡이에 거북이 앉아 있어요.</span><p class="was">원래: 구슬</p></div>
+        <div class="tile"><div class="pic"><img src="{{img:thief}}" alt=""></div><b>복면 도적</b><span>옥새를 노리고 경기장을 돌아다니는 도적이에요.</span><p class="was">원래: 피글린</p></div>
+      </div></div>
+      </div>
+    </div>
+    <div class="gpanel g-craft" id="craft" role="tabpanel" aria-labelledby="gt-craft" hidden>
+      <div class="gsub"><h4>놀이 방법</h4>
+    <article class="game g-craft">
       <div class="side"><img src="{{img:jangyeongsil}}" alt="장영실"><p class="no">둘째 마당</p><p class="host">장영실</p><p class="skill">협동</p></div>
       <div class="main">
         <h3>자격루 복원전</h3>
@@ -227,106 +315,19 @@ footer .wrap { display: grid; gap: 4px }
         <div class="music"><button type="button" data-music="craft" aria-pressed="false">▶ 배경음악</button><span class="small">Jagyeokru Workshop · 1분 미리듣기</span></div>
       </div>
     </article>
-
-    <article class="game g-grid" id="grid">
-      <div class="side"><img src="{{img:jeongdojeon}}" alt="정도전"><p class="no">셋째 마당</p><p class="host">정도전</p><p class="skill">비판적 사고</p></div>
-      <div class="main">
-        <h3>교태전 꽃담 맞추기</h3>
-        <p class="say">"교태전 꽃담의 무늬를 누가 먼저 똑같이 만드는지 겨루어 생각하는 힘을 시험해 보겠소."</p>
-        <p class="win"><b>이기는 법</b> · 벽에 나온 꽃담 무늬와 똑같이 우리 팀 판(4×4)을 먼저 채우면 1점. <b>약 5분</b> 동안 점수가 많은 팀이 이겨요.</p>
-        <div class="cols">
-          <div class="box"><h4>하는 법</h4><ul><li>정원에서 도는 꽃전돌에 상호작용해 하나 가져와요. 한 번에 하나만 들 수 있어요.</li><li>우리 팀 판에 놓아요. 판(철 블록) 위에만 놓을 수 있어요.</li><li>어느 팀이든 맞히면 두 판이 모두 지워지고 새 무늬가 나와요. 무늬는 40가지예요.</li></ul></div>
-          <div class="box"><h4>꿀팁</h4><ul><li>빈칸도 무늬의 일부예요. 블록을 더 놓으면 틀려요.</li><li>꽃전돌을 가져가면 그 자리와 상대 정원의 짝 자리가 5초 동안 비어요. 상대에게 필요한 색을 먼저 가져가는 작전도 있어요.</li><li>노랑과 빨강은 수가 적어 귀해요.</li><li>틀렸으면 '보드 지우기' 버튼을 누르세요. 든 블록을 버리면 사라지고 새로 가져올 수 있어요.</li></ul></div>
-        </div>
-        <p class="know"><b>혼자 할 때</b> · 컴퓨터가 상대 판을 한 칸씩 채워요. 보통 70초면 끝내니 그보다 빨리 완성하세요.</p>
-        <div class="music"><button type="button" data-music="grid" aria-pressed="false">▶ 배경음악</button><span class="small">Gyotaejeon Garden Flow · 1분 미리듣기</span></div>
       </div>
-    </article>
-
-    <article class="game g-nock" id="nock">
-      <div class="side"><img src="{{img:taejo}}" alt="태조 이성계"><p class="no">넷째 마당</p><p class="host">태조 이성계</p><p class="skill">창의성</p></div>
-      <div class="main">
-        <h3>태조의 활쏘기 대회</h3>
-        <p class="say">"활쏘기라면 누구에게도 지지 않지. 너희의 창의성을 시험해 보겠다."</p>
-        <p class="win"><b>이기는 법</b> · <b>약 3분</b> 동안 과녁을 맞혀 점수가 많은 팀이 이겨요. 국궁 과녁 <b>1점</b>, 곰 그림 웅후 <b>3점</b>, 사슴 그림 미후 <b>5점</b>!</p>
-        <div class="cols">
-          <div class="box"><h4>하는 법</h4><ul><li>활과 팀 색깔 화살을 받아요. 화살은 10초쯤마다 16개로 다시 채워져요.</li><li>여럿이 할 때는 제자리에서만 쏠 수 있어요. 몸을 돌려 과녁을 찾으세요.</li></ul></div>
-          <div class="box"><h4>꿀팁</h4><ul><li>웅후와 미후는 10초쯤마다 다른 자리로 옮겨 다녀요. 나타나면 먼저 쏘세요.</li><li>맞힌 과녁은 잠깐 사라졌다 돌아와요.</li><li>수레 위 과녁을 맞히면 붉은 박쥐가 날아오르고, 어떤 과녁은 하늘빛을 바꿔요.</li><li>민화 동물들은 근처 과녁이 맞으면 움직여요. 동물은 점수가 없어요.</li></ul></div>
-        </div>
-        <p class="know"><b>혼자 할 때</b> · 상대 팀이 10초마다 3점씩 저절로 얻어요. 혼자일 때는 걸어 다니며 쏠 수 있어요.</p>
-        <div class="music"><button type="button" data-music="nock" aria-pressed="false">▶ 배경음악</button><span class="small">The King's Archery Contest · 1분 미리듣기</span></div>
-      </div>
-    </article>
-
-    <article class="game g-elytra" id="elytra">
-      <div class="side"><img src="{{img:kimjongseo}}" alt="김종서"><p class="no">다섯째 마당</p><p class="host">장수 김종서</p><p class="skill">커뮤니티</p></div>
-      <div class="main">
-        <h3>6진 망루 공성전</h3>
-        <p class="say">"백두산 불길 위를 날아 상대 망루에 비격진천뢰를 떨어뜨려라!"</p>
-        <p class="win"><b>이기는 법</b> · 비격진천뢰를 상대 망루에 떨어뜨리면 1점. <b>50점</b>을 먼저 얻거나, <b>약 5분</b> 뒤 점수가 많은 팀이 이겨요.</p>
-        <div class="cols">
-          <div class="box"><h4>하는 법</h4><ul><li>떨어지는 동안 점프를 누르면 딱지날개(겉날개)를 펴고 날아요.</li><li>폭죽을 쓰면(상호작용) 빨라져요. 폭죽은 계속 채워져요.</li><li>비격진천뢰 가까이 날아가면 잡아요.</li><li>상대 망루 위에서 공격이나 웅크리기를 누르면 떨어뜨려요.</li></ul></div>
-          <div class="box"><h4>꿀팁</h4><ul><li>폭죽으로 빨라지는 중에는 떨어뜨릴 수 없어요.</li><li>용암 가까이 너무 낮게 날거나, 너무 높이 날거나, 경기장 밖으로 나가면 출발대로 돌아가요.</li><li>상대 망루는 점수가 날 때마다 조금씩 무너져요.</li><li>이 대회에서는 아무도 다치지 않아요. 마음껏 날아 보세요.</li></ul></div>
-        </div>
-        <p class="know"><b>혼자 할 때</b> · 상대 팀이 30초마다 1점씩 저절로 얻어요.</p>
-        <div class="music"><button type="button" data-music="elytra" aria-pressed="false">▶ 배경음악</button><span class="small">Vanguard Charge · 1분 미리듣기</span></div>
-      </div>
-    </article>
-
-    <article class="game g-finale" id="finale">
-      <div class="side"><img src="{{img:wheel}}" alt="혼천의"><p class="no">비밀 마당</p><p class="host">세종대왕</p><p class="skill">마지막 대결</p></div>
-      <div class="main">
-        <h3>백악산 엽전 달리기</h3>
-        <p class="say">"대결 3개를 먼저 이기는 팀은 비밀 대결에 나설 수 있느니라!"</p>
-        <p class="win"><b>이기는 법</b> · 3번 먼저 이긴 팀의 선수들이 <b>각자</b> 겨뤄요. <b>약 1분</b> 동안 엽전을 가장 많이 주운 사람이 우승! 같은 수면 모두 우승이에요.</p>
-        <div class="cols">
-          <div class="box"><h4>하는 법</h4><ul><li>카메라가 백악산 비탈을 따라 저절로 내려가요.</li><li>하늘에서 떨어지는 엽전을 주우며 함께 내려가세요.</li><li>상대 팀은 구경하며 응원해요.</li></ul></div>
-          <div class="box"><h4>꿀팁</h4><ul><li>너무 뒤처지거나 너무 앞서 나가면 밀려나요. 탈락은 없어요.</li><li>엽전은 앞쪽에 떨어져요. 화면 가운데를 지키세요.</li><li>낭떠러지로 떨어지면 엽전을 더 주울 수 없어요.</li></ul></div>
-        </div>
-        <p class="know"><b>시상대</b> · 끝나면 시상대 맨 위에 우승자가 서고 축하 불꽃이 터져요. 그다음 모두 로비로 돌아가고 새 대회를 열 수 있어요.</p>
-        <div class="music"><button type="button" data-music="finale" aria-pressed="false">▶ 배경음악</button><span class="small">Royal Mountain Descent · 1분 미리듣기</span></div>
-      </div>
-    </article>
-  </div>
-</div></section>
-
-<section class="sec" id="places"><div class="wrap">
-  <p class="eyebrow">PALACE SETTING</p>
-  <h2>배경이 된 경복궁</h2>
-  <p class="intro">대회장 곳곳은 실제 경복궁을 블록으로 지은 다른 월드에서 건물을 옮겨 와 꾸몄어요. 어느 마당이 경복궁의 어디를 옮겨 왔는지, 또 어떤 장소를 떠올리며 만들었는지 알아봐요.</p>
-  <div class="places">
-    <article class="place">
-      <div class="shots"><img src="{{img:scene_gwanghwamun}}" alt="로비의 광화문"><img src="{{img:scene_geunjeongjeon}}" alt="대결 문 뒤의 근정전"></div>
-      <div class="txt">
-        <div><span class="tag">옮겨 온 곳</span><h3>로비 · 광화문에서 근정전까지</h3></div>
-        <p>로비에 들어서면 광화문 가운데 문 안에 서 있어요. 문을 나서면 대결 문이 늘어선 마당이 있고, 그 뒤로 근정전이 보여요. 둘레에는 경회루, 사정전, 강녕전, 교태전, 향원정, 동궁이 실제 경복궁과 같은 자리에 있어요. 다만 광화문과 근정전 사이는 대결 마당을 두려고 줄였어요.</p>
-        <div class="spots">
-          <p class="spot"><b>광화문</b> · 경복궁의 남쪽 정문이에요. 세종 때 집현전 학자들이 '광화문'이라는 이름을 지었어요. 임진왜란 때 불탔다가 고종 때 경복궁을 다시 지으며 새로 세웠어요. 문 세 개 가운데 가운데 문은 임금이 드나들던 문이에요.</p>
-          <p class="spot"><b>근정전</b> · 임금의 즉위식, 신하들의 조회, 외국 사신 맞이 같은 나라의 큰 의식을 치르던 경복궁의 으뜸 건물이에요. 정도전이 '부지런히 정치하라'는 뜻을 담아 이름을 지었어요. 지금 건물은 고종 때(1867년) 다시 지은 것이고 국보예요.</p>
-          <p class="spot"><b>경회루</b> · 연못 위에 세운 큰 누각이에요. 나라에 경사가 있거나 외국 사신이 왔을 때 잔치를 열었어요. 태종 때(1412년) 연못을 넓히며 크게 지었고 국보예요.</p>
-          <p class="spot"><b>향원정</b> · 북쪽 연못 가운데 섬에 지은 육각 정자예요. 고종 때 지었어요.</p>
-          <p class="spot"><b>동궁</b> · 다음 임금이 될 세자가 머물며 공부하던 곳이에요.</p>
+      <div class="gsub"><h4>진행자</h4>
+        <div class="people one">
+    <article class="person"><img src="{{img:jangyeongsil}}" alt="장영실"><div><h3>장영실</h3><p class="years">조선 세종 때 · 과학자</p><p>동래 관아의 노비였지만 태종 때 솜씨를 인정받아 궁에 들어왔고, 1423년 세종이 노비 신분을 벗겨 벼슬을 주었어요. 혼천의 만들기에도 참여했고, 스스로 시각을 알리는 물시계 <b>자격루</b>를 만들었어요. 자격루 복원전을 열어요.</p></div></article>
         </div>
       </div>
-    </article>
-    <article class="place">
-      <div class="shots"><img src="{{img:scene_orb}}" alt="옥새 쟁탈전 마당에서 본 전각과 산"><img src="{{img:scene_orb_over}}" alt="옥새 쟁탈전 마당을 둘러싼 궁궐과 산"></div>
-      <div class="txt">
-        <div><span class="tag">옮겨 온 곳</span><h3>옥새 쟁탈전 · 강녕전 자리</h3></div>
-        <p>옥새 쟁탈전 마당은 임금이 지내던 강녕전이 있던 자리에 놓았어요. 마당을 행각(긴 복도 건물)이 둘러싸고, 그 뒤로 왕비가 지내던 교태전이 이어져요. 궁궐 담장 너머로는 한양을 둘러싼 산들이 보여요.</p>
-        <div class="spots">
-          <p class="spot"><b>강녕전</b> · 임금이 잠자고 생활하던 침전이에요. '강녕'은 몸과 마음이 건강하고 편안하다는 뜻으로, 사람이 바라는 다섯 가지 복(오복) 가운데 하나예요.</p>
-          <p class="spot"><b>사정전</b> · 임금이 신하들과 나랏일을 의논하던 편전이에요. '깊이 생각하며 정치하라'는 뜻이 담겨 있어요.</p>
-          <p class="spot"><b>교태전</b> · 왕비가 지내던 침전이에요. 뒤뜰 아미산의 육각 굴뚝에는 학, 박쥐, 소나무, 매화 같은 무늬를 구운 벽돌로 새겨 넣었고, 보물로 정해졌어요.</p>
-          <p class="spot"><b>북악산 · 인왕산 · 낙산 · 남산</b> · 한양 도성을 둘러싼 네 산이에요. 경복궁은 북악산(백악산)을 등지고 남쪽을 바라보도록 지었어요.</p>
-        </div>
-      </div>
-    </article>
-    <article class="place">
-      <div class="shots"><img src="{{img:scene_craft}}" alt="자격루 공방 너머로 보이는 경회루"><img src="{{img:scene_craft_over}}" alt="경회루 남쪽 수정전 자리에 놓인 자격루 공방"></div>
+      <div class="gsub"><h4>배경 장소</h4>
+    <article class="place g-craft">
+      <div class="shots"><figure><img src="{{img:scene_craft}}" alt="자격루 공방 너머로 보이는 경회루"><figcaption>공방 너머 경회루</figcaption></figure><figure><img src="{{img:scene_craft_over}}" alt="경회루 남쪽 수정전 자리에 놓인 자격루 공방"><figcaption>위에서 본 둘레</figcaption></figure></div>
       <div class="txt">
         <div><span class="tag">옮겨 온 곳</span><h3>자격루 복원전 · 경회루 남쪽 수정전 자리</h3></div>
         <p>자격루 공방은 경회루 연못 바로 남쪽, 수정전이 있던 자리에 놓았어요. 공방 위로 하늘이 트여 있고, 연못 너머로 경회루가 보여요. 둘레에는 궁궐 안 관청 건물들이 있고, 궁궐 담장 밖은 소나무 산이에요.</p>
+        <div class="changed"><h4>게임 속에서 바꾼 것</h4><ul><li>동굴 천장과 바위를 걷어 공방 위로 하늘을 열었어요</li><li>공방 둘레를 수정전 일대로, 연못 너머 경회루</li><li>그 밖은 궁궐 담장과 소나무 산</li></ul></div>
         <div class="spots">
           <p class="spot"><b>보루각</b> · 세종 때(1434년) 경회루 남쪽에 보루각을 짓고 장영실이 만든 자격루를 두어 나라의 표준 시계로 썼어요. 공방 마당은 고장 난 자격루를 고치는 곳을 떠올리며 꾸몄어요.</p>
           <p class="spot"><b>수정전</b> · 세종 때 학자들이 모여 연구하던 집현전이 있던 자리에 고종 때 다시 지은 건물이에요. 보물로 정해졌어요.</p>
@@ -334,62 +335,9 @@ footer .wrap { display: grid; gap: 4px }
         </div>
       </div>
     </article>
-    <article class="place">
-      <div class="shots"><img src="{{img:scene_grid}}" alt="무늬판 너머로 보이는 아미산 화계와 굴뚝"><img src="{{img:scene_grid_over}}" alt="꽃담으로 두른 교태전 자리의 꽃 정원"></div>
-      <div class="txt">
-        <div><span class="tag">옮겨 온 곳</span><h3>교태전 꽃담 맞추기 · 교태전 자리</h3></div>
-        <p>꽃 정원은 왕비가 지내던 교태전이 있던 자리에 놓고 꽃담으로 둘렀어요. 무늬판 너머로 교태전 뒤뜰의 아미산 꽃 계단과 굴뚝이 보이고, 그 뒤로 궁궐 담장과 북악산이 이어져요.</p>
-        <div class="spots">
-          <p class="spot"><b>아미산</b> · 교태전 뒤뜰에 계단처럼 쌓은 꽃밭(화계)이에요. 경회루 연못을 팔 때 나온 흙으로 쌓았다고 전해져요. 여기 선 육각 굴뚝 네 개에는 학, 박쥐, 소나무, 매화 같은 무늬를 구운 벽돌로 새겨 넣었고, 보물로 정해졌어요.</p>
-          <p class="spot"><b>꽃담</b> · 벽돌과 회벽으로 무늬를 넣어 쌓은 아름다운 담이에요. 경복궁에서는 자경전 꽃담이 유명해요. 이 마당의 무늬 맞추기도 꽃담 무늬를 떠올리며 만들었어요.</p>
-        </div>
       </div>
-    </article>
-    <article class="place">
-      <div class="shots"><img src="{{img:scene_nock}}" alt="활쏘기 섬 너머 언덕의 활터 정자"><img src="{{img:scene_nock_over}}" alt="소나무 언덕이 둘러싼 산속 활터"></div>
-      <div class="txt">
-        <div><span class="tag">떠올린 곳</span><h3>태조의 활쏘기 대회 · 인왕산 기슭 활터</h3></div>
-        <p>활쏘기 섬은 소나무 언덕이 사방을 둘러싼 산속 활터로 꾸몄어요. 한쪽에는 인왕산처럼 바위가 드러나 있고, 섬 너머 언덕에는 활터 정자가 서 있어요.</p>
-        <div class="spots">
-          <p class="spot"><b>황학정</b> · 고종 때 경희궁 안에 지은 활터 정자예요. 일제강점기에 경희궁 건물들이 헐릴 때 인왕산 기슭으로 옮겨져, 지금도 사람들이 활을 쏘는 활터로 쓰여요.</p>
-          <p class="spot"><b>대사례</b> · 임금과 신하가 함께 활을 쏘는 나라의 의식으로, 성균관에서 열렸어요. 활쏘기는 몸과 마음을 바르게 하는 선비의 공부로 여겨졌어요.</p>
-        </div>
-      </div>
-    </article>
-  </div>
-  <div class="motifs">
-    <div class="motif g-elytra"><span class="g">6진 망루 공성전</span><b>경복궁 밖 · 북쪽 국경 6진</b><p>세종 때 김종서가 두만강 가에 세운 여섯 진의 망루를 떠올려요.</p></div>
-    <div class="motif g-finale"><span class="g">백악산 엽전 달리기</span><b>경복궁 뒤 백악산</b><p>경복궁이 등지고 선 산이에요. 지금은 북악산이라고 더 많이 불러요.</p></div>
-  </div>
-  <p class="cap">그림은 개발자용 3D 미리보기에서 찍은 장면이에요. 게임 안에서는 빛과 안개 때문에 조금 다르게 보여요.</p>
-</div></section>
-
-<section class="sec" id="people"><div class="wrap">
-  <p class="eyebrow">PEOPLE</p>
-  <h2>대회를 여는 사람들</h2>
-  <p class="intro">진행자들은 모두 조선 초기에 실제로 살았던 사람들이에요. 게임에서는 함께 대회를 열지만, 실제로는 살았던 때가 조금씩 달라요.</p>
-  <div class="people">
-    <article class="person"><img src="{{img:wheel}}" alt="혼천의"><div><h3>세종대왕</h3><p class="years">1397 ~ 1450 · 조선의 네 번째 임금</p><p>훈민정음(한글)을 만들고, 학자와 기술자들에게 해·달·별의 움직임을 재는 <b>혼천의</b>(1433년), 물시계 <b>자격루</b> 같은 기구를 만들게 했어요. 이 대회에서는 혼천의를 돌려 대결을 정해요.</p></div></article>
-    <article class="person"><img src="{{img:hwanghui}}" alt="황희"><div><h3>황희</h3><p class="years">1363 ~ 1452 · 영의정</p><p>세종 때인 1431년부터 1449년까지 18년 동안 가장 높은 벼슬인 영의정을 지냈어요. 조선에서 가장 오래 영의정을 지낸 사람이에요. 너그럽고 여러 사람의 말을 잘 들어 준 정승으로 이름났어요. 옥새 쟁탈전을 열어요.</p></div></article>
-    <article class="person"><img src="{{img:jangyeongsil}}" alt="장영실"><div><h3>장영실</h3><p class="years">조선 세종 때 · 과학자</p><p>동래 관아의 노비였지만 태종 때 솜씨를 인정받아 궁에 들어왔고, 1423년 세종이 노비 신분을 벗겨 벼슬을 주었어요. 혼천의 만들기에도 참여했고, 스스로 시각을 알리는 물시계 <b>자격루</b>를 만들었어요. 자격루 복원전을 열어요.</p></div></article>
-    <article class="person"><img src="{{img:jeongdojeon}}" alt="정도전"><div><h3>정도전</h3><p class="years">1342 ~ 1398 · 학자, 정치가</p><p>조선을 세울 때 나라의 틀을 짰고, 경복궁과 근정전 같은 궁궐 건물의 이름을 지었어요. 교태전 꽃담 맞추기를 열어요.</p></div></article>
-    <article class="person"><img src="{{img:taejo}}" alt="태조 이성계"><div><h3>태조 이성계</h3><p class="years">1335 ~ 1408 · 조선의 첫 임금</p><p>1392년 조선을 세운 임금이에요. 활을 아주 잘 쏘는 장수로 이름났어요. 태조의 활쏘기 대회를 열어요.</p></div></article>
-    <article class="person"><img src="{{img:kimjongseo}}" alt="김종서"><div><h3>김종서</h3><p class="years">1383 ~ 1453 (1390년생이라는 설도 있어요) · 장수, 정치가</p><p>세종 때인 1433년부터 북쪽 국경을 맡아 두만강 가에 여섯 개의 진(군사 기지), <b>6진</b>을 세우고 백성을 옮겨 살게 했어요. 오늘날 우리나라 북쪽 국경선의 바탕이 되었어요. 6진 망루 공성전을 열어요.</p></div></article>
-  </div>
-</div></section>
-
-<section class="sec" id="things"><div class="wrap">
-  <p class="eyebrow">THINGS &amp; CREATURES</p>
-  <h2>물건과 동물에 담긴 뜻</h2>
-  <p class="intro">대회에 나오는 물건과 동물은 우리 옛 문화에서 가져왔어요. 이름 아래 작은 글씨는 원래 마인크래프트에서 무엇이었는지예요.</p>
-  <div class="groups">
-    <div class="group"><h3>옥새 쟁탈전</h3>
-      <div class="tiles">
-        <div class="tile"><div class="pic"><img src="{{img:orb}}" alt=""></div><b>옥새</b><span>나라를 대표하는 도장(국새). 외교 문서나 나라의 중요한 문서에 찍었어요. 게임의 옥새는 손잡이에 거북이 앉아 있어요.</span><p class="was">원래: 구슬</p></div>
-        <div class="tile"><div class="pic"><img src="{{img:thief}}" alt=""></div><b>복면 도적</b><span>옥새를 노리고 경기장을 돌아다니는 도적이에요.</span><p class="was">원래: 피글린</p></div>
-      </div></div>
-
-    <div class="group"><h3>자격루 복원전</h3>
+      <div class="gsub"><h4>물건과 동물</h4>
+        <div class="group">
       <p>자격루는 장영실이 중심이 되어 만들어 1434년부터 쓴, 스스로 시각을 알리는 물시계예요. 물이 차오르는 높이로 시간을 재고, 구슬과 인형이 차례로 움직여 종·북·징 소리와 인형으로 시각을 알렸어요. 게임에서는 자격루의 다섯 장치가 고장 났어요.</p>
       <div class="tiles">
         <div class="tile"><div class="pic"><img src="{{img:device1}}" alt=""></div><b>① 물 공급 장치</b><span>물을 흘려보내는 항아리(파수호)들을 거쳐 물이 아래로 일정하게 흘러내려요.</span></div>
@@ -403,8 +351,46 @@ footer .wrap { display: grid; gap: 4px }
       <div class="chips" style="margin-top:6px">
         <span><img class="px" src="{{img:i_part1}}" alt="" width="20" height="20" style="vertical-align:-4px"> 물항아리(파수호)</span><span><img class="px" src="{{img:i_part2}}" alt="" width="20" height="20" style="vertical-align:-4px"> 물받이 통(수수호)</span><span><img class="px" src="{{img:i_part3}}" alt="" width="20" height="20" style="vertical-align:-4px"> 숟가락 장치</span><span><img class="px" src="{{img:i_part4}}" alt="" width="20" height="20" style="vertical-align:-4px"> 시보 인형</span><span><img class="px" src="{{img:i_part5}}" alt="" width="20" height="20" style="vertical-align:-4px"> 십이지신 인형</span><span><img class="px" src="{{img:i_part6}}" alt="" width="20" height="20" style="vertical-align:-4px"> 청동 이음쇠</span><span><img class="px" src="{{img:i_part7}}" alt="" width="20" height="20" style="vertical-align:-4px"> 구슬 통로</span><span><img class="px" src="{{img:i_part8}}" alt="" width="20" height="20" style="vertical-align:-4px"> 나무 받침틀</span><span><img class="px" src="{{img:i_part9}}" alt="" width="20" height="20" style="vertical-align:-4px"> 지렛대</span><span><img class="px" src="{{img:i_part10}}" alt="" width="20" height="20" style="vertical-align:-4px"> 굴대(회전축)</span><span><img class="px" src="{{img:i_part11}}" alt="" width="20" height="20" style="vertical-align:-4px"> 작은 쇠구슬</span><span><img class="px" src="{{img:i_part12}}" alt="" width="20" height="20" style="vertical-align:-4px"> 큰 쇠구슬</span>
       </div></div>
-
-    <div class="group"><h3>교태전 꽃담 맞추기</h3>
+      </div>
+    </div>
+    <div class="gpanel g-grid" id="grid" role="tabpanel" aria-labelledby="gt-grid" hidden>
+      <div class="gsub"><h4>놀이 방법</h4>
+    <article class="game g-grid">
+      <div class="side"><img src="{{img:jeongdojeon}}" alt="정도전"><p class="no">셋째 마당</p><p class="host">정도전</p><p class="skill">비판적 사고</p></div>
+      <div class="main">
+        <h3>교태전 꽃담 맞추기</h3>
+        <p class="say">"교태전 꽃담의 무늬를 누가 먼저 똑같이 만드는지 겨루어 생각하는 힘을 시험해 보겠소."</p>
+        <p class="win"><b>이기는 법</b> · 벽에 나온 꽃담 무늬와 똑같이 우리 팀 판(4×4)을 먼저 채우면 1점. <b>약 5분</b> 동안 점수가 많은 팀이 이겨요.</p>
+        <div class="cols">
+          <div class="box"><h4>하는 법</h4><ul><li>정원에서 도는 꽃전돌에 상호작용해 하나 가져와요. 한 번에 하나만 들 수 있어요.</li><li>우리 팀 판에 놓아요. 판(철 블록) 위에만 놓을 수 있어요.</li><li>어느 팀이든 맞히면 두 판이 모두 지워지고 새 무늬가 나와요. 무늬는 40가지예요.</li></ul></div>
+          <div class="box"><h4>꿀팁</h4><ul><li>빈칸도 무늬의 일부예요. 블록을 더 놓으면 틀려요.</li><li>꽃전돌을 가져가면 그 자리와 상대 정원의 짝 자리가 5초 동안 비어요. 상대에게 필요한 색을 먼저 가져가는 작전도 있어요.</li><li>노랑과 빨강은 수가 적어 귀해요.</li><li>틀렸으면 '보드 지우기' 버튼을 누르세요. 든 블록을 버리면 사라지고 새로 가져올 수 있어요.</li></ul></div>
+        </div>
+        <p class="know"><b>혼자 할 때</b> · 컴퓨터가 상대 판을 한 칸씩 채워요. 보통 70초면 끝내니 그보다 빨리 완성하세요.</p>
+        <div class="music"><button type="button" data-music="grid" aria-pressed="false">▶ 배경음악</button><span class="small">Gyotaejeon Garden Flow · 1분 미리듣기</span></div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>진행자</h4>
+        <div class="people one">
+    <article class="person"><img src="{{img:jeongdojeon}}" alt="정도전"><div><h3>정도전</h3><p class="years">1342 ~ 1398 · 학자, 정치가</p><p>조선을 세울 때 나라의 틀을 짰고, 경복궁과 근정전 같은 궁궐 건물의 이름을 지었어요. 교태전 꽃담 맞추기를 열어요.</p></div></article>
+        </div>
+      </div>
+      <div class="gsub"><h4>배경 장소</h4>
+    <article class="place g-grid">
+      <div class="shots"><figure><img src="{{img:scene_grid}}" alt="무늬판 너머로 보이는 아미산 화계와 굴뚝"><figcaption>무늬판 너머 아미산</figcaption></figure><figure><img src="{{img:scene_grid_over}}" alt="꽃담으로 두른 교태전 자리의 꽃 정원"><figcaption>꽃담으로 두른 정원</figcaption></figure></div>
+      <div class="txt">
+        <div><span class="tag">옮겨 온 곳</span><h3>교태전 꽃담 맞추기 · 교태전 자리</h3></div>
+        <p>꽃 정원은 왕비가 지내던 교태전이 있던 자리에 놓고 꽃담으로 둘렀어요. 무늬판 너머로 교태전 뒤뜰의 아미산 꽃 계단과 굴뚝이 보이고, 그 뒤로 궁궐 담장과 북악산이 이어져요.</p>
+        <div class="changed"><h4>게임 속에서 바꾼 것</h4><ul><li>꽃 정원은 그대로 두고 높은 정글 나무와 덩굴만 걷었어요</li><li>정원 둘레에 꽃담, 무늬판 너머 아미산 꽃 계단과 굴뚝</li><li>정글 섬은 교태전 일대와 북악산으로</li></ul></div>
+        <div class="spots">
+          <p class="spot"><b>아미산</b> · 교태전 뒤뜰에 계단처럼 쌓은 꽃밭(화계)이에요. 경회루 연못을 팔 때 나온 흙으로 쌓았다고 전해져요. 여기 선 육각 굴뚝 네 개에는 학, 박쥐, 소나무, 매화 같은 무늬를 구운 벽돌로 새겨 넣었고, 보물로 정해졌어요.</p>
+          <p class="spot"><b>꽃담</b> · 벽돌과 회벽으로 무늬를 넣어 쌓은 아름다운 담이에요. 경복궁에서는 자경전 꽃담이 유명해요. 이 마당의 무늬 맞추기도 꽃담 무늬를 떠올리며 만들었어요.</p>
+        </div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>물건과 동물</h4>
+        <div class="group">
       <p>꽃담은 벽돌과 기와 조각으로 꽃이나 글자 무늬를 넣어 쌓은 담이에요. 교태전은 왕비가 생활하던 곳으로, 세종 때(1440년쯤) 지었어요. 뒤뜰 아미산의 육각 굴뚝에는 학·박쥐·해치·사슴·대나무·국화·매화 같은 무늬가 벽돌로 새겨져 있어요(보물). 게임의 다섯 가지 꽃전돌에는 각각 좋은 뜻이 담긴 무늬가 있어요. 색이 헷갈리면 무늬 모양으로 구별해도 돼요.</p>
       <div class="tiles">
         <div class="tile"><div class="pic"><img class="px" src="{{img:t_lime}}" alt=""></div><b>대나무 (연두)</b><span>곧게 자라고 사철 푸르러 변하지 않는 마음을 뜻해요.</span></div>
@@ -414,8 +400,46 @@ footer .wrap { display: grid; gap: 4px }
         <div class="tile"><div class="pic"><img class="px" src="{{img:t_magenta}}" alt=""></div><b>매화 (자홍)</b><span>추운 겨울 끝에 가장 먼저 피는 꽃. 굳은 마음을 뜻해요.</span></div>
         <div class="tile"><div class="pic"><img src="{{img:flower_tile}}" alt=""></div><b>정원의 꽃전돌</b><span>정원에서 빙글빙글 도는 블록. 가져가서 꽃담 판에 놓아요.</span><p class="was">원래: 콘크리트</p></div>
       </div></div>
-
-    <div class="group"><h3>태조의 활쏘기 대회</h3>
+      </div>
+    </div>
+    <div class="gpanel g-nock" id="nock" role="tabpanel" aria-labelledby="gt-nock" hidden>
+      <div class="gsub"><h4>놀이 방법</h4>
+    <article class="game g-nock">
+      <div class="side"><img src="{{img:taejo}}" alt="태조 이성계"><p class="no">넷째 마당</p><p class="host">태조 이성계</p><p class="skill">창의성</p></div>
+      <div class="main">
+        <h3>태조의 활쏘기 대회</h3>
+        <p class="say">"활쏘기라면 누구에게도 지지 않지. 너희의 창의성을 시험해 보겠다."</p>
+        <p class="win"><b>이기는 법</b> · <b>약 3분</b> 동안 과녁을 맞혀 점수가 많은 팀이 이겨요. 국궁 과녁 <b>1점</b>, 곰 그림 웅후 <b>3점</b>, 사슴 그림 미후 <b>5점</b>!</p>
+        <div class="cols">
+          <div class="box"><h4>하는 법</h4><ul><li>활과 팀 색깔 화살을 받아요. 화살은 10초쯤마다 16개로 다시 채워져요.</li><li>여럿이 할 때는 제자리에서만 쏠 수 있어요. 몸을 돌려 과녁을 찾으세요.</li></ul></div>
+          <div class="box"><h4>꿀팁</h4><ul><li>웅후와 미후는 10초쯤마다 다른 자리로 옮겨 다녀요. 나타나면 먼저 쏘세요.</li><li>맞힌 과녁은 잠깐 사라졌다 돌아와요.</li><li>수레 위 과녁을 맞히면 붉은 박쥐가 날아오르고, 어떤 과녁은 하늘빛을 바꿔요.</li><li>민화 동물들은 근처 과녁이 맞으면 움직여요. 동물은 점수가 없어요.</li></ul></div>
+        </div>
+        <p class="know"><b>혼자 할 때</b> · 상대 팀이 10초마다 3점씩 저절로 얻어요. 혼자일 때는 걸어 다니며 쏠 수 있어요.</p>
+        <div class="music"><button type="button" data-music="nock" aria-pressed="false">▶ 배경음악</button><span class="small">The King's Archery Contest · 1분 미리듣기</span></div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>진행자</h4>
+        <div class="people one">
+    <article class="person"><img src="{{img:taejo}}" alt="태조 이성계"><div><h3>태조 이성계</h3><p class="years">1335 ~ 1408 · 조선의 첫 임금</p><p>1392년 조선을 세운 임금이에요. 활을 아주 잘 쏘는 장수로 이름났어요. 태조의 활쏘기 대회를 열어요.</p></div></article>
+        </div>
+      </div>
+      <div class="gsub"><h4>배경 장소</h4>
+    <article class="place g-nock">
+      <div class="shots"><figure><img src="{{img:scene_nock}}" alt="활쏘기 섬 너머 언덕의 활터 정자"><figcaption>섬 너머 활터 정자</figcaption></figure><figure><img src="{{img:scene_nock_over}}" alt="소나무 언덕이 둘러싼 산속 활터"><figcaption>위에서 본 골짜기</figcaption></figure></div>
+      <div class="txt">
+        <div><span class="tag">떠올린 곳</span><h3>태조의 활쏘기 대회 · 인왕산 기슭 활터</h3></div>
+        <p>활쏘기 섬은 소나무 언덕이 사방을 둘러싼 산속 활터로 꾸몄어요. 한쪽에는 인왕산처럼 바위가 드러나 있고, 섬 너머 언덕에는 활터 정자가 서 있어요.</p>
+        <div class="changed"><h4>게임 속에서 바꾼 것</h4><ul><li>활쏘기 섬은 그대로, 둘레 낭떠러지에 땅을 깔았어요</li><li>섬을 둘러 오르는 소나무 언덕과 인왕산 바위</li><li>섬 너머 언덕에 활터 정자</li></ul></div>
+        <div class="spots">
+          <p class="spot"><b>황학정</b> · 고종 때 경희궁 안에 지은 활터 정자예요. 일제강점기에 경희궁 건물들이 헐릴 때 인왕산 기슭으로 옮겨져, 지금도 사람들이 활을 쏘는 활터로 쓰여요.</p>
+          <p class="spot"><b>대사례</b> · 임금과 신하가 함께 활을 쏘는 나라의 의식으로, 성균관에서 열렸어요. 활쏘기는 몸과 마음을 바르게 하는 선비의 공부로 여겨졌어요.</p>
+        </div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>물건과 동물</h4>
+        <div class="group">
       <p>과녁과 동물은 조선 백성들이 집에 걸어 두던 그림 <b>민화</b>에서 가져왔어요. 민화 속 동물에는 복을 받고 오래 살기를 비는 마음이 담겨 있어요. 오래 사는 열 가지를 모은 <b>십장생</b>(해·산·물·돌·구름·소나무·불로초·거북·학·사슴)도 자주 그렸어요.</p>
       <div class="tiles">
         <div class="tile"><div class="pic"><img class="px" src="{{img:i_bow}}" alt=""></div><b>각궁</b><span>물소 뿔·뽕나무·대나무·소 힘줄을 민어 부레풀로 붙여 만든 우리 활이에요. 작지만 힘이 세고 멀리 나가요. 게임에서 쓰는 활이에요.</span><p class="was">원래: 활</p></div>
@@ -443,35 +467,95 @@ footer .wrap { display: grid; gap: 4px }
         <div class="tile"><div class="pic"><img src="{{img:jade_rabbit}}" alt=""></div><b>옥토끼</b><span>달에서 방아를 찧는다는 전설 속 토끼예요.</span><p class="was">원래: 토끼</p></div>
         <div class="tile"><div class="pic"><img src="{{img:hare}}" alt=""></div><b>산토끼</b><span>산과 들에 사는 토끼예요.</span><p class="was">원래: 사막 토끼</p></div>
       </div></div>
-
-    <div class="group"><h3>6진 망루 공성전</h3>
+      </div>
+    </div>
+    <div class="gpanel g-elytra" id="elytra" role="tabpanel" aria-labelledby="gt-elytra" hidden>
+      <div class="gsub"><h4>놀이 방법</h4>
+    <article class="game g-elytra">
+      <div class="side"><img src="{{img:kimjongseo}}" alt="김종서"><p class="no">다섯째 마당</p><p class="host">장수 김종서</p><p class="skill">커뮤니티</p></div>
+      <div class="main">
+        <h3>6진 망루 공성전</h3>
+        <p class="say">"백두산 불길 위를 날아 상대 망루에 비격진천뢰를 떨어뜨려라!"</p>
+        <p class="win"><b>이기는 법</b> · 비격진천뢰를 상대 망루에 떨어뜨리면 1점. <b>50점</b>을 먼저 얻거나, <b>약 5분</b> 뒤 점수가 많은 팀이 이겨요.</p>
+        <div class="cols">
+          <div class="box"><h4>하는 법</h4><ul><li>떨어지는 동안 점프를 누르면 딱지날개(겉날개)를 펴고 날아요.</li><li>폭죽을 쓰면(상호작용) 빨라져요. 폭죽은 계속 채워져요.</li><li>비격진천뢰 가까이 날아가면 잡아요.</li><li>상대 망루 위에서 공격이나 웅크리기를 누르면 떨어뜨려요.</li></ul></div>
+          <div class="box"><h4>꿀팁</h4><ul><li>폭죽으로 빨라지는 중에는 떨어뜨릴 수 없어요.</li><li>용암 가까이 너무 낮게 날거나, 너무 높이 날거나, 경기장 밖으로 나가면 출발대로 돌아가요.</li><li>상대 망루는 점수가 날 때마다 조금씩 무너져요.</li><li>이 대회에서는 아무도 다치지 않아요. 마음껏 날아 보세요.</li></ul></div>
+        </div>
+        <p class="know"><b>혼자 할 때</b> · 상대 팀이 30초마다 1점씩 저절로 얻어요.</p>
+        <div class="music"><button type="button" data-music="elytra" aria-pressed="false">▶ 배경음악</button><span class="small">Vanguard Charge · 1분 미리듣기</span></div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>진행자</h4>
+        <div class="people one">
+    <article class="person"><img src="{{img:kimjongseo}}" alt="김종서"><div><h3>김종서</h3><p class="years">1383 ~ 1453 (1390년생이라는 설도 있어요) · 장수, 정치가</p><p>세종 때인 1433년부터 북쪽 국경을 맡아 두만강 가에 여섯 개의 진(군사 기지), <b>6진</b>을 세우고 백성을 옮겨 살게 했어요. 오늘날 우리나라 북쪽 국경선의 바탕이 되었어요. 6진 망루 공성전을 열어요.</p></div></article>
+        </div>
+      </div>
+      <div class="gsub"><h4>배경 장소</h4>
+    <article class="place g-elytra">
+      <div class="shots"><figure><img src="{{img:scene_elytra}}" alt="남쪽 기슭의 진 성벽과 망루, 소나무 언덕"><figcaption>남쪽 기슭 · 진 성벽과 망루</figcaption></figure><figure><img src="{{img:scene_elytra_n}}" alt="북쪽 강 건너 눈 덮인 산줄기"><figcaption>북쪽 기슭 · 눈 덮인 산</figcaption></figure></div>
+      <div class="txt">
+        <div><span class="tag">떠올린 곳</span><h3>6진 망루 공성전 · 두만강 골짜기</h3></div>
+        <p>백두산을 닮은 화산 섬 양쪽에 두 팀의 망루가 서 있어요. 섬을 둘러싼 물은 두만강이 되어 동서로 흐르고, 강 건너 북쪽에는 눈 덮인 높은 산이, 조선 쪽인 남쪽 기슭에는 소나무 언덕을 따라 진의 성벽과 망루가 이어져요.</p>
+        <div class="changed"><h4>게임 속에서 바꾼 것</h4><ul><li>화산 섬과 날아다니는 하늘은 그대로 두었어요</li><li>바다를 동서로 흐르는 두만강으로, 강가는 모래밭</li><li>북쪽은 눈 덮인 산, 남쪽은 소나무 언덕과 진의 성벽·망루 세 채</li></ul></div>
+        <div class="spots">
+          <p class="spot"><b>6진</b> · 세종 때 김종서가 두만강 가의 여진을 몰아내고 세운 여섯 진(종성·온성·회령·부령·경원·경흥)이에요. 이때 조선의 북쪽 국경이 두만강까지 넓어졌어요.</p>
+          <p class="spot"><b>두만강</b> · 백두산에서 시작해 동해로 흘러드는 강으로, 압록강과 함께 조선의 북쪽 국경이 되었어요.</p>
+          <p class="spot"><b>백두산</b> · 한반도에서 가장 높은 산이에요. 화산이 터져 생긴 산으로, 꼭대기에 천지라는 큰 호수가 있어요.</p>
+        </div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>물건과 동물</h4>
+        <div class="group">
       <p>망루는 높이 세워 멀리서 오는 적을 살피던 시설이에요. 게임에서는 백두산 불길 위에 두 팀의 망루가 서 있지만, 실제 6진은 백두산에서 동쪽으로 떨어진 두만강 가에 있었어요.</p>
       <div class="tiles">
         <div class="tile"><div class="pic"><img src="{{img:bomb}}" alt=""></div><b>비격진천뢰</b><span>무쇠로 만든 공 속에 화약과 쇳조각을 넣은 조선의 폭탄. 화포로 쏘아 보내면 시간이 지나 터지게 만들었어요. 선조 때 화포장 이장손이 만들어 임진왜란 때 경주성을 되찾는 데 썼어요. 김종서가 살던 때보다 140년쯤 뒤의 무기예요.</span><p class="was">원래: TNT</p></div>
         <div class="tile"><div class="pic"><img class="px" src="{{img:i_rocket}}" alt=""></div><b>신기전</b><span>세종 때(1448년) 만든 로켓 화살. 화살대에 붙인 종이 약통의 화약이 타면서 날아가요. 게임에서는 날 때 속도를 높이는 데 써요.</span><p class="was">원래: 폭죽 로켓</p></div>
         <div class="tile"><div class="pic"><img class="px" src="{{img:i_wing}}" alt=""></div><b>학 날개</b><span>하늘을 나는 날개. 흰 깃에 검은 끝깃을 단 십장생 학의 날개 모양이에요.</span><p class="was">원래: 겉날개</p></div>
       </div></div>
-
-    <div class="group"><h3>백악산 엽전 달리기</h3>
+      </div>
+    </div>
+    <div class="gpanel g-finale" id="finale" role="tabpanel" aria-labelledby="gt-finale" hidden>
+      <div class="gsub"><h4>놀이 방법</h4>
+    <article class="game g-finale">
+      <div class="side"><img src="{{img:wheel}}" alt="혼천의"><p class="no">비밀 마당</p><p class="host">세종대왕</p><p class="skill">마지막 대결</p></div>
+      <div class="main">
+        <h3>백악산 엽전 달리기</h3>
+        <p class="say">"대결 3개를 먼저 이기는 팀은 비밀 대결에 나설 수 있느니라!"</p>
+        <p class="win"><b>이기는 법</b> · 3번 먼저 이긴 팀의 선수들이 <b>각자</b> 겨뤄요. <b>약 1분</b> 동안 엽전을 가장 많이 주운 사람이 우승! 같은 수면 모두 우승이에요.</p>
+        <div class="cols">
+          <div class="box"><h4>하는 법</h4><ul><li>카메라가 백악산 비탈을 따라 저절로 내려가요.</li><li>하늘에서 떨어지는 엽전을 주우며 함께 내려가세요.</li><li>상대 팀은 구경하며 응원해요.</li></ul></div>
+          <div class="box"><h4>꿀팁</h4><ul><li>너무 뒤처지거나 너무 앞서 나가면 밀려나요. 탈락은 없어요.</li><li>엽전은 앞쪽에 떨어져요. 화면 가운데를 지키세요.</li><li>낭떠러지로 떨어지면 엽전을 더 주울 수 없어요.</li></ul></div>
+        </div>
+        <p class="know"><b>시상대</b> · 끝나면 시상대 맨 위에 우승자가 서고 축하 불꽃이 터져요. 그다음 모두 로비로 돌아가고 새 대회를 열 수 있어요.</p>
+        <div class="music"><button type="button" data-music="finale" aria-pressed="false">▶ 배경음악</button><span class="small">Royal Mountain Descent · 1분 미리듣기</span></div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>배경 장소</h4>
+    <article class="place g-finale">
+      <div class="shots"><figure><img src="{{img:scene_finale}}" alt="계단처럼 깎인 눈 덮인 얼음 비탈"><figcaption>계단처럼 내려가는 얼음 비탈</figcaption></figure><figure><img src="{{img:scene_finale_b}}" alt="비탈 가운데로 내려가는 길"><figcaption>비탈 가운데 길</figcaption></figure></div>
+      <div class="txt">
+        <div><span class="tag">떠올린 곳</span><h3>백악산 엽전 달리기 · 눈 덮인 비탈</h3></div>
+        <p>비밀 마당은 경복궁이 등지고 선 백악산을 떠올리며 꾸민 눈 덮인 산비탈이에요. 계단처럼 깎인 얼음 절벽을 따라 내려가며 하늘에서 떨어지는 엽전을 주워요.</p>
+        <div class="changed"><h4>게임 속에서 바꾼 것</h4><ul><li>결승 마당은 처음 모습 그대로예요</li><li>눈 덮인 얼음 비탈을 계단처럼 내려가는 길</li></ul></div>
+        <div class="spots">
+          <p class="spot"><b>백악산</b> · 경복궁 바로 뒤에 솟은 산으로, 경복궁은 이 산을 등지고 남쪽을 바라보도록 지었어요. 지금은 북악산이라고 더 많이 불러요.</p>
+          <p class="spot"><b>한양도성</b> · 태조 때 한양을 빙 둘러 쌓은 성곽이에요. 백악산의 능선을 따라 지나가서, 지금도 산 위에서 성벽을 볼 수 있어요.</p>
+        </div>
+      </div>
+    </article>
+      </div>
+      <div class="gsub"><h4>물건과 동물</h4>
+        <div class="group">
       <div class="tiles">
         <div class="tile"><div class="pic"><img class="px" src="{{img:i_coin}}" alt=""></div><b>엽전 (상평통보)</b><span>조선 후기에 널리 쓴 동전이에요. 가운데 네모 구멍에 줄을 꿰어 들고 다녔어요. 1678년(숙종 4년)부터 나라 곳곳에서 쓰여 조선 말까지 이어졌어요.</span><p class="was">원래: 에메랄드</p></div>
         <div class="tile"><div class="pic"><img src="{{img:poster}}" alt="" style="max-height:90px;border-radius:8px"></div><b>백악산</b><span>경복궁 바로 뒤에 솟은 산(북악산)이에요. 궁궐을 감싸 지켜 주는 산으로 여겼어요.</span></div>
       </div></div>
-
-    <div class="group"><h3>하늘</h3>
-      <p>임금 자리 뒤에 두던 그림 <b>일월오봉도</b>에는 붉은 해와 흰 달, 다섯 봉우리가 그려져 있어요. 이 월드의 하늘에도 붉은 해와 흰 달이 떠요.</p>
-      <div class="tiles">
-        <div class="tile"><div class="pic"><img class="px" src="{{img:p_sun}}" alt=""></div><b>붉은 해</b><span>일월오봉도의 해처럼 붉은 해예요.</span><p class="was">원래: 해</p></div>
-      </div></div>
-
-    <div class="group"><h3>팀 옷 (관복)</h3>
-      <p>조선의 법전 『경국대전』은 관리가 의식 때 입는 옷(공복)의 색을 벼슬 높이에 따라 정했어요. 정3품까지는 붉은 옷(홍포), 종3품~6품은 푸른 옷(청포), 7품 아래는 초록 옷(녹포)이에요. 두 팀의 이름도 여기서 왔어요.</p>
-      <div class="tiles">
-        <div class="tile"><div class="pic"><img class="px" src="{{img:i_red_hat}}" alt=""></div><b>사모</b><span>관리가 관복과 함께 쓰던 검은 모자. 양옆에 날개가 달려 있어요.</span><p class="was">원래: 투구</p></div>
-        <div class="tile"><div class="pic"><img class="px" src="{{img:i_red_robe}}" alt=""></div><b>홍포대 관복</b><span>붉은 단령(둥근 깃의 관복)이에요.</span><p class="was">원래: 철 흉갑</p></div>
-        <div class="tile"><div class="pic"><img class="px" src="{{img:i_blue_robe}}" alt=""></div><b>청포대 관복</b><span>푸른 단령이에요.</span><p class="was">원래: 다이아몬드 흉갑</p></div>
-      </div></div>
-  </div>
+      </div>
+    </div>
+  <p class="cap">배경 그림은 개발자용 3D 미리보기에서 찍은 장면이에요. 게임 안에서는 빛과 안개 때문에 조금 다르게 보여요.</p>
 </div></section>
 
 <section class="sec" id="blocks"><div class="wrap">
@@ -540,6 +624,48 @@ footer .wrap { display: grid; gap: 4px }
   <p>게임 속 인물과 물건은 놀이를 위해 단순하게 꾸몄어요. 실제 역사와 다른 부분은 설명에 적어 두었어요.</p>
 </div></footer>
 
+<script>
+// 마당 탭: 누르거나 ←→ 키, 위 메뉴(#orb 같은 주소)로 마당을 바꾼다
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".ptab"));
+  function pick(t, focus) {
+    tabs.forEach(function (o) {
+      var on = o === t;
+      o.setAttribute("aria-selected", on ? "true" : "false"); o.tabIndex = on ? 0 : -1;
+      document.getElementById(o.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (focus) t.focus();
+    t.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { pick(t, false); });
+    t.addEventListener("keydown", function (e) {
+      var k = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (k) { e.preventDefault(); pick(tabs[(i + k + tabs.length) % tabs.length], true); }
+      if (e.key === "Home") { e.preventDefault(); pick(tabs[0], true); }
+      if (e.key === "End") { e.preventDefault(); pick(tabs[tabs.length - 1], true); }
+    });
+  });
+  function fromHash() {
+    var id = (location.hash || "").slice(1);
+    var t = tabs.filter(function (o) { return o.getAttribute("aria-controls") === id; })[0];
+    if (!t) return;
+    pick(t, false);
+    document.getElementById("games").scrollIntoView();
+  }
+  window.addEventListener("hashchange", fromHash);
+  document.querySelectorAll('nav.top a').forEach(function (a) {   // 같은 마당을 다시 눌러도 그 탭으로
+    a.addEventListener("click", function (e) {
+      var id = a.getAttribute("href").slice(1);
+      var t = tabs.filter(function (o) { return o.getAttribute("aria-controls") === id; })[0];
+      if (!t) return;
+      e.preventDefault(); pick(t, false); document.getElementById("games").scrollIntoView();
+      try { history.replaceState(null, "", "#" + id); } catch (err) {}
+    });
+  });
+  fromHash();
+})();
+</script>
 <script>
 // 배경음악: 한 번에 한 곡만
 (function () {

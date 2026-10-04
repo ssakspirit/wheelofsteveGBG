@@ -23,6 +23,40 @@ CHECK = "--check" in sys.argv
 
 # ---------- 경기장별 설정 (상자는 x1 y1 z1 x2 y2 z2, 양 끝 포함) ----------
 ARENAS = {
+    "elytra_n": dict(
+        title="6진 망루 공성전 (북쪽 기슭)",
+        base="baa9f51",
+        center=(-80, 5090),
+        # 바다 한가운데 화산 섬(백두산)·망루 두 채. 날아다니는 상자 X −176~20 Z 4992~5188 Y 58~210 (가장자리 5칸 띠·바닥·천장에 닿으면 게임이 되돌려 보냄).
+        # 바다(Y 59 물, Y 56 기반암)는 X −475~314 Z 4693~5482. 안개 260. 상자+10칸(guard)에는 땅을 두지 않는다 (들어가면 멈춤).
+        # 범위가 넓어 북쪽·남쪽 기슭을 따로 계산한다 (elytra_n, elytra_s) — 바다는 두만강이 된다
+        protect=(-186, 4982, 30, 5198), guard=(-186, 4982, 30, 5198),
+        carve=(-186, 4982, 30, 5198), land=(-186, 4982, 30, 5198),
+        ground=59, mountain_only=True, shell=6,
+        river=dict(z=5090, hw_in=114, hw_out=70, x1=-186, x2=30, taper=90, beach=3, north=80, south=40, snow=40,
+                   wall=12, towers=(-330, -80, 170)),
+        gbg_center=(0, 0), band=999,
+        region=(-440, 54, 4730, 285, 175, 5025),
+        peaks={"+z": 0, "+x": 0, "-x": 0, "-z": 0},
+        cameras=[],
+    ),
+    "elytra_s": dict(
+        title="6진 망루 공성전 (남쪽 기슭)",
+        base="baa9f51",
+        center=(-80, 5090),
+        # 바다 한가운데 화산 섬(백두산)·망루 두 채. 날아다니는 상자 X −176~20 Z 4992~5188 Y 58~210 (가장자리 5칸 띠·바닥·천장에 닿으면 게임이 되돌려 보냄).
+        # 바다(Y 59 물, Y 56 기반암)는 X −475~314 Z 4693~5482. 안개 260. 상자+10칸(guard)에는 땅을 두지 않는다 (들어가면 멈춤).
+        # 범위가 넓어 북쪽·남쪽 기슭을 따로 계산한다 (elytra_n, elytra_s) — 바다는 두만강이 된다
+        protect=(-186, 4982, 30, 5198), guard=(-186, 4982, 30, 5198),
+        carve=(-186, 4982, 30, 5198), land=(-186, 4982, 30, 5198),
+        ground=59, mountain_only=True, shell=6,
+        river=dict(z=5090, hw_in=114, hw_out=70, x1=-186, x2=30, taper=90, beach=3, north=80, south=40, snow=40,
+                   wall=12, towers=(-330, -80, 170)),
+        gbg_center=(0, 0), band=999,
+        region=(-440, 54, 5155, 285, 175, 5450),
+        peaks={"+z": 0, "+x": 0, "-x": 0, "-z": 0},
+        cameras=[],
+    ),
     "nock": dict(
         title="태조의 활쏘기 대회",
         base="fa35c9a",
@@ -299,7 +333,7 @@ def value_noise(scale, octaves=4, seed=0):
     return out / tot
 dx_ = np.maximum(np.maximum(L_[0] - X, X - L_[2]), 0); dz_ = np.maximum(np.maximum(L_[1] - Z, Z - L_[3]), 0)
 dist = np.sqrt(dx_ ** 2 + dz_ ** 2)
-if MO:                                                      # 산속: 둥근 경기장 둘레 flat_r까지 풀밭, 그 밖이 산
+if MO and A.get("circle"):                                  # 산속: 둥근 경기장 둘레 flat_r까지 풀밭, 그 밖이 산
     rr = np.sqrt((X - A["circle"][0]) ** 2 + (Z - A["circle"][1]) ** 2)
     dist = np.maximum(rr - A["flat_r"], 0)
 mband = (dist > 0) & (dist <= A["band"])
@@ -310,37 +344,60 @@ amp = (P["+z"] * np.maximum(uz, 0) ** 2 + P["-z"] * np.maximum(-uz, 0) ** 2 + P[
 sm = lambda a, b, t: np.clip((t - a) / (b - a), 0, 1) ** 2 * (3 - 2 * np.clip((t - a) / (b - a), 0, 1))
 n1 = value_noise(56, 4, 1); n2 = value_noise(14, 2, 2); n3 = value_noise(24, 3, 3)
 H = G + amp * sm(3, 56, dist) * (1 - 0.45 * sm(52, A["band"], dist)) * (0.78 + 0.32 * n1) + 3 * n2 * sm(2, 12, dist)
+RV = A.get("river"); snowy = np.zeros(SH[::2], bool); beach = np.zeros(SH[::2], bool)
+if RV:                                                      # 강 골짜기: 동서로 흐르는 강, 양쪽 기슭에서 산이 오른다 (북쪽 높고 눈, 남쪽 낮고 소나무)
+    xs_ = np.arange(x1, x2 + 1).astype(float)
+    o = np.maximum(np.maximum(RV["x1"] - xs_, xs_ - RV["x2"]), 0)
+    t = sm(0, RV["taper"], o)                               # 날아다니는 상자 앞은 넓게, 멀어질수록 강이 좁아진다
+    kx = xs_[::23]; mea = np.interp(xs_, kx, np.random.default_rng(5).uniform(-1, 1, len(kx)))
+    hw = RV["hw_in"] + (RV["hw_out"] - RV["hw_in"]) * t + mea * (4 + 14 * t)
+    zn = RV["z"] - hw; zs_ = RV["z"] + hw
+    north = Z < zn[:, None]
+    dist = np.maximum(np.where(north, zn[:, None] - Z, Z - zs_[:, None]), 0)
+    mband = dist > 0
+    amp = np.where(north, RV["north"], RV["south"]).astype(float)
+    H = G + 1 + amp * sm(RV["beach"], 120, dist) * (0.7 + 0.4 * n1) + 3 * n2 * sm(2, 12, dist)
+    if (mband & rect2(A["guard"])).any(): sys.exit("⚠ 땅이 날아다니는 상자(+여유)에 들어감")
 H = np.where(mband, np.clip(np.round(H), G, y2 - 4), -999).astype(int)
 gzx, gzz = np.gradient(np.where(mband, H, G).astype(float))
 slope = np.sqrt(gzx ** 2 + gzz ** 2)
 rocky = mband & ((slope > 2.4) | ((ux > 0.55) & (n3 > 0.3) & (H > G + 28)))       # 아주 가파른 곳·인왕산 쪽 일부만 바위
+if RV:
+    rocky = mband & ((slope > 2.4) | (north & (n3 > 0.35) & (H > G + 45)))
+    snowy = mband & north & ~rocky & (H > G + RV["snow"] + 6 * n2)
+    beach = mband & (H <= G + 2)
+SNOW = LR.pid(block("snow", {}, 18168865)); SAND = LR.pid(block("sand", {"sand_type": S("normal")}, V_OLD))
+SHELL = A.get("shell")                                      # 산 속은 비운다 (겉 몇 칸만 — 안 보이는 블록을 줄인다)
+if SHELL:
+    H0 = np.where(mband, H, G); Hm = H0.copy()
+    for dx in (-1, 0, 1):
+        for dz in (-1, 0, 1): Hm = np.minimum(Hm, np.roll(np.roll(H0, dx, 0), dz, 1))
 n_mt = 0
 for a, cc in np.argwhere(mband):
     h = H[a, cc] - y1; lo = max(G - 4 - y1, 0)
+    if SHELL: lo = max(lo, min(h - SHELL, Hm[a, cc] - 1 - y1))
     if h <= lo: continue
     NEW[a, lo:h + 1, cc] = STONE
     if rocky[a, cc]:
         NEW[a, h, cc] = ANDESITE if (a * 7 + cc * 3) % 5 == 0 else STONE
+    elif snowy[a, cc]:
+        NEW[a, h, cc] = SNOW
+    elif beach[a, cc]:
+        NEW[a, max(lo, h - 2):h + 1, cc] = SAND
     else:
         NEW[a, max(lo, h - 3):h, cc] = DIRT; NEW[a, h, cc] = GRASS
     NEW[a, h + 1:, cc] = 0
     placed[a, lo:h + 1, cc] = True; n_mt += 1
 taken = np.zeros(SH[::2], bool)
-if MO:
+if MO and A.get("circle"):
     flat = ~prot2 & (rr <= A["flat_r"])                     # 경기장 둘레 풀밭 (위는 비우지 않는다 — 가장자리 위로 뻗은 경기장 잎)
     lo = max(G - 4 - y1, 0)
     for a, cc in np.argwhere(flat):
         NEW[a, lo:G - y1, cc] = DIRT; NEW[a, G - y1, cc] = GRASS; placed[a, lo:G - y1 + 1, cc] = True
     print(f"  경기장 둘레 풀밭 {int(flat.sum()):,}칸")
-if A.get("pavilion"):                                       # 활터 정자: 언덕을 깎은 단 위에 기단·붉은 기둥·네모 기와지붕
-    px, pz = A["pavilion"]; a0, c0 = px - x1, pz - z1
-    h0 = max(int(H[a0, c0]), G + 1) - y1
-    POST = LR.pid(block("stripped_oak_log", {"pillar_axis": S("y")}, 18168865))
-    for ox in range(-6, 7):
-        for oz in range(-6, 7):
-            a, cc = a0 + ox, c0 + oz
-            NEW[a, max(G - 4 - y1, 0):h0, cc] = STONE; NEW[a, h0 - 2:h0, cc] = DIRT; NEW[a, h0, cc] = GRASS; NEW[a, h0 + 1:, cc] = 0
-            placed[a, :h0 + 1, cc] = True; taken[a, cc] = True
+POST = LR.pid(block("stripped_oak_log", {"pillar_axis": S("y")}, 18168865))
+def pavilion(a0, c0, h0):
+    # h0 위에 기단(7×7)·붉은 기둥 넷·네모 기와지붕 (격자 높이 기준)
     for ox in range(-3, 4):
         for oz in range(-3, 4): NEW[a0 + ox, h0 + 1, c0 + oz] = BRICK                    # 기단
     for ox in (-3, 3):
@@ -355,10 +412,45 @@ if A.get("pavilion"):                                       # 활터 정자: 언
         for oz in range(-1, 2): NEW[a0 + ox, h0 + 8, c0 + oz] = TILE2
     NEW[a0, h0 + 9, c0] = RIDGE
     placed[a0 - 4:a0 + 5, h0:h0 + 10, c0 - 4:c0 + 5] = True
+if A.get("pavilion"):                                       # 활터 정자: 언덕을 깎은 단 위에 기단·붉은 기둥·네모 기와지붕
+    px, pz = A["pavilion"]; a0, c0 = px - x1, pz - z1
+    h0 = max(int(H[a0, c0]), G + 1) - y1
+    for ox in range(-6, 7):
+        for oz in range(-6, 7):
+            a, cc = a0 + ox, c0 + oz
+            NEW[a, max(G - 4 - y1, 0):h0, cc] = STONE; NEW[a, h0 - 2:h0, cc] = DIRT; NEW[a, h0, cc] = GRASS; NEW[a, h0 + 1:, cc] = 0
+            placed[a, :h0 + 1, cc] = True; taken[a, cc] = True
+    pavilion(a0, c0, h0)
     print(f"  활터 정자 ({px}, {h0 + y1 + 1}, {pz})")
+if RV and RV.get("wall"):                                   # 남쪽(조선) 기슭의 진 성벽: 강가에서 wall칸 뒤로 강을 따라, 땅 높이를 따라 오르내린다
+    nw = 0; lo0 = max(G - 4 - y1, 0)
+    for a in range(SH[0]):
+        zw = int(round(zs_[a] + RV["wall"])) - z1
+        if not (0 <= zw and zw + 2 < SH[2]) or min(H[a, zw:zw + 3]) < -900: continue
+        hb = int(max(H[a, zw:zw + 3])) - y1
+        for u in range(3):
+            cc = zw + u
+            col = NEW[a, lo0:hb + 1, cc]; col[col == 0] = STONE
+            NEW[a, hb + 1:, cc] = 0
+            NEW[a, hb + 1:hb + 3, cc] = BRICK; NEW[a, hb + 3:hb + 6, cc] = COBBLE
+            NEW[a, hb + 6, cc] = TILE2 if u == 1 else stair(UP["+z"] if u == 0 else UP["-z"])
+            if u == 1: NEW[a, hb + 7, cc] = RIDGE
+            placed[a, :hb + 8, cc] = True; nw += 1
+        taken[max(a - 2, 0):a + 3, max(zw - 3, 0):zw + 6] = True
+    nt = 0
+    for tx in RV.get("towers", ()):                         # 망루: 성벽 위 7×7 돌 몸체 + 정자 지붕
+        a0 = tx - x1; zc_ = int(round(zs_[a0] + RV["wall"])) + 1 - z1
+        if not (3 <= zc_ < SH[2] - 4): continue
+        c0 = zc_; hb = int(H[a0 - 3:a0 + 4, c0 - 3:c0 + 4].max()) - y1 + 9
+        for ox in range(-3, 4):
+            for oz in range(-3, 4):
+                NEW[a0 + ox, lo0:hb + 1, c0 + oz] = BRICK; NEW[a0 + ox, hb + 1:, c0 + oz] = 0
+        pavilion(a0, c0, hb)
+        placed[a0 - 4:a0 + 5, :hb + 10, c0 - 4:c0 + 5] = True; taken[a0 - 6:a0 + 7, c0 - 6:c0 + 7] = True; nt += 1
+    print(f"  진 성벽 {nw:,}칸, 망루 {nt}채")
 # 소나무: 완만한 풀밭에 듬성듬성 (붉은 줄기 대신 가문비 원목, 넓적한 짙은 잎 덩이)
 trees = 0
-cand = np.argwhere(mband & ~rocky & (slope < 1.1) & (H > G + 2))
+cand = np.argwhere(mband & ~rocky & ~snowy & (slope < 1.1) & (H > G + 2) & (~dilate(rect2(A["guard"]), 5, True) if A.get("guard") else True))
 rng.shuffle(cand)
 for a, cc in cand[: len(cand) // 12]:
     if taken[max(a - 3, 0):a + 4, max(cc - 3, 0):cc + 4].any(): continue

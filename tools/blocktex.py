@@ -46,7 +46,7 @@ def loose_json(path):
     except ValueError: return None
 
 VAN = vanilla_packs()
-ALIAS = {"grass_block": "grass", "stone_block_slab3": "stone_slab3", "double_stone_block_slab3": "stone_slab3",
+ALIAS = {"grass_block": "grass", "double_stone_block_slab": "stone_slab", "double_stone_block_slab2": "stone_slab2", "double_stone_block_slab3": "stone_slab3", "double_stone_block_slab4": "stone_slab4", "stone_block_slab3": "stone_slab3", "double_stone_block_slab3": "stone_slab3",
          "stone_block_slab": "stone_slab", "stone_block_slab2": "stone_slab2", "stone_block_slab4": "stone_slab4"}
 WOODS = {"oak": "planks_oak", "spruce": "planks_spruce", "birch": "planks_birch", "jungle": "planks_jungle", "acacia": "planks_acacia",
          "dark_oak": "planks_big_oak", "mangrove": "mangrove_planks", "cherry": "cherry_planks", "bamboo": "bamboo_planks",
@@ -58,6 +58,12 @@ VARIANTS = {
     "stone_slab_type": ["smooth_stone", "sandstone", "wood", "cobblestone", "brick", "stone_brick", "quartz", "nether_brick"],
     "wood_type": ["oak", "spruce", "birch", "jungle", "acacia", "dark_oak"],
     "sand_type": ["normal", "red"],
+    "old_log_type": ["oak", "spruce", "birch", "jungle"], "new_log_type": ["acacia", "dark_oak"],
+    "old_leaf_type": ["oak", "spruce", "birch", "jungle"], "new_leaf_type": ["acacia", "dark_oak"],
+    "stone_slab_type_2": ["red_sandstone", "purpur", "prismarine_rough", "prismarine_dark", "prismarine_brick", "mossy_cobblestone", "smooth_sandstone", "red_nether_brick"],
+    "stone_slab_type_4": ["mossy_stone_brick", "smooth_quartz", "stone", "cut_sandstone", "cut_red_sandstone"],
+    "flower_type": ["poppy", "orchid", "allium", "houstonia", "tulip_red", "tulip_orange", "tulip_white", "tulip_pink", "oxeye", "cornflower", "lily_of_the_valley"],
+    "double_plant_type": ["sunflower", "syringa", "grass", "fern", "rose", "paeonia"],
     "color": ["white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "silver", "cyan", "purple", "blue", "brown", "green", "red", "black"],
 }
 

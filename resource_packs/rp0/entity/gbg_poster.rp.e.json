@@ -1,0 +1,20 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "gbg:poster",
+			"materials": {
+				"default": "entity"
+			},
+			"geometry": {
+				"default": "geometry.gbg_poster"
+			},
+			"textures": {
+				"default": "textures/rwm/entity/gbg_poster"
+			},
+			"render_controllers": [
+				"controller.render.default"
+			]
+		}
+	}
+}

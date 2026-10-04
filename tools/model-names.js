@@ -29,6 +29,7 @@ const names = {
   "rwm/entity/nock_target_enderman.png": ["엔더맨 특수 과녁", "미후(사슴 과녁)"],
   "entity/bat.png": ["박쥐", "붉은 박쥐(홍복)"],
   "rwm/entity/wooden_cart.png": ["광차", "나무 수레"],
+  "rwm/entity/gbg_poster.png": ["", "어전대회 포스터 액자"],
   // 옥새 쟁탈전
   "rwm/entity/orb.png": ["오브", "옥새"],
   "rwm/entity/orb_enemy.png": ["좀비 피글린 (바닐라)", "복면 도적"],

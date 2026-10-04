@@ -453,9 +453,20 @@ const areas = (exists(`${AREA_DIR}/blocks.js`) ? fs.readdirSync(AREA_DIR) : []).
     when: fs.statSync(`${AREA_DIR}/${f}`).mtime.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }) };
 }).filter(Boolean);
 
+// ---------- 월드 건축: 보존 구역(tools/build-zones.js) + 모든 연출 카메라 위치(seq 함수의 camera ... pos x y z) ----------
+const BUILD = require("./build-zones");
+const cameras = [];
+for (const f of walk(`${BP}functions/seq`).filter(f => f.endsWith(".mcfunction"))) {
+  const pts = [];
+  for (const m of read(f).matchAll(/camera @a[^\n]*?set minecraft:free[^\n]*? pos (-?[\d.]+) (-?[\d.]+) (-?[\d.]+)/g)) pts.push([+m[1], +m[2], +m[3]]);
+  if (pts.length) cameras.push({ file: norm(f).split("functions/")[1], pts });
+}
+const gbg = exists(`${AREA_DIR}/gbg-summary.json`) ? { ...JSON.parse(read(`${AREA_DIR}/gbg-summary.json`)), map: dataUri(`${AREA_DIR}/gbg-map.png`) } : null;
+const build = { ...BUILD, cameras, lobbyFog: (sections.find(x => x.id === "lobby")?.fogs || [])[0] || null };
+
 const data = {
   generated: new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }),
-  head, dirty, baseline: BASELINE, guard, wheel, drafts, hosts, sections, geo: geoDict, commands, items, armor, pngs, langRows, sounds, soundFiles, changedFiles, areas,
+  head, dirty, baseline: BASELINE, guard, wheel, drafts, hosts, sections, geo: geoDict, commands, items, armor, pngs, langRows, sounds, soundFiles, changedFiles, areas, build, gbg,
   changelog: require("./changelog"),
   world: t("pack.name"),
 };
@@ -528,6 +539,16 @@ canvas.v3d:active{cursor:grabbing}
 .a3-view canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
 .a3-status{position:absolute;left:12px;bottom:10px;background:rgba(255,255,255,.85);padding:4px 10px;border-radius:8px}
 .a3-y{vertical-align:middle;width:180px}
+.kdot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.gmap-wrap{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:14px;align-items:start}
+.gmap{position:relative;max-width:640px}
+.gmap img{display:block;width:100%;image-rendering:pixelated;border-radius:8px;cursor:crosshair}
+.gpick{position:absolute;border:2px solid #2e8b57;background:rgba(46,139,87,.12);cursor:move;touch-action:none;border-radius:2px}
+.gspawn{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#f2c200;border:2px solid #222;pointer-events:none}
+.gside{display:grid;gap:12px;min-width:0}
+@media (max-width:900px){.gmap-wrap{grid-template-columns:1fr}}
+ol.steps{margin:0;padding-left:1.3em;display:grid;gap:8px}
+ul.warnlist{margin:0;padding-left:1.2em;display:grid;gap:6px}
 .mcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
 .mcard h3{margin:0;font-size:16px}
 .mcard canvas.v3d{height:250px}
@@ -632,6 +653,8 @@ canvas.v3d-dlg{display:block;width:100%;height:min(440px,56vh);cursor:grab;touch
   <section class="panel" id="p-summary"><h2>요약</h2><div class="cards" id="cards"></div>
     <h2 style="margin-top:26px">변경 기록 <span class="n">tools/changelog.js · 항목을 누르면 그 장소·탭으로</span></h2><div id="changelog"></div>
     <h2 style="margin-top:26px">장소·게임 <span class="n">눌러서 자세히 보기</span></h2><div class="place-grid" id="placeOverview"></div></section>
+  <section class="panel" id="p-build"><div id="buildBody"></div></section>
+  <section class="panel" id="p-gbg"><div id="gbgBody"></div></section>
   <section class="panel" id="p-places"><div class="subtabs" id="placeTabs"></div><div id="placeBody"></div></section>
   <section class="panel" id="p-commands"><h2>명령어 <span class="n">게임 채팅창에 입력 · 복사 버튼으로 옮기기</span></h2>
     <div class="info-grid" style="margin-top:0">
@@ -769,19 +792,21 @@ function texTile(p) {
 const AV = { r: null };
 function areaPanel(ar) {
   if (!ar.length) return '<div class="empty">아직 없음 — <code>python tools/export-areas.py</code>를 실행하면 생깁니다</div>';
-  return '<div class="a3-bar">' + ar.map(a => '<button class="copy" data-area="'+esc(a.id)+'">'+esc(a.title)+' <span class="small">'+a.size.join("×")+" · "+a.kb+"KB</span></button>").join("")
+  return '<div class="a3wrap"><div class="a3-bar">' + ar.map(a => '<button class="copy" data-area="'+esc(a.id)+'">'+esc(a.title)+' <span class="small">'+a.size.join("×")+" · "+a.kb+"KB</span></button>").join("")
     + '<span style="flex:1"></span><button class="copy on" data-a3which="now">현재 텍스처</button><button class="copy" data-a3which="van">원본 텍스처</button>'
     + '<label class="small">높이 <input type="range" class="a3-y" min="0" max="0" value="0" disabled> <span class="a3-yv"></span></label>'
+    + '<label class="small"><input type="checkbox" class="a3-zones" checked> 보존 구역·카메라</label>'
+    + '<button class="copy" data-a3reload="1" title="python tools/export-areas.py 를 다시 실행한 뒤 누르면 새 상태로 그린다">다시 불러오기</button>'
     + '<button class="copy" data-a3reset="1">시점 처음으로</button></div>'
     + '<div class="a3-view"><canvas class="a3"></canvas><div class="a3-status small">구역을 누르면 불러옵니다 · 뽑은 때: '+esc(ar[0].when)+'</div></div>'
     + '<div class="small" style="margin-top:6px">왼쪽 끌기: 돌리기 · 오른쪽 끌기 또는 Shift+끌기: 옮기기 · 휠: 확대·축소 · 높이: 그 위를 잘라 숲·동굴 안을 보기 · 원본 텍스처: 바닐라 그림으로 (리소스팩 리테마 전 모습)'
-    + ' · 월드 저장 상태 기준이라 건축을 바꾼 뒤에는 <code>python tools/export-areas.py</code>를 다시 실행</div>';
+    + ' · 월드 저장 상태 기준이라 건축을 바꾼 뒤에는 <code>python tools/export-areas.py</code>를 다시 실행하고 [다시 불러오기]</div></div>';
 }
 function loadScriptOnce(src) {
   return new Promise((ok, no) => {
     if (document.querySelector('script[data-src="' + src + '"]')) return ok();
     const s = document.createElement("script");
-    s.src = src; s.dataset.src = src; s.onload = () => ok(); s.onerror = () => no(new Error(src + " 를 불러오지 못함"));
+    s.src = src + "?t=" + Date.now(); s.dataset.src = src; s.onload = () => ok(); s.onerror = () => no(new Error(src + " 를 불러오지 못함"));
     document.head.appendChild(s);
   });
 }
@@ -884,6 +909,33 @@ function areaMesh(A, grid, yMax) {
   }
   return G;
 }
+// 보존 구역·카메라 경로·건축 터를 구역 3D 위에 겹쳐 그린다 (tools/build-zones.js, seq 함수의 카메라 위치)
+const ZCOL = { overwrite: 0xe8622c, checked: 0xd62a2a, zone: 0x2b6cd6, forbid: 0x111111, caution: 0x8e44ad, timer: 0xc99a2e };
+function a3Overlays(A) {
+  const g = new THREE.Group(), B = D.build || {}, b = A.box;   // b = [x1, z1, x2, z2, y1, y2]
+  g.name = "overlays"; g.visible = AV.showZones !== false;
+  if (A.id.startsWith("gbg_")) return g;                       // 경복궁 월드는 좌표계가 다른 월드
+  const clip = z => { const x1 = Math.max(z[0], b[0]), y1 = Math.max(z[1], b[4]), z1 = Math.max(z[2], b[1]), x2 = Math.min(z[3], b[2]), y2 = Math.min(z[4], b[5]), z2 = Math.min(z[5], b[3]);
+    return x1 > x2 || y1 > y2 || z1 > z2 ? null : [x1, y1, z1, x2, y2, z2]; };
+  function boxAt(c, color, fill) {
+    const w = c[3] - c[0] + 1, h = c[4] - c[1] + 1, d = c[5] - c[2] + 1, geo = new THREE.BoxGeometry(w, h, d);
+    const pos = [c[0] - b[0] + w / 2, c[1] - b[4] + h / 2, c[2] - b[1] + d / 2];
+    if (fill) { const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.16, depthWrite: false })); m.position.set(...pos); m.renderOrder = 2; g.add(m); }
+    const l = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.95 }));
+    l.position.set(...pos); l.renderOrder = 3; g.add(l);
+  }
+  for (const z of B.zones || []) { const c = clip(z.box); if (c) boxAt(c, ZCOL[z.kind] || 0x888888, true); }
+  if (B.site) { const c = clip(B.site.box); if (c) boxAt(c, 0x2e8b57, false); }
+  const inside = p => p[0] >= b[0] && p[0] <= b[2] + 1 && p[2] >= b[1] && p[2] <= b[3] + 1 && p[1] >= b[4] && p[1] <= b[5] + 1;
+  const camMat = new THREE.MeshBasicMaterial({ color: 0xf2c200 }), lineMat = new THREE.LineBasicMaterial({ color: 0xf2c200, transparent: true, opacity: 0.6 });
+  for (const cam of B.cameras || []) {
+    const pts = cam.pts.filter(inside);
+    if (!pts.length) continue;
+    for (const p of pts) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 0.8), camMat); m.position.set(p[0] - b[0], p[1] - b[4], p[2] - b[1]); g.add(m); }
+    if (pts.length > 1) g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts.map(p => new THREE.Vector3(p[0] - b[0], p[1] - b[4], p[2] - b[1]))), lineMat));
+  }
+  return g;
+}
 function a3Geometry(g) {
   const geo = new THREE.BufferGeometry();
   geo.setAttribute("position", new THREE.Float32BufferAttribute(g.p, 3));
@@ -898,16 +950,20 @@ function closeArea() {
   if (!AV.r) return;
   AV.r.dispose(); AV.r.forceContextLoss(); AV.r = null; AV.id = null; AV.scene = null;
 }
-function a3Status(msg) { const s = document.querySelector(".a3-status"); if (s) s.textContent = msg; }
-async function openArea(id) {
+const a3$ = sel => (AV.root || document).querySelector(sel);   // 지금 열린 구역 보기 묶음 안에서 찾는다 (장소 탭·월드 건축 탭)
+function a3Status(msg) { const s = a3$(".a3-status"); if (s) s.textContent = msg; }
+async function openArea(id, root, keepView) {
+  if (root) AV.root = root;
   if (typeof THREE === "undefined") return a3Status("3D 보기는 인터넷 연결이 필요합니다 (three.js를 불러오지 못함)");
   if (typeof DecompressionStream === "undefined") return a3Status("이 브라우저는 압축 풀기(DecompressionStream)를 지원하지 않습니다 — 최신 Chrome·Edge에서 여세요");
-  document.querySelectorAll("[data-area]").forEach(b => b.classList.toggle("on", b.dataset.area === id));
+  (AV.root || document).querySelectorAll("[data-area]").forEach(b => b.classList.toggle("on", b.dataset.area === id));
   a3Status("불러오는 중…");
   try { await loadScriptOnce("devpage-areas/blocks.js"); await loadScriptOnce("devpage-areas/" + id + ".js"); }
   catch (e) { return a3Status(e.message + " — devpage.html과 같은 폴더의 devpage-areas/가 필요합니다"); }
   const A = window.AREAS[id], grid = await areaGrid(A);
-  const cv = document.querySelector("canvas.a3");
+  let cv = a3$("canvas.a3");
+  if (cv) { const fresh = cv.cloneNode(false); cv.replaceWith(fresh); cv = fresh; }
+  const view = keepView && AV.tgt ? { tgt: AV.tgt.clone(), dist: AV.dist, yaw: AV.yaw, pitch: AV.pitch, yMax: AV.yMax } : null;
   if (!cv) return;
   closeArea();
   const r = AV.r = new THREE.WebGLRenderer({ canvas: cv, antialias: true });
@@ -925,14 +981,24 @@ async function openArea(id) {
   AV.id = id; AV.A = A; AV.grid = grid;
   // 처음 높이: 동굴·숲처럼 위를 잘라야 보이는 구역은 내보낼 때 정한 높이(view.yMax, 월드 Y)부터
   AV.yMax = A.view && A.view.yMax != null ? Math.max(0, Math.min(A.size[1] - 1, A.view.yMax - A.box[4])) : A.size[1] - 1;
-  const sl = document.querySelector(".a3-y");
+  if (view) AV.yMax = Math.min(view.yMax, A.size[1] - 1);
+  const sl = a3$(".a3-y");
   if (sl) { sl.max = A.size[1] - 1; sl.value = AV.yMax; sl.disabled = false; }
   a3Build(); a3Reset();
+  if (view) { AV.tgt = view.tgt; AV.dist = view.dist; AV.yaw = view.yaw; AV.pitch = view.pitch; a3Draw(); }
+}
+// 다시 불러오기: 구역 파일을 새로 읽어(브라우저 캐시 무시) 같은 시점으로 다시 그린다
+async function reloadArea() {
+  if (!AV.id) return;
+  const id = AV.id;
+  for (const src of ["devpage-areas/blocks.js", "devpage-areas/" + id + ".js"]) document.querySelectorAll('script[data-src="' + src + '"]').forEach(s => s.remove());
+  delete window.AREAS[id]; window.AREA_BLOCKS = null; AV.atlas = null;
+  await openArea(id, AV.root, true);
 }
 function a3Build() {
   if (!AV.r) return;
   const t0 = performance.now();
-  if (AV.group) { AV.scene.remove(AV.group); AV.group.children.forEach(m => m.geometry.dispose()); }
+  if (AV.group) { AV.scene.remove(AV.group); AV.group.traverse(m => m.geometry && m.geometry.dispose()); }
   const G = areaMesh(AV.A, AV.grid, AV.yMax);
   const grp = AV.group = new THREE.Group();
   grp.add(new THREE.Mesh(a3Geometry(G.s), AV.matS));
@@ -940,7 +1006,8 @@ function a3Build() {
   grp.position.set(-AV.A.size[0] / 2, 0, -AV.A.size[2] / 2);
   AV.scene.add(grp);
   a3Which(AV.which || "now");
-  const faces = (G.s.i.length + G.w.i.length) / 6, b = AV.A.box, yv = document.querySelector(".a3-yv");
+  grp.add(a3Overlays(AV.A));
+  const faces = (G.s.i.length + G.w.i.length) / 6, b = AV.A.box, yv = a3$(".a3-yv");
   if (yv) yv.textContent = "Y ≤ " + (b[4] + AV.yMax);
   a3Status(AV.A.title + " · X " + b[0] + "~" + b[2] + " · Z " + b[1] + "~" + b[3] + " · Y " + b[4] + "~" + (b[4] + AV.yMax)
     + " · 면 " + faces.toLocaleString() + "개 · " + Math.round(performance.now() - t0) + "ms");
@@ -948,9 +1015,9 @@ function a3Build() {
 }
 function a3Which(w) {
   AV.which = w;
-  document.querySelectorAll("[data-a3which]").forEach(b => b.classList.toggle("on", b.dataset.a3which === w));
+  (AV.root || document).querySelectorAll("[data-a3which]").forEach(b => b.classList.toggle("on", b.dataset.a3which === w));
   if (!AV.group) return;
-  AV.group.children.forEach(m => m.geometry.setAttribute("uv", w === "van" ? m.geometry.userData.uvVan : m.geometry.userData.uvNow));
+  AV.group.children.forEach(m => m.geometry && m.geometry.userData.uvNow && m.geometry.setAttribute("uv", w === "van" ? m.geometry.userData.uvVan : m.geometry.userData.uvNow));
   a3Draw();
 }
 function a3Reset() {
@@ -1007,11 +1074,119 @@ function a3Draw() {
   document.addEventListener("input", e => {
     if (!e.target.matches?.(".a3-y") || !AV.r) return;
     AV.yMax = +e.target.value;
-    const yv = document.querySelector(".a3-yv"); if (yv) yv.textContent = "Y ≤ " + (AV.A.box[4] + AV.yMax);
+    const yv = a3$(".a3-yv"); if (yv) yv.textContent = "Y ≤ " + (AV.A.box[4] + AV.yMax);
     clearTimeout(yTimer); yTimer = setTimeout(a3Build, 120);
   });
   window.addEventListener("resize", () => a3Draw());
+  document.addEventListener("change", e => {
+    if (!e.target.matches?.(".a3-zones")) return;
+    AV.showZones = e.target.checked;
+    if (AV.group) { const o = AV.group.getObjectByName("overlays"); if (o) o.visible = AV.showZones; a3Draw(); }
+  });
 })();
+
+// ---------- 월드 건축 탭 ----------
+const KIND = { overwrite: ["게임이 덮어씀", "지어도 다음 판에 사라짐"], checked: ["게임이 검사", "바꾸면 진행이 멈춤"], zone: ["게임 구역", "장식 금지"],
+  forbid: ["금지", "들어가지 않기"], caution: ["조심", "선생님용 장치"], timer: ["타이머", "덮지 않기"] };
+const KCOL = { overwrite: "#e8622c", checked: "#d62a2a", zone: "#2b6cd6", forbid: "#111", caution: "#8e44ad", timer: "#c99a2e" };
+function renderBuild() {
+  const B = D.build, S = B.site, sb = S.box, ar = (D.areas || []).filter(a => a.id === S.id || a.id.startsWith("plan_"));
+  const hits = z => !(z.box[3] < sb[0] || z.box[0] > sb[3] || z.box[4] < sb[1] || z.box[1] > sb[4] || z.box[5] < sb[2] || z.box[2] > sb[5]);
+  const camIn = B.cameras.flatMap(c => c.pts.filter(p => p[0] >= sb[0] && p[0] <= sb[3] && p[1] >= sb[1] && p[1] <= sb[4] && p[2] >= sb[2] && p[2] <= sb[5]).map(p => ({ f: c.file, p })));
+  const fog = B.lobbyFog;
+  const zr = z => "<tr><td>" + esc(z.name) + (hits(z) ? ' <span class="badge b-changed">건축 터와 겹침</span>' : "") + '</td><td><span class="kdot" style="background:' + KCOL[z.kind] + '"></span>' + esc(KIND[z.kind][0])
+    + '<div class="small">' + esc(KIND[z.kind][1]) + '</div></td><td class="key">X ' + z.box[0] + "~" + z.box[3] + " · Y " + z.box[1] + "~" + z.box[4] + " · Z " + z.box[2] + "~" + z.box[5] + "</td><td>" + esc(z.note) + "</td></tr>";
+  let h = '<div class="place-head" style="--fog:#2e8b57"><h2>월드 건축 <small>로비 뒤편 경복궁 짓기</small></h2>'
+    + "<p>" + esc(S.note) + " 건축 터: X " + sb[0] + "~" + sb[3] + " · Y " + sb[1] + "~" + sb[4] + " · Z " + sb[2] + "~" + sb[5]
+    + (fog ? " · 로비 안개는 " + esc(fog.end) + "칸에서 끝나므로 로비에서 보이게 하려면 대략 Z 1200 안쪽에 짓는다." : "") + "</p></div>";
+  h += '<div class="info-grid"><div class="box"><h3>짓는 순서</h3><ol class="steps">'
+    + "<li><b>백업</b>: 월드를 닫고 Claude에게 「db 커밋해줘」 — 잘못되면 되돌릴 수 있다</li>"
+    + "<li>건축 터로 가서 건축 모드로" + cmdRow("건축 터로", "/function dev/tp/build", "건축 터 위 하늘 (로비 쪽 정면을 바라봄)") + cmdRow("건축 모드", "/function dev/build", "크리에이티브 · 안개 끔 · 야간 투시") + "</li>"
+    + "<li><b>구조물 불러오기</b>: .mcstructure 파일을 <code>behavior_packs/bp0/structures/gbg/</code>에 <b>새 파일</b>로 넣고 월드를 다시 연 뒤, 놓을 자리 <b>근처에 서서</b>"
+    + cmdRow("불러오기", "/structure load gbg:파일이름 x y z", "그 자리가 불러와져 있어야 놓인다 (멀리서 하면 조용히 실패)") + "</li>"
+    + "<li><b>경복궁 로비 섬</b>(python tools/gbg-lobby.py 가 만든 조각 — 광화문·궁장·궁궐·광장 박석·마을 걷기): 아래 구역 3D의 '계획' 두 개로 지금/바꾼 뒤를 비교한 다음, "
+    + "섬 네 귀퉁이 하늘에서 한 번씩 (조각은 불러와진 곳에만 놓인다)"
+    + cmdRow("1. 귀퉁이로", "/function gbg/go_1", "go_1 ~ go_4") + cmdRow("2. 놓기", "/function gbg/lobby_build", "네 곳에서 한 번씩 — 여러 번 해도 같다")
+    + "되돌리기는 월드를 닫고 git의 db/ 로 (먼저 db를 커밋해 둔다)</li>"
+    + "<li>모자라는 곳은 직접 블록을 놓는다 (아래 '이 블록을 놓으면' 표 참고)</li>"
+    + "<li><b>3D로 확인</b>: 터미널에서 <code>python tools/export-areas.py</code> (게임이 켜져 있어도 됨) → 아래 구역 3D의 [다시 불러오기]</li>"
+    + "<li>로비 첫 장면 카메라를 가리지 않았는지 확인한 뒤" + cmdRow("플레이 모드", "/function dev/play") + "</li>"
+    + "<li><b>저장</b>: 월드를 닫고 커밋 — <code>db/</code>는 게임이 닫혀 있을 때만 커밋한다</li></ol></div>";
+  h += '<div class="box"><h3>주의</h3><ul class="warnlist">'
+    + "<li>게임 구역 안(파란 상자)에는 장식을 놓지 않는다. 덮어쓰는 곳(주황)은 지어도 사라지고, 검사하는 곳(빨강)을 바꾸면 게임이 멈춘다.</li>"
+    + "<li>로비 연출 카메라(노란 점) 앞을 막지 않는다. 특히 첫 장면 카메라 (0, 109, 1092)는 건축 터 안이라, 그 둘레와 시선(남쪽 위 하늘)은 비워 둔다.</li>"
+    + "<li>문·버튼·레버처럼 누를 수 있는 블록은 쓰지 않는다. 블록은 Y 319까지.</li>"
+    + "<li>구조물 블록 한 개로 저장할 수 있는 크기는 64×384×64라, 큰 건물은 64칸 단위로 나눠 저장·불러오기 한다.</li>"
+    + "<li>자바판 파일(.nbt, .schem)은 바로 쓰지 못한다 — Bedrock .mcstructure로 바꿔 와야 한다. 바뀌면서 없는 블록은 빠질 수 있다.</li>"
+    + "<li>건축 터 동쪽(x 46~191)에는 원래 로비 마을이 있다. 겹치게 지을지 먼저 정한다.</li>"
+    + "<li>시작 방(X −5~5, Y 20~35, Z −5~5)에는 들어가지 않는다.</li></ul></div></div>";
+  h += '<details class="sub" open><summary><h3>구역 3D — 건축 터<span class="n">주황=덮어씀 · 빨강=검사 · 파랑=게임 구역 · 검정=금지 · 보라=조심 · 금색=타이머 · 노란 점=연출 카메라 · 초록 테두리=건축 터</span></h3></summary>' + areaPanel(ar) + "</details>";
+  h += '<details class="sub" open><summary><h3>이 블록을 놓으면<span class="n">리소스팩이 바꿔 둔 블록 — 궁궐 재료로 쓰기 좋다</span></h3></summary><table><thead><tr><th>놓는 블록</th><th>보이는 모습</th></tr></thead><tbody>'
+    + B.palette.map(r => "<tr><td>" + esc(r[0]) + "</td><td>" + esc(r[1]) + "</td></tr>").join("") + "</tbody></table></details>";
+  h += '<details class="sub" open><summary><h3>보존 구역<span class="n">' + B.zones.length + "곳 · 행동팩 함수·구조물에서 찾은 곳</span></h3></summary>"
+    + "<table><thead><tr><th>이름</th><th>종류</th><th>좌표</th><th>설명</th></tr></thead><tbody>" + B.zones.map(zr).join("") + "</tbody></table></details>";
+  h += '<details class="sub"><summary><h3>건축 터 안의 연출 카메라<span class="n">' + camIn.length + "곳</span></h3></summary>"
+    + (camIn.length ? '<div class="list">' + camIn.map(c => "<span>(" + c.p.join(", ") + ") · " + esc(c.f) + "</span>").join("") + "</div>" : '<div class="empty">없음</div>') + "</details>";
+  return h;
+}
+
+// ---------- 경복궁 월드 탭 (python tools/gbg-world.py · export-areas.py) ----------
+function renderGbg() {
+  const G = D.gbg;
+  if (!G) return '<div class="empty">아직 없음 — <code>python tools/gbg-world.py</code> 와 <code>python tools/export-areas.py</code> 를 실행한 뒤 페이지를 다시 만든다</div>';
+  const b = G.box, ar = (D.areas || []).filter(a => a.id.startsWith("gbg_")), tw = 261, td = 256;   // 어전대회 건축 터 크기
+  let h = '<div class="place-head" style="--fog:#7a5230"><h2>경복궁 월드 <small>' + esc(G.name) + " · minecraftWorlds/" + esc(G.world) + "</small></h2>"
+    + "<p>옮겨 올 궁궐이 있는 월드. 분석: " + esc(G.scanned) + " · 마지막으로 연 버전 " + esc(G.version) + " · 월드 데이터 " + G.db_mb + "MB · 생성 위치 (" + G.spawn.join(", ") + ")"
+    + " · " + (G.flat ? "공기 프리셋 평지에 지형을 옮겨 온 월드" : "") + " · 지면 Y " + G.ground + "</p></div>";
+  h += '<div class="cards" style="margin:12px 0">' + [["궁궐 범위", "X " + b[0] + "~" + b[2] + " · Z " + b[1] + "~" + b[3]], ["크기", G.size[0] + " × " + G.size[2] + "칸 · 높이 Y " + b[4] + "~" + b[5]],
+    ["놓은 블록", G.placed_total.toLocaleString() + "개"], ["어전대회 건축 터에 맞추면", Math.ceil(G.size[0] / tw) + " × " + Math.ceil(G.size[2] / td) + "칸 분량"]]
+    .map(([k, v]) => '<div class="card"><b>' + esc(v) + "</b><span>" + esc(k) + "</span></div>").join("") + "</div>";
+  h += '<details class="sub" open><summary><h3>위에서 본 궁궐<span class="n">위가 북쪽(−Z) · 1칸 = 1픽셀 · 지도 위에서 좌표가 보이고, 초록 틀(어전대회 건축 터 ' + tw + "×" + td + ")을 끌어 옮길 부분을 고른다</span></h3></summary>"
+    + '<div class="gmap-wrap"><div class="gmap" id="gmap"><img src="' + G.map + '" alt="경복궁 월드 지도" draggable="false"><div class="gpick" id="gpick"></div><div class="gspawn" title="생성 위치"></div></div>'
+    + '<div class="gside"><div class="box"><h3>좌표</h3><div id="gpos" class="key">지도 위에 마우스를 올리면 X·Z</div></div>'
+    + '<div class="box"><h3>초록 틀 안</h3><div id="grange" class="key"></div><p class="small">64칸 조각으로 나눈 범위. 아래 <code>/structure save</code>는 경복궁 월드 <b>안에만</b> 저장된다 — 어전대회 월드로 옮길 .mcstructure 파일은 Claude가 월드 데이터에서 같은 조각으로 바로 뽑을 수 있다. 높이는 Y ' + b[4] + "~" + b[5] + ".</p><div id='gcmds'></div></div></div></div></details>";
+  h += '<details class="sub" open><summary><h3>구역 3D — 경복궁 월드<span class="n">전체는 무거우니 남·가운데·북을 먼저</span></h3></summary>' + areaPanel(ar) + "</details>";
+  h += '<details class="sub"><summary><h3>놓은 블록 종류<span class="n">지형(돌·흙·광석·물 등)을 뺀 것 · 옛 형식 이름(planks, wool…)은 상태값으로 나무·색을 구분</span></h3></summary>'
+    + '<table><thead><tr><th>블록</th><th style="text-align:right">개수</th></tr></thead><tbody>' + G.placed.map(([n, c]) => "<tr><td>" + esc(n) + '</td><td style="text-align:right">' + c.toLocaleString() + "</td></tr>").join("") + "</tbody></table></details>";
+  h += '<div class="box" style="margin-top:12px"><h3>새로 분석하기</h3><p class="small">경복궁 월드를 고친 뒤 (게임이 열려 있어도 됨):</p>'
+    + cmdRow("지도·요약", "python tools/gbg-world.py") + cmdRow("3D", "python tools/export-areas.py") + cmdRow("페이지", "node tools/gen-devpage.js", "그다음 이 페이지를 새로 고침") + "</div>";
+  return h;
+}
+function initGbgMap() {
+  const G = D.gbg, map = $("gmap");
+  if (!G || !map) return;
+  const img = map.querySelector("img"), pick = $("gpick"), b = G.box, W = G.size[0], Dd = G.size[2], tw = 261, td = 256;
+  const k = () => img.clientWidth / W;                           // 화면 픽셀 / 블록
+  const sp = map.querySelector(".gspawn");
+  let px = Math.round((W - tw) / 2), pz = Dd - td;                  // 틀 위치(블록, 지도 기준) — 처음엔 남쪽 끝(광화문 쪽)
+  function place() {
+    const s = k();
+    pick.style.left = px * s + "px"; pick.style.top = pz * s + "px"; pick.style.width = tw * s + "px"; pick.style.height = td * s + "px";
+    sp.style.left = (G.spawn[0] - b[0]) * s + "px"; sp.style.top = (G.spawn[2] - b[1]) * s + "px";
+    const x1 = b[0] + px, z1 = b[1] + pz, x2 = x1 + tw - 1, z2 = z1 + td - 1;
+    $("grange").textContent = "X " + x1 + "~" + x2 + " · Z " + z1 + "~" + z2;
+    const rows = [];
+    for (let z = z1, j = 0; z <= z2; z += 64, j++) for (let x = x1, i = 0; x <= x2; x += 64, i++)
+      rows.push(cmdRow("조각 " + (j + 1) + "-" + (i + 1), "/structure save gbg_" + (j + 1) + "_" + (i + 1) + " " + x + " " + b[4] + " " + z + " " + Math.min(x + 63, x2) + " " + b[5] + " " + Math.min(z + 63, z2) + " disk"));
+    $("gcmds").innerHTML = rows.join("");
+  }
+  img.addEventListener("mousemove", e => {
+    const r = img.getBoundingClientRect(), s = k();
+    $("gpos").textContent = "X " + (b[0] + Math.floor((e.clientX - r.left) / s)) + " · Z " + (b[1] + Math.floor((e.clientY - r.top) / s));
+  });
+  let drag = null;
+  pick.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, px, pz }; pick.setPointerCapture(e.pointerId); });
+  pick.addEventListener("pointermove", e => {
+    if (!drag) return;
+    const s = k();
+    px = Math.max(0, Math.min(W - tw, Math.round(drag.px + (e.clientX - drag.x) / s)));
+    pz = Math.max(0, Math.min(Dd - td, Math.round(drag.pz + (e.clientY - drag.y) / s)));
+    place();
+  });
+  pick.addEventListener("pointerup", () => { drag = null; });
+  window.addEventListener("resize", place);
+  if (img.complete) place(); else img.onload = place;
+}
 
 // ---------- 3D 모델 비교 카드 ----------
 const nameLine = n => n.before && n.after && n.before !== n.after ? n.before + " → " + n.after : n.after || n.before || "";
@@ -1061,7 +1236,7 @@ function renderModels() {
 }
 
 // ---------- 탭 ----------
-const TABS = [["summary", "요약"], ["places", "장소·게임"], ["commands", "명령어"], ["hosts", "호스트"], ["models", "3D 모델"], ["items", "아이템"], ["lang", "문구"], ["textures", "텍스처"], ["sounds", "사운드"], ["files", "파일"]];
+const TABS = [["summary", "요약"], ["places", "장소·게임"], ["build", "월드 건축"], ["gbg", "경복궁 월드"], ["commands", "명령어"], ["hosts", "호스트"], ["models", "3D 모델"], ["items", "아이템"], ["lang", "문구"], ["textures", "텍스처"], ["sounds", "사운드"], ["files", "파일"]];
 const view = { tab: "summary", place: D.sections[0].id };
 function readHash() {
   const [t, p] = decodeURIComponent(location.hash.slice(1)).split("/");
@@ -1100,7 +1275,7 @@ function renderPlaceTabs() {
     + esc(s.title) + (s.game ? ' <span class="gno">게임 '+s.game+"</span>" : "") + "</button>").join("");
 }
 function renderPlace() {
-  closeArea();
+  if (AV.root && $("placeBody").contains(AV.root)) closeArea();
   const s = D.sections.find(x => x.id === view.place);
   const host = secHost(s), lang = secLang(s), tex = secTex(s), items = secItems(s);
   const shownLang = lang.filter(r => (!only() || r.changed) && match(r.key, r.before, r.after));
@@ -1181,6 +1356,8 @@ function render() {
   renderOverview();
   renderPlaceTabs();
   renderPlace();
+  if (!$("buildBody").firstChild) $("buildBody").innerHTML = renderBuild();
+  if (!$("gbgBody").firstChild) { $("gbgBody").innerHTML = renderGbg(); initGbgMap(); }   // 한 번만 그린다 (3D 보기를 유지)
   $("hostGrid").innerHTML = tileHost({ ...D.wheel, id: "wheel" }, true) + D.drafts.map(d => tileHost(d, true)).join("") + D.hosts.map(h => tileHost(h)).join("");
   $("itemGrid").innerHTML = D.items.concat(D.armor).map(tileItem).join("");
   renderModels();
@@ -1461,7 +1638,8 @@ document.addEventListener("click", e => {
   const g = e.target.closest("[data-go]");
   if (g) { location.hash = g.dataset.go; return; }
   const ar = e.target.closest("[data-area]");
-  if (ar) return openArea(ar.dataset.area);
+  if (ar) return openArea(ar.dataset.area, ar.closest(".a3wrap"));
+  if (e.target.closest("[data-a3reload]")) return reloadArea();
   const aw = e.target.closest("[data-a3which]");
   if (aw) return a3Which(aw.dataset.a3which);
   if (e.target.closest("[data-a3reset]")) return AV.r && a3Reset();

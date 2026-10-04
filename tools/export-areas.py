@@ -1,6 +1,6 @@
 """게임장 구역을 블록 그대로 3D로 보려고 월드 저장 데이터(db/)에서 뽑는다 — 개발자 페이지의 '구역 3D'가 읽는다. 읽기만 한다.
 
-  python tools/export-areas.py [--db <db 폴더>]   (블록 종류 번호를 모든 구역이 같이 쓰므로 늘 전부 다시 뽑는다)
+  python tools/export-areas.py [--db <db 폴더>]   (--db 없이 실행하면 월드 db/를 복사해서 읽는다 — 게임이 켜져 있어도 된다)   (블록 종류 번호를 모든 구역이 같이 쓰므로 늘 전부 다시 뽑는다)
   → devpage-areas/blocks.js  블록 종류 표(모양·면별 텍스처 칸) + 텍스처 묶음(atlas, 원본/현재 두 벌)
     devpage-areas/<id>.js     구역 상자 크기 + 블록 종류 번호 격자(deflate → base64)
 구역 상자는 mcworld.ARENAS. 게임이 켜져 있으면 db를 복사해서 그 사본을 넘긴다 (마지막 저장 상태 기준).
@@ -14,8 +14,13 @@ import mcworld, blocktex
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 ap = argparse.ArgumentParser()
-ap.add_argument("--db", default=os.path.join(ROOT, "db"))
+ap.add_argument("--db", default=None, help="읽을 db 폴더 (없으면 월드의 db/를 임시 폴더로 복사해서 읽는다 — 게임이 켜져 있어도 된다)")
 args = ap.parse_args()
+if not args.db:                                           # 게임이 쓰는 중이어도 안전하게: 사본을 읽는다 (게임이 저장한 상태 기준)
+    import shutil, tempfile
+    args.db = os.path.join(tempfile.mkdtemp(prefix="gbg-db-"), "db")
+    shutil.copytree(os.path.join(ROOT, "db"), args.db, ignore=shutil.ignore_patterns("LOCK"))
+# 구역 상자: (id, 이름, (x1, z1, x2, z2, y1, y2)) — 이 월드는 mcworld.ARENAS, 다른 월드는 mcworld.EXTERNAL
 OUT = os.path.join(ROOT, "devpage-areas")
 os.makedirs(OUT, exist_ok=True)
 
@@ -106,30 +111,55 @@ def type_of(name, st):
 # ---------- 구역 ----------
 # 처음 보여 줄 높이(월드 Y): 동굴 속 공방·숲 지붕 아래 정원은 그 위를 잘라야 보인다
 VIEW = {"craft": {"yMax": 71}, "grid": {"yMax": 72}}
-areas = mcworld.ARENAS
-def want(cx, cz, sy):
-    return any(cx * 16 + 15 >= b[0] and cx * 16 <= b[2] and cz * 16 + 15 >= b[1] and cz * 16 <= b[3] and sy * 16 + 15 >= b[4] and sy * 16 <= b[5] for _, _, b in areas)
-chunks = mcworld.subchunks(args.db, want)
-print(f"하위 청크 {len(chunks)}개 읽음")
-for aid, title, (x1, z1, x2, z2, y1, y2) in areas:
-    sx, sy_, sz = x2 - x1 + 1, y2 - y1 + 1, z2 - z1 + 1
-    grid = np.zeros((sy_, sz, sx), np.uint16)                 # [y][z][x]
-    for (cx, cz, sy), v in chunks.items():
-        bx, bz, by = cx * 16, cz * 16, sy * 16
-        if bx + 15 < x1 or bx > x2 or bz + 15 < z1 or bz > z2 or by + 15 < y1 or by > y2: continue
-        d = mcworld.decode(v)
-        if d is None: continue
-        idx, pal = d
-        ids = np.array([type_of(n, s) for n, s in pal], np.uint16)
-        X, Y, Z = bx + mcworld.LX, by + mcworld.LY, bz + mcworld.LZ
-        m = (X >= x1) & (X <= x2) & (Z >= z1) & (Z <= z2) & (Y >= y1) & (Y <= y2)
-        grid[Y[m] - y1, Z[m] - z1, X[m] - x1] = ids[idx[m]]
-    raw = zlib.compress(grid.tobytes(), 9)[2:-4]              # raw deflate (브라우저 DecompressionStream('deflate-raw'))
-    body = {"id": aid, "title": title, "box": [x1, z1, x2, z2, y1, y2], "size": [sx, sy_, sz], "view": VIEW.get(aid, {}), "data": base64.b64encode(raw).decode()}
-    with open(os.path.join(OUT, aid + ".js"), "w", encoding="utf8") as f:
-        f.write("(window.AREAS = window.AREAS || {})[" + json.dumps(aid) + "] = " + json.dumps(body, ensure_ascii=False) + ";\n")
-    solid = int((grid > 0).sum())
-    print(f"  {aid:14s} {sx}×{sy_}×{sz}  블록 {solid:,}  → {len(raw) / 1024:.0f} KB")
+def copy_db(world_dir):                                 # 게임이 쓰는 중이어도 안전하게 사본을 읽는다
+    import shutil, tempfile
+    dst = os.path.join(tempfile.mkdtemp(prefix="gbg-db-"), "db")
+    shutil.copytree(os.path.join(world_dir, "db"), dst, ignore=shutil.ignore_patterns("LOCK"))
+    return dst
+# 이 월드의 게임장 + 다른 월드(경복궁 월드)의 구역을 db별로 묶어 뽑는다
+WORLDS = os.path.dirname(os.path.abspath(ROOT))
+groups = [(args.db, [(a, t, b) for a, t, b in mcworld.ARENAS])]
+ext = {}
+for aid, title, box, world in mcworld.EXTERNAL:
+    if os.path.isdir(os.path.join(WORLDS, world, "db")): ext.setdefault(world, []).append((aid, title, box))
+for world, lst in ext.items(): groups.append((copy_db(os.path.join(WORLDS, world)), lst))
+for db, areas in groups:
+    def want(cx, cz, sy, areas=areas):
+        return any(cx * 16 + 15 >= b[0] and cx * 16 <= b[2] and cz * 16 + 15 >= b[1] and cz * 16 <= b[3] and sy * 16 + 15 >= b[4] and sy * 16 <= b[5] for _, _, b in areas)
+    chunks = mcworld.subchunks(db, want)
+    print(f"{os.path.basename(os.path.dirname(db)) if db != args.db else '이 월드'}: 하위 청크 {len(chunks)}개 읽음")
+    for aid, title, (x1, z1, x2, z2, y1, y2) in areas:
+        sx, sy_, sz = x2 - x1 + 1, y2 - y1 + 1, z2 - z1 + 1
+        grid = np.zeros((sy_, sz, sx), np.uint16)                 # [y][z][x]
+        for (cx, cz, sy), v in chunks.items():
+            bx, bz, by = cx * 16, cz * 16, sy * 16
+            if bx + 15 < x1 or bx > x2 or bz + 15 < z1 or bz > z2 or by + 15 < y1 or by > y2: continue
+            d = mcworld.decode(v)
+            if d is None: continue
+            idx, pal = d
+            ids = np.array([type_of(n, s) for n, s in pal], np.uint16)
+            X, Y, Z = bx + mcworld.LX, by + mcworld.LY, bz + mcworld.LZ
+            m = (X >= x1) & (X <= x2) & (Z >= z1) & (Z <= z2) & (Y >= y1) & (Y <= y2)
+            grid[Y[m] - y1, Z[m] - z1, X[m] - x1] = ids[idx[m]]
+        raw = zlib.compress(grid.tobytes(), 9)[2:-4]              # raw deflate (브라우저 DecompressionStream('deflate-raw'))
+        body = {"id": aid, "title": title, "box": [x1, z1, x2, z2, y1, y2], "size": [sx, sy_, sz], "view": VIEW.get(aid, {}), "data": base64.b64encode(raw).decode()}
+        with open(os.path.join(OUT, aid + ".js"), "w", encoding="utf8") as f:
+            f.write("(window.AREAS = window.AREAS || {})[" + json.dumps(aid) + "] = " + json.dumps(body, ensure_ascii=False) + ";\n")
+        print(f"  {aid:14s} {sx}×{sy_}×{sz}  블록 {int((grid > 0).sum()):,}  → {len(raw) / 1024:.0f} KB")
+
+# 계획 미리보기: tools/gbg-lobby.py 같은 도구가 만든 '바꾼 뒤 모습' 격자 (devpage-areas/plans/<id>.npz — [y][z][x] + 블록 이름 표)
+import glob
+for f in sorted(glob.glob(os.path.join(OUT, "plans", "*.npz"))):
+    pz = np.load(f)
+    meta, pl = json.loads(str(pz["meta"])), json.loads(str(pz["palette"]))
+    grid = np.array([type_of(n, s) for n, s in pl], np.uint16)[pz["grid"]]
+    aid = os.path.splitext(os.path.basename(f))[0]
+    sy_, sz, sx = grid.shape
+    raw = zlib.compress(np.ascontiguousarray(grid).tobytes(), 9)[2:-4]
+    body = {"id": aid, "title": meta["title"], "box": meta["box"], "size": [sx, sy_, sz], "view": meta.get("view", {}), "data": base64.b64encode(raw).decode()}
+    with open(os.path.join(OUT, aid + ".js"), "w", encoding="utf8") as fo:
+        fo.write("(window.AREAS = window.AREAS || {})[" + json.dumps(aid) + "] = " + json.dumps(body, ensure_ascii=False) + ";\n")
+    print(f"  {aid:14s} {sx}×{sy_}×{sz}  블록 {int((grid > 0).sum()):,}  → {len(raw) / 1024:.0f} KB (계획)")
 
 # 블록 종류 표 + 텍스처 묶음 (원본·현재 칸을 한 장에)
 COLS = 32

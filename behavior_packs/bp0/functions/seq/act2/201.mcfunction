@@ -151,8 +151,9 @@ execute if score .seq global matches 7210 run scoreboard players set .actionbar.
 execute if score .seq global matches 7200 run /kill @e[type=rwm:timer]
 
 ### Who Wins?
-execute if score .seq global matches 7210 run execute if score "§4Team 1" score >= "§9Team 2" score run /function utility/wins/team1
-execute if score .seq global matches 7210 run execute if score "§9Team 2" score >= "§4Team 1" score run /function utility/wins/team2
+execute if score .seq global matches 7210 run execute if score "§4Team 1" score > "§9Team 2" score run /function utility/wins/team1
+execute if score .seq global matches 7210 run execute if score "§9Team 2" score > "§4Team 1" score run /function utility/wins/team2
+execute if score .seq global matches 7210 run execute if score "§4Team 1" score = "§9Team 2" score run /function utility/wins/tie
 
 execute if score .seq global matches 7220 run scoreboard players set .subtitle.objective global 0
 

@@ -5,6 +5,7 @@
 //                                                신발(다리 상자 아래쪽) → 목화
 //   textures/models/armor/{iron,diamond}_2.png  층2 64×32: 각반(허리·다리) → 관복 아랫자락
 //   textures/items/{iron,diamond}_{helmet,chestplate,leggings,boots}.png  아이콘 16×16
+// 금 갑옷(관리자 관찰자 /function admin 전용)은 세종대왕 용포로: gold_1/gold_2, items/gold_* (이름은 ko_KR 세종대왕 익선관·곤룡포 …).
 // 갑옷은 몸보다 조금 크게 겹쳐 그려지므로, 얼굴·손·발등처럼 드러나야 할 곳은 투명으로 둔다.
 const fs = require("fs"), path = require("path");
 const PNG = require("./png");
@@ -90,9 +91,97 @@ function icons(T) {
     .shade({ outline: "#0d0d10", keep: new Set([SOLE]) });
   return out;
 }
+// ---- 금 갑옷 → 세종대왕 용포 (관리자 관찰자 /function admin 이 입는 옷; 이 월드에서 금 갑옷은 관찰자만 쓴다)
+//   투구 → 익선관(검은 관, 뒤가 높고 뒤쪽에 위로 선 날개 둘), 갑옷 → 대홍 곤룡포(가슴·등·양어깨에 금빛 용보, 옥대),
+//   각반 → 곤룡포 아랫자락, 신발 → 목화. 홍포대 관복과 헷갈리지 않게: 더 짙은 진홍, 남색 흉배 대신 금빛 둥근 용보, 사모 대신 익선관.
+const KING = "#a3161f", KING_D = darken(KING, 0.28), JADE = "#d8ead0", JADE_D = "#9fbf97", OKDAE = "#3b0d10";
+const ROYAL_GOLD = "#e9b949", ROYAL_GOLD_D = "#b5832a";
+// 용보 6×6: 둥근 금빛 수(繡) 판에 짙은 금실로 서린 용 (. = 바탕 옷감). 어깨용 4×4는 작은 판.
+const YONGBO = [".OGGO.", "OGgGGO", "GgGGgG", "GGgGgG", "OGGgGO", ".OGGO."];
+const YONGBO_S = [".OO.", "OGgO", "OgGO", ".OO."];
+const YONG_D = "#9a6a1c";   // 짙은 금실
+const medal = pat => (x, y, base) => {
+  const ch = (pat[y] || "")[x];
+  return ch === "O" ? ROYAL_GOLD_D : ch === "G" ? ROYAL_GOLD : ch === "g" ? "#9a6a1c" : base;
+};
+const yongbo = medal(YONGBO), yongboS = medal(YONGBO_S);
+// 곤룡포 옷감: 은은한 구름무늬(운문) 점
+const silk = (ax, ay) => ((ax * 2 + ay * 3) % 7 === 0 && hash(ax, ay, 5) < 0.6 ? darken(KING, 0.14) : hash(ax, ay, 3) > 0.93 ? lighten(KING, 0.1) : KING);
+const okdae = x => (x % 3 === 1 ? JADE : x % 3 === 2 ? JADE_D : OKDAE);   // 옥대: 검붉은 띠에 옥 장식
+
+function royal1() {
+  const { img, face } = painter();
+  // 익선관: 앞은 낮고 뒤는 높게, 뒷면 위쪽에 위로 선 날개 둘
+  const head = box(0, 0, 8, 8, 8);
+  face(head.top, (x, y, w, h, ax, ay) => (y >= 5 && (x === 1 || x === 2 || x === 5 || x === 6) ? HAT_L : hash(ax, ay) < 0.15 ? HAT_L : HAT));
+  // 앞은 낮게; 맨 윗줄에 뒤에 선 날개 끝이 비쳐 보이게
+  face(head.front, (x, y) => (y === 0 && (x === 1 || x === 2 || x === 5 || x === 6) ? "#4a4a58" : y <= 2 ? ((x + y) % 4 ? HAT : HAT_L) : y === 3 ? HAT_L : null));
+  for (const k of ["right", "left"]) face(head[k], (x, y) => (y <= 3 ? ((x + y) % 4 ? HAT : HAT_L) : y === 4 ? HAT_L : null));
+  face(head.back, (x, y) => {
+    if (y <= 2 && (x === 1 || x === 2 || x === 5 || x === 6)) return (x === 1 || x === 6) && y === 0 ? HAT : "#4a4a58"; // 날개
+    return y <= 5 ? ((x + y) % 4 ? HAT : HAT_L) : null;
+  });
+  face(head.bottom, () => null);
+  // 곤룡포 몸통
+  const body = box(16, 16, 8, 12, 4);
+  const robe = (x, y, w, h, ax, ay) => (y === 9 ? okdae(x) : y >= 11 ? KING_D : silk(ax, ay));
+  face(body.front, (x, y, w, h, ax, ay) => {
+    if (y === 0 && x >= 2 && x <= 5) return WHITE;                       // 동정(둥근 깃 안쪽)
+    if (y === 1 && (x === 2 || x === 5)) return WHITE;
+    if (y >= 2 && y <= 7 && x >= 1 && x <= 6) return yongbo(x - 1, y - 2, robe(x, y, w, h, ax, ay)); // 가슴 용보
+    return robe(x, y, w, h, ax, ay);
+  });
+  face(body.back, (x, y, w, h, ax, ay) => (y >= 2 && y <= 7 && x >= 1 && x <= 6 ? yongbo(x - 1, y - 2, robe(x, y, w, h, ax, ay)) : robe(x, y, w, h, ax, ay)));
+  face(body.right, robe); face(body.left, robe);
+  face(body.top, (x, y, w, h, ax, ay) => silk(ax, ay)); face(body.bottom, () => KING_D);
+  // 소매: 바깥 면 위쪽에 어깨 용보, 손목 아래는 투명
+  const arm = box(40, 16, 4, 12, 4);
+  const sleeve = (x, y, w, h, ax, ay) => (y >= 11 ? null : y === 10 ? KING_D : silk(ax, ay));
+  face(arm.right, (x, y, w, h, ax, ay) => (y <= 3 ? yongboS(x, y, sleeve(x, y, w, h, ax, ay)) : sleeve(x, y, w, h, ax, ay)));
+  for (const k of ["front", "left", "back"]) face(arm[k], sleeve);
+  face(arm.top, (x, y, w, h, ax, ay) => ((x === 1 || x === 2) && (y === 1 || y === 2) ? ROYAL_GOLD : silk(ax, ay)));
+  face(arm.bottom, () => null);
+  // 목화
+  const leg = box(0, 16, 4, 12, 4);
+  for (const k of ["front", "right", "left", "back"]) face(leg[k], (x, y) => (y >= 11 ? SOLE : y >= 8 ? (y === 8 ? HAT_L : BOOT) : null));
+  face(leg.top, () => null); face(leg.bottom, () => SOLE);
+  return img;
+}
+function royal2() {
+  const { img, face } = painter();
+  const body = box(16, 16, 8, 12, 4);
+  for (const k of ["front", "right", "left", "back"]) face(body[k], (x, y, w, h, ax, ay) => (y < 9 ? null : y === 9 ? okdae(x) : y === 11 ? KING_D : silk(ax, ay)));
+  face(body.top, () => null); face(body.bottom, (x, y, w, h, ax, ay) => silk(ax, ay));
+  const leg = box(0, 16, 4, 12, 4);
+  for (const k of ["front", "right", "left", "back"]) face(leg[k], (x, y, w, h, ax, ay) => (y >= 8 ? null : y === 7 ? KING_D : silk(ax, ay)));
+  face(leg.top, (x, y, w, h, ax, ay) => silk(ax, ay)); face(leg.bottom, () => null);
+  return img;
+}
+function royalIcons() {
+  const out = {};
+  out.helmet = icon(16, 16).rect(3, 8, 10, 5, HAT).rect(4, 6, 8, 2, HAT).rect(5, 5, 6, 1, HAT)       // 관 몸체(뒤가 높음)
+    .rect(3, 12, 10, 1, HAT_L)
+    .ellipse(5.5, 3.2, 1.5, 2.4, "#4a4a58").ellipse(10.5, 3.2, 1.5, 2.4, "#4a4a58")                     // 위로 선 날개 둘
+    .shade({ outline: "#0d0d10" });
+  out.chestplate = icon(16, 16).rect(3, 3, 10, 11, KING).rect(1, 4, 2, 6, KING).rect(13, 4, 2, 6, KING)
+    .rect(6, 3, 4, 1, WHITE).set(6, 4, WHITE).set(9, 4, WHITE)                                         // 둥근 깃
+    .ellipse(8, 7.5, 2.8, 2.8, ROYAL_GOLD_D).ellipse(8, 7.5, 2.1, 2.1, ROYAL_GOLD).set(7, 6, YONG_D).set(8, 7, YONG_D).set(7, 8, YONG_D) // 용보
+    .set(1, 4, ROYAL_GOLD).set(14, 4, ROYAL_GOLD)                                                      // 어깨 용보
+    .rect(3, 11, 10, 1, OKDAE).set(4, 11, JADE).set(7, 11, JADE).set(10, 11, JADE)                   // 옥대
+    .shade({ outline: "#2a0d0f", keep: new Set([WHITE, ROYAL_GOLD, ROYAL_GOLD_D, YONG_D, JADE, OKDAE]) });
+  out.leggings = icon(16, 16).rect(4, 2, 8, 2, OKDAE).set(5, 2, JADE).set(8, 2, JADE).set(11, 2, JADE)
+    .rect(4, 4, 8, 4, KING).rect(3, 8, 4, 6, KING).rect(9, 8, 4, 6, KING).rect(3, 13, 4, 1, KING_D).rect(9, 13, 4, 1, KING_D)
+    .shade({ outline: "#2a0d0f", keep: new Set([OKDAE, JADE]) });
+  out.boots = icons({ robe: KING }).boots;                                                             // 목화는 팀과 같음
+  return out;
+}
+
+const w = (rel, img) => { fs.writeFileSync(path.join(RP, rel), PNG.encode(img)); console.log("썼음 textures/" + rel); };
 for (const [mat, T] of Object.entries(TEAMS)) {
-  const w = (rel, img) => { fs.writeFileSync(path.join(RP, rel), PNG.encode(img)); console.log("썼음 textures/" + rel); };
   w(`models/armor/${mat}_1.png`, layer1(T));
   w(`models/armor/${mat}_2.png`, layer2(T));
   for (const [piece, ic] of Object.entries(icons(T))) w(`items/${mat}_${piece}.png`, ic.image());
 }
+w("models/armor/gold_1.png", royal1());
+w("models/armor/gold_2.png", royal2());
+for (const [piece, ic] of Object.entries(royalIcons())) w(`items/gold_${piece}.png`, ic.image());

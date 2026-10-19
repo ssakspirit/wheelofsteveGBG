@@ -50,5 +50,19 @@
             "sound" : ""
          }
       }
+   },
+   "entity_sounds" : {
+      "entities" : {
+         "rwm:timer" : {
+            "volume" : 1.0,
+            "pitch" : 1.0,
+            "events" : {
+               "hurt" : "",
+               "death" : "",
+               "hurt.in.water" : "",
+               "death.in.water" : ""
+            }
+         }
+      }
    }
 }

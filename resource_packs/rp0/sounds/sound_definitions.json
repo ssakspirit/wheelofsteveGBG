@@ -73,6 +73,7 @@
          "sounds" : [
             {
                "name" : "sounds/rwm/grid_bgm",
+               "is3D" : false,
                "stream" : true,
                "volume" : 0.50
             }
@@ -127,6 +128,7 @@
             {
                "load_on_low_memory" : true,
                "name" : "sounds/rwm/elytra_bgm",
+               "is3D" : false,
                "stream" : true,
                "volume" : 0.50
             }
@@ -138,6 +140,7 @@
             {
                "load_on_low_memory" : true,
                "name" : "sounds/rwm/orb_bgm",
+               "is3D" : false,
                "stream" : true,
                "volume" : 0.50
             }
@@ -148,6 +151,7 @@
          "sounds" : [
             {
                "name" : "sounds/rwm/finale_bgm",
+               "is3D" : false,
                "stream" : true,
                "volume" : 0.50
             }
@@ -170,6 +174,7 @@
             {
                "load_on_low_memory" : true,
                "name" : "sounds/rwm/craft_bgm",
+               "is3D" : false,
                "stream" : true,
                "volume" : 0.50
             }
@@ -192,6 +197,7 @@
             {
                "load_on_low_memory" : true,
                "name" : "sounds/rwm/nock_bgm",
+               "is3D" : false,
                "stream" : true,
                "volume" : 0.50
             }

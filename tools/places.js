@@ -120,7 +120,7 @@ const devCommands = [
   { group: "치트 (혼자서 테스트)", items: [
     { cmd: "/function dev/team/1", desc: "나를 팀 1(홍포대)에 넣기 — 로비 팀 선택 구역에 들어간 것과 같음", debug: true },
     { cmd: "/function dev/team/2", desc: "나를 팀 2(청포대)에 넣기", debug: true },
-    { cmd: "/function dev/skip/intro", desc: "설명(인트로)을 건너뛰고 바로 경기 시작. 준비 명령은 순서대로 모두 실행됨", debug: true },
+    { cmd: "/function dev/skip/intro", desc: "설명(인트로)을 건너뛰고 바로 경기 시작. 준비 명령은 순서대로 모두 실행됨(천천히 쌓는 시범 연출만 뺌 — 교태전 꽃담 판에 시범 블록이 남지 않게). 시범 블록을 쌓는 중(꽃담 설명 1~2초·5~15초·44~45초 무렵)에는 몇 초 뒤 다시", debug: true },
     { cmd: "/function dev/skip/end", desc: "팀 1 승리로 경기를 끝내고 원래 종료 장면 보기. 자격루는 이긴 팀 장치를 모두 고친 상태로", debug: true },
     { cmd: "/function dev/skip/end_team2", desc: "팀 2 승리로 경기 끝내기", debug: true },
     { cmd: "/function dev/skip/lobby", desc: "게임을 바로 정리하고 로비로 (승패 기록 없음)", debug: true },

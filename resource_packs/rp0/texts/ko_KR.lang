@@ -214,6 +214,10 @@ item.iron_helmet.name=§m홍포대 사모	#	###{StrContains="§m"} Named item fo
 item.iron_chestplate.name=§m홍포대 관복	#	###{StrContains="§m"} Named item for team 1's chestplate.
 item.iron_leggings.name=§m홍포대 바지	#	###{StrContains="§m"} Named item for team 1's leggings.
 item.iron_boots.name=§m홍포대 목화	#	###{StrContains="§m"} Named item for team 1's boots.
+item.golden_helmet.name=§6세종대왕 익선관	#	###{StrContains="§6"} Admin observer (/function admin) helmet, drawn as King Sejong's crown.
+item.golden_chestplate.name=§6세종대왕 곤룡포	#	###{StrContains="§6"} Admin observer chestplate, drawn as King Sejong's dragon robe.
+item.golden_leggings.name=§6세종대왕 곤룡포 자락	#	###{StrContains="§6"} Admin observer leggings, the lower part of the dragon robe.
+item.golden_boots.name=§6세종대왕 목화	#	###{StrContains="§6"} Admin observer boots.
 
 ## Interacts
 interact.marker.start_map=§6지도 시작	#	###{StrContains="§6"} Displays on the students screen when they are hoving over the button to start the game.

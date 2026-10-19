@@ -16,6 +16,27 @@ const FROZEN = [
   "manifest.json",
 ].map(p => BP + p);
 
+// 사용자가 승인한 예외: 원본 파일에 아래 바꿈만 적용한 것과 정확히 같아야 통과한다(다른 곳이 바뀌면 위반).
+//   2026-10-19 자격루 적은 인원 방식(act2/201)의 승패 판정: 원작은 >=로 비교해 동점이면 두 승리 함수가 모두 돌아
+//   화면은 '청포대 승리'인데 어전대회 1승은 홍포대에 기록됐다 → 다른 게임처럼 > 와 무승부(=)로.
+const T1 = '"§4Team 1" score', T2 = '"§9Team 2" score', AT = "execute if score .seq global matches 7210 run execute if score ";
+const APPROVED = {
+  [BP + "functions/seq/act2/201.mcfunction"]: [
+    [`${AT}${T1} >= ${T2} run /function utility/wins/team1`, `${AT}${T1} > ${T2} run /function utility/wins/team1`],
+    [`${AT}${T2} >= ${T1} run /function utility/wins/team2`,
+     `${AT}${T2} > ${T1} run /function utility/wins/team2\n${AT}${T1} = ${T2} run /function utility/wins/tie`],
+  ],
+};
+function approvedOk(file) {
+  const lf = s => s.replace(/\r\n/g, "\n");
+  let want = lf(git(["show", `${BASELINE}:${file}`]));
+  for (const [from, to] of APPROVED[file]) {
+    if (want.split(from).length !== 2) return false;   // 원본에 정확히 한 번 있어야 한다
+    want = want.replace(from, to);
+  }
+  return want === lf(fs.readFileSync(file, "utf8"));
+}
+
 // 안개는 색만 바꿀 수 있고 거리값은 규칙(시야)에 영향을 준다
 const FOG_DIR = "resource_packs/rp0/fogs/";
 
@@ -33,13 +54,18 @@ try {
   process.exit(2);
 }
 
-const violations = [];
+const violations = [], approvedSeen = [];
 
 // 1) 규칙 파일 변경 (작업 트리 포함, 기준 ref 대비)
 const diff = git(["-c", "core.quotepath=false", "diff", "--name-status", "--no-renames", BASELINE, "--", ...FROZEN]);
 for (const line of diff.split("\n").filter(Boolean)) {
   const [status, file] = line.split("\t");
   if (status === "A") continue;
+  if (status === "M" && APPROVED[file]) {
+    if (approvedOk(file)) { approvedSeen.push(file); continue; }
+    violations.push(`승인된 예외와 다르게 수정됨: ${file}`);
+    continue;
+  }
   const label = status === "D" ? "삭제됨" : "수정됨";
   violations.push(`${label}: ${file}`);
 }
@@ -70,7 +96,7 @@ for (const f of baseFogs) {
 }
 
 if (violations.length === 0) {
-  console.log(`규칙 보존 검사 통과 (기준: ${BASELINE})`);
+  console.log(`규칙 보존 검사 통과 (기준: ${BASELINE})` + (approvedSeen.length ? ` — 승인된 예외 ${approvedSeen.length}건: ${approvedSeen.join(", ")}` : ""));
   process.exit(0);
 }
 console.log(`규칙 보존 검사: 기준(${BASELINE}) 대비 규칙 관련 파일 변경 ${violations.length}건`);

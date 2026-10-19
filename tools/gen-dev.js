@@ -33,10 +33,16 @@ for (const [name, dir, label] of games) {
 // 진행 순서는 메인 루프처럼 seq 파일을 부르는 방식으로 건너뛴다: 건너뛸 구간의 예약된 명령(소환·배치·카메라…)을
 // 순서대로 한 틱 안에 모두 실행한 뒤 목표 지점으로 옮기므로, 게임 준비 과정이 빠지지 않는다.
 const SEQ = path.join(__dirname, "..", "behavior_packs/bp0/functions/seq");
+// 천천히 쌓는 시범 연출(structure load … block_by_block <초>): 한 틱에 몰아 재생하면 쌓기가 '판 지우기' 뒤에도
+// 몇 초 이어져, 건너뛴 뒤 경기 판에 시범 블록이 남는다(교태전 꽃담 설명 20·100·880번). 재생할 때는 이 줄만 뺀 사본을 쓴다.
+const ANIM = /^execute if score \.seq global matches (\d+) run \/?structure load \S+ .* (block_by_block|layer_by_layer) ([\d.]+)\s*$/;
 function readSeq(file) {
-  const exact = new Set(), win = new Set();
+  const exact = new Set(), win = new Set(), anim = [];
   let final = null;
-  for (const l of fs.readFileSync(path.join(SEQ, file + ".mcfunction"), "utf8").split(/\r?\n/)) {
+  const lines = fs.readFileSync(path.join(SEQ, file + ".mcfunction"), "utf8").split(/\r?\n/);
+  for (const l of lines) {
+    const a = l.match(ANIM);
+    if (a) anim.push({ v: +a[1], ticks: Math.ceil(+a[3] * 20) });
     const m = l.match(/\.seq global matches (\d+)(\.\.(\d+)?)?\s/);
     if (!m || m[2]) continue; // 범위(a..b)는 그 구간 동안 계속 실행되는 명령이라 따로 재생하지 않는다
     const v = +m[1];
@@ -44,12 +50,26 @@ function readSeq(file) {
     if (/utility\/wins\//.test(l)) win.add(v);
     if (/set \.act global 0\b/.test(l)) final = v;
   }
-  return { values: [...exact].sort((a, b) => a - b), win, final };
+  return { values: [...exact].sort((a, b) => a - b), win, final, anim, lines };
+}
+// 시범 연출이 있는 seq는 그 줄만 주석으로 바꾼 사본(dev/_cheat/seq/<act>)을 만들어 재생에 쓴다. 나머지 줄은 원본과 같다.
+const replayFile = new Map();
+function noAnimCopy(act, file, info) {
+  if (!info.anim.length) return `seq/${file}`;
+  if (!replayFile.has(act)) {
+    w(`_cheat/seq/${act}.mcfunction`, [
+      `## 자동 생성: seq/${file}의 사본. 건너뛰기 재생용 — 천천히 쌓는 시범 연출(structure load … block_by_block)만 뺐다.`,
+      "## 원본(게임)은 그대로 쓰이고, 이 사본은 dev/skip 명령에서만 불린다. node tools/gen-dev.js로 다시 만든다.",
+      ...info.lines.map(l => (ANIM.test(l) ? "# [건너뛰기에서 뺌] " + l : l)),
+    ]);
+    replayFile.set(act, `dev/_cheat/seq/${act}`);
+  }
+  return replayFile.get(act);
 }
 // 값 v마다: 아직 지나지 않았으면(.seq ≤ v) seq를 v로 맞추고 메인 루프와 같은 방식(as @p at @s)으로 seq 파일을 부른다
-const replay = (act, file, values) => values.flatMap(v => [
+const replay = (act, file, values, fn = `seq/${file}`) => values.flatMap(v => [
   `execute if score .act global matches ${act} if score .seq global matches ..${v} run scoreboard players set .seq global ${v}`,
-  `execute if score .act global matches ${act} if score .seq global matches ${v} as @p at @s run function seq/${file}`,
+  `execute if score .act global matches ${act} if score .seq global matches ${v} as @p at @s run function ${fn}`,
 ]);
 const seqInfo = sequences.map(s => {
   const info = readSeq(s.file);
@@ -85,23 +105,28 @@ for (const p of pre) w(`_cheat/intro_${p.act}.mcfunction`, [
 ]);
 for (const s of seqInfo) w(`_cheat/intro_${s.act}.mcfunction`, [
   `## act ${s.act} (${s.file}): 경기 시작(${s.start}) 전까지의 예약 명령을 순서대로 재생하고 ${s.start}로 옮긴다`,
-  ...replay(s.act, s.file, s.values.filter(v => v < s.start)),
+  ...(s.anim.length ? [`## 천천히 쌓는 시범 연출(${[...new Set(s.anim.map(a => a.v))].join("·")}번)은 뺀 사본으로 재생한다 (dev/_cheat/seq/${s.act})`] : []),
+  ...replay(s.act, s.file, s.values.filter(v => v < s.start), noAnimCopy(s.act, s.file, s)),
   `execute if score .act global matches ${s.act} if score .seq global matches ..${s.start} run scoreboard players set .seq global ${s.start}`,
 ]);
+// 이미 실제로 시작된 시범 쌓기가 진행 중이면 건너뛰지 않는다(지워도 쌓기가 이어진다) → 몇 초 뒤 다시
+const animWait = [...new Set(seqInfo.flatMap(s => s.anim.filter(a => a.v < s.start).map(a =>
+  `execute if score .act global matches ${s.act} if score .seq global matches ${a.v}..${a.v + a.ticks - 1} run scoreboard players set .dev_wait global 1`)))];
 w("_cheat/intro.mcfunction", [
-  ...pre.map(p => `execute if score .act global matches ${p.act} run function dev/_cheat/intro_${p.act}`),
-  ...seqInfo.map(s => `execute if score .act global matches ${s.act} run function dev/_cheat/intro_${s.act}`),
-  "stopsound @a", // 한꺼번에 재생된 설명 효과음·음악을 끈다 (경기 시작 음악은 다음 틱에 정상 재생)
-  say("§a[dev] §f설명을 건너뛰었습니다. 곧 경기가 시작됩니다."), seqNow,
+  "scoreboard players set .dev_wait global 0",
+  ...animWait,
+  `execute if score .dev_wait global matches 1 run ${say("§e[dev] §f시범 블록을 쌓는 중이라 지금은 건너뛸 수 없습니다. 몇 초 뒤 다시 해 보세요.")}`,
+  ...pre.map(p => `execute if score .dev_wait global matches 0 if score .act global matches ${p.act} run function dev/_cheat/intro_${p.act}`),
+  ...seqInfo.map(s => `execute if score .dev_wait global matches 0 if score .act global matches ${s.act} run function dev/_cheat/intro_${s.act}`),
+  "execute if score .dev_wait global matches 0 run stopsound @a", // 한꺼번에 재생된 설명 효과음·음악을 끈다 (경기 시작 음악은 다음 틱에 정상 재생)
+  `execute if score .dev_wait global matches 0 run ${say("§a[dev] §f설명을 건너뛰었습니다. 곧 경기가 시작됩니다.")}`, seqNow,
 ]);
 cheat("skip/intro.mcfunction", "설명(인트로)을 건너뛰고 바로 경기 시작", "intro");
 
 // 경기 끝 → 승패 → 종료 장면 (이긴 팀 지정)
 for (const [team, other] of [[1, 2], [2, 1]]) {
   const T = team === 1 ? '"§4Team 1"' : '"§9Team 2"', O = other === 1 ? '"§4Team 1"' : '"§9Team 2"';
-  w(`_cheat/end_team${team}.mcfunction`, [
-    `## 팀 ${team} 승리로 경기 끝 지점으로 옮긴다 (아직 설명 중이면 먼저 설명을 건너뛴다)`,
-    "function dev/_cheat/intro",
+  const body = [
     `scoreboard players operation ${T} score = ${O} score`,
     `scoreboard players add ${T} score 1`,
     "## 자격루: 이긴 팀 장치를 모두 수리해 완성된 모습으로 종료 장면을 본다",
@@ -111,6 +136,11 @@ for (const [team, other] of [[1, 2], [2, 1]]) {
     "execute if score .act global matches 601 run scoreboard players add @s final_showdown_score 10",
     ...seqInfo.map(s => `execute if score .act global matches ${s.act} if score .seq global matches ..${s.end} run scoreboard players set .seq global ${s.end}`),
     say(`§a[dev] §f팀 ${team} 승리로 경기를 끝냅니다. 종료 장면이 이어집니다.`), seqNow,
+  ];
+  w(`_cheat/end_team${team}.mcfunction`, [
+    `## 팀 ${team} 승리로 경기 끝 지점으로 옮긴다 (아직 설명 중이면 먼저 설명을 건너뛴다; 시범 블록을 쌓는 중이면 아무것도 하지 않음)`,
+    "function dev/_cheat/intro",
+    ...body.map(l => (l.startsWith("##") ? l : `execute if score .dev_wait global matches 0 run ${l}`)),
   ]);
   cheat(team === 1 ? "skip/end.mcfunction" : "skip/end_team2.mcfunction", `경기를 바로 끝내고 종료 장면 보기 (팀 ${team} 승리)`, `end_team${team}`);
 }
@@ -118,7 +148,7 @@ for (const [team, other] of [[1, 2], [2, 1]]) {
 // 로비로 돌아가기: 남은 예약 명령(정리·카메라 해제·로비 복귀)을 모두 재생하되 승패 판정 지점은 건너뛴다 → 승리 기록 없음
 for (const s of seqInfo) w(`_cheat/lobby_${s.act}.mcfunction`, [
   `## act ${s.act}: 로비 복귀(${s.final})까지 재생, 승패 판정(${[...s.win].join(", ") || "없음"})은 건너뜀`,
-  ...replay(s.act, s.file, s.values.filter(v => v <= s.final && !s.win.has(v))),
+  ...replay(s.act, s.file, s.values.filter(v => v <= s.final && !s.win.has(v)), noAnimCopy(s.act, s.file, s)),
 ]);
 w("_cheat/lobby.mcfunction", [
   ...pre.map(p => `execute if score .act global matches ${p.act} run function dev/_cheat/intro_${p.act}`),

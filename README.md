@@ -4,7 +4,7 @@
 
 마인크래프트 교육용 에디션 미니게임 월드 **Wheel of Steve**(ReWrite Media)를 경복궁과 조선 초기 인물로 다시 꾸민 월드입니다. 게임 규칙은 원작과 같고, 진행자·배경·물건·블록·배경음악을 조선 문화에 맞게 바꿨습니다.
 
-- **월드 내려받기**: [Gyeongbokgung-Royal-Tournament-v1.0.mcworld](https://github.com/ssakspirit/wheelofsteveGBG/releases/download/v1.0/Gyeongbokgung-Royal-Tournament-v1.0.mcworld) (약 43MB, [릴리스 v1.0](https://github.com/ssakspirit/wheelofsteveGBG/releases/tag/v1.0))
+- **월드 내려받기**: [Gyeongbokgung-Royal-Tournament-v1.1.mcworld](https://github.com/ssakspirit/wheelofsteveGBG/releases/download/v1.1/Gyeongbokgung-Royal-Tournament-v1.1.mcworld) (약 43MB, [릴리스 v1.1](https://github.com/ssakspirit/wheelofsteveGBG/releases/tag/v1.1))
 - **플레이어 안내 페이지**: <https://claude.ai/artifact/5nyhB1La5NPcbzxpJeV8cL>
   마당별 놀이 방법, 진행자, 배경이 된 경복궁, 물건과 동물, 배경음악 미리듣기, 선생님 진행 팁을 담았습니다.
 
@@ -41,7 +41,7 @@
 
 - 월드에 **처음 들어온 사람이 호스트**가 됩니다. 호스트만 시작 버튼, 혼천의, 진행자를 쓸 수 있으니 선생님이나 진행할 학생이 먼저 들어가세요.
 - 모두 팀을 고른 뒤 호스트가 황금 블록의 버튼을 누르면 시작합니다. 그 뒤로는 새로 들어올 수 없습니다.
-- 경기에 참여하지 않고 지켜보려면 채팅에 `/function admin`을 입력합니다. 호스트는 관전자가 되면 안 됩니다.
+- 경기에 참여하지 않고 지켜보려면 채팅에 `/function admin`을 입력합니다. 호스트가 관전자가 되어도 호스트 자격은 그대로라, 선생님이 호스트를 맡아 진행만 할 수 있습니다.
 - 호스트가 나가 모두 움직일 수 없으면 다른 사람이 `/function dev/host`로 호스트를 이어받습니다. `/function dev/status`로 지금 대결과 팀 승리 수를 볼 수 있습니다.
 - 호스트가 진행자에게 말을 걸면 그 대결을 바로 해 볼 수 있습니다. 이렇게 한 대결은 승리 기록에 남지 않아 수업 전 연습에 좋습니다.
 

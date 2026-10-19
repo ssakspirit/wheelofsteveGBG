@@ -7,3 +7,4 @@ tellraw @s {"rawtext":[{"text":"§e시작 §f/function dev/start/<게임> §7orb
 tellraw @s {"rawtext":[{"text":"§e모드 §f/function dev/build §7건축 모드 · §f/function dev/play §7플레이 모드"}]}
 tellraw @s {"rawtext":[{"text":"§e기타 §f/function dev/status §7상태 · §fdev/zones §7장식 금지 구역 · §fdev/fog_off §7안개 끄기 · §fdev/host §7호스트 되기"}]}
 tellraw @s {"rawtext":[{"text":"§e디버그 §f/function dev/debug/on §7→ dev/team/1 · dev/skip/intro · dev/skip/end · dev/skip/lobby (연습 경기 전용)"}]}
+tellraw @s {"rawtext":[{"text":"§e진행 §f/function skip §7로비 소개·경기 설명 건너뛰기 · §f/function end §7무승부로 끝내기 (디버그 모드 없이, 어전대회에서도)"}]}

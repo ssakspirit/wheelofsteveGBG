@@ -88,10 +88,10 @@ execute if score .seq global matches 700 run scoreboard objectives setdisplay si
 ### At game start
 execute if score .seq global matches 700 run summon rwm:timer 0 90 1998 0 0 rwm:timer_orb
 execute if score .seq global matches 700 run inputpermission set @a movement enabled
-execute if score .seq global matches 740 run /execute as @a run playsound record.pigstep @a 0 65 1998 0.5 2 0.5
-execute if score .seq global matches 2220 run /execute as @a run playsound record.pigstep @a 0 65 1998 0.5 2 0.5
-execute if score .seq global matches 3700 run /execute as @a run playsound record.pigstep @a 0 65 1998 0.5 2 0.5
-execute if score .seq global matches 5180 run /execute as @a run playsound record.pigstep @a 0 65 1998 0.55 2 0.5
+execute if score .seq global matches 740 run playsound record.pigstep @a 0 65 1998 0.5 2 0.5
+execute if score .seq global matches 2220 run playsound record.pigstep @a 0 65 1998 0.5 2 0.5
+execute if score .seq global matches 3700 run playsound record.pigstep @a 0 65 1998 0.5 2 0.5
+execute if score .seq global matches 5180 run playsound record.pigstep @a 0 65 1998 0.55 2 0.5
 
 ###Across whole game
 execute if score .seq global matches 680 run scoreboard objectives add orb_cooldown dummy orb_cooldown

@@ -1,0 +1,24 @@
+## 로비 소개(act 1): 1483~2379의 안내 문구·카메라 명령을 재생하고 화면이 어두워지는 2380로 옮긴다
+execute if score .act global matches 1 if score .seq global matches ..1500 run scoreboard players set .seq global 1500
+execute if score .act global matches 1 if score .seq global matches 1500 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..1501 run scoreboard players set .seq global 1501
+execute if score .act global matches 1 if score .seq global matches 1501 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..1600 run scoreboard players set .seq global 1600
+execute if score .act global matches 1 if score .seq global matches 1600 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..1750 run scoreboard players set .seq global 1750
+execute if score .act global matches 1 if score .seq global matches 1750 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..1850 run scoreboard players set .seq global 1850
+execute if score .act global matches 1 if score .seq global matches 1850 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..2000 run scoreboard players set .seq global 2000
+execute if score .act global matches 1 if score .seq global matches 2000 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..2001 run scoreboard players set .seq global 2001
+execute if score .act global matches 1 if score .seq global matches 2001 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..2100 run scoreboard players set .seq global 2100
+execute if score .act global matches 1 if score .seq global matches 2100 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..2101 run scoreboard players set .seq global 2101
+execute if score .act global matches 1 if score .seq global matches 2101 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..2200 run scoreboard players set .seq global 2200
+execute if score .act global matches 1 if score .seq global matches 2200 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches ..2300 run scoreboard players set .seq global 2300
+execute if score .act global matches 1 if score .seq global matches 2300 as @p at @s run function seq/act0/001
+execute if score .act global matches 1 if score .seq global matches 1483..2380 run scoreboard players set .seq global 2380

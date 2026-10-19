@@ -176,6 +176,74 @@ function royalIcons() {
   return out;
 }
 
+// ---- 익선관 입체 모델: 바닐라 투구는 머리 상자를 키운 것이라 그림만으로는 높이·날개를 낼 수 없고 눈까지 덮인다.
+//   플레이어가 쓴 금 투구만 그리는 바닐라 attachable(minecraft:golden_helmet.player)을 RP에서 같은 이름으로 덮어
+//   새 모델을 쓴다. 모체(9×4×9, 눈썹 위) + 뒷산(9×3×5, 뒤쪽이 높게) + 각(위로 곧게 선 날개 둘, 4×5×1, 뒷산 바로 뒤, 양옆으로 벌려 둠).
+//   좌표: 머리 상자 Y 24~32(눈 27~28), 앞 = -z(north). 날개는 뒷산 뒷면과 겹치지 않게 z 4.5부터(같은 면이면 깜빡임).
+const IK = { cap: [-4.5, 29, -4.5, 9, 4, 9], back: [-4.5, 33, -0.5, 9, 3, 5], wingL: [-5, 34.5, 4.5, 4, 5, 1], wingR: [1, 34.5, 4.5, 4, 5, 1] };
+const IK_UV = { cap: [0, 0], back: [0, 13], wingL: [36, 0], wingR: [46, 0] };
+const IK_ROT = {};
+// 부풀리기: 플레이어 스킨의 바깥 층(머리카락·모자 층)은 머리보다 0.5 커서 ±4.5에 면이 있다 → 모체 면(±4.5)과 같은 자리라
+// 머리카락이 비치고 깜빡였다. 모체는 0.3(±4.8), 뒷산은 0.2(±4.7)로 키워 서로·스킨과 면이 겹치지 않게 한다
+// (날개 앞면 z 4.5는 뒷산 안쪽 4.7로 숨는다). 부풀려도 그림 배치는 같다.
+const IK_INFLATE = { cap: 0.3, back: 0.2 };   // 날개는 곧게 세운다(회전 방향을 Blockbench로 확인하기 전에는 기울이지 않음)
+const WING = "#2b2b35", WING_E = "#45455a";
+function ikseongwanTexture() {
+  const { img, face } = painter();
+  const SHEEN = "#2a2a33";  // 사(紗) 비단의 은은한 결
+  const silkHat = (x, y, w, h, ax, ay) => (hash(ax, ay, 9) < 0.07 ? SHEEN : HAT);
+  for (const [k, [u, v]] of Object.entries(IK_UV)) {
+    const [, , , sw, sh, sd] = IK[k], f = box(u, v, sw, sh, sd);
+    if (k.startsWith("wing")) {
+      // 날개: 위 모서리를 둥글게(투명), 가장자리 밝게
+      const wing = (x, y, w, h) => ((y === 0 && (x === 0 || x === w - 1)) ? null : (x === 0 || x === w - 1 || y === 0) ? WING_E : WING);
+      for (const n of ["front", "back"]) face(f[n], wing);
+      for (const n of ["right", "left", "top"]) face(f[n], (x, y) => (n === "top" ? null : y === 0 ? null : WING_E));
+      face(f.bottom, () => WING);
+    } else {
+      for (const n of ["front", "back", "right", "left"]) face(f[n], silkHat);
+      face(f.top, (x, y, w, h, ax, ay) => (hash(ax, ay, 9) < 0.07 ? SHEEN : "#202028"));
+      // 모체 앞·옆 아랫단: 이마에 닿는 테(조금 밝게)
+      if (k === "cap") for (const n of ["front", "right", "left", "back"]) face(f[n], (x, y, w, h, ax, ay) => (y === h - 1 ? HAT_L : silkHat(x, y, w, h, ax, ay)));
+      face(f.bottom, () => HAT);
+    }
+  }
+  return img;
+}
+function ikseongwanGeo() {
+  const cube = k => { const [x, y, z, sw, sh, sd] = IK[k]; return { origin: [x, y, z], size: [sw, sh, sd], uv: IK_UV[k], ...(IK_INFLATE[k] ? { inflate: IK_INFLATE[k] } : {}), ...(IK_ROT[k] || {}) }; };
+  return {
+    format_version: "1.12.0",
+    "minecraft:geometry": [{
+      description: { identifier: "geometry.rwm.ikseongwan", texture_width: 64, texture_height: 32, visible_bounds_width: 3, visible_bounds_height: 3, visible_bounds_offset: [0, 1.5, 0] },
+      bones: [
+        { name: "waist", pivot: [0, 12, 0] },
+        { name: "body", parent: "waist", pivot: [0, 24, 0] },
+        { name: "head", parent: "body", pivot: [0, 24, 0], cubes: ["cap", "back", "wingL", "wingR"].map(cube) },
+      ],
+    }],
+  };
+}
+// 바닐라 golden_helmet.player.json을 바탕으로 geometry·texture를 익선관으로.
+// 그리기 설정: 바닐라 golden_helmet.player가 쓰는 controller.render.armor.player는 최신 바닐라 팩에만 있어 이 팩
+// (min_engine_version 1.20.13)에서는 "Invalid render controller"로 아무것도 그리지 않았다. 팩 안에 직접 만든 그리기 설정도
+// "error parsing"으로 읽히지 않았다(콘텐츠 로그). → 기본 바닐라 팩에 있는 controller.render.armor를 쓴다(구조가 같다).
+const ikseongwanAttachable = {
+  format_version: "1.10.0",
+  "minecraft:attachable": {
+    description: {
+      identifier: "minecraft:golden_helmet.player",
+      item: { "minecraft:golden_helmet": "query.owner_identifier == 'minecraft:player'" },
+      materials: { default: "armor", enchanted: "armor_enchanted" },
+      textures: { default: "textures/rwm/entity/ikseongwan", enchanted: "textures/misc/enchanted_actor_glint" },
+      geometry: { default: "geometry.rwm.ikseongwan" },
+      scripts: { parent_setup: "variable.helmet_layer_visible = 0.0;", animate: ["offset"] },
+      animations: { offset: "animation.armor.helmet.offset" },
+      render_controllers: ["controller.render.armor"],
+    },
+  },
+};
+
 const w = (rel, img) => { fs.writeFileSync(path.join(RP, rel), PNG.encode(img)); console.log("썼음 textures/" + rel); };
 for (const [mat, T] of Object.entries(TEAMS)) {
   w(`models/armor/${mat}_1.png`, layer1(T));
@@ -185,3 +253,12 @@ for (const [mat, T] of Object.entries(TEAMS)) {
 w("models/armor/gold_1.png", royal1());
 w("models/armor/gold_2.png", royal2());
 for (const [piece, ic] of Object.entries(royalIcons())) w(`items/gold_${piece}.png`, ic.image());
+// 익선관 입체 모델 (플레이어가 쓸 때만; 갑옷 거치대 등은 gold_1 머리 그림 그대로)
+fs.mkdirSync(path.join(RP, "rwm/entity"), { recursive: true });
+w("rwm/entity/ikseongwan.png", ikseongwanTexture());
+const RPROOT = path.join(RP, "..");
+for (const [rel, obj] of [["models/entity/ikseongwan.geo.json", ikseongwanGeo()], ["attachables/golden_helmet.player.json", ikseongwanAttachable]]) {
+  fs.mkdirSync(path.dirname(path.join(RPROOT, rel)), { recursive: true });
+  fs.writeFileSync(path.join(RPROOT, rel), JSON.stringify(obj, null, 2) + "\n");
+  console.log("썼음 " + rel);
+}

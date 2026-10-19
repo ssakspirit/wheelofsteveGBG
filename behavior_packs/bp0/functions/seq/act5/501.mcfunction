@@ -82,10 +82,10 @@ execute if score .seq global matches 1160 run scoreboard objectives setdisplay s
 
 ### At game start (Difference Old 700 New 1160)
 ### execute if score .seq global matches 1160 run summon rwm:timer -81 68 5087 0 0 rwm:timer_elytra
-execute if score .seq global matches 1160 run /execute at @a run playsound record.otherside @a ~ ~ ~ 0.3 1.3
+execute if score .seq global matches 1160 run playsound record.otherside @a ~ ~ ~ 0.3 1.3 0.3
 execute if score .seq global matches 1160 run inputpermission set @a movement enabled
 execute if score .seq global matches 1160 run inputpermission set @a camera enabled
-execute if score .seq global matches 4160 run /execute at @a run playsound record.otherside @a ~ ~ ~ 0.3 1.2
+execute if score .seq global matches 4160 run playsound record.otherside @a ~ ~ ~ 0.3 1.2 0.3
 
 ### Active till Game Over
 execute if score .seq global matches 1160..7280 run function utility/games/elytra/bomb_score_test

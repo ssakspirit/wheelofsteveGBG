@@ -70,6 +70,8 @@
       },
       "record.creator" : {
          "category" : "ui",
+         "min_distance" : 200.0,
+         "max_distance" : 400.0,
          "sounds" : [
             {
                "name" : "sounds/rwm/grid_bgm",
@@ -124,6 +126,8 @@
       },
       "record.otherside" : {
          "category" : "ui",
+         "min_distance" : 200.0,
+         "max_distance" : 400.0,
          "sounds" : [
             {
                "load_on_low_memory" : true,
@@ -136,6 +140,8 @@
       },
       "record.pigstep" : {
          "category" : "ui",
+         "min_distance" : 200.0,
+         "max_distance" : 400.0,
          "sounds" : [
             {
                "load_on_low_memory" : true,
@@ -148,6 +154,8 @@
       },
       "record.precipice" : {
          "category" : "ui",
+         "min_distance" : 200.0,
+         "max_distance" : 400.0,
          "sounds" : [
             {
                "name" : "sounds/rwm/finale_bgm",
@@ -170,6 +178,8 @@
       },
       "record.stal" : {
          "category" : "ui",
+         "min_distance" : 200.0,
+         "max_distance" : 400.0,
          "sounds" : [
             {
                "load_on_low_memory" : true,
@@ -193,6 +203,8 @@
       },
       "record.wait" : {
          "category" : "ui",
+         "min_distance" : 200.0,
+         "max_distance" : 400.0,
          "sounds" : [
             {
                "load_on_low_memory" : true,

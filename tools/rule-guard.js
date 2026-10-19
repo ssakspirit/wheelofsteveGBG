@@ -27,6 +27,29 @@ const APPROVED = {
      `${AT}${T2} > ${T1} run /function utility/wins/team2\n${AT}${T1} = ${T2} run /function utility/wins/tie`],
   ],
 };
+//   2026-10-19 배경음악(사용자 승인, 여러 번에 걸쳐 합침): 원작은 `execute as @a run playsound … @a`로 플레이어 수만큼
+//   모두에게 겹쳐 틀었고(9명이면 9겹), 한 플레이어 자리(~ ~ ~)에서 볼륨 1로 틀어 16칸 밖은 못 들었으며(자격루·활쏘기·백악산),
+//   교태전은 팀원에게만 틀어 관전자가 못 들었다. → 모든 음악을 '한 번만, 모두에게' 튼다:
+//   앞의 `/execute as|at @a run`을 빼고, 최소 볼륨을 붙여 거리와 상관없이 들리게(6진 망루는 원래 크기 0.3을 최소 볼륨으로),
+//   교태전은 관전자(@a[tag=admin])에게 트는 줄을 더한다.  [진행 지점, 원작 명령(run 뒤), 바뀐 명령들]
+const S = v => `execute if score .seq global matches ${v} run `;
+const PIG = "playsound record.pigstep @a 0 65 1998", STAL = "playsound record.stal @a ~ ~ ~ 1 1.1", CRE = "playsound record.creator @a[";
+const BGM = {
+  "act1/101": [740, 2220, 3700].map(v => [v, `/execute as @a run ${PIG} 0.5 2 0.5`, [`${PIG} 0.5 2 0.5`]])
+    .concat([[5180, `/execute as @a run ${PIG} 0.55 2 0.5`, [`${PIG} 0.55 2 0.5`]]]),
+  "act2/201": [1200, 3900, 6600].map(v => [v, `/execute as @a run ${STAL}`, [`${STAL} 1`]]),
+  "act2/202": [2200, 4900, 7600].map(v => [v, `/execute as @a run ${STAL}`, [`${STAL} 1`]]),
+  "act3/301": [
+    [1160, `/execute as @a run ${CRE}scores={team=1}] -33 90 -97 1 0.56 1`, [`${CRE}scores={team=1}] -33 90 -97 1 0.56 1`]],
+    [1160, `/execute as @a run ${CRE}scores={team=2}] -33 90 -97 1 0.56 1`, [`${CRE}scores={team=2}] -33 90 -97 1 0.56 1`, `${CRE}tag=admin] -33 90 -97 1 0.56 1`]],
+  ],
+  "act4/401": [[600, "/execute as @a run playsound record.wait @a ~ ~ ~ 1 1.25", ["playsound record.wait @a ~ ~ ~ 1 1.25 1"]]],
+  "act5/501": [[1160, "/execute at @a run playsound record.otherside @a ~ ~ ~ 0.3 1.3", ["playsound record.otherside @a ~ ~ ~ 0.3 1.3 0.3"]],
+               [4160, "/execute at @a run playsound record.otherside @a ~ ~ ~ 0.3 1.2", ["playsound record.otherside @a ~ ~ ~ 0.3 1.2 0.3"]]],
+  "act6/601": [[1000, "/execute as @a run /playsound record.precipice @a ~ ~ ~ 0.5 1.25", ["playsound record.precipice @a ~ ~ ~ 0.5 1.25 1"]]],
+};
+for (const [f, rows] of Object.entries(BGM))
+  (APPROVED[`${BP}functions/seq/${f}.mcfunction`] ||= []).push(...rows.map(([v, from, to]) => [S(v) + from + "\n", to.map(t => S(v) + t).join("\n") + "\n"]));
 function approvedOk(file) {
   const lf = s => s.replace(/\r\n/g, "\n");
   let want = lf(git(["show", `${BASELINE}:${file}`]));

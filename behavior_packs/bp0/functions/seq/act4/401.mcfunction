@@ -76,7 +76,7 @@ execute if score .seq global matches 600 run scoreboard objectives setdisplay si
 
 ### At game start (Difference Old 1160 New 600)
 execute if score .seq global matches 600 run summon rwm:timer 0 90 4000 0 0 rwm:timer_nock
-execute if score .seq global matches 600 run /execute as @a run playsound record.wait @a ~ ~ ~ 1 1.25
+execute if score .seq global matches 600 run playsound record.wait @a ~ ~ ~ 1 1.25 1
 execute if score .game_mode global matches 1 run execute if score .seq global matches 600 run inputpermission set @a movement enabled
 
 ### Active till Game Over

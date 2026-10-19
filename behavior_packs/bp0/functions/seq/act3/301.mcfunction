@@ -103,8 +103,9 @@ execute if score .seq global matches 1160 run scoreboard objectives setdisplay s
 
 ### At game start (Difference Old 700 New 1160)
 execute if score .seq global matches 1160 run summon rwm:timer -33 90 -97 0 0 rwm:timer_grid
-execute if score .seq global matches 1160 run /execute as @a run playsound record.creator @a[scores={team=1}] -33 90 -97 1 0.56 1
-execute if score .seq global matches 1160 run /execute as @a run playsound record.creator @a[scores={team=2}] -33 90 -97 1 0.56 1
+execute if score .seq global matches 1160 run playsound record.creator @a[scores={team=1}] -33 90 -97 1 0.56 1
+execute if score .seq global matches 1160 run playsound record.creator @a[scores={team=2}] -33 90 -97 1 0.56 1
+execute if score .seq global matches 1160 run playsound record.creator @a[tag=admin] -33 90 -97 1 0.56 1
 execute if score .seq global matches 1160 run inputpermission set @a movement enabled
 execute if score .seq global matches 1160 run /function utility/games/grid/new_pattern
 

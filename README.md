@@ -4,7 +4,7 @@
 
 마인크래프트 교육용 에디션 미니게임 월드 **Wheel of Steve**(ReWrite Media)를 경복궁과 조선 초기 인물로 다시 꾸민 월드입니다. 게임 규칙은 원작과 같고, 진행자·배경·물건·블록·배경음악을 조선 문화에 맞게 바꿨습니다.
 
-- **월드 내려받기**: [Gyeongbokgung-Royal-Tournament-v1.1.mcworld](https://github.com/ssakspirit/wheelofsteveGBG/releases/download/v1.1/Gyeongbokgung-Royal-Tournament-v1.1.mcworld) (약 43MB, [릴리스 v1.1](https://github.com/ssakspirit/wheelofsteveGBG/releases/tag/v1.1))
+- **월드 내려받기**: [Gyeongbokgung-Royal-Tournament-v1.2.mcworld](https://github.com/ssakspirit/wheelofsteveGBG/releases/download/v1.2/Gyeongbokgung-Royal-Tournament-v1.2.mcworld) (약 43MB, [릴리스 v1.2](https://github.com/ssakspirit/wheelofsteveGBG/releases/tag/v1.2))
 - **플레이어 안내 페이지**: <https://claude.ai/artifact/5nyhB1La5NPcbzxpJeV8cL>
   마당별 놀이 방법, 진행자, 배경이 된 경복궁, 물건과 동물, 배경음악 미리듣기, 선생님 진행 팁을 담았습니다.
 

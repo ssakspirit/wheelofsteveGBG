@@ -67,7 +67,7 @@ execute if score .seq global matches 1000 run /execute at @a run /playsound horn
 
 ### At game start
 execute if score .seq global matches 1000 run inputpermission set @a[tag=final_players] movement enabled
-execute if score .seq global matches 1000 run /execute as @a run /playsound record.precipice @a ~ ~ ~ 0.5 1.25
+execute if score .seq global matches 1000 run playsound record.precipice @a ~ ~ ~ 0.5 1.25 1
 execute if score .seq global matches 900 run tp @e[type=rwm:final_marker,tag=elim_zone_top] 1.0 315 6234
 execute if score .seq global matches 900 run tp @e[type=rwm:final_marker,tag=elim_zone_bottom] 1.0 280 6213
 

@@ -178,6 +178,116 @@ for (const [name, mode, label] of [["craft_team", 0, "두 팀 모드(3개 고장
   cheat(`start/${name}.mcfunction`, `자격루 복원전을 ${label}로 시작`, name, { needGame: false });
 }
 
+// ---------- 진행 편의 명령: /function skip · /function end ----------
+// 운영자 권한(명령어 사용)만 있으면 누구나, 디버그 모드·어전대회 여부와 상관없이 쓴다. 새 파일만 만들고 게임 파일은 고치지 않는다.
+//   skip: 설명 중에만. 남은 설명 명령을 순서대로 재생하고(시범 쌓기는 뺀 사본) 3·2·1 카운트다운 직전으로 옮긴다
+//         → 카운트다운·출발·음악은 게임이 원래대로 진행한다.
+//   end : 설명 중이나 경기 중에. 설명 준비를 마치고, 게임의 끝 지점부터 판정 직전까지의 명령을 재생한 뒤 두 팀 점수를 0으로 맞추고
+//         게임 자신의 판정 지점으로 옮긴다 → 게임이 무승부를 판정한다(승리 기록 없음). 백악산은 팀 경기가 아니라 제외.
+const top = (rel, lines) => {
+  const f = path.join(root, "..", rel);
+  fs.writeFileSync(f, lines.join("\n") + "\n");
+};
+const playInfo = seqInfo.map(s => {
+  const line = s.lines.find(l => /\.seq global matches \d+ run titleraw @a title .*subtitle\.objective\.101\.1"/.test(l));
+  const countdown = line ? +line.match(/matches (\d+)/)[1] : s.start;
+  if (!(countdown <= s.start && countdown > 60)) throw new Error(`seq/${s.file}: 카운트다운 지점을 찾지 못함`);
+  const judge = [...s.win].filter(v => v >= s.end).sort((a, b) => a - b)[0];
+  if (judge == null) throw new Error(`seq/${s.file}: 끝(${s.end}) 뒤의 승패 판정 지점을 찾지 못함`);
+  return { ...s, countdown, judge, team: s.act !== 601 };
+});
+const WAIT = ".dev_wait global";
+const waitLines = intro => [
+  `scoreboard players set ${WAIT} 0`,
+  // 시작하고 3초 동안은 경기장 땅이 아직 불러와지는 중일 수 있다
+  ...pre.map(p => `execute if score .act global matches ${p.act} run scoreboard players set ${WAIT} 1`),
+  ...playInfo.map(s => `execute if score .act global matches ${s.act} if score .seq global matches ..59 run scoreboard players set ${WAIT} 1`),
+  ...animWait,
+  `execute if score ${WAIT} matches 1 run ${say(`§e[진행] §f지금은 준비 중이라 ${intro} 수 없습니다. 몇 초 뒤 다시 해 보세요.`)}`,
+];
+
+// 로비 소개(팀을 정하고 시작 버튼을 누른 뒤 나오는 혼천의·다섯 대결 소개, seq/act0/001):
+// 로비로 옮기는 순간이동 다음부터 화면이 어두워지는 지점 전까지는 안내 문구(scoreboard)와 카메라 명령뿐이라
+// 그 사이 명령을 순서대로 재생하고 어두워지는 지점으로 옮긴다 → 카메라 해제·HUD·이동 허용·로비 준비는 게임이 원래대로.
+const LOBBY = (() => {
+  const info = readSeq("act0/001");
+  // 같은 명령이 앞(팀 고르기 전 안내)에도 있으므로, after보다 뒤에 있는 첫 번째 것을 찾는다
+  const at = (re, after = -1) => { const v = info.lines.filter(x => re.test(x)).map(x => +x.match(/matches (\d+) /)[1]).filter(v => v > after).sort((a, b) => a - b); return v.length ? v[0] : null; };
+  const tpLobby = at(/matches \d+ run tp @a 1\.0 60\.00 1000/), fade = at(/matches \d+ run camera @a fade time 0\.5 1 0\.5/, tpLobby);
+  if (tpLobby == null || fade == null || !(tpLobby < fade)) throw new Error("seq/act0/001: 로비 소개의 시작(로비 순간이동)·끝(화면 어두워짐) 지점을 찾지 못함");
+  const inside = info.lines.filter(l => { const m = l.match(/\.seq global matches (\d+)(?:\.\.(\d*))?\s+run\s+\/?(\S+)/); return m && +m[1] < fade && (m[2] === undefined ? +m[1] : (m[2] === "" ? 1e9 : +m[2])) > tpLobby; });
+  const bad = inside.filter(l => !/run \/?(camera|scoreboard players set \.actionbar\.objective)/.test(l));
+  if (bad.length) throw new Error("seq/act0/001: 로비 소개 안에 카메라·안내 문구 말고 다른 명령이 있음 — 건너뛰기를 다시 검토할 것\n" + bad.join("\n"));
+  return { ...info, from: tpLobby + 1, fade };
+})();
+w("_play/skip_1.mcfunction", [
+  `## 로비 소개(act 1): ${LOBBY.from}~${LOBBY.fade - 1}의 안내 문구·카메라 명령을 재생하고 화면이 어두워지는 ${LOBBY.fade}로 옮긴다`,
+  ...replay(1, "act0/001", LOBBY.values.filter(v => v >= LOBBY.from && v < LOBBY.fade)),
+  `execute if score .act global matches 1 if score .seq global matches ${LOBBY.from}..${LOBBY.fade} run scoreboard players set .seq global ${LOBBY.fade}`,
+]);
+
+// skip 본문: 게임마다 카운트다운 직전까지 재생
+for (const s of playInfo) w(`_play/skip_${s.act}.mcfunction`, [
+  `## act ${s.act}: 카운트다운(${s.countdown}) 전까지의 설명 명령을 순서대로 재생하고 ${s.countdown}로 옮긴다`,
+  ...replay(s.act, s.file, s.values.filter(v => v < s.countdown), noAnimCopy(s.act, s.file, s)),
+  `execute if score .act global matches ${s.act} if score .seq global matches ..${s.countdown} run scoreboard players set .seq global ${s.countdown}`,
+]);
+w("_play/skip.mcfunction", [
+  // 로비 소개
+  `execute if score .act global matches 1 run function dev/_play/skip_1`,
+  `execute if score .act global matches 1 run ${msg("@a", "§e[진행] §f로비 소개를 건너뛰었습니다.")}`,
+  // 경기 설명
+  ...pre.map(p => `execute if score .act global matches ${p.act} run function dev/_cheat/intro_${p.act}`),
+  ...playInfo.map(s => `execute if score .act global matches ${s.act} run function dev/_play/skip_${s.act}`),
+  // 한꺼번에 재생된 설명 효과음을 끈다 (경기 음악은 시작 지점에서 원래대로 나온다)
+  "execute unless score .act global matches 1 run stopsound @a",
+  `execute unless score .act global matches 1 run ${msg("@a", "§e[진행] §f설명을 건너뛰었습니다. 3초 뒤 경기가 시작됩니다.")}`,
+]);
+top("skip.mcfunction", [
+  "## /function skip — 지금 나오는 장면을 건너뛴다. 운영자면 누구나, 어전대회·연습 경기 모두.",
+  "##   경기 설명(인트로) → 3·2·1 카운트다운부터 / 팀을 정한 뒤 나오는 로비 소개(혼천의·다섯 대결) → 로비로",
+  "## 자동 생성(tools/gen-dev.js). 게임 파일은 고치지 않고, 그 장면 동안 실행될 명령을 순서대로 한꺼번에 실행할 뿐이다.",
+  `scoreboard players set .play_ok global 0`,
+  `execute if score .act global matches 1 if score .seq global matches ${LOBBY.from}..${LOBBY.fade - 1} run scoreboard players set .play_ok global 1`,
+  `execute if score .act global matches 1 if score .seq global matches ..${LOBBY.from - 1} run ${say("§e[진행] §f로비 소개는 팀을 고르고 시작 버튼을 누른 뒤 나오는 장면에서 건너뛸 수 있어요.")}`,
+  `execute if score .act global matches 1 if score .seq global matches ..${LOBBY.from - 1} run scoreboard players set .play_ok global 2`,
+  ...pre.map(p => `execute if score .act global matches ${p.act} run scoreboard players set .play_ok global 1`),
+  ...playInfo.map(s => `execute if score .act global matches ${s.act} if score .seq global matches ..${s.countdown - 1} run scoreboard players set .play_ok global 1`),
+  `execute if score .play_ok global matches 0 run ${say("§e[진행] §f지금은 건너뛸 장면이 없습니다. (경기 설명이나 팀을 정한 뒤의 로비 소개 동안에만 쓸 수 있어요)")}`,
+  ...waitLines("건너뛸"),
+  `execute if score .play_ok global matches 1 if score ${WAIT} matches 0 run function dev/_play/skip`,
+]);
+
+// end 본문: 설명 준비 → 끝 지점부터 판정 직전까지 재생 → 점수 0:0 → 판정 지점으로
+for (const s of playInfo.filter(s => s.team)) w(`_play/end_${s.act}.mcfunction`, [
+  `## act ${s.act}: 설명 중이면 준비를 마치고(dev/_cheat/intro_${s.act}), 끝(${s.end})~판정 전(${s.judge - 1}) 명령을 재생한 뒤`,
+  `## 두 팀 점수를 0으로 맞추고 판정 지점(${s.judge})으로 옮긴다 → 다음 틱에 게임이 스스로 판정한다`,
+  `execute if score .act global matches ${s.act} if score .seq global matches ..${s.start - 1} run function dev/_cheat/intro_${s.act}`,
+  ...replay(s.act, s.file, s.values.filter(v => v >= s.end && v < s.judge)),
+  `execute if score .act global matches ${s.act} run scoreboard players set "§4Team 1" score 0`,
+  `execute if score .act global matches ${s.act} run scoreboard players set "§9Team 2" score 0`,
+  // 자격루 두 팀 방식은 원작 판정에 무승부 줄이 없어(>만 비교) 아무 표시 없이 끝난다 → 다른 게임과 같은 무승부 함수를 부른다
+  ...(s.act === 202 ? [`execute if score .act global matches 202 run function utility/wins/tie`] : []),
+  `execute if score .act global matches ${s.act} run scoreboard players set .seq global ${s.judge}`,
+]);
+w("_play/end.mcfunction", [
+  ...pre.map(p => `execute if score .act global matches ${p.act} run function dev/_cheat/intro_${p.act}`),
+  ...playInfo.filter(s => s.team).map(s => `execute if score .act global matches ${s.act} run function dev/_play/end_${s.act}`),
+  "stopsound @a",
+  msg("@a", "§e[진행] §f경기를 무승부로 끝냈습니다. (승리 기록 없음)"),
+]);
+top("end.mcfunction", [
+  "## /function end — 진행 중인 경기를 무승부로 끝낸다(승리 기록 없음). 운영자면 누구나, 어전대회·연습 경기 모두. 백악산은 제외.",
+  "## 자동 생성(tools/gen-dev.js). 게임 파일은 고치지 않는다. 판정은 게임 자신의 판정 지점에서 원래 명령으로 한다.",
+  `scoreboard players set .play_ok global 0`,
+  ...pre.map(p => `execute if score .act global matches ${p.act} run scoreboard players set .play_ok global 1`),
+  ...playInfo.filter(s => s.team).map(s => `execute if score .act global matches ${s.act} if score .seq global matches ..${s.end - 1} run scoreboard players set .play_ok global 1`),
+  `execute if score .act global matches 601 run ${say("§e[진행] §f백악산 엽전 달리기는 팀 경기가 아니라 무승부로 끝낼 수 없습니다.")}`,
+  `execute unless score .act global matches 601 if score .play_ok global matches 0 run ${say("§e[진행] §f지금은 끝낼 경기가 없습니다. (경기 설명이나 경기 중에만 쓸 수 있어요)")}`,
+  ...waitLines("끝낼"),
+  `execute if score .play_ok global matches 1 if score ${WAIT} matches 0 run function dev/_play/end`,
+]);
+
 w("debug/on.mcfunction", [
   "## [개발용] 디버그 모드 켜기: 치트(dev/skip, dev/team, dev/start/craft_*)를 쓸 수 있게 된다",
   `tag @s add ${DEV_TAG}`,
@@ -260,4 +370,5 @@ w("help.mcfunction", [
   msg("@s", "§e모드 §f/function dev/build §7건축 모드 · §f/function dev/play §7플레이 모드"),
   msg("@s", "§e기타 §f/function dev/status §7상태 · §fdev/zones §7장식 금지 구역 · §fdev/fog_off §7안개 끄기 · §fdev/host §7호스트 되기"),
   msg("@s", "§e디버그 §f/function dev/debug/on §7→ dev/team/1 · dev/skip/intro · dev/skip/end · dev/skip/lobby (연습 경기 전용)"),
+  msg("@s", "§e진행 §f/function skip §7로비 소개·경기 설명 건너뛰기 · §f/function end §7무승부로 끝내기 (디버그 모드 없이, 어전대회에서도)"),
 ]);

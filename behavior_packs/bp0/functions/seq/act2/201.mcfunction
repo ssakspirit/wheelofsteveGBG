@@ -107,9 +107,9 @@ execute if score .seq global matches 1200 run summon rwm:timer 0 90 3017 0 0 rwm
 execute if score .seq global matches 1200 run inputpermission set @a movement enabled
 execute if score .seq global matches 1200 run function utility/games/craft/random_next_diagram_singleplayer_team1
 execute if score .seq global matches 1200 run function utility/games/craft/random_next_diagram_singleplayer_team2
-execute if score .seq global matches 1200 run /execute as @a run playsound record.stal @a ~ ~ ~ 1 1.1
-execute if score .seq global matches 3900 run /execute as @a run playsound record.stal @a ~ ~ ~ 1 1.1
-execute if score .seq global matches 6600 run /execute as @a run playsound record.stal @a ~ ~ ~ 1 1.1
+execute if score .seq global matches 1200 run playsound record.stal @a ~ ~ ~ 1 1.1 1
+execute if score .seq global matches 3900 run playsound record.stal @a ~ ~ ~ 1 1.1 1
+execute if score .seq global matches 6600 run playsound record.stal @a ~ ~ ~ 1 1.1 1
 
 ### Active till Game Over
 execute if score .seq global matches 1200..7200 run execute if entity @e[type=item,x=-10,y=61,z=3023,r=1] run function utility/games/craft/solo_team1_score 

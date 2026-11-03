@@ -111,12 +111,11 @@ execute if score .act global matches 202 if score .seq global matches ..1900 run
 execute if score .act global matches 202 if score .seq global matches 1900 as @p at @s run function seq/act2/202
 execute if score .act global matches 202 if score .seq global matches ..2030 run scoreboard players set .seq global 2030
 execute if score .act global matches 202 if score .seq global matches 2030 as @p at @s run function seq/act2/202
-execute if score .act global matches 202 if score .seq global matches ..2040 run scoreboard players set .seq global 2040
-execute if score .act global matches 202 if score .seq global matches 2040 as @p at @s run function seq/act2/202
-execute if score .act global matches 202 if score .seq global matches ..2060 run scoreboard players set .seq global 2060
+execute if score .act global matches 202 if score .seq global matches 2041..2060 run scoreboard players set .seq global 2060
 execute if score .act global matches 202 if score .seq global matches 2060 as @p at @s run function seq/act2/202
-execute if score .act global matches 202 if score .seq global matches ..2062 run scoreboard players set .seq global 2062
+execute if score .act global matches 202 if score .seq global matches 2041..2062 run scoreboard players set .seq global 2062
 execute if score .act global matches 202 if score .seq global matches 2062 as @p at @s run function seq/act2/202
-execute if score .act global matches 202 if score .seq global matches ..2120 run scoreboard players set .seq global 2120
+execute if score .act global matches 202 if score .seq global matches 2041..2120 run scoreboard players set .seq global 2120
 execute if score .act global matches 202 if score .seq global matches 2120 as @p at @s run function seq/act2/202
-execute if score .act global matches 202 if score .seq global matches ..2140 run scoreboard players set .seq global 2140
+execute if score .act global matches 202 if score .seq global matches ..2030 run scoreboard players set .seq global 2031
+execute if score .act global matches 202 if score .seq global matches 2041..2140 run scoreboard players set .seq global 2140

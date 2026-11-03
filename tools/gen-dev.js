@@ -71,6 +71,23 @@ const replay = (act, file, values, fn = `seq/${file}`) => values.flatMap(v => [
   `execute if score .act global matches ${act} if score .seq global matches ..${v} run scoreboard players set .seq global ${v}`,
   `execute if score .act global matches ${act} if score .seq global matches ${v} as @p at @s run function ${fn}`,
 ]);
+// 자격루: 부품을 다시 소환(respawn_assets)한 뒤 몇 틱 지나서야 칸 태그(tagging/crafting_grid)를 붙인다.
+// 둘을 한 틱에 재생하면 지워지는 옛 칸 엔티티가 아직 같은 자리에 있어서 r1~r9 태그가 엉뚱한 곳에 붙고, 그 판은 조합이 인식되지 않는다.
+// → 소환(R)까지만 재생하고 seq를 R+1로 둬 게임이 태그(T)를 제 속도로 붙이게 한다. T 뒤 명령은 태그가 끝난 뒤에만 재생한다.
+const craftSplit = info => {
+  const at = re => { const l = info.lines.find(x => re.test(x)); return l ? +l.match(/matches (\d+) run/)[1] : null; };
+  const R = at(/function utility\/games\/craft\/respawn_assets/), T = at(/function utility\/games\/craft\/tagging\/crafting_grid/);
+  return R != null && T != null && R < T ? { R, T } : null;
+};
+const replaySplit = (act, file, values, fn, sp) => values.flatMap(v => v <= sp.R ? replay(act, file, [v], fn) : v <= sp.T ? [] : [
+  `execute if score .act global matches ${act} if score .seq global matches ${sp.T + 1}..${v} run scoreboard players set .seq global ${v}`,
+  `execute if score .act global matches ${act} if score .seq global matches ${v} as @p at @s run function ${fn}`,
+]);
+// 재생을 마친 뒤 seq 옮기기: 태그 전이면 R+1(게임이 이어서), 태그 후면 목표 지점
+const landLines = (act, to, sp) => sp
+  ? [`execute if score .act global matches ${act} if score .seq global matches ..${sp.R} run scoreboard players set .seq global ${sp.R + 1}`,
+     `execute if score .act global matches ${act} if score .seq global matches ${sp.T + 1}..${to} run scoreboard players set .seq global ${to}`]
+  : [`execute if score .act global matches ${act} if score .seq global matches ..${to} run scoreboard players set .seq global ${to}`];
 const seqInfo = sequences.map(s => {
   const info = readSeq(s.file);
   for (const k of ["start", "end"]) if (!info.values.includes(s[k])) throw new Error(`seq/${s.file}에 ${k} 지점 ${s[k]}이 없음 (원본이 바뀌었는지 확인)`);
@@ -109,6 +126,12 @@ for (const s of seqInfo) w(`_cheat/intro_${s.act}.mcfunction`, [
   ...replay(s.act, s.file, s.values.filter(v => v < s.start), noAnimCopy(s.act, s.file, s)),
   `execute if score .act global matches ${s.act} if score .seq global matches ..${s.start} run scoreboard players set .seq global ${s.start}`,
 ]);
+// 경기를 이어서 할 때만 쓰는 건너뛰기 (dev/skip/intro). end 쪽은 위 intro_<act>를 그대로 쓴다: 곧 끝나므로 칸 태그가 필요 없고 카메라·HUD 복구까지 재생돼야 한다
+for (const s of seqInfo.filter(craftSplit)) w(`_cheat/intro_skip_${s.act}.mcfunction`, [
+  `## act ${s.act}: 부품 소환(${craftSplit(s).R})까지만 재생하고, 칸 태그(${craftSplit(s).T})부터는 게임이 제 속도로 진행한다`,
+  ...replaySplit(s.act, s.file, s.values.filter(v => v < s.start), noAnimCopy(s.act, s.file, s), craftSplit(s)),
+  ...landLines(s.act, s.start, craftSplit(s)),
+]);
 // 이미 실제로 시작된 시범 쌓기가 진행 중이면 건너뛰지 않는다(지워도 쌓기가 이어진다) → 몇 초 뒤 다시
 const animWait = [...new Set(seqInfo.flatMap(s => s.anim.filter(a => a.v < s.start).map(a =>
   `execute if score .act global matches ${s.act} if score .seq global matches ${a.v}..${a.v + a.ticks - 1} run scoreboard players set .dev_wait global 1`)))];
@@ -121,7 +144,16 @@ w("_cheat/intro.mcfunction", [
   "execute if score .dev_wait global matches 0 run stopsound @a", // 한꺼번에 재생된 설명 효과음·음악을 끈다 (경기 시작 음악은 다음 틱에 정상 재생)
   `execute if score .dev_wait global matches 0 run ${say("§a[dev] §f설명을 건너뛰었습니다. 곧 경기가 시작됩니다.")}`, seqNow,
 ]);
-cheat("skip/intro.mcfunction", "설명(인트로)을 건너뛰고 바로 경기 시작", "intro");
+w("_cheat/intro_play.mcfunction", [
+  "scoreboard players set .dev_wait global 0",
+  ...animWait,
+  `execute if score .dev_wait global matches 1 run ${say("§e[dev] §f시범 블록을 쌓는 중이라 지금은 건너뛸 수 없습니다. 몇 초 뒤 다시 해 보세요.")}`,
+  ...pre.map(p => `execute if score .dev_wait global matches 0 if score .act global matches ${p.act} run function dev/_cheat/intro_${p.act}`),
+  ...seqInfo.map(s => `execute if score .dev_wait global matches 0 if score .act global matches ${s.act} run function dev/_cheat/intro_${craftSplit(s) ? "skip_" : ""}${s.act}`),
+  "execute if score .dev_wait global matches 0 run stopsound @a",
+  `execute if score .dev_wait global matches 0 run ${say("§a[dev] §f설명을 건너뛰었습니다. 곧 경기가 시작됩니다.")}`, seqNow,
+]);
+cheat("skip/intro.mcfunction", "설명(인트로)을 건너뛰고 바로 경기 시작", "intro_play");
 
 // 경기 끝 → 승패 → 종료 장면 (이긴 팀 지정)
 for (const [team, other] of [[1, 2], [2, 1]]) {
@@ -229,8 +261,8 @@ w("_play/skip_1.mcfunction", [
 // skip 본문: 게임마다 카운트다운 직전까지 재생
 for (const s of playInfo) w(`_play/skip_${s.act}.mcfunction`, [
   `## act ${s.act}: 카운트다운(${s.countdown}) 전까지의 설명 명령을 순서대로 재생하고 ${s.countdown}로 옮긴다`,
-  ...replay(s.act, s.file, s.values.filter(v => v < s.countdown), noAnimCopy(s.act, s.file, s)),
-  `execute if score .act global matches ${s.act} if score .seq global matches ..${s.countdown} run scoreboard players set .seq global ${s.countdown}`,
+  ...(sp => sp ? replaySplit(s.act, s.file, s.values.filter(v => v < s.countdown), noAnimCopy(s.act, s.file, s), sp) : replay(s.act, s.file, s.values.filter(v => v < s.countdown), noAnimCopy(s.act, s.file, s)))(craftSplit(s)),
+  ...landLines(s.act, s.countdown, craftSplit(s)),
 ]);
 w("_play/skip.mcfunction", [
   // 로비 소개
@@ -241,7 +273,8 @@ w("_play/skip.mcfunction", [
   ...playInfo.map(s => `execute if score .act global matches ${s.act} run function dev/_play/skip_${s.act}`),
   // 한꺼번에 재생된 설명 효과음을 끈다 (경기 음악은 시작 지점에서 원래대로 나온다)
   "execute unless score .act global matches 1 run stopsound @a",
-  `execute unless score .act global matches 1 run ${msg("@a", "§e[진행] §f설명을 건너뛰었습니다. 3초 뒤 경기가 시작됩니다.")}`,
+  `execute unless score .act global matches 1${playInfo.filter(craftSplit).map(s => ` unless score .act global matches ${s.act}`).join("")} run ${msg("@a", "§e[진행] §f설명을 건너뛰었습니다. 3초 뒤 경기가 시작됩니다.")}`,
+  ...playInfo.filter(craftSplit).map(s => `execute if score .act global matches ${s.act} run ${msg("@a", "§e[진행] §f설명을 건너뛰었습니다. 곧 3·2·1 카운트다운이 시작됩니다.")}`),
 ]);
 top("skip.mcfunction", [
   "## /function skip — 지금 나오는 장면을 건너뛴다. 운영자면 누구나, 어전대회·연습 경기 모두.",

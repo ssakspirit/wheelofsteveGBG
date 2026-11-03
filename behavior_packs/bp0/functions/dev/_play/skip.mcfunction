@@ -9,4 +9,6 @@ execute if score .act global matches 401 run function dev/_play/skip_401
 execute if score .act global matches 501 run function dev/_play/skip_501
 execute if score .act global matches 601 run function dev/_play/skip_601
 execute unless score .act global matches 1 run stopsound @a
-execute unless score .act global matches 1 run tellraw @a {"rawtext":[{"text":"§e[진행] §f설명을 건너뛰었습니다. 3초 뒤 경기가 시작됩니다."}]}
+execute unless score .act global matches 1 unless score .act global matches 201 unless score .act global matches 202 run tellraw @a {"rawtext":[{"text":"§e[진행] §f설명을 건너뛰었습니다. 3초 뒤 경기가 시작됩니다."}]}
+execute if score .act global matches 201 run tellraw @a {"rawtext":[{"text":"§e[진행] §f설명을 건너뛰었습니다. 곧 3·2·1 카운트다운이 시작됩니다."}]}
+execute if score .act global matches 202 run tellraw @a {"rawtext":[{"text":"§e[진행] §f설명을 건너뛰었습니다. 곧 3·2·1 카운트다운이 시작됩니다."}]}

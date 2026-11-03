@@ -69,10 +69,9 @@ execute if score .act global matches 201 if score .seq global matches ..1021 run
 execute if score .act global matches 201 if score .seq global matches 1021 as @p at @s run function seq/act2/201
 execute if score .act global matches 201 if score .seq global matches ..1030 run scoreboard players set .seq global 1030
 execute if score .act global matches 201 if score .seq global matches 1030 as @p at @s run function seq/act2/201
-execute if score .act global matches 201 if score .seq global matches ..1040 run scoreboard players set .seq global 1040
-execute if score .act global matches 201 if score .seq global matches 1040 as @p at @s run function seq/act2/201
-execute if score .act global matches 201 if score .seq global matches ..1060 run scoreboard players set .seq global 1060
+execute if score .act global matches 201 if score .seq global matches 1041..1060 run scoreboard players set .seq global 1060
 execute if score .act global matches 201 if score .seq global matches 1060 as @p at @s run function seq/act2/201
-execute if score .act global matches 201 if score .seq global matches ..1062 run scoreboard players set .seq global 1062
+execute if score .act global matches 201 if score .seq global matches 1041..1062 run scoreboard players set .seq global 1062
 execute if score .act global matches 201 if score .seq global matches 1062 as @p at @s run function seq/act2/201
-execute if score .act global matches 201 if score .seq global matches ..1140 run scoreboard players set .seq global 1140
+execute if score .act global matches 201 if score .seq global matches ..1030 run scoreboard players set .seq global 1031
+execute if score .act global matches 201 if score .seq global matches 1041..1140 run scoreboard players set .seq global 1140

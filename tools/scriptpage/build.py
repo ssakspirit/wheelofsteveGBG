@@ -82,7 +82,7 @@ GAMES = {
     "craft": dict(name="자격루 복원전", host="장영실", pic="jangyeongsil", power="협동", time="5분", tone="#2b4f86", scenes=[("scene_craft", "경회루 남쪽 수정전 자리")]),
     "grid": dict(name="교태전 꽃담 맞추기", host="정도전", pic="jeongdojeon", power="비판적 사고", time="약 5분", tone="#a9801f", scenes=[("scene_grid", "교태전 자리와 아미산")]),
     "nock": dict(name="태조의 활쏘기 대회", host="태조 이성계", pic="taejo", power="창의성", time="약 3분", tone="#2e6f58", scenes=[("scene_nock", "인왕산 기슭 산속 활터")]),
-    "elytra": dict(name="6진 망루 공성전", host="장수 김종서", pic="kimjongseo", power="커뮤니티", time="약 5분 · 50점 선승", tone="#33405f", scenes=[("scene_elytra", "두만강 골짜기")]),
+    "elytra": dict(name="6진 망루 공성전", host="장수 김종서", pic="kimjongseo", power="공동체", time="약 5분 · 50점 선승", tone="#33405f", scenes=[("scene_elytra", "두만강 골짜기")]),
     "finale": dict(name="백악산 엽전 달리기", host="세종대왕 (비밀 대결)", pic="wheel", power="우승팀 축하 무대", time="약 1분", tone="#5c6b74", scenes=[("scene_finale", "백악산 눈 덮인 비탈")]),
 }
 
@@ -188,6 +188,10 @@ intro_note = next((b["text"] for b in DOC if b["type"] == "text"), "")
 # hwpx를 쓴 뒤 바뀐 사실 (원본 hwpx는 그대로 둔다)
 PATCH = [
     ("「경복궁 어전대회」 월드 v1.0(.mcworld 파일)을 가져와", "「경복궁 어전대회」 최신 배포판(.mcworld, GitHub 릴리스)을 가져와"),
+    # v1.4: 주제 역량 이름을 게임 대사와 맞춤 (커뮤니티 → 공동체, 황희 대사의 소통 → 의사소통)
+    ("커뮤니티", "공동체"),
+    ("이기려면 소통이 무엇보다", "이기려면 의사소통이 무엇보다"),
+    ("황희 정승이 말한 ‘소통’", "황희 정승이 말한 ‘의사소통’"),
 ]
 ADD = {  # 줄 뒤에 덧붙이는 줄: (찾는 줄의 앞부분, [덧붙일 줄])
     "※ 진행자 설명 장면(약 1분) 동안에는": ["※ 설명을 건너뛰어야 할 때는 운영자가 /function skip → 3·2·1 카운트다운부터 시작합니다. 해설할 시간이 줄어드니 시간이 모자랄 때만 쓰세요."],
@@ -275,7 +279,7 @@ def table_html(t, first_bold=True):
     rows = []
     for i, row in enumerate(t["rows"]):
         tag = "th" if i == 0 else "td"
-        rows.append("<tr>" + "".join(f"<{tag}>{'<br>'.join(inline(x) for x in c['lines'] if x)}</{tag}>" for c in row) + "</tr>")
+        rows.append("<tr>" + "".join(f"<{tag}>{'<br>'.join(inline(x) for x in patch(c['lines']) if x)}</{tag}>" for c in row) + "</tr>")
     return f'<div class="tbl"><table>{"".join(rows)}</table></div>'
 def card_html(t):
     items = []

@@ -79,7 +79,7 @@ const sections = [
   },
   {
     id: "elytra", title: "6진 망루 공성전", en: "Elytra Rumble", game: 5, host: "npc_3", tps: ["elytra"], start: "elytra",
-    desc: "김종서가 개척한 북방 6진의 하늘 공성전. 백두산 용암 위를 날아 상대 망루(홍포대 망루 · 청포대 망루)에 비격진천뢰를 떨어뜨린다. 주제 역량: 커뮤니티.",
+    desc: "김종서가 개척한 북방 6진의 하늘 공성전. 백두산 용암 위를 날아 상대 망루(홍포대 망루 · 청포대 망루)에 비격진천뢰를 떨어뜨린다. 주제 역량: 공동체.",
     zone: "X -176~20 · Y 58~210 · Z 4992~5188", fogs: ["g5_fog"], timer: null, notes: [],
     lang: ["^actionbar\\.objective\\.501\\.", "^dawn\\."],
     tex: ["^rwm/entity/tnt_", "^particle/elytra_rumble\\.png$", "^blocks/(mangrove_(planks|log_side|log_top)|warped_planks|cobblestone)\\.png$", "^items/(fireworks|elytra|broken_elytra)\\.png$", "^models/armor/elytra\\.png$"],

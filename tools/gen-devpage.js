@@ -180,14 +180,9 @@ const armor = ["iron", "diamond"].flatMap(m => ["helmet", "chestplate", "legging
 // ---------- 바닐라 원본: 리소스팩이 바닐라 경로의 그림을 새로 덮어쓴 경우(한옥 블록 등) '원본'으로 보여 준다 ----------
 // 기본 팩(vanilla) 위에 버전별 팩(vanilla_1.xx)이 덮이므로 가장 새 버전에서 찾는다
 const VANS = (() => {
-  const base = "C:/Program Files/WindowsApps";
-  let root = null;
-  try {   // WindowsApps 목록은 권한 때문에 못 읽을 수 있다 → 아래 알려진 경로로
-    const d = fs.readdirSync(base).find(n => n.startsWith("Microsoft.MinecraftEducationEdition_") && n.includes("x64") && fs.existsSync(`${base}/${n}/data/resource_packs/vanilla`));
-    if (d) root = `${base}/${d}/data/resource_packs`;
-  } catch {}
-  root = root || [`${base}/Microsoft.MinecraftEducationEdition_1.26.3200.0_x64__8wekyb3d8bbwe/data/resource_packs`].find(r => fs.existsSync(r + "/vanilla"));
-  if (!root) return [];
+  const found = require("./edu-install").eduResourcePacks();
+  if (!found) return [];
+  const root = found.split(String.fromCharCode(92)).join("/");
   return fs.readdirSync(root).filter(n => n === "vanilla" || /^vanilla_\d/.test(n))
     .sort((a, b) => b.localeCompare(a, "en", { numeric: true })).map(n => `${root}/${n}/`);
 })();

@@ -13,15 +13,8 @@ const rel = f => path.relative(ROOT, f).split(path.sep).join("/");
 
 // ---- 바닐라 리소스팩 찾기 ----
 function findVanilla() {
-  const base = "C:/Program Files/WindowsApps";
-  try {
-    for (const d of fs.readdirSync(base)) if (d.startsWith("Microsoft.MinecraftEducationEdition_") && d.includes("x64")) {
-      const v = path.join(base, d, "data/resource_packs/vanilla");
-      if (fs.existsSync(v)) return v;
-    }
-  } catch {}
-  for (const v of ["C:/Program Files/WindowsApps/Microsoft.MinecraftEducationEdition_1.26.3200.0_x64__8wekyb3d8bbwe/data/resource_packs/vanilla"]) if (fs.existsSync(v)) return v;
-  return null;
+  const r = require("./edu-install").eduResourcePacks();
+  return r ? path.join(r, "vanilla") : null;
 }
 const VAN = findVanilla();
 // 바닐라는 기본 팩 하나가 아니라 버전별 팩(vanilla_1.xx)과 음악 팩(vanilla_music)에 나뉘어 있다 — 모두 찾아본다

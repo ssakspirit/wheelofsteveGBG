@@ -2,6 +2,12 @@
 // place: tools/places.js의 장소 id (누르면 그 장소 페이지로), tab: 바로 볼 탭(models · sounds · items · textures …)
 module.exports = [
   {
+    date: "2026-11-08", title: "진행 대본 웹 페이지",
+    items: [
+      { text: "진행 대본 hwpx(경복궁어전대회_진행대본261010)를 claude.ai 페이지로 — https://claude.ai/artifact/9wDEJ3rxhaMd11KmZQ3JdH. 위 메뉴(개요·사전 세팅·개회·초등부 결승·중등부·시상·역사 해설·막간 퀴즈·운영 메모)와 세부 순서, 이전/다음, 글자 크기. 사회·캐스터·해설 꼬리표, 무대 지시·참고 상자, 채울 곳 표시, 명령어 복사 버튼. 마당마다 진행자·배경 장면, 자격루는 다섯 장치 그림과 게임 조합법 그대로의 3×3 부품 배치·부품 12개 이름, 꽃전돌 다섯 무늬, 활쏘기 과녁·민화 동물, 6진 망루 비격진천뢰·신기전·학 날개, 엽전. 퀴즈는 정답 펼치기. hwpx 뒤 바뀐 사실(최신 배포판, /function skip·end, 관전자 세종대왕 차림·음악)은 페이지에만 반영. tools/scriptpage/extract.py(hwpx → script.json) → build.py(→ dist/index.html)" },
+    ],
+  },
+  {
     date: "2026-11-04", title: "자격루 /function skip 버그 수정",
     items: [
       { text: "스킵한 자격루에서 정답대로 놓아도 부품이 완성되지 않던 문제 — 부품 소환과 칸 태그 붙이기가 한 틱에 재생되어 태그 일부가 지워지는 옛 칸 엔티티에 붙었다(저장 데이터: 홍포대 5/9, 청포대 2/9, 정답 배치도 판정 5/9). 소환까지만 재생하고 태그부터는 게임이 제 속도로 진행. 스킵 후 카운트다운까지 약 5.5초. /function end는 그대로. v1.3, 리소스 팩 2.0.6", place: "craft" },

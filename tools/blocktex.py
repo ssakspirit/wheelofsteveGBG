@@ -5,20 +5,20 @@ blocks.json(어느 면에 어떤 텍스처 키) → terrain_texture.json(키 →
   Tex(with_rp=True)  : 지금 게임에서 보이는 모습 (리소스팩 포함)
   Tex(with_rp=False) : 바닐라 원본
 """
+import subprocess
 import os, re, json
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 RP = os.path.join(ROOT, "resource_packs", "rp0")
 
 def vanilla_packs():
-    base = "C:/Program Files/WindowsApps"
-    roots = []
+    # WindowsApps 목록은 권한 때문에 못 읽고 폴더 이름은 업데이트마다 바뀌므로 윈도우에 설치 위치를 물어본다
     try:
-        roots = [os.path.join(base, d, "data", "resource_packs") for d in os.listdir(base)
-                 if d.startswith("Microsoft.MinecraftEducationEdition_") and "x64" in d]
-    except OSError:
-        pass
-    roots.append(base + "/Microsoft.MinecraftEducationEdition_1.26.3200.0_x64__8wekyb3d8bbwe/data/resource_packs")
+        out = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", "(Get-AppxPackage Microsoft.MinecraftEducationEdition).InstallLocation"],
+                             capture_output=True, text=True, timeout=30).stdout
+    except (OSError, subprocess.SubprocessError):
+        out = ""
+    roots = [os.path.join(l.strip(), "data", "resource_packs") for l in out.splitlines() if l.strip()]
     for r in roots:
         if os.path.isdir(os.path.join(r, "vanilla")):
             ver = lambda n: [int(x) for x in re.findall(r"\d+", n)]
